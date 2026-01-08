@@ -60,7 +60,8 @@ markdown_extensions:
 
 plugins:
   - search
-  - placeholder
+  - placeholder:
+      placeholder_file: placeholder-plugin.yaml
 
 nav:
   - Home: index.md
