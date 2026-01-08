@@ -1,0 +1,82 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 */6 * * *" # Every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.check.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: daemonless-io
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install mkdocs-material mkdocs-placeholder-plugin PyYAML
+
+      - name: Fetch repositories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd daemonless-io
+          python3 scripts/fetch_repos.py
+
+      - name: Sync docs
+        run: |
+          cd daemonless-io
+          python3 scripts/sync_docs.py
+
+      - name: Check for changes
+        id: check
+        run: |
+          cd daemonless-io
+          if git diff --quiet docs/; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build site
+        if: steps.check.outputs.has_changes == 'true' || github.event_name != 'schedule'
+        run: |
+          cd daemonless-io
+          mkdocs build
+
+      - name: Upload artifact
+        if: steps.check.outputs.has_changes == 'true' || github.event_name != 'schedule'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: daemonless-io/site/
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.has_changes == 'true' || github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,19 @@
+placeholders:
+  CONFIG_PATH:
+    default: /containers
+    description: Config base path (app name appended automatically)
+  MEDIA_PATH:
+    default: /data/media
+    description: Media library path
+  DOWNLOAD_PATH:
+    default: /data/downloads
+    description: Download path
+  PUID:
+    default: "1000"
+    description: User ID
+  PGID:
+    default: "1000"
+    description: Group ID
+  TZ:
+    default: America/New_York
+    description: Timezone

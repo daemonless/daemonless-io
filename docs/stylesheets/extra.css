@@ -1,0 +1,148 @@
+/* Variable Definitions */
+:root {
+  --md-primary-fg-color: #e24543;
+  --md-primary-fg-color--light: #e86563;
+  --md-primary-fg-color--dark: #c93a38;
+  --md-accent-fg-color: #e24543;
+
+  --dl-hero-bg: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  --dl-card-bg: rgba(255, 255, 255, 0.05);
+  --dl-glass-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #e24543;
+  --md-primary-fg-color--light: #e86563;
+  --md-primary-fg-color--dark: #c93a38;
+  --md-accent-fg-color: #e24543;
+  --md-default-bg-color: #1e1e24;
+  --md-code-bg-color: #2e2e36;
+}
+
+/* Hero Section */
+.hero {
+  padding: 6rem 1rem;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(226, 69, 67, 0.15) 0%, transparent 70%);
+  margin-bottom: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 1rem 0;
+  background: linear-gradient(to right, #ffffff, #e24543);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.05em;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.hero-logo img {
+  height: 120px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 20px rgba(226, 69, 67, 0.3));
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.hero-buttons .md-button {
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-buttons .md-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(226, 69, 67, 0.3);
+}
+
+/* Card Improvements */
+.md-typeset .grid.cards>ul>li {
+  border: var(--dl-glass-border);
+  background: var(--md-default-bg-color);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+  border-radius: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.md-typeset .grid.cards>ul>li:hover {
+  transform: translateY(-4px);
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Mermaid Diagrams */
+.mermaid {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.mermaid svg {
+  min-width: 800px;
+  min-height: 400px;
+  max-width: none;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Terminal Window Effect */
+.termy {
+  background-color: #1e1e1e;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin: 2em 0;
+  overflow: hidden;
+}
+
+.termy::before {
+  content: "● ● ●";
+  display: block;
+  background-color: #2d2d2d;
+  color: #555;
+  padding: 0.5em 1em;
+  font-size: 0.8em;
+  font-family: monospace;
+  border-bottom: 1px solid #333;
+}
+
+.termy pre {
+  margin: 0 !important;
+  padding: 1em !important;
+  background-color: transparent !important;
+}
