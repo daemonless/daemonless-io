@@ -61,30 +61,7 @@ markdown_extensions:
 plugins:
   - search
   - placeholder:
-      # Auto-apply placeholders if they appear in the page
-      auto_placeholder_tables: true
-      placeholders:
-        _CONFIG_PATH_:
-          default: /containers
-          description: Config base path (app name appended automatically)
-        _MEDIA_PATH_:
-          default: /data/media
-          description: Media library path
-        _DOWNLOAD_PATH_:
-          default: /data/downloads
-          description: Download path
-        _PUID_:
-          default: "1000"
-          description: User ID
-        _PGID_:
-          default: "1000"
-          description: Group ID
-        _TZ_:
-          default: America/New_York
-          description: Timezone
-        _INTERFACE_:
-          default: vtnet0
-          description: Network Interface (e.g., em0, re0)
+      placeholder_file: placeholder-plugin.yaml
 
 nav:
   - Home: index.md

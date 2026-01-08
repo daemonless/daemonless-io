@@ -1,0 +1,25 @@
+placeholders:
+  SET_CONFIG_PATH:
+    default: /containers
+    description: Config base path (app name appended automatically)
+  SET_MEDIA_PATH:
+    default: /data/media
+    description: Media library path
+  SET_DOWNLOAD_PATH:
+    default: /data/downloads
+    description: Download path
+  SET_PUID:
+    default: "1000"
+    description: User ID
+  SET_PGID:
+    default: "1000"
+    description: Group ID
+  SET_TZ:
+    default: America/New_York
+    description: Timezone
+  SET_INTERFACE:
+    default: vtnet0
+    description: Network Interface (e.g., em0, re0)
+
+settings:
+  auto_placeholder_tables: true
