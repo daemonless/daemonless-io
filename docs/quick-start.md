@@ -36,9 +36,12 @@ echo 'fdesc /dev/fd fdescfs rw 0 0' >> /etc/fstab
 
 ### 3. Configure pf.conf
 
-Add to `/etc/pf.conf`:
+Add to `/etc/pf.conf`. Ensure you define `$ext_if` (your main network interface, e.g., `em0`, `vtnet0`) at the top of the file if it's not already there:
 
 ```
+# Replace '_INTERFACE_' with your actual interface (e.g., em0, re0)
+ext_if="_INTERFACE_"
+
 # Podman container networking
 rdr-anchor "cni-rdr/*"
 nat-anchor "cni-rdr/*"
@@ -66,8 +69,8 @@ service podman start
 # Tautulli - no special annotations needed
 podman run -d --name tautulli \
   -p 8181:8181 \
-  -e PUID=1000 -e PGID=1000 \
-  -v /data/config/tautulli:/config \
+  -e PUID=_PUID_ -e PGID=_PGID_ \
+  -v _CONFIG_PATH_/tautulli:/config \
   ghcr.io/daemonless/tautulli:latest
 ```
 
@@ -88,8 +91,8 @@ These require the `allow.mlock` annotation and patched ocijail:
 podman run -d --name radarr \
   -p 7878:7878 \
   --annotation 'org.freebsd.jail.allow.mlock=true' \
-  -e PUID=1000 -e PGID=1000 \
-  -v /data/config/radarr:/config \
+  -e PUID=_PUID_ -e PGID=_PGID_ \
+  -v _CONFIG_PATH_/radarr:/config \
   ghcr.io/daemonless/radarr:latest
 ```
 

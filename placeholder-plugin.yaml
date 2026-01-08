@@ -1,19 +1,22 @@
 placeholders:
-  CONFIG_PATH:
+  _CONFIG_PATH_:
     default: /containers
     description: Config base path (app name appended automatically)
-  MEDIA_PATH:
+  _MEDIA_PATH_:
     default: /data/media
     description: Media library path
-  DOWNLOAD_PATH:
+  _DOWNLOAD_PATH_:
     default: /data/downloads
     description: Download path
-  PUID:
+  _PUID_:
     default: "1000"
     description: User ID
-  PGID:
+  _PGID_:
     default: "1000"
     description: Group ID
-  TZ:
+  _TZ_:
     default: America/New_York
     description: Timezone
+  _INTERFACE_:
+    default: vtnet0
+    description: Network Interface (e.g., em0, re0)
