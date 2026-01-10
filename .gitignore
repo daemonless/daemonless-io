@@ -2,4 +2,8 @@ __pycache__/
 *.pyc
 *.pyo
 site/
+test_site/
 .cache/
+serve.log
+serve_debug.log
+*.png
