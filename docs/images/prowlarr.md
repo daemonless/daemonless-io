@@ -1,39 +1,37 @@
 ---
-title: prowlarr - FreeBSD OCI Container
-description: Prowlarr indexer management on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Prowlarr on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Prowlarr on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  PROWLARR_PORT:
+    default: "9696"
+    description: Prowlarr Host Port
 ---
 
-# prowlarr
+# :material-magnet: Prowlarr
 
-Indexer manager/proxy for *arr applications.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/prowlarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/prowlarr/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/prowlarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/prowlarr/commits)
 
-| | |
-|---|---|
-| **Port** | 9696 |
-| **Registry** | `ghcr.io/daemonless/prowlarr` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/prowlarr](https://github.com/daemonless/prowlarr) |
+Prowlarr indexer management on FreeBSD.
 
-!!! warning "Requires patched ocijail"
-    This application requires the `allow.mlock` annotation.
-    See [ocijail patch](../guides/ocijail-patch.md).
+## Version Tags
 
-## Quick Start
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
+| `pkg` | **FreeBSD Port**. Installs from Quarterly ports. | Stability. Uses system libraries. |
+| `pkg-latest` | **FreeBSD Port**. Installs from Latest ports. | Bleeding edge system packages. |
 
-=== "Podman CLI"
+## Prerequisites
 
-    ```bash
-    podman run -d --name prowlarr \
-      -p 9696:9696 \
-      --annotation 'org.freebsd.jail.allow.mlock=true' \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      ghcr.io/daemonless/prowlarr:latest
-    ```
-    
-    Access at: http://localhost:9696
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+!!! warning "Memory Locking (Critical)"
+    This application is built on .NET and requires memory locking enabled in the jail.
+    You **must** use the `allow.mlock` annotation and have a [patched ocijail](../guides/ocijail-patch.md).
 
-=== "Compose"
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -41,73 +39,86 @@ Indexer manager/proxy for *arr applications.
         image: ghcr.io/daemonless/prowlarr:latest
         container_name: prowlarr
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/prowlarr:/config
+          - @CONTAINER_CONFIG_ROOT@/@PROWLARR_CONFIG_PATH@:/config
         ports:
-          - 9696:9696
+          - @PROWLARR_PORT@:9696
         annotations:
           org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name prowlarr \
+      -p @PROWLARR_PORT@:9696 \
+      --annotation 'org.freebsd.jail.allow.mlock=true' \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@PROWLARR_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/prowlarr:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/prowlarr/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy prowlarr
+      containers.podman.podman_container:
+        name: prowlarr
+        image: ghcr.io/daemonless/prowlarr:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@PROWLARR_PORT@:9696"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@PROWLARR_CONFIG_PATH@:/config"
+        annotation:
+          org.freebsd.jail.allow.mlock: "true"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@PROWLARR_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://prowlarr.servarr.com/) | Latest upstream release |
-| `:pkg` | `net-p2p/prowlarr` | FreeBSD quarterly packages |
-| `:pkg-latest` | `net-p2p/prowlarr` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 9696 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `9696` | TCP | Web UI |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
-### Specific Requirements
-- **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` (Requires [patched ocijail](https://github.com/daemonless/daemonless#ocijail-patch))
-
-## Links
-
-- [Website](https://prowlarr.com/)
-- [FreshPorts](https://www.freshports.org/net-p2p/prowlarr/)
+[Website](https://prowlarr.com/){ .md-button .md-button--primary }
+[Source Code](https://github.com/Prowlarr/Prowlarr){ .md-button }
+[FreshPorts](https://www.freshports.org/net-p2p/prowlarr/){ .md-button }

@@ -1,79 +1,107 @@
 ---
-title: openspeedtest - FreeBSD OCI Container
-description: HTML5 Network Speed Test on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "OpenSpeedTest on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install OpenSpeedTest on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  OPENSPEEDTEST_PORT:
+    default: "3005"
+    description: OpenSpeedTest Host Port
 ---
 
-# openspeedtest
+# :material-speedometer: OpenSpeedTest
 
-Free and open-source HTML5 network speed test.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/openspeedtest/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/openspeedtest/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/openspeedtest?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/openspeedtest/commits)
 
-| | |
-|---|---|
-| **Port** | 3000 |
-| **Registry** | `ghcr.io/daemonless/openspeedtest` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/openspeedtest](https://github.com/daemonless/openspeedtest) |
+Self-hosted HTML5 Network Speed Test on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name openspeedtest \
-      -p 3000:3000 \
-      ghcr.io/daemonless/openspeedtest:latest
-    ```
-    
-    Access at: http://localhost:3000
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
       openspeedtest:
         image: ghcr.io/daemonless/openspeedtest:latest
         container_name: openspeedtest
+        environment:
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
+        volumes:
         ports:
-          - 3000:3000
+          - @OPENSPEEDTEST_PORT@:3005
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name openspeedtest \
+      -p @OPENSPEEDTEST_PORT@:3005 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      ghcr.io/daemonless/openspeedtest:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/openspeedtest/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy openspeedtest
+      containers.podman.podman_container:
+        name: openspeedtest
+        image: ghcr.io/daemonless/openspeedtest:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@OPENSPEEDTEST_PORT@:3005"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@OPENSPEEDTEST_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/openspeedtest/Speed-Test) | Latest from git |
+### Interactive Configuration
 
-## Ports
+<div class="placeholder-settings-panel"></div>
 
-| Port | Description |
+## Parameters
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
+
+### Volumes
+
+| Path | Description |
 |------|-------------|
-| 3000 | Web UI |
 
-## Notes
+### Ports
 
-- **Base:** Built on `ghcr.io/daemonless/nginx-base-image` (FreeBSD)
-- **Storage:** No persistent storage required (client-side only)
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `3005` | TCP |  |
 
-## Links
+!!! info "Implementation Details"
 
-- [Website](https://openspeedtest.com/)
-- [GitHub](https://github.com/openspeedtest/Speed-Test)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+
+[Website](https://openspeedtest.com/){ .md-button .md-button--primary }
+[Source Code](https://github.com/openspeedtest/Speed-Test){ .md-button }

@@ -1,32 +1,32 @@
 ---
-title: redis - FreeBSD OCI Container
-description: Redis key-value store for FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Redis on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Redis on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  REDIS_PORT:
+    default: "6379"
+    description: Redis Host Port
 ---
 
-# redis
+# :simple-redis: Redis
 
-Redis key-value store for [Immich](https://immich.app/) and other applications.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/redis/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/redis/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/redis?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/redis/commits)
 
-| | |
-|---|---|
-| **Port** | 6379 |
-| **Registry** | `ghcr.io/daemonless/redis` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/redis](https://github.com/daemonless/redis) |
+Redis key-value store on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Installs from latest packages. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name redis \
-      -p 6379:6379 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      ghcr.io/daemonless/redis:latest
-    ```
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -34,70 +34,80 @@ Redis key-value store for [Immich](https://immich.app/) and other applications.
         image: ghcr.io/daemonless/redis:latest
         container_name: redis
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/redis:/config
+          - @CONTAINER_CONFIG_ROOT@/@REDIS_CONFIG_PATH@:/config
         ports:
-          - 6379:6379
+          - @REDIS_PORT@:6379
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
-| `REDIS_DATA` | Data directory path | `/config/data` |
+    ```bash
+    podman run -d --name redis \
+      -p @REDIS_PORT@:6379 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@REDIS_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/redis:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/redis/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy redis
+      containers.podman.podman_container:
+        name: redis
+        image: ghcr.io/daemonless/redis:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@REDIS_PORT@:6379"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@REDIS_CONFIG_PATH@:/config"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@REDIS_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | `databases/redis` | FreeBSD latest packages (Alias for :pkg-latest) |
-| `:pkg` | `databases/redis` | FreeBSD quarterly packages |
-| `:pkg-latest` | `databases/redis` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Volumes
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
+
+### Volumes
 
 | Path | Description |
 |------|-------------|
-| `/config` | Configuration and data directory |
+| `/config` | Data and configuration directory |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 6379 | Redis |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `6379` | TCP | Redis port |
 
-## Configuration
+!!! info "Implementation Details"
 
-A default `redis.conf` is created on first run at `/config/redis.conf`. Edit to customize.
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-Default settings:
-- Bind: 0.0.0.0
-- Append-only mode enabled
-- Protected mode disabled (for container use)
-
-## Notes
-
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
-
-## Links
-
-- [Website](https://redis.io/)
-- [FreshPorts](https://www.freshports.org/databases/redis/)
+[Website](https://redis.io/){ .md-button .md-button--primary }
+[Source Code](https://github.com/redis/redis){ .md-button }
+[FreshPorts](https://www.freshports.org/databases/redis/){ .md-button }

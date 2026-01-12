@@ -1,34 +1,32 @@
 ---
-title: overseerr - FreeBSD OCI Container
-description: Overseerr media request management on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Overseerr on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Overseerr on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  OVERSEERR_PORT:
+    default: "5055"
+    description: Overseerr Host Port
 ---
 
-# overseerr
+# :material-eye: Overseerr
 
-Request management and media discovery tool for Plex.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/overseerr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/overseerr/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/overseerr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/overseerr/commits)
 
-| | |
-|---|---|
-| **Port** | 5055 |
-| **Registry** | `ghcr.io/daemonless/overseerr` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/overseerr](https://github.com/daemonless/overseerr) |
+Overseerr media request management on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name overseerr \
-      -p 5055:5055 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      ghcr.io/daemonless/overseerr:latest
-    ```
-    
-    Access at: http://localhost:5055
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -36,67 +34,80 @@ Request management and media discovery tool for Plex.
         image: ghcr.io/daemonless/overseerr:latest
         container_name: overseerr
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/overseerr:/config
+          - @CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config
         ports:
-          - 5055:5055
+          - @OVERSEERR_PORT@:5055
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name overseerr \
+      -p @OVERSEERR_PORT@:5055 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/overseerr:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/overseerr/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy overseerr
+      containers.podman.podman_container:
+        name: overseerr
+        image: ghcr.io/daemonless/overseerr:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@OVERSEERR_PORT@:5055"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@OVERSEERR_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/sct/overseerr) | Latest development build |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 5055 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `5055` | TCP | Web UI |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
-- **Build:** Built from source (Node.js)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-## Links
-
-- [Website](https://overseerr.dev/)
-- [GitHub](https://github.com/sct/overseerr)
+[Website](https://overseerr.dev/){ .md-button .md-button--primary }
+[Source Code](https://github.com/sct/overseerr){ .md-button }
+[FreshPorts](https://www.freshports.org/www/overseerr/){ .md-button }

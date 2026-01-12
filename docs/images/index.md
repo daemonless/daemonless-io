@@ -6,80 +6,74 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:simple-gitea: Gitea](gitea.md) | 3000 | Gitea self-hosted Git service on FreeBSD |
-| [:simple-tailscale: Tailscale](tailscale.md) | None | Tailscale mesh VPN on FreeBSD |
-| [:material-router-network: Traefik](traefik.md) | 80,443,8080 | Traefik reverse proxy on FreeBSD |
-| [:material-hammer: Woodpecker](woodpecker.md) | None | Woodpecker CI server and agent |
+| [:simple-gitea: Gitea](gitea.md) | 3000 | Gitea self-hosted Git service on FreeBSD. |
+| [:simple-tailscale: Tailscale](tailscale.md) | - | Tailscale mesh VPN on FreeBSD. |
+| [:material-server-network: Traefik](traefik.md) | 80 | Modern HTTP reverse proxy and load balancer on FreeBSD. |
+| [:material-hammer: Woodpecker CI](woodpecker.md) | 8000 | Woodpecker CI server and agent on FreeBSD. |
 
 ## Network
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:simple-adguard: AdGuard Home](adguardhome.md) | 3000 | Network-wide ads & trackers blocking DNS server on FreeBSD |
-| [:simple-adguard: AdGuardHome Sync](adguardhome-sync.md) | 8080 | Sync AdGuardHome config to replica instances |
+| [:simple-adguard: AdGuard Home](adguardhome.md) | 53 | Network-wide ads & trackers blocking DNS server on FreeBSD. |
+| [:simple-adguard: AdGuardHome Sync](adguardhome-sync.md) | 8080 | Sync AdGuardHome configuration to replica instances. |
 
 ## Media Management
 
-| Image | Port | Description | .NET |
-|-------|------|-------------|------|
-| [:material-music: Lidarr](lidarr.md) | 8686 | Lidarr music management on FreeBSD | :material-check: |
-| [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD |  |
-| [:material-magnet: Prowlarr](prowlarr.md) | 9696 | Prowlarr indexer management on FreeBSD | :material-check: |
-| [:material-movie: Radarr](radarr.md) | 7878 | Radarr movie management on FreeBSD | :material-check: |
-| [:material-television: Sonarr](sonarr.md) | 8989 | Sonarr TV show management on FreeBSD | :material-check: |
-| [:material-television: Sonarr](sonarr-test.md) | 8989 | Sonarr TV show management on FreeBSD | :material-check: |
+| Image | Port | Description |
+|-------|------|-------------|
+| [:material-music: Lidarr](lidarr.md) | 8686 | Lidarr music management on FreeBSD. |
+| [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD. |
+| [:material-magnet: Prowlarr](prowlarr.md) | 9696 | Prowlarr indexer management on FreeBSD. |
+| [:material-movie: Radarr](radarr.md) | 7878 | Radarr movie management on FreeBSD. |
+| [:material-television: Sonarr](sonarr.md) | 8989 | Sonarr TV series management on FreeBSD. |
 
 ## Downloaders
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:material-download-network: SABnzbd](sabnzbd.md) | 8080 | SABnzbd Usenet downloader on FreeBSD |
-| [:simple-transmission: Transmission](transmission.md) | 9091 | Transmission BitTorrent client on FreeBSD |
+| [:material-download-network: SABnzbd](sabnzbd.md) | 8080 | SABnzbd Usenet downloader on FreeBSD. |
+| [:simple-transmission: Transmission](transmission.md) | 9091 | Transmission BitTorrent client on FreeBSD. |
+| [:simple-wireguard: Transmission with WireGuard](transmission-wireguard.md) | 9091 | Transmission BitTorrent client with built-in WireGuard VPN support. |
 
 ## Media Servers
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:simple-plex: Plex Media Server](plex.md) | 32400 | Plex Media Server on FreeBSD |
-| [:simple-plex: Tautulli](tautulli.md) | 8181 | Tautulli Plex monitoring on FreeBSD |
+| [:simple-jellyfin: Jellyfin](jellyfin.md) | 8096 | The Free Software Media System on FreeBSD. |
+| [:simple-plex: Plex Media Server](plex.md) | 32400 | Plex Media Server on FreeBSD. |
+| [:simple-plex: Tautulli](tautulli.md) | 8181 | Tautulli Plex monitoring on FreeBSD. |
 
 ## Databases
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:simple-postgresql: Immich PostgreSQL](immich-postgres.md) | 5432 | PostgreSQL 14 with pgvector + VectorChord for Immich |
-| [:material-database: PostgreSQL ${PG_VERSION}](postgres.md) | 5432 | PostgreSQL ${PG_VERSION} on FreeBSD |
-| [:simple-redis: Redis](redis.md) | 6379 | Redis key-value store for FreeBSD |
+| [:simple-postgresql: Immich PostgreSQL](immich-postgres.md) | 5432 | PostgreSQL 14 with pgvector/pgvecto.rs extensions for Immich. |
+| [:simple-postgresql: PostgreSQL](postgres.md) | 5432 | The World's Most Advanced Open Source Relational Database on FreeBSD. |
+| [:simple-redis: Redis](redis.md) | 6379 | Redis key-value store on FreeBSD. |
 
 ## Photos & Media
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:simple-googlephotos: Immich](immich.md) | None | Self-hosted photo and video management solution. |
-| [:material-brain: Immich Machine Learning](immich-ml.md) | 3003 | Immich ML service for FreeBSD |
-| [:material-server: Immich Server](immich-server.md) | 2283 | Immich photo management server for FreeBSD |
+| [:material-brain: Immich Machine Learning](immich-ml.md) | 3003 | Immich Machine Learning service (Python/ONNX) on FreeBSD. |
+| [:material-server: Immich Server](immich-server.md) | 2283 | Immich photo management server on FreeBSD. |
+| [:simple-googlephotos: Immich Stack](immich.md) | 2283 | Complete self-hosted photo and video management solution. |
 
 ## Utilities
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:material-food: Mealie](mealie.md) | 9000 | Mealie Recipe Manager on FreeBSD |
-| [:simple-n8n: n8n](n8n.md) | 5678 | n8n workflow automation on FreeBSD |
-| [:simple-nextcloud: Nextcloud](nextcloud.md) | 80 | Nextcloud self-hosted cloud on FreeBSD |
-| [:material-speedometer: OpenSpeedTest](openspeedtest.md) | 3000 | HTML5 Network Speed Test on FreeBSD |
-| [:material-view-dashboard: Organizr](organizr.md) | 80 | HTPC/Homelab Services Organizer on FreeBSD |
-| [:simple-ubiquiti: UniFi](unifi.md) | 8443 | UniFi Network Application on FreeBSD |
-| [:material-chart-line: Uptime Kuma](uptime-kuma.md) | 3001 | A fancy self-hosted monitoring tool on FreeBSD |
-| [:simple-bitwarden: Vaultwarden](vaultwarden.md) | 80 | Vaultwarden (Bitwarden compatible backend) on FreeBSD |
-
-## Uncategorized
-
-| Image | Port | Description |
-|-------|------|-------------|
-| [:material-view-dashboard: Homepage](homepage.md) | 3000 | Homepage - A modern dashboard for your homelab |
-| [:simple-jellyfin: Jellyfin](jellyfin.md) | 8096 | The Free Software Media System on FreeBSD |
-| [:material-pulse: SmokePing](smokeping.md) | 80 | SmokePing network latency monitor on FreeBSD |
-| [:simple-wireguard: Transmission WireGuard](transmission-wireguard.md) | 9091 | Transmission BitTorrent client with WireGuard VPN on FreeBSD |
+| [:material-view-dashboard: Homepage](homepage.md) | 3000 | A modern, highly customizable dashboard for your homelab. |
+| [:material-food: Mealie](mealie.md) | 9000 | Self-hosted recipe manager and meal planner on FreeBSD. |
+| [:simple-nextcloud: Nextcloud](nextcloud.md) | 8082 | Nextcloud self-hosted cloud on FreeBSD. |
+| [:material-speedometer: OpenSpeedTest](openspeedtest.md) | 3005 | Self-hosted HTML5 Network Speed Test on FreeBSD. |
+| [:material-view-dashboard: Organizr](organizr.md) | 8083 | HTPC/Homelab Services Organizer on FreeBSD. |
+| [:material-pulse: SmokePing](smokeping.md) | 8081 | SmokePing network latency monitor on FreeBSD. |
+| [:material-access-point-network: UniFi Network](unifi.md) | 8443 | UniFi Network Application on FreeBSD. |
+| [:material-chart-line: Uptime Kuma](uptime-kuma.md) | 3001 | A fancy self-hosted monitoring tool on FreeBSD. |
+| [:simple-bitwarden: Vaultwarden](vaultwarden.md) | 8080 | Vaultwarden (Bitwarden compatible backend) on FreeBSD. |
+| [:simple-n8n: n8n](n8n.md) | 5678 | Workflow automation tool on FreeBSD. |
 
 ## Image Tags
 

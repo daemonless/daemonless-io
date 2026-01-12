@@ -1,0 +1,69 @@
+/* Main Configuration Card Styling */
+.md-content .auto-input-table {
+  display: block !important;
+  background-color: #242933; 
+  border: none !important;
+  border-left: 4px solid var(--md-primary-fg-color) !important;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem; /* Reduced bottom margin to sit closer to reset button */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Card Title */
+.md-content .auto-input-table::before {
+  content: "Setup Your Configuration";
+  display: block;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--md-primary-fg-color);
+  margin-bottom: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Table Inputs */
+.auto-input-table input, .auto-input-table select {
+  width: 100%; padding: 0.4rem 0.5rem; border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px; background-color: #1a1b26; color: #cdd6f4;
+  font-family: var(--md-code-font-family); font-size: 0.8rem;
+}
+
+/* Settings Panel (Reset Button Container) */
+.placeholder-settings-panel {
+    display: block !important;
+    margin-bottom: 2rem;
+}
+
+/* Hide unwanted checkboxes */
+.placeholder-settings-panel label, 
+.placeholder-settings-panel i,
+.placeholder-settings-panel .button-bar button:first-child {
+    display: none !important;
+}
+
+/* Style the Reset Button */
+.placeholder-settings-panel .button-bar button:last-child {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #bac2de;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.placeholder-settings-panel .button-bar button:last-child:hover {
+  background: rgba(226, 69, 67, 0.1);
+  border-color: var(--md-primary-fg-color);
+  color: var(--md-primary-fg-color);
+}
+
+/* Hide Modal stuff */
+#global-settings-modal, .settings-toggle { display: none !important; }

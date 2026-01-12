@@ -1,115 +1,148 @@
 ---
-title: unifi - FreeBSD OCI Container
-description: UniFi Network Application on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "UniFi Network on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install UniFi Network on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  UNIFI_PORT:
+    default: "8443"
+    description: UniFi Network Host Port
 ---
 
-# unifi
+# :material-access-point-network: UniFi Network
 
-UniFi Network Application for managing Ubiquiti network devices.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/unifi/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/unifi?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/unifi/commits)
 
-| | |
-|---|---|
-| **Port** | 8443 |
-| **Registry** | `ghcr.io/daemonless/unifi` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/unifi](https://github.com/daemonless/unifi) |
+UniFi Network Application on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
+| `pkg` | **FreeBSD Port**. Installs from Quarterly ports. | Stability. Uses system libraries. |
+| `pkg-latest` | **FreeBSD Port**. Installs from Latest ports. | Bleeding edge system packages. |
 
-    ```bash
-    podman run -d --name unifi \
-      --network host \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      ghcr.io/daemonless/unifi:latest
-    ```
-    
-    Access at: https://localhost:8443
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+!!! warning "Memory Locking (Critical)"
+    This application is built on .NET and requires memory locking enabled in the jail.
+    You **must** use the `allow.mlock` annotation and have a [patched ocijail](../guides/ocijail-patch.md).
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
       unifi:
         image: ghcr.io/daemonless/unifi:latest
         container_name: unifi
-        network_mode: host
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/unifi:/config
+          - @CONTAINER_CONFIG_ROOT@/@UNIFI_CONFIG_PATH@:/config
+        ports:
+          - @UNIFI_PORT@:8443
+          - 8080:8080
+          - 8843:8843
+          - 8880:8880
+          - 6789:6789
+          - 3478:3478
+          - 10001:10001
+        annotations:
+          org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name unifi \
+      -p @UNIFI_PORT@:8443 \
+      -p 8080:8080 \
+      -p 8843:8843 \
+      -p 8880:8880 \
+      -p 6789:6789 \
+      -p 3478:3478 \
+      -p 10001:10001 \
+      --annotation 'org.freebsd.jail.allow.mlock=true' \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@UNIFI_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/unifi:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/unifi/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy unifi
+      containers.podman.podman_container:
+        name: unifi
+        image: ghcr.io/daemonless/unifi:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@UNIFI_PORT@:8443"
+          - "8080:8080"
+          - "8843:8843"
+          - "8880:8880"
+          - "6789:6789"
+          - "3478:3478"
+          - "10001:10001"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@UNIFI_CONFIG_PATH@:/config"
+        annotation:
+          org.freebsd.jail.allow.mlock: "true"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@UNIFI_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Ubiquiti Downloads](https://ui.com/download/releases/network-server) | Latest UniFi release |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
-| `SYSTEM_IP` | - | Host IP for device inform (enables bridge networking) |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
-|------|-------------|--|
-| `/config` | Configuration, database, and logs |
+|------|-------------|
+| `/config` | Configuration and database directory |
 
-## Ports
+### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
-| 8443 | TCP | Web UI (HTTPS) |
-| 8080 | TCP | Device inform URL |
-| 8843 | TCP | Guest portal HTTPS |
-| 8880 | TCP | Guest portal HTTP |
-| 6789 | TCP | Mobile throughput test |
-| 3478 | UDP | STUN |
-| 10001 | UDP | Device discovery |
+| `8443` | TCP | Web UI (HTTPS) |
+| `8080` | TCP | Device inform |
+| `8843` | TCP | Guest portal HTTPS |
+| `8880` | TCP | Guest portal HTTP |
+| `6789` | TCP | Mobile throughput test |
+| `3478` | TCP | STUN (UDP) |
+| `10001` | TCP | Device discovery (UDP) |
 
-## Networking
+!!! info "Implementation Details"
 
-### Host Networking (Recommended)
-Uses host network stack. L2 discovery works automatically.
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
-### Bridge Networking
-Requires `SYSTEM_IP` env var so devices know where to connect. L2 discovery won't work (requires manual `set-inform` or DNS).
-
-## Notes
-
-- **User:** `unifi` (MongoDB runs as root due to restrictions)
-- **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD)
-
-## Links
-
-- [Website](https://ui.com/)
-- [FreshPorts](https://www.freshports.org/net-mgmt/unifi9/)
+[Website](https://ui.com/){ .md-button .md-button--primary }
+[Source Code](https://ui.com/){ .md-button }
+[FreshPorts](https://www.freshports.org/net-mgmt/unifi8/){ .md-button }

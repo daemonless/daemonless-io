@@ -1,35 +1,34 @@
 ---
-title: traefik - FreeBSD OCI Container
-description: Traefik reverse proxy on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Traefik on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Traefik on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  TRAEFIK_PORT:
+    default: "80"
+    description: Traefik Host Port
 ---
 
-# traefik
+# :material-server-network: Traefik
 
-Modern HTTP reverse proxy and load balancer.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/traefik/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/traefik/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/traefik?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/traefik/commits)
 
-| | |
-|---|---|
-| **Port** | 80 |
-| **Registry** | `ghcr.io/daemonless/traefik` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/traefik](https://github.com/daemonless/traefik) |
+Modern HTTP reverse proxy and load balancer on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
+| `pkg` | **FreeBSD Port**. Installs from Quarterly ports. | Stability. Uses system libraries. |
+| `pkg-latest` | **FreeBSD Port**. Installs from Latest ports. | Bleeding edge system packages. |
 
-    ```bash
-    podman run -d --name traefik \
-      -p 80:80 -p 443:443 -p 8080:8080 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      --health-cmd /healthz \
-      ghcr.io/daemonless/traefik:latest
-    ```
-    
-    Access dashboard at: http://localhost:8080/dashboard/
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -37,73 +36,88 @@ Modern HTTP reverse proxy and load balancer.
         image: ghcr.io/daemonless/traefik:latest
         container_name: traefik
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/traefik:/config
+          - @CONTAINER_CONFIG_ROOT@/@TRAEFIK_CONFIG_PATH@:/config
         ports:
-          - 80:80
+          - @TRAEFIK_PORT@:80
           - 443:443
           - 8080:8080
-        healthcheck:
-          test: ["CMD", "/healthz"]
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name traefik \
+      -p @TRAEFIK_PORT@:80 \
+      -p 443:443 \
+      -p 8080:8080 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@TRAEFIK_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/traefik:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/traefik/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy traefik
+      containers.podman.podman_container:
+        name: traefik
+        image: ghcr.io/daemonless/traefik:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@TRAEFIK_PORT@:80"
+          - "443:443"
+          - "8080:8080"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@TRAEFIK_CONFIG_PATH@:/config"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@TRAEFIK_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/traefik/traefik/releases) | Latest upstream release |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (traefik.yml, dynamic/, letsencrypt/) |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 80 | HTTP |
-| 443 | HTTPS |
-| 8080 | Dashboard/API |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `80` | TCP | HTTP |
+| `443` | TCP | HTTPS |
+| `8080` | TCP | Dashboard/API |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Healthcheck:** `--health-cmd /healthz`
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-## Links
-
-- [Website](https://traefik.io/)
-- [GitHub](https://github.com/traefik/traefik)
+[Website](https://traefik.io/){ .md-button .md-button--primary }
+[Source Code](https://github.com/traefik/traefik){ .md-button }
+[FreshPorts](https://www.freshports.org/net/traefik/){ .md-button }

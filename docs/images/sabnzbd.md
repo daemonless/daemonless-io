@@ -1,35 +1,34 @@
 ---
-title: sabnzbd - FreeBSD OCI Container
-description: SABnzbd Usenet downloader on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "SABnzbd on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install SABnzbd on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  SABNZBD_PORT:
+    default: "8080"
+    description: SABnzbd Host Port
 ---
 
-# sabnzbd
+# :material-download-network: SABnzbd
 
-Binary newsreader for Usenet with NZB support.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/sabnzbd/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/sabnzbd/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/sabnzbd?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/sabnzbd/commits)
 
-| | |
-|---|---|
-| **Port** | 8080 |
-| **Registry** | `ghcr.io/daemonless/sabnzbd` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/sabnzbd](https://github.com/daemonless/sabnzbd) |
+SABnzbd Usenet downloader on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
+| `pkg` | **FreeBSD Port**. Installs from Quarterly ports. | Stability. Uses system libraries. |
+| `pkg-latest` | **FreeBSD Port**. Installs from Latest ports. | Bleeding edge system packages. |
 
-    ```bash
-    podman run -d --name sabnzbd \
-      -p 8080:8080 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      -v /path/to/downloads:/downloads \
-      ghcr.io/daemonless/sabnzbd:latest
-    ```
-    
-    Access at: http://localhost:8080
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -37,76 +36,84 @@ Binary newsreader for Usenet with NZB support.
         image: ghcr.io/daemonless/sabnzbd:latest
         container_name: sabnzbd
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
-          - HOST_WHITELIST=myserver,myserver.local
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/sabnzbd:/config
-          - /data/downloads:/downloads
+          - @CONTAINER_CONFIG_ROOT@/@SABNZBD_CONFIG_PATH@:/config
+          - @DOWNLOADS_PATH@:/downloads
         ports:
-          - 8080:8080
+          - @SABNZBD_PORT@:8080
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name sabnzbd \
+      -p @SABNZBD_PORT@:8080 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@SABNZBD_CONFIG_PATH@:/config \ 
+      -v @DOWNLOADS_PATH@:/downloads \ 
+      ghcr.io/daemonless/sabnzbd:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/sabnzbd/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy sabnzbd
+      containers.podman.podman_container:
+        name: sabnzbd
+        image: ghcr.io/daemonless/sabnzbd:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@SABNZBD_PORT@:8080"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@SABNZBD_CONFIG_PATH@:/config"
+          - "@DOWNLOADS_PATH@:/downloads"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@SABNZBD_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/sabnzbd/sabnzbd/releases) | Latest upstream release |
-| `:pkg` | `news/sabnzbd` | FreeBSD quarterly packages |
-| `:pkg-latest` | `news/sabnzbd` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
-| `HOST_WHITELIST` | | Hostnames for initial config |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
 | `/downloads` | Download directory |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 8080 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `8080` | TCP | Web UI |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
-- **Tools:** Includes par2, unrar, and 7-zip
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-### Hostname Verification
-If you see "Access denied - Hostname verification failed", set `HOST_WHITELIST` environment variable or edit config.
-
-## Links
-
-- [Website](https://sabnzbd.org/)
-- [FreshPorts](https://www.freshports.org/news/sabnzbd/)
+[Website](https://sabnzbd.org/){ .md-button .md-button--primary }
+[Source Code](https://github.com/sabnzbd/sabnzbd){ .md-button }
+[FreshPorts](https://www.freshports.org/news/sabnzbd/){ .md-button }

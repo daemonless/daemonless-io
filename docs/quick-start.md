@@ -1,12 +1,34 @@
+---
+title: Quick Start
+placeholders:
+  INTERFACE:
+    default: "em0"
+    description: "Network Interface"
+  PUID:
+    default: "1000"
+    description: "User ID"
+  PGID:
+    default: "1000"
+    description: "Group ID"
+  CONTAINER_CONFIG_ROOT:
+    default: "/path/to/containers"
+    description: "Config Path"
+  RADARR_PORT:
+    default: "7878"
+    description: "Radarr Port"
+---
+
 # Quick Start
 
 Get daemonless containers running on FreeBSD in 5 minutes.
 
+!!! info "Customize Your Guide"
+    Click the **Global Settings** :material-cog: icon in the top navigation bar to automatically update all commands and configuration snippets in this guide.
+
 ## Prerequisites
 
 !!! failure "Root Privileges Required"
-    **Podman on FreeBSD currently requires root.** Rootless mode is not yet supported.
-    All commands in this guide must be run as root (or via `sudo`/`doas`).
+    **Podman on FreeBSD currently requires root.** Rootless mode is not yet supported. All commands in this guide must be run as root (or via `sudo`/`doas`).
 
 Install Podman and container networking:
 
@@ -14,33 +36,31 @@ Install Podman and container networking:
 pkg install podman-suite
 ```
 
-!!! warning
-    Currently, a temporary patch for ocijail is required for .NET applications (Radarr/Sonarr). This will be removed in a future update once OCI v1.3.0 support lands upstream.
+!!! warning "ocijail Patch Required"
+    Currently, a temporary patch for `ocijail` is required for .NET applications (Radarr/Sonarr). 
     See [ocijail patch](guides/ocijail-patch.md).
 
 ## Host Configuration
 
-### 1. Enable pf filtering
+### 1. Enable Networking
+Configure the kernel to allow packet filtering for local traffic and ensure `fdescfs` is mounted.
 
 ```bash
+# Enable pf filtering for jails
 sysctl net.pf.filter_local=1
 echo 'net.pf.filter_local=1' >> /etc/sysctl.conf
-```
 
-### 2. Mount fdescfs
-
-```bash
+# Mount fdescfs
 mount -t fdescfs fdesc /dev/fd
 echo 'fdesc /dev/fd fdescfs rw 0 0' >> /etc/fstab
 ```
 
-### 3. Configure pf.conf
-
-Add to `/etc/pf.conf`. Ensure you define `$ext_if` (your main network interface, e.g., `em0`, `vtnet0`) at the top of the file if it's not already there:
+### 2. Configure Firewall (`pf.conf`)
+Add the following to `/etc/pf.conf`. Replace `@INTERFACE@` if your external interface is different.
 
 ```
-# Replace 'SET_INTERFACE' with your actual interface (e.g., em0, re0)
-ext_if="SET_INTERFACE"
+# Primary network interface
+ext_if="@INTERFACE@"
 
 # Podman container networking
 rdr-anchor "cni-rdr/*"
@@ -50,13 +70,12 @@ nat on $ext_if inet from <cni-nat> to any -> ($ext_if)
 nat on $ext_if inet from 10.88.0.0/16 to any -> ($ext_if)
 ```
 
-Reload pf:
-
+Reload the configuration:
 ```bash
 pfctl -f /etc/pf.conf
 ```
 
-### 4. Enable Podman service
+### 3. Start Podman
 
 ```bash
 sysrc podman_enable=YES
@@ -65,70 +84,59 @@ service podman start
 
 ## Run Your First Container
 
+We'll start with **Tautulli**, a lightweight Python app that doesn't require special permissions.
+
 ```bash
-# Tautulli - no special annotations needed
 podman run -d --name tautulli \
   -p 8181:8181 \
-  -e PUID=SET_PUID -e PGID=SET_PGID \
-  -v SET_CONFIG_PATH/tautulli:/config \
+  -e PUID=@PUID@ -e PGID=@PGID@ \
+  -v @CONTAINER_CONFIG_ROOT@/tautulli:/config \
   ghcr.io/daemonless/tautulli:latest
 ```
 
-Check it's running:
-
+Check the status:
 ```bash
 podman ps
 podman logs -f tautulli
 ```
+Access the UI at: `http://localhost:8181`
 
-Access at: `http://localhost:8181`
-
-## .NET Apps (Radarr, Sonarr, etc.)
-
-These require the `allow.mlock` annotation and patched ocijail:
+## .NET Applications
+Applications like **Radarr** and **Sonarr** require the `allow.mlock` jail annotation to function correctly on FreeBSD.
 
 ```bash
 podman run -d --name radarr \
-  -p 7878:7878 \
+  -p @RADARR_PORT@:7878 \
   --annotation 'org.freebsd.jail.allow.mlock=true' \
-  -e PUID=SET_PUID -e PGID=SET_PGID \
-  -v SET_CONFIG_PATH/radarr:/config \
+  -e PUID=@PUID@ -e PGID=@PGID@ \
+  -v @CONTAINER_CONFIG_ROOT@/radarr:/config \
   ghcr.io/daemonless/radarr:latest
 ```
 
-## Optional: ZFS Storage
+## Advanced Setup (Optional)
 
-If you're using ZFS, configure Podman to use it for proper copy-on-write layering and snapshot support:
+=== "ZFS Storage"
+    If you're using ZFS, configure Podman to use it for proper copy-on-write layering and snapshot support:
+    ```bash
+    zfs create -o mountpoint=/var/db/containers/storage <pool>/podman
+    ```
+    See [ZFS Storage](guides/zfs.md) for `storage.conf` tuning.
 
-```bash
-zfs create -o mountpoint=/var/db/containers/storage <pool>/podman
-```
+=== "Container DNS"
+    To use container names as hostnames (e.g. `postgres`), the `cni-dnsname` plugin is required.
+    ```bash
+    # Clone the ports overlay
+    git clone https://github.com/daemonless/freebsd-ports.git /usr/local/daemonless-ports
+    
+    # Build and install
+    cd /usr/local/daemonless-ports/net/cni-dnsname
+    make install clean
+    ```
+    See [Networking Guide](guides/networking.md) for details.
 
-See [ZFS Storage](guides/zfs.md) for the required `storage.conf` configuration.
+---
 
-## Optional: Container DNS Resolution
-
-To use container names as hostnames (e.g., for `postgres` to be reachable by name), the `cni-dnsname` plugin is required. This is **not required** for basic port-forwarded setups but is essential for multi-container apps like **Immich** and **Mealie**.
-
-```bash
-# Clone the ports overlay
-git clone https://github.com/daemonless/freebsd-ports.git /usr/local/daemonless-ports
-
-# Build and install
-cd /usr/local/daemonless-ports/net/cni-dnsname
-make install clean
-```
-
-Verify it's installed:
-
-```bash
-ls /usr/local/libexec/cni/dnsname
-```
-
-See [Networking Guide](guides/networking.md) for more details.
-
-## Next Steps
-
-- [Available Images](images/index.md) — Full image catalog
+### Next Steps
+- [Available Images](images/index.md) — Full image fleet
 - [Permissions](guides/permissions.md) — Understanding PUID/PGID
 - [Networking](guides/networking.md) — Port forwarding vs host network

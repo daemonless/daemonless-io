@@ -35,6 +35,10 @@ extra:
 
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/ux-overrides.css
+
+extra_javascript:
+  - javascripts/ux-settings-v2.js
 
 
 markdown_extensions:

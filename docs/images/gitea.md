@@ -1,34 +1,32 @@
 ---
-title: gitea - FreeBSD OCI Container
-description: Gitea self-hosted Git service on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Gitea on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Gitea on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  GITEA_PORT:
+    default: "3000"
+    description: Gitea Host Port
 ---
 
-# gitea
+# :simple-gitea: Gitea
 
-Self-hosted Git service.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/gitea/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/gitea/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/gitea?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/gitea/commits)
 
-| | |
-|---|---|
-| **Port** | 3000 |
-| **Registry** | `ghcr.io/daemonless/gitea` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/gitea](https://github.com/daemonless/gitea) |
+Gitea self-hosted Git service on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Installs from latest packages. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name gitea \
-      -p 3000:3000 -p 2222:22 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /data/gitea:/gitea \
-      ghcr.io/daemonless/gitea:latest
-    ```
-    
-    Access at: http://localhost:3000
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -36,112 +34,84 @@ Self-hosted Git service.
         image: ghcr.io/daemonless/gitea:latest
         container_name: gitea
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/gitea:/gitea
+          - @CONTAINER_CONFIG_ROOT@/@GITEA_CONFIG_PATH@:/config
         ports:
-          - 3000:3000
-          - 2222:22
+          - @GITEA_PORT@:3000
+          - 2222:2222
         restart: unless-stopped
     ```
 
-=== "Ansible"
+=== ":material-console: Podman CLI"
+
+    ```bash
+    podman run -d --name gitea \
+      -p @GITEA_PORT@:3000 \
+      -p 2222:2222 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@GITEA_CONFIG_PATH@:/config \ 
+      ghcr.io/daemonless/gitea:latest
+    ```
+
+=== ":simple-ansible: Ansible"
 
     ```yaml
-    - name: Deploy Gitea
+    - name: Deploy gitea
       containers.podman.podman_container:
         name: gitea
         image: ghcr.io/daemonless/gitea:latest
         state: started
-        restart_policy: unless-stopped
+        restart_policy: always
         env:
-          PUID: "1000"
-          PGID: "1000"
-          TZ: "America/New_York"
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
         ports:
-          - "3000:3000"
-          - "2222:22"
+          - "@GITEA_PORT@:3000"
+          - "2222:2222"
         volumes:
-          - /data/gitea:/gitea
+          - "@CONTAINER_CONFIG_ROOT@/@GITEA_CONFIG_PATH@:/config"
     ```
 
-## Environment Variables
+Access the Web UI at: `http://localhost:@GITEA_PORT@`
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+### Interactive Configuration
 
-## Logging
+<div class="placeholder-settings-panel"></div>
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/gitea/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+## Parameters
 
-## Advanced: VNET Networking
-
-For full isolation, you can use VNET. This gives the jail its own network stack, but requires manual IP configuration or a custom bridge setup.
-
-```bash
-podman run -d --name gitea \
-  --network none \
-  --annotation 'org.freebsd.jail.vnet=new' \
-  -v /containers/gitea:/gitea \
-  ghcr.io/daemonless/gitea:latest
-```
-
-**Note**: With `network=none` and `vnet=new`, the container will not have network connectivity until you assign an interface (epair) and IP address to it manually via `ifconfig` from the host.
-
-## Tags
-
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | `devel/gitea` | FreeBSD packages (latest branch) |
-| `:pkg` | `devel/gitea` | FreeBSD quarterly packages |
-
-## Environment Variables
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
-| `/gitea` | Configuration, repositories, and data |
+| `/config` | Configuration, repositories, and data directory |
 
-### Directory Structure
-- `/gitea/custom/conf/app.ini` - Configuration
-- `/gitea/repos` - Git repositories
-- `/gitea/data` - Data (avatars, etc.)
-- `/gitea/log` - Logs
+### Ports
 
-## Ports
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `3000` | TCP | Web UI |
+| `2222` | TCP |  |
 
-| Port | Description |
-|------|-------------|
-| 3000 | Web UI |
-| 22 | SSH |
+!!! info "Implementation Details"
 
-## Notes
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
-
-### Specific Requirements
-- **VNET Optional:** Can use `--annotation 'org.freebsd.jail.vnet=new'` for isolation, but standard bridge networking works out of the box.
-
-## Links
-
-- [Website](https://about.gitea.com/)
-- [FreshPorts](https://www.freshports.org/devel/gitea/)
+[Website](https://about.gitea.com/){ .md-button .md-button--primary }
+[Source Code](https://github.com/go-gitea/gitea){ .md-button }
+[FreshPorts](https://www.freshports.org/www/gitea/){ .md-button }

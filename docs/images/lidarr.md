@@ -1,41 +1,37 @@
 ---
-title: lidarr - FreeBSD OCI Container
-description: Lidarr music management on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Lidarr on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Lidarr on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  LIDARR_PORT:
+    default: "8686"
+    description: Lidarr Host Port
 ---
 
-# lidarr
+# :material-music: Lidarr
 
-Music collection manager for Usenet and BitTorrent users.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/lidarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/lidarr/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/lidarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/lidarr/commits)
 
-| | |
-|---|---|
-| **Port** | 8686 |
-| **Registry** | `ghcr.io/daemonless/lidarr` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/lidarr](https://github.com/daemonless/lidarr) |
+Lidarr music management on FreeBSD.
 
-!!! warning "Requires patched ocijail"
-    This application requires the `allow.mlock` annotation.
-    See [ocijail patch](../guides/ocijail-patch.md).
+## Version Tags
 
-## Quick Start
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **Upstream Binary**. Downloads the official release. | Most users. Matches Linux Docker behavior. |
+| `pkg` | **FreeBSD Port**. Installs from Quarterly ports. | Stability. Uses system libraries. |
+| `pkg-latest` | **FreeBSD Port**. Installs from Latest ports. | Bleeding edge system packages. |
 
-=== "Podman CLI"
+## Prerequisites
 
-    ```bash
-    podman run -d --name lidarr \
-      -p 8686:8686 \
-      --annotation 'org.freebsd.jail.allow.mlock=true' \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      -v /path/to/music:/music \
-      -v /path/to/downloads:/downloads \
-      ghcr.io/daemonless/lidarr:latest
-    ```
-    
-    Access at: http://localhost:8686
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+!!! warning "Memory Locking (Critical)"
+    This application is built on .NET and requires memory locking enabled in the jail.
+    You **must** use the `allow.mlock` annotation and have a [patched ocijail](../guides/ocijail-patch.md).
 
-=== "Compose"
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -43,77 +39,94 @@ Music collection manager for Usenet and BitTorrent users.
         image: ghcr.io/daemonless/lidarr:latest
         container_name: lidarr
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/lidarr:/config
-          - /data/media/music:/music
-          - /data/downloads:/downloads
+          - @CONTAINER_CONFIG_ROOT@/@LIDARR_CONFIG_PATH@:/config
+          - @MUSIC_PATH@:/music # optional
+          - @DOWNLOADS_PATH@:/downloads # optional
         ports:
-          - 8686:8686
+          - @LIDARR_PORT@:8686
         annotations:
           org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name lidarr \
+      -p @LIDARR_PORT@:8686 \
+      --annotation 'org.freebsd.jail.allow.mlock=true' \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@LIDARR_CONFIG_PATH@:/config \ 
+      -v @MUSIC_PATH@:/music \  # optional
+      -v @DOWNLOADS_PATH@:/downloads \  # optional
+      ghcr.io/daemonless/lidarr:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/lidarr/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy lidarr
+      containers.podman.podman_container:
+        name: lidarr
+        image: ghcr.io/daemonless/lidarr:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@LIDARR_PORT@:8686"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@LIDARR_CONFIG_PATH@:/config"
+          - "@MUSIC_PATH@:/music" # optional
+          - "@DOWNLOADS_PATH@:/downloads" # optional
+        annotation:
+          org.freebsd.jail.allow.mlock: "true"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@LIDARR_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://lidarr.servarr.com/) | Latest upstream release |
-| `:pkg` | `net-p2p/lidarr` | FreeBSD quarterly packages |
-| `:pkg-latest` | `net-p2p/lidarr` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
-| `/music` | Music library |
-| `/downloads` | Download directory |
+| `/music` | Music library (Optional) |
+| `/downloads` | Download directory (Optional) |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 8686 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `8686` | TCP | Web UI |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
-### Specific Requirements
-- **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` (Requires [patched ocijail](https://github.com/daemonless/daemonless#ocijail-patch))
-
-## Links
-
-- [Website](https://lidarr.audio/)
-- [FreshPorts](https://www.freshports.org/net-p2p/lidarr/)
+[Website](https://lidarr.audio/){ .md-button .md-button--primary }
+[Source Code](https://github.com/Lidarr/Lidarr){ .md-button }
+[FreshPorts](https://www.freshports.org/net-p2p/lidarr/){ .md-button }

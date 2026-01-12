@@ -1,38 +1,32 @@
 ---
-title: transmission - FreeBSD OCI Container
-description: Transmission BitTorrent client on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Transmission on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Transmission on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  TRANSMISSION_PORT:
+    default: "9091"
+    description: Transmission Host Port
 ---
 
-# transmission
+# :simple-transmission: Transmission
 
-Lightweight BitTorrent client with web interface.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/transmission?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/transmission/commits)
 
-| | |
-|---|---|
-| **Port** | 9091 |
-| **Registry** | `ghcr.io/daemonless/transmission` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/transmission](https://github.com/daemonless/transmission) |
+Transmission BitTorrent client on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Installs from latest packages. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name transmission \
-      -p 9091:9091 \
-      -p 51413:51413 \
-      -p 51413:51413/udp \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      -v /path/to/downloads:/downloads \
-      -v /path/to/watch:/watch \
-      ghcr.io/daemonless/transmission:latest
-    ```
-    
-    Access at: http://localhost:9091
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
@@ -40,55 +34,84 @@ Lightweight BitTorrent client with web interface.
         image: ghcr.io/daemonless/transmission:latest
         container_name: transmission
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
+          - USER=
+          - PASS=<PASS>
         volumes:
-          - /data/config/transmission:/config
-          - /data/downloads:/downloads
-          - /data/watch:/watch
+          - @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_CONFIG_PATH@:/config
+          - @DOWNLOADS_PATH@:/downloads
+          - @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WATCH_PATH@:/watch
         ports:
-          - 9091:9091
+          - @TRANSMISSION_PORT@:9091
           - 51413:51413
-          - 51413:51413/udp
+          - 51413:51413
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name transmission \
+      -p @TRANSMISSION_PORT@:9091 \
+      -p 51413:51413 \
+      -p 51413:51413 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -e USER= \
+      -e PASS=<PASS> \
+      -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_CONFIG_PATH@:/config \ 
+      -v @DOWNLOADS_PATH@:/downloads \ 
+      -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WATCH_PATH@:/watch \ 
+      ghcr.io/daemonless/transmission:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/transmission/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy transmission
+      containers.podman.podman_container:
+        name: transmission
+        image: ghcr.io/daemonless/transmission:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+          USER: ""
+          PASS: "<PASS>"
+        ports:
+          - "@TRANSMISSION_PORT@:9091"
+          - "51413:51413"
+          - "51413:51413"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@TRANSMISSION_CONFIG_PATH@:/config"
+          - "@DOWNLOADS_PATH@:/downloads"
+          - "@CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WATCH_PATH@:/watch"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://transmissionbt.com/) | Latest upstream release |
-| `:pkg` | `net-p2p/transmission-daemon` | FreeBSD quarterly packages |
-| `:pkg-latest` | `net-p2p/transmission-daemon` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
+| `USER` | `` | Optional: Web UI Username |
+| `PASS` | `<PASS>` | Optional: Web UI Password |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
@@ -96,19 +119,19 @@ This image uses `s6-log` for internal log rotation.
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for .torrent files |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 9091 | Web UI |
-| 51413 | Peer listening port (TCP/UDP) |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `9091` | TCP | Web UI |
+| `51413` | TCP | Torrent peer port |
+| `51413` | TCP | Torrent peer port |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/base-image` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-## Links
-
-- [Website](https://transmissionbt.com/)
-- [FreshPorts](https://www.freshports.org/net-p2p/transmission-daemon/)
+[Website](https://transmissionbt.com/){ .md-button .md-button--primary }
+[Source Code](https://github.com/transmission/transmission){ .md-button }
+[FreshPorts](https://www.freshports.org/net-p2p/transmission-daemon/){ .md-button }

@@ -1,120 +1,121 @@
 ---
-title: jellyfin - FreeBSD OCI Container
-description: The Free Software Media System on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "Jellyfin on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Jellyfin on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  JELLYFIN_PORT:
+    default: "8096"
+    description: Jellyfin Host Port
 ---
 
-# jellyfin
+# :simple-jellyfin: Jellyfin
 
-The Free Software Media System
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/jellyfin/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/jellyfin/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/jellyfin?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/jellyfin/commits)
 
-| | |
-|---|---|
-| **Port** | 8096 |
-| **Registry** | `ghcr.io/daemonless/jellyfin` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/jellyfin](https://github.com/daemonless/jellyfin) |
+The Free Software Media System on FreeBSD.
 
-!!! warning "Requires patched ocijail"
-    This application requires the `allow.mlock` annotation.
-    See [ocijail patch](../guides/ocijail-patch.md).
+## Version Tags
 
-## Quick Start
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Installs from latest packages. | Most users. Matches Linux Docker behavior. |
 
-=== "Podman CLI"
+## Prerequisites
 
-    ```bash
-    podman run -d --name jellyfin \
-      -p 8096:8096 \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      -v /path/to/cache:/cache \
-      -v /path/to/media:/media \
-      --annotation 'org.freebsd.jail.allow.mlock=true' \
-      ghcr.io/daemonless/jellyfin:latest
-    ```
-    
-    Access at: http://localhost:8096
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
 
-=== "Compose"
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
       jellyfin:
         image: ghcr.io/daemonless/jellyfin:latest
         container_name: jellyfin
-        annotations:
-          org.freebsd.jail.allow.mlock: "true"
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/jellyfin:/config
-          - /data/cache/jellyfin:/cache
-          - /data/media:/media
+          - @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config
+          - @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache # optional
+          - @MEDIA_PATH@:/media
         ports:
-          - 8096:8096
+          - @JELLYFIN_PORT@:8096
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name jellyfin \
+      -p @JELLYFIN_PORT@:8096 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config \ 
+      -v @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache \  # optional
+      -v @MEDIA_PATH@:/media \ 
+      ghcr.io/daemonless/jellyfin:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/jellyfin/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy jellyfin
+      containers.podman.podman_container:
+        name: jellyfin
+        image: ghcr.io/daemonless/jellyfin:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@JELLYFIN_PORT@:8096"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config"
+          - "@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache" # optional
+          - "@MEDIA_PATH@:/media"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/jellyfin/jellyfin) | Latest upstream release |
-| `:pkg` | `jellyfin` | FreeBSD quarterly packages |
-| `:pkg-latest` | `jellyfin` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
-| `/cache` | Cache directory |
-| `/media` | Media directory |
+| `/cache` | Cache directory (Optional) |
+| `/media` | Media library |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 8096 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `8096` | TCP | Web UI |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Healthcheck:** `--health-cmd /healthz`
-- **Base:** Built on `ghcr.io/daemonless/arr-base` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-### Specific Requirements
-- **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` (Requires [patched ocijail](https://github.com/daemonless/daemonless#ocijail-patch))
-
-## Links
-
-- [Website](https://jellyfin.org/)
-- [FreshPorts](https://www.freshports.org/multimedia/jellyfin/)
+[Website](https://jellyfin.org/){ .md-button .md-button--primary }
+[Source Code](https://github.com/jellyfin/jellyfin){ .md-button }
+[FreshPorts](https://www.freshports.org/multimedia/jellyfin/){ .md-button }

@@ -1,102 +1,117 @@
 ---
-title: smokeping - FreeBSD OCI Container
-description: SmokePing network latency monitor on FreeBSD  Run this application natively on FreeBSD using Podman and the Daemonless framework. Secure, lightweight, and automated.
+title: "SmokePing on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install SmokePing on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+placeholders:
+  SMOKEPING_PORT:
+    default: "8081"
+    description: SmokePing Host Port
 ---
 
-# smokeping
+# :material-pulse: SmokePing
 
-Deluxe latency measurement tool.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/smokeping/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/smokeping/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/smokeping?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/smokeping/commits)
 
-| | |
-|---|---|
-| **Port** | 80 |
-| **Registry** | `ghcr.io/daemonless/smokeping` |
-| **Tags** | `:latest` |
-| **Source** | [github.com/daemonless/smokeping](https://github.com/daemonless/smokeping) |
+SmokePing network latency monitor on FreeBSD.
 
-## Quick Start
+## Version Tags
 
-=== "Podman CLI"
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Installs from latest packages. | Most users. Matches Linux Docker behavior. |
 
-    ```bash
-    podman run -d --name smokeping \
-      --network=host \
-      -e PUID=1000 -e PGID=1000 \
-      -v /path/to/config:/config \
-      ghcr.io/daemonless/smokeping:latest
-    ```
-    
-    Access at: http://localhost:80/smokeping/smokeping.cgi
+## Prerequisites
 
-=== "Compose"
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+
+## Deployment
+
+=== ":material-docker: Podman Compose"
 
     ```yaml
     services:
       smokeping:
         image: ghcr.io/daemonless/smokeping:latest
         container_name: smokeping
-        network_mode: host
         environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=America/New_York
+          - PUID=@PUID@
+          - PGID=@PGID@
+          - TZ=@TZ@
         volumes:
-          - /data/config/smokeping:/config
+          - @CONTAINER_CONFIG_ROOT@/@SMOKEPING_CONFIG_PATH@:/config
+          - @DATA_PATH@:/data
+        ports:
+          - @SMOKEPING_PORT@:8081
         restart: unless-stopped
     ```
 
-## Environment Variables
+=== ":material-console: Podman CLI"
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PUID` | User ID for the application process | `1000` |
-| `PGID` | Group ID for the application process | `1000` |
-| `TZ` | Timezone for the container | `UTC` |
-| `S6_LOG_ENABLE` | Enable/Disable file logging | `1` |
-| `S6_LOG_MAX_SIZE` | Max size per log file (bytes) | `1048576` |
-| `S6_LOG_MAX_FILES` | Number of rotated log files to keep | `10` |
+    ```bash
+    podman run -d --name smokeping \
+      -p @SMOKEPING_PORT@:8081 \
+      -e PUID=@PUID@ \
+      -e PGID=@PGID@ \
+      -e TZ=@TZ@ \
+      -v @CONTAINER_CONFIG_ROOT@/@SMOKEPING_CONFIG_PATH@:/config \ 
+      -v @DATA_PATH@:/data \ 
+      ghcr.io/daemonless/smokeping:latest
+    ```
 
-## Logging
+=== ":simple-ansible: Ansible"
 
-This image uses `s6-log` for internal log rotation.
-- **System Logs**: Captured from console and stored at `/config/logs/daemonless/smokeping/`.
-- **Application Logs**: Managed by the app and typically found in `/config/logs/`.
-- **Podman Logs**: Output is mirrored to the console, so `podman logs` still works.
+    ```yaml
+    - name: Deploy smokeping
+      containers.podman.podman_container:
+        name: smokeping
+        image: ghcr.io/daemonless/smokeping:latest
+        state: started
+        restart_policy: always
+        env:
+          PUID: "@PUID@"
+          PGID: "@PGID@"
+          TZ: "@TZ@"
+        ports:
+          - "@SMOKEPING_PORT@:8081"
+        volumes:
+          - "@CONTAINER_CONFIG_ROOT@/@SMOKEPING_CONFIG_PATH@:/config"
+          - "@DATA_PATH@:/data"
+    ```
 
-## Tags
+Access the Web UI at: `http://localhost:@SMOKEPING_PORT@`
 
-| Tag | Source | Description |
-|-----|--------|-------------|
-| `:latest` | [Upstream Releases](https://github.com/oetiker/SmokePing) | Built from source |
-| `:pkg` | `net-mgmt/smokeping` | FreeBSD quarterly packages |
-| `:pkg-latest` | `net-mgmt/smokeping` | FreeBSD latest packages |
+### Interactive Configuration
 
-## Environment Variables
+<div class="placeholder-settings-panel"></div>
+
+## Parameters
+
+### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PUID` | 1000 | User ID for app |
-| `PGID` | 1000 | Group ID for app |
-| `TZ` | UTC | Timezone |
+| `PUID` | `1000` | User ID for the application process |
+| `PGID` | `1000` | Group ID for the application process |
+| `TZ` | `UTC` | Timezone for the container |
 
-## Volumes
+### Volumes
 
 | Path | Description |
 |------|-------------|
-| `/config` | Configuration directory |
+| `/config` | Configuration directory (Probes, Targets, etc.) |
+| `/data` | Data directory (RRD database files) |
 
-## Ports
+### Ports
 
-| Port | Description |
-|------|-------------|
-| 80 | Web UI |
+| Port | Protocol | Description |
+|------|----------|-------------|
+| `8081` | TCP |  |
 
-## Notes
+!!! info "Implementation Details"
 
-- **User:** `bsd` (UID/GID set via PUID/PGID, default 1000)
-- **Base:** Built on `ghcr.io/daemonless/nginx-base-image` (FreeBSD)
+    - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
+    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
 
-## Links
-
-- [Website](https://oss.oetiker.ch/smokeping/)
-- [FreshPorts](https://www.freshports.org/net-mgmt/smokeping/)
+[Website](https://oss.oetiker.ch/smokeping/){ .md-button .md-button--primary }
+[Source Code](https://github.com/oetiker/smokeping){ .md-button }
+[FreshPorts](https://www.freshports.org/net-mgmt/smokeping/){ .md-button }
