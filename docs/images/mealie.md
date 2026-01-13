@@ -9,7 +9,7 @@ placeholders:
 
 # :material-food: Mealie
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/mealie/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/mealie/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/mealie/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/mealie/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/mealie?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/mealie/commits)
 
 Self-hosted recipe manager and meal planner on FreeBSD.

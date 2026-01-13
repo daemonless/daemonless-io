@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-plex: Plex Media Server
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/plex/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/plex/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/plex/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/plex/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/plex?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/plex/commits)
 
 Plex Media Server on FreeBSD.

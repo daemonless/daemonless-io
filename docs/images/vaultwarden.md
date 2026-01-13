@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-bitwarden: Vaultwarden
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/vaultwarden/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/vaultwarden/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/vaultwarden/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/vaultwarden/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/vaultwarden?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/vaultwarden/commits)
 
 Vaultwarden (Bitwarden compatible backend) on FreeBSD.

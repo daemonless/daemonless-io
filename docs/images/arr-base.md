@@ -6,7 +6,7 @@ placeholders:
 
 # :material-layers: Arr Base
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/arr-base/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/arr-base/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/arr-base/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/arr-base/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/arr-base?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/arr-base/commits)
 
 Shared base image for *Arr applications (Radarr, Sonarr, Lidarr, Prowlarr) containing common dependencies.

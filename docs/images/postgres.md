@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-postgresql: PostgreSQL
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/postgres/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/postgres/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/postgres/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/postgres/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/postgres?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/postgres/commits)
 
 The World's Most Advanced Open Source Relational Database on FreeBSD.

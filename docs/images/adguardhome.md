@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-adguard: AdGuard Home
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/adguardhome/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/adguardhome/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/adguardhome/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/adguardhome/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/adguardhome?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/adguardhome/commits)
 
 Network-wide ads & trackers blocking DNS server on FreeBSD.

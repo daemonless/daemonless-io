@@ -9,7 +9,7 @@ placeholders:
 
 # :material-chart-line: Uptime Kuma
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/uptime-kuma/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/uptime-kuma/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/uptime-kuma/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/uptime-kuma/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/uptime-kuma?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/uptime-kuma/commits)
 
 A fancy self-hosted monitoring tool on FreeBSD.

@@ -9,7 +9,7 @@ placeholders:
 
 # :material-view-dashboard: Organizr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/organizr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/organizr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/organizr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/organizr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/organizr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/organizr/commits)
 
 HTPC/Homelab Services Organizer on FreeBSD.

@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-jellyfin: Jellyfin
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/jellyfin/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/jellyfin/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/jellyfin/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/jellyfin/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/jellyfin?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/jellyfin/commits)
 
 The Free Software Media System on FreeBSD.

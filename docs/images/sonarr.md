@@ -9,7 +9,7 @@ placeholders:
 
 # :material-television: Sonarr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/sonarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/sonarr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/sonarr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/sonarr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/sonarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/sonarr/commits)
 
 Sonarr TV series management on FreeBSD.

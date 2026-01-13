@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-wireguard: Transmission with WireGuard
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission-wireguard/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission-wireguard/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission-wireguard/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission-wireguard/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/transmission-wireguard?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/transmission-wireguard/commits)
 
 Transmission BitTorrent client with built-in WireGuard VPN support.

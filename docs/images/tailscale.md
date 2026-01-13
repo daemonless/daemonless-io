@@ -6,7 +6,7 @@ placeholders:
 
 # :simple-tailscale: Tailscale
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/tailscale/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/tailscale/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/tailscale/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/tailscale/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/tailscale?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/tailscale/commits)
 
 Tailscale mesh VPN on FreeBSD.

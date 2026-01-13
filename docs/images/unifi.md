@@ -9,7 +9,7 @@ placeholders:
 
 # :material-access-point-network: UniFi Network
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/unifi/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/unifi/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/unifi?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/unifi/commits)
 
 UniFi Network Application on FreeBSD.

@@ -9,7 +9,7 @@ placeholders:
 
 # :material-movie: Radarr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/radarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/radarr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/radarr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/radarr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/radarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/radarr/commits)
 
 Radarr movie management on FreeBSD.

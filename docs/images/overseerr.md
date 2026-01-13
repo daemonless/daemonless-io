@@ -9,7 +9,7 @@ placeholders:
 
 # :material-eye: Overseerr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/overseerr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/overseerr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/overseerr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/overseerr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/overseerr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/overseerr/commits)
 
 Overseerr media request management on FreeBSD.

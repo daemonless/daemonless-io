@@ -9,7 +9,7 @@ placeholders:
 
 # :material-download-network: SABnzbd
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/sabnzbd/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/sabnzbd/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/sabnzbd/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/sabnzbd/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/sabnzbd?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/sabnzbd/commits)
 
 SABnzbd Usenet downloader on FreeBSD.

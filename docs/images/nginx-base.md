@@ -6,7 +6,7 @@ placeholders:
 
 # :simple-nginx: Nginx Base
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/nginx-base/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/nginx-base/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/nginx-base/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/nginx-base/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/nginx-base?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/nginx-base/commits)
 
 Shared base image for Nginx-based applications.

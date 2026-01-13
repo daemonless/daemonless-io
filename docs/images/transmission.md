@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-transmission: Transmission
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/transmission/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/transmission?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/transmission/commits)
 
 Transmission BitTorrent client on FreeBSD.

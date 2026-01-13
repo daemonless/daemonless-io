@@ -9,7 +9,7 @@ placeholders:
 
 # :material-magnet: Prowlarr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/prowlarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/prowlarr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/prowlarr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/prowlarr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/prowlarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/prowlarr/commits)
 
 Prowlarr indexer management on FreeBSD.

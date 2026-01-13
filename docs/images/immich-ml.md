@@ -9,7 +9,7 @@ placeholders:
 
 # :material-brain: Immich Machine Learning
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-ml/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-ml/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-ml/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-ml/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich-ml?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich-ml/commits)
 
 Immich Machine Learning service (Python/ONNX) on FreeBSD.

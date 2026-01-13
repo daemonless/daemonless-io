@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-adguard: AdGuardHome Sync
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/adguardhome-sync/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/adguardhome-sync/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/adguardhome-sync/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/adguardhome-sync/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/adguardhome-sync?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/adguardhome-sync/commits)
 
 Sync AdGuardHome configuration to replica instances.

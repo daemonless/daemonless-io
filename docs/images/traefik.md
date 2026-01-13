@@ -9,7 +9,7 @@ placeholders:
 
 # :material-server-network: Traefik
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/traefik/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/traefik/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/traefik/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/traefik/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/traefik?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/traefik/commits)
 
 Modern HTTP reverse proxy and load balancer on FreeBSD.

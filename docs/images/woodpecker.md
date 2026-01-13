@@ -9,7 +9,7 @@ placeholders:
 
 # :material-hammer: Woodpecker CI
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/woodpecker/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/woodpecker/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/woodpecker/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/woodpecker/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/woodpecker?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/woodpecker/commits)
 
 Woodpecker CI server and agent on FreeBSD.

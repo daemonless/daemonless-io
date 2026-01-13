@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-nextcloud: Nextcloud
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/nextcloud/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/nextcloud/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/nextcloud/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/nextcloud/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/nextcloud?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/nextcloud/commits)
 
 Nextcloud self-hosted cloud on FreeBSD.

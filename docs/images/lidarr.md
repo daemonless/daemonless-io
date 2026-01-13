@@ -9,7 +9,7 @@ placeholders:
 
 # :material-music: Lidarr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/lidarr/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/lidarr/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/lidarr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/lidarr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/lidarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/lidarr/commits)
 
 Lidarr music management on FreeBSD.

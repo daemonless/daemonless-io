@@ -9,7 +9,7 @@ placeholders:
 
 # :material-view-dashboard: Homepage
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/homepage/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/homepage/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/homepage/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/homepage/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/homepage?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/homepage/commits)
 
 A modern, highly customizable dashboard for your homelab.

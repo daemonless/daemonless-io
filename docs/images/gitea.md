@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-gitea: Gitea
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/gitea/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/gitea/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/gitea/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/gitea/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/gitea?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/gitea/commits)
 
 Gitea self-hosted Git service on FreeBSD.

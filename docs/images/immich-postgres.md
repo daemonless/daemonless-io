@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-postgresql: Immich PostgreSQL
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-postgres/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-postgres/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-postgres/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-postgres/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich-postgres?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich-postgres/commits)
 
 PostgreSQL 14 with pgvector/pgvecto.rs extensions for Immich.

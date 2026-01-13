@@ -9,7 +9,7 @@ placeholders:
 
 # :material-speedometer: OpenSpeedTest
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/openspeedtest/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/openspeedtest/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/openspeedtest/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/openspeedtest/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/openspeedtest?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/openspeedtest/commits)
 
 Self-hosted HTML5 Network Speed Test on FreeBSD.

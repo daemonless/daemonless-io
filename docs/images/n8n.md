@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-n8n: n8n
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/n8n/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/n8n/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/n8n/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/n8n/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/n8n?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/n8n/commits)
 
 Workflow automation tool on FreeBSD.

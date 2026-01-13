@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-googlephotos: Immich Stack
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich/commits)
 
 Complete self-hosted photo and video management solution.

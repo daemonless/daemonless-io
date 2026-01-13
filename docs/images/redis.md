@@ -9,7 +9,7 @@ placeholders:
 
 # :simple-redis: Redis
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/redis/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/redis/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/redis/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/redis/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/redis?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/redis/commits)
 
 Redis key-value store on FreeBSD.

@@ -9,7 +9,7 @@ placeholders:
 
 # :material-server: Immich Server
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-server/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-server/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-server/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-server/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich-server?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich-server/commits)
 
 Immich photo management server on FreeBSD.

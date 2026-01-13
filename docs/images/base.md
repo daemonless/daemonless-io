@@ -6,7 +6,7 @@ placeholders:
 
 # :simple-freebsd: Base
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/base/build.yml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/base/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/base/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/base/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/base?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/base/commits)
 
 FreeBSD base image with s6 supervision.
