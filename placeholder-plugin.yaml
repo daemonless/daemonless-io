@@ -744,6 +744,14 @@ placeholders:
   SMOKEPING_CONFIG_PATH:
     default: smokeping
     description: SmokePing /config Path
+  HUGO_PORT:
+    default: '1313'
+    description: Hugo Host Port
+    validators:
+    - port_number
+  HUGO_APP_PATH:
+    default: hugo/app
+    description: Hugo /app Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
