@@ -64,9 +64,9 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
+| [:simple-googlephotos: Immich](immich.md) | - | Self-hosted photo and video management solution. |
 | [:material-brain: Immich Machine Learning](immich-ml.md) | 3003 | Immich Machine Learning service (Python/ONNX) on FreeBSD. |
 | [:material-server: Immich Server](immich-server.md) | 2283 | Immich photo management server on FreeBSD. |
-| [:simple-googlephotos: Immich Stack](immich.md) | 2283 | Complete self-hosted photo and video management solution. |
 
 ## Utilities
 

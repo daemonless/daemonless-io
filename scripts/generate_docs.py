@@ -204,6 +204,7 @@ def load_fallback_config(repo_path):
         'upstream_binary': data.get('upstream_binary', True),
         'icon': data.get('icon', ':material-docker:'),
         'healthcheck': None,
+        'docs': data.get('docs'),
         'env': [],
         'volumes': [],
         'ports': [{'port': data.get('port', '80'), 'protocol': 'tcp', 'desc': 'Web UI'}] if data.get('port') else [],
@@ -399,13 +400,24 @@ def main():
 
         configs.append(config)
 
-        # Generate MkDocs page with placeholders
+        # Generate MkDocs page
         try:
-            mkdocs_content = template.render(config, render_mode="mkdocs")
             out_path = DOCS_DIR / f"{config['name']}.md"
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(mkdocs_content)
-            print(f"Generated docs/images/{config['name']}.md")
+
+            if config.get('docs') == 'manual':
+                # Copy README.md from repo for manual docs
+                readme_path = repo / "README.md"
+                if readme_path.exists():
+                    out_path.write_text(readme_path.read_text())
+                    print(f"Copied docs/images/{config['name']}.md (manual)")
+                else:
+                    print(f"Warning: {repo.name} has docs: manual but no README.md")
+            else:
+                # Generate from template
+                mkdocs_content = template.render(config, render_mode="mkdocs")
+                out_path.write_text(mkdocs_content)
+                print(f"Generated docs/images/{config['name']}.md")
         except Exception as e:
             print(f"Error generating {config['name']}: {e}")
 
