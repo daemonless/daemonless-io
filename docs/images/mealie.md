@@ -107,6 +107,23 @@ Access the Web UI at: `http://localhost:@MEALIE_PORT@`
 |------|----------|-------------|
 | `9000` | TCP | Web UI |
 
+## Migrating from Linux
+
+**SQLite:** No issues, just copy your data.
+
+**PostgreSQL:** You cannot copy the postgres data directory between Linux and FreeBSD due to locale incompatibilities. Use `pg_dump`/`pg_restore` instead:
+
+```bash
+# On Linux
+podman exec mealie-postgres pg_dump -U mealie mealie > mealie.sql
+
+# On FreeBSD (start fresh postgres first, then restore)
+cat mealie.sql | podman exec -i mealie-postgres psql -U mealie -d mealie
+```
+
+See [daemonless/postgres README](https://github.com/daemonless/postgres#migrating-from-linux) for details.
+
+
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
