@@ -107,6 +107,50 @@ Access the Web UI at: `http://localhost:@MEALIE_PORT@`
 |------|----------|-------------|
 | `9000` | TCP | Web UI |
 
+## Using PostgreSQL
+
+By default, Mealie uses SQLite. For better performance with multiple users, use PostgreSQL:
+
+```yaml
+services:
+  mealie:
+    image: ghcr.io/daemonless/mealie:latest
+    container_name: mealie
+    environment:
+      - BASE_URL=http://localhost:@MEALIE_PORT@
+      - PUID=@PUID@
+      - PGID=@PGID@
+      - TZ=@TZ@
+      - DB_ENGINE=postgres
+      - POSTGRES_USER=mealie
+      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_SERVER=localhost
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=mealie
+    volumes:
+      - @CONTAINER_CONFIG_ROOT@/@MEALIE_CONFIG_PATH@:/config
+    ports:
+      - "@MEALIE_PORT@:9000"
+    depends_on:
+      - postgres
+    network_mode: host
+    restart: unless-stopped
+
+  postgres:
+    image: ghcr.io/daemonless/postgres:latest
+    container_name: mealie-postgres
+    environment:
+      - POSTGRES_USER=mealie
+      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_DB=mealie
+    volumes:
+      - @CONTAINER_CONFIG_ROOT@/mealie-postgres:/config
+    network_mode: host
+    restart: unless-stopped
+```
+
+**Note:** With `network_mode: host`, use `localhost` for `POSTGRES_SERVER`.
+
 ## Migrating from Linux
 
 **SQLite:** No issues, just copy your data.

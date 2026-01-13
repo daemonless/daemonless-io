@@ -94,6 +94,7 @@ def load_compose_config(repo_path):
         'icon': meta.get('icon', ':material-docker:'),
         'healthcheck': meta.get('healthcheck', None),
         'notes': meta.get('notes', ''),
+        'docs': docs,  # Preserve for manual docs check
         'env': [],
         'volumes': [],
         'ports': [],
@@ -407,7 +408,11 @@ def main():
             out_path = DOCS_DIR / f"{config['name']}.md"
             out_path.parent.mkdir(parents=True, exist_ok=True)
 
-            if config.get('docs') == 'manual':
+            # Check for manual docs: supports both docs: manual and docs: { manual: true }
+            docs_val = config.get('docs')
+            is_manual = (docs_val == 'manual' or
+                         (isinstance(docs_val, dict) and docs_val.get('manual', False)))
+            if is_manual:
                 # Copy README.md from repo for manual docs
                 readme_path = repo / "README.md"
                 if readme_path.exists():
