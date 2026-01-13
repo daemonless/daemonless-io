@@ -2,6 +2,14 @@
 
 Explore our collection of high-performance, FreeBSD-native OCI containers.
 
+## Base
+
+| Image | Port | Description |
+|-------|------|-------------|
+| [:material-layers: Arr Base](arr-base.md) | - | Shared base image for *Arr applications (Radarr, Sonarr, Lidarr, Prowlarr) containing common dependencies. |
+| [:simple-freebsd: Base](base.md) | - | FreeBSD base image with s6 supervision. |
+| [:simple-nginx: Nginx Base](nginx-base.md) | - | Shared base image for Nginx-based applications. |
+
 ## Infrastructure
 
 | Image | Port | Description |

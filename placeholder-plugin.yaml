@@ -745,7 +745,6 @@ placeholders:
     default: smokeping
     description: SmokePing /config Path
 settings:
-  auto_placeholder_tables: true
   normal_prefix: '@'
   normal_suffix: '@'
 validators:

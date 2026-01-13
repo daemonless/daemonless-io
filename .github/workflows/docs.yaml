@@ -40,10 +40,11 @@ jobs:
           cd daemonless-io
           python3 scripts/fetch_repos.py
 
-      - name: Sync docs
+      - name: Generate docs
         run: |
           cd daemonless-io
-          python3 scripts/sync_docs.py
+          pip install jinja2
+          python3 scripts/generate_docs.py
 
       - name: Check for changes
         id: check
