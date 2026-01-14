@@ -46,33 +46,18 @@ jobs:
           pip install jinja2
           python3 scripts/generate_docs.py
 
-      - name: Check for changes
-        id: check
-        run: |
-          cd daemonless-io
-          if git diff --quiet docs/; then
-            echo "No changes detected"
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "Changes detected"
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build site
-        if: steps.check.outputs.has_changes == 'true' || github.event_name != 'schedule'
         run: |
           cd daemonless-io
           mkdocs build
 
       - name: Upload artifact
-        if: steps.check.outputs.has_changes == 'true' || github.event_name != 'schedule'
         uses: actions/upload-pages-artifact@v3
         with:
           path: daemonless-io/site/
 
   deploy:
     needs: build
-    if: needs.build.outputs.has_changes == 'true' || github.event_name != 'schedule'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
