@@ -752,6 +752,33 @@ placeholders:
   HUGO_APP_PATH:
     default: hugo/app
     description: Hugo /app Path
+  IMMICH_SERVER_DATA_PATH:
+    default: immich-server/data
+    description: Immich Server /data Path
+  NEXTCLOUD_DATA_PATH:
+    default: nextcloud/data
+    description: Nextcloud /data Path
+  SMOKEPING_DATA_PATH:
+    default: smokeping/data
+    description: SmokePing /data Path
+  ADGUARDHOME_CONF_PATH:
+    default: adguardhome/conf
+    description: AdGuard Home /opt/adguardhome/conf Path
+  ADGUARDHOME_WORK_PATH:
+    default: adguardhome/work
+    description: AdGuard Home /opt/adguardhome/work Path
+  IMMICH_CACHE_PATH:
+    default: immich/cache
+    description: Immich Machine Learning /cache Path
+  IMMICH_POSTGRES_PATH:
+    default: immich/postgres
+    description: Immich PostgreSQL /var/lib/postgresql/data Path
+  IMMICH_DATA_PATH:
+    default: immich/data
+    description: Immich Server /data Path
+  POSTGRES_PATH:
+    default: postgres
+    description: PostgreSQL /var/lib/postgresql/data Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

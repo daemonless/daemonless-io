@@ -38,7 +38,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - POSTGRES_PASSWORD=postgres
           - POSTGRES_DB=immich
         volumes:
-          - @CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data
+          - @CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_PATH@:/var/lib/postgresql/data
         ports:
           - @IMMICH_POSTGRES_PORT@:5432
         restart: unless-stopped
@@ -52,7 +52,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e POSTGRES_USER=postgres \
       -e POSTGRES_PASSWORD=postgres \
       -e POSTGRES_DB=immich \
-      -v @CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data \ 
+      -v @CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_PATH@:/var/lib/postgresql/data \ 
       ghcr.io/daemonless/immich-postgres:latest
     ```
 
@@ -72,7 +72,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - "@IMMICH_POSTGRES_PORT@:5432"
         volumes:
-          - "@CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data"
+          - "@CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_PATH@:/var/lib/postgresql/data"
     ```
 
 Access the Web UI at: `http://localhost:@IMMICH_POSTGRES_PORT@`
@@ -82,7 +82,6 @@ Access the Web UI at: `http://localhost:@IMMICH_POSTGRES_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -90,18 +89,18 @@ Access the Web UI at: `http://localhost:@IMMICH_POSTGRES_PORT@`
 | `POSTGRES_USER` | `postgres` | Database superuser (default: postgres) |
 | `POSTGRES_PASSWORD` | `postgres` | Database password (default: postgres) |
 | `POSTGRES_DB` | `immich` | Database name (default: immich) |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/var/lib/postgresql/data` | Database data directory |
-
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `5432` | TCP | PostgreSQL Port |
+
+This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 !!! info "Implementation Details"
 

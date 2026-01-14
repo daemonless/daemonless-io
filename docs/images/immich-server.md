@@ -44,7 +44,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - TZ=@TZ@
         volumes:
           - @CONTAINER_CONFIG_ROOT@/@IMMICH_SERVER_CONFIG_PATH@:/config
-          - @DATA_PATH@:/data
+          - @CONTAINER_CONFIG_ROOT@/@IMMICH_DATA_PATH@:/data
         ports:
           - @IMMICH_SERVER_PORT@:2283
         restart: unless-stopped
@@ -64,7 +64,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@IMMICH_SERVER_CONFIG_PATH@:/config \ 
-      -v @DATA_PATH@:/data \ 
+      -v @CONTAINER_CONFIG_ROOT@/@IMMICH_DATA_PATH@:/data \ 
       ghcr.io/daemonless/immich-server:latest
     ```
 
@@ -90,7 +90,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@IMMICH_SERVER_PORT@:2283"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@IMMICH_SERVER_CONFIG_PATH@:/config"
-          - "@DATA_PATH@:/data"
+          - "@CONTAINER_CONFIG_ROOT@/@IMMICH_DATA_PATH@:/data"
     ```
 
 Access the Web UI at: `http://localhost:@IMMICH_SERVER_PORT@`
@@ -100,7 +100,6 @@ Access the Web UI at: `http://localhost:@IMMICH_SERVER_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -113,19 +112,19 @@ Access the Web UI at: `http://localhost:@IMMICH_SERVER_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (unused but mounted) |
 | `/data` | Media storage (photos, videos, thumbnails) |
-
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `2283` | TCP | Web UI/API |
+
+This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 !!! info "Implementation Details"
 

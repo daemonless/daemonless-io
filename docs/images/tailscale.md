@@ -35,7 +35,6 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - TS_EXTRA_ARGS=--advertise-exit-node
         volumes:
           - @CONTAINER_CONFIG_ROOT@/@TAILSCALE_CONFIG_PATH@:/config
-        ports:
         restart: unless-stopped
     ```
 
@@ -70,24 +69,17 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `TS_AUTHKEY` | `tskey-auth-xxxx` | Optional: Tailscale Auth Key for automatic login |
 | `TS_EXTRA_ARGS` | `--advertise-exit-node` | Optional: Additional arguments for tailscale up |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | State directory (tailscaled.state) |
-
-### Ports
-
-| Port | Protocol | Description |
-|------|----------|-------------|
 
 !!! info "Implementation Details"
 

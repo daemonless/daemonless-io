@@ -30,9 +30,6 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       arr-base:
         image: ghcr.io/daemonless/arr-base:latest
         container_name: arr-base
-        environment:
-        volumes:
-        ports:
         restart: unless-stopped
     ```
 
@@ -59,21 +56,6 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
-### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-
-### Volumes
-
-| Path | Description |
-|------|-------------|
-
-### Ports
-
-| Port | Protocol | Description |
-|------|----------|-------------|
 
 !!! info "Implementation Details"
 

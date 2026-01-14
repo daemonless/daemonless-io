@@ -85,7 +85,6 @@ Access the Web UI at: `http://localhost:@VAULTWARDEN_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -94,13 +93,11 @@ Access the Web UI at: `http://localhost:@VAULTWARDEN_PORT@`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `SIGNUPS_ALLOWED` | `true` | Enable/disable user registration (true/false) |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, attachments, icons) |
-
 ### Ports
 
 | Port | Protocol | Description |

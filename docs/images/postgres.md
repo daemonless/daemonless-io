@@ -41,7 +41,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - PGID=@PGID@
           - TZ=@TZ@
         volumes:
-          - @CONTAINER_CONFIG_ROOT@/@POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data
+          - @CONTAINER_CONFIG_ROOT@/@POSTGRES_PATH@:/var/lib/postgresql/data
         ports:
           - @POSTGRES_PORT@:5432
         restart: unless-stopped
@@ -58,7 +58,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      -v @CONTAINER_CONFIG_ROOT@/@POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data \ 
+      -v @CONTAINER_CONFIG_ROOT@/@POSTGRES_PATH@:/var/lib/postgresql/data \ 
       ghcr.io/daemonless/postgres:latest
     ```
 
@@ -81,7 +81,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - "@POSTGRES_PORT@:5432"
         volumes:
-          - "@CONTAINER_CONFIG_ROOT@/@POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data"
+          - "@CONTAINER_CONFIG_ROOT@/@POSTGRES_PATH@:/var/lib/postgresql/data"
     ```
 
 Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
@@ -91,7 +91,6 @@ Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -102,13 +101,11 @@ Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
 | `PUID` | `1000` |  |
 | `PGID` | `1000` |  |
 | `TZ` | `UTC` |  |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/var/lib/postgresql/data` | Database data directory |
-
 ### Ports
 
 | Port | Protocol | Description |

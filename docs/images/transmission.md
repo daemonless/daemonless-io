@@ -100,7 +100,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -110,7 +109,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 | `TZ` | `UTC` | Timezone for the container |
 | `USER` | `` | Optional: Web UI Username |
 | `PASS` | `<PASS>` | Optional: Web UI Password |
-
 ### Volumes
 
 | Path | Description |
@@ -118,7 +116,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 | `/config` | Configuration directory |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for .torrent files |
-
 ### Ports
 
 | Port | Protocol | Description |

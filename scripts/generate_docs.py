@@ -20,7 +20,7 @@ PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 # Constants
 CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
 DEFAULT_CONFIG_ROOT = "/path/to/containers"
-SHARED_PATHS = ["/downloads", "/movies", "/tv", "/music", "/books", "/media", "/data"]
+SHARED_PATHS = ["/downloads", "/movies", "/tv", "/music", "/books", "/media"]
 
 # Skip these repos (not container images)
 SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports"}
@@ -148,6 +148,13 @@ def load_compose_config(repo_path):
             placeholder = f"@{config['name'].upper().replace('-', '_')}_CONFIG_PATH@"
             source_path = config['name']
             root_var = CONFIG_ROOT_VAR
+        elif src.startswith(DEFAULT_CONFIG_ROOT):
+            # Respect explicit source path from compose.yaml
+            source_path = src.replace(DEFAULT_CONFIG_ROOT, "").lstrip("/")
+            root_var = CONFIG_ROOT_VAR
+            # Generate placeholder from the clean source path
+            placeholder_suffix = source_path.replace("/", "_").replace("-", "_").upper()
+            placeholder = f"@{placeholder_suffix}_PATH@"
         else:
             source_path = f"{config['name']}{tgt}"
             root_var = CONFIG_ROOT_VAR

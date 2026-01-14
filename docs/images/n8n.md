@@ -85,7 +85,6 @@ Access the Web UI at: `http://localhost:@N8N_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -94,13 +93,11 @@ Access the Web UI at: `http://localhost:@N8N_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (database, workflows) |
-
 ### Ports
 
 | Port | Protocol | Description |

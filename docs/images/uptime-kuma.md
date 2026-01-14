@@ -94,7 +94,6 @@ Access the Web UI at: `http://localhost:@UPTIME_KUMA_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -106,13 +105,11 @@ Access the Web UI at: `http://localhost:@UPTIME_KUMA_PORT@`
 | `UPTIME_KUMA_ALLOW_ALL_CHROME_EXEC` | `1` |  |
 | `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` | `1` |  |
 | `DATA_DIR` | `/config` |  |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, settings) |
-
 ### Ports
 
 | Port | Protocol | Description |

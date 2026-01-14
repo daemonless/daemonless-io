@@ -40,7 +40,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         volumes:
           - @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config
           - @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache # optional
-          - @MEDIA_PATH@:/media
+          - @TV_PATH@:/tv # optional
+          - @MOVIES_PATH@:/movies # optional
         ports:
           - @JELLYFIN_PORT@:8096
         restart: unless-stopped
@@ -56,7 +57,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config \ 
       -v @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache \  # optional
-      -v @MEDIA_PATH@:/media \ 
+      -v @TV_PATH@:/tv \  # optional
+      -v @MOVIES_PATH@:/movies \  # optional
       ghcr.io/daemonless/jellyfin:latest
     ```
 
@@ -78,7 +80,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@:/config"
           - "@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache" # optional
-          - "@MEDIA_PATH@:/media"
+          - "@TV_PATH@:/tv" # optional
+          - "@MOVIES_PATH@:/movies" # optional
     ```
 
 Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
@@ -88,7 +91,6 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -96,15 +98,14 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
 | `/cache` | Cache directory (Optional) |
-| `/media` | Media library |
-
+| `/tv` | TV Series library (Optional) |
+| `/movies` | Movie library (Optional) |
 ### Ports
 
 | Port | Protocol | Description |

@@ -40,8 +40,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - PGID=@PGID@
           - TZ=@TZ@
         volumes:
-          - @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf
-          - @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work
+          - @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf
+          - @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work
         ports:
           - @ADGUARDHOME_PORT@:53
           - 53:53
@@ -83,8 +83,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf \ 
-      -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work \ 
+      -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf \ 
+      -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work \ 
       ghcr.io/daemonless/adguardhome:latest
     ```
 
@@ -118,8 +118,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "6060:6060"
           - "8853:8853"
         volumes:
-          - "@CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf"
-          - "@CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_OPT_ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work"
+          - "@CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf"
+          - "@CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work"
     ```
 
 Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
@@ -129,7 +129,6 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -137,14 +136,12 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/opt/adguardhome/conf` | Configuration files |
 | `/opt/adguardhome/work` | Work directory (database, logs, data) |
-
 ### Ports
 
 | Port | Protocol | Description |

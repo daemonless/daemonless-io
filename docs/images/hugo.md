@@ -87,7 +87,6 @@ Access the Web UI at: `http://localhost:@HUGO_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -96,13 +95,11 @@ Access the Web UI at: `http://localhost:@HUGO_PORT@`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `HUGO_BASEURL` | `http://localhost:1313` | Hostname (and path) to the root |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/app` | Website source code (mount your repo here) |
-
 ### Ports
 
 | Port | Protocol | Description |

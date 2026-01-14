@@ -41,7 +41,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - PGID=@PGID@
           - TZ=@TZ@
         volumes:
-          - @CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CACHE_PATH@:/cache
+          - @CONTAINER_CONFIG_ROOT@/@IMMICH_CACHE_PATH@:/cache
           - @CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CONFIG_PATH@:/config
         ports:
           - @IMMICH_ML_PORT@:3003
@@ -59,7 +59,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      -v @CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CACHE_PATH@:/cache \ 
+      -v @CONTAINER_CONFIG_ROOT@/@IMMICH_CACHE_PATH@:/cache \ 
       -v @CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CONFIG_PATH@:/config \ 
       ghcr.io/daemonless/immich-ml:latest
     ```
@@ -83,7 +83,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - "@IMMICH_ML_PORT@:3003"
         volumes:
-          - "@CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CACHE_PATH@:/cache"
+          - "@CONTAINER_CONFIG_ROOT@/@IMMICH_CACHE_PATH@:/cache"
           - "@CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CONFIG_PATH@:/config"
     ```
 
@@ -94,7 +94,6 @@ Access the Web UI at: `http://localhost:@IMMICH_ML_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -105,19 +104,19 @@ Access the Web UI at: `http://localhost:@IMMICH_ML_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/cache` | Model cache directory (HuggingFace) |
 | `/config` | Configuration directory (unused but mounted) |
-
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3003` | TCP | ML API |
+
+This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 !!! info "Implementation Details"
 

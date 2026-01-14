@@ -97,7 +97,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -106,7 +105,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
@@ -114,7 +112,6 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 | `/config` | Configuration directory (settings.json, WireGuard configs) |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for torrent files |
-
 ### Ports
 
 | Port | Protocol | Description |

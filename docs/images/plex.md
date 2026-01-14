@@ -118,7 +118,6 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -128,7 +127,6 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 | `TZ` | `UTC` | Timezone for the container |
 | `VERSION` | `container` | Plex update channel (container, public, plexpass) |
 | `PLEX_CLAIM` | `` | Optional: Claim token from https://plex.tv/claim |
-
 ### Volumes
 
 | Path | Description |
@@ -137,7 +135,6 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 | `/transcode` | Transcode directory (Optional) |
 | `/movies` | Movie library |
 | `/tv` | TV series library |
-
 ### Ports
 
 | Port | Protocol | Description |

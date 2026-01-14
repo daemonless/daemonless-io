@@ -39,7 +39,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - TZ=@TZ@
         volumes:
           - @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_CONFIG_PATH@:/config
-          - @DATA_PATH@:/data
+          - @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_DATA_PATH@:/data
         ports:
           - @NEXTCLOUD_PORT@:8082
         restart: unless-stopped
@@ -54,7 +54,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_CONFIG_PATH@:/config \ 
-      -v @DATA_PATH@:/data \ 
+      -v @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_DATA_PATH@:/data \ 
       ghcr.io/daemonless/nextcloud:latest
     ```
 
@@ -75,7 +75,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@NEXTCLOUD_PORT@:8082"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_CONFIG_PATH@:/config"
-          - "@DATA_PATH@:/data"
+          - "@CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_DATA_PATH@:/data"
     ```
 
 Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
@@ -85,7 +85,6 @@ Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -93,14 +92,12 @@ Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration and application files |
 | `/data` | User data storage |
-
 ### Ports
 
 | Port | Protocol | Description |

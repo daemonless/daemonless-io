@@ -97,7 +97,6 @@ Access the Web UI at: `http://localhost:@WOODPECKER_PORT@`
 <div class="placeholder-settings-panel"></div>
 
 ## Parameters
-
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -109,13 +108,11 @@ Access the Web UI at: `http://localhost:@WOODPECKER_PORT@`
 | `PUID` | `1000` |  |
 | `PGID` | `1000` |  |
 | `TZ` | `UTC` |  |
-
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, logs) |
-
 ### Ports
 
 | Port | Protocol | Description |
