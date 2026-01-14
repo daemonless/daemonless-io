@@ -23,6 +23,9 @@ The Free Software Media System on FreeBSD.
 ## Prerequisites
 
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+!!! warning "Memory Locking (Critical)"
+    This application is built on .NET and requires memory locking enabled in the jail.
+    You **must** use the `allow.mlock` annotation and have a [patched ocijail](../guides/ocijail-patch.md).
 
 ## Deployment
 
@@ -44,6 +47,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - @MOVIES_PATH@:/movies # optional
         ports:
           - @JELLYFIN_PORT@:8096
+        annotations:
+          org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
     ```
 
@@ -52,6 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```bash
     podman run -d --name jellyfin \
       -p @JELLYFIN_PORT@:8096 \
+      --annotation 'org.freebsd.jail.allow.mlock=true' \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
@@ -82,6 +88,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache" # optional
           - "@TV_PATH@:/tv" # optional
           - "@MOVIES_PATH@:/movies" # optional
+        annotation:
+          org.freebsd.jail.allow.mlock: "true"
     ```
 
 Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
@@ -116,6 +124,7 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
 [Website](https://jellyfin.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/jellyfin/jellyfin){ .md-button }

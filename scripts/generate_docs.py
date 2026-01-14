@@ -148,11 +148,19 @@ def load_compose_config(repo_path):
             placeholder = f"@{config['name'].upper().replace('-', '_')}_CONFIG_PATH@"
             source_path = config['name']
             root_var = CONFIG_ROOT_VAR
-        elif src.startswith(DEFAULT_CONFIG_ROOT):
-            # Respect explicit source path from compose.yaml
-            source_path = src.replace(DEFAULT_CONFIG_ROOT, "").lstrip("/")
+        elif src.startswith("./") or src.startswith("."):
+            # Use explicit relative source from compose.yaml
+            clean_src = src.lstrip("./")
+            source_path = f"{config['name']}/{clean_src}"
+            root_var = CONFIG_ROOT_VAR
+            placeholder = f"@{config['name'].upper().replace('-', '_')}_{clean_src.upper()}_PATH@"
+        elif "/path/to/containers" in src:
+            # Handle absolute paths matching standard prefix
+            clean_src = src.replace("/path/to/containers/", "")
+            source_path = clean_src.lstrip("/")
             root_var = CONFIG_ROOT_VAR
             # Generate placeholder from the clean source path
+            # e.g. immich/postgres -> IMMICH_POSTGRES_PATH
             placeholder_suffix = source_path.replace("/", "_").replace("-", "_").upper()
             placeholder = f"@{placeholder_suffix}_PATH@"
         else:
