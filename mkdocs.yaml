@@ -32,9 +32,6 @@ extra:
     - icon: material/check-circle
       link: https://ci.daemonless.io
       name: CI Status
-    - icon: fontawesome/brands/discord
-      link: https://discord.com/channels/1455560777577533684/1457760924550172867
-      name: Discord
 
 extra_css:
   - stylesheets/extra.css
