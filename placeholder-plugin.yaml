@@ -779,6 +779,9 @@ placeholders:
   POSTGRES_PATH:
     default: postgres
     description: PostgreSQL /var/lib/postgresql/data Path
+  INTERFACE:
+    default: em0
+    description: Host Network Interface
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

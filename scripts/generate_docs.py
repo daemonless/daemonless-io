@@ -260,6 +260,11 @@ def update_placeholders(configs):
         "description": "Container Configuration Root Path",
     }
 
+    plugin_data["placeholders"]["INTERFACE"] = {
+        "default": "em0",
+        "description": "Host Network Interface",
+    }
+
     for path in SHARED_PATHS:
         name = path.strip('/').replace('/', '_').upper()
         plugin_data["placeholders"][f"{name}_PATH"] = {

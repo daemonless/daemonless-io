@@ -13,9 +13,6 @@ placeholders:
   CONTAINER_CONFIG_ROOT:
     default: "/path/to/containers"
     description: "Config Path"
-  RADARR_PORT:
-    default: "7878"
-    description: "Radarr Port"
 ---
 
 # Quick Start
@@ -60,7 +57,7 @@ Add the following to `/etc/pf.conf`. Replace `@INTERFACE@` if your external inte
 
 ```
 # Primary network interface
-ext_if="@INTERFACE@"
+ext_if=@INTERFACE@
 
 # Podman container networking
 rdr-anchor "cni-rdr/*"
@@ -106,7 +103,7 @@ Applications like **Radarr** and **Sonarr** require the `allow.mlock` jail annot
 
 ```bash
 podman run -d --name radarr \
-  -p @RADARR_PORT@:7878 \
+  -p 7878:7878 \
   --annotation 'org.freebsd.jail.allow.mlock=true' \
   -e PUID=@PUID@ -e PGID=@PGID@ \
   -v @CONTAINER_CONFIG_ROOT@/radarr:/config \
