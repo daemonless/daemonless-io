@@ -72,7 +72,55 @@ nav:
   - Philosophy: philosophy.md
   - Quick Start: quick-start.md
   - Architecture: architecture.md
-  - Fleet: images/index.md
+  - Fleet:
+    - Overview: images/index.md
+    - Base:
+      - Arr Base: images/arr-base.md
+      - Base: images/base.md
+      - Nginx Base: images/nginx-base.md
+    - Databases:
+      - Immich PostgreSQL: images/immich-postgres.md
+      - PostgreSQL: images/postgres.md
+      - Redis: images/redis.md
+    - Development:
+      - Hugo: images/hugo.md
+    - Downloaders:
+      - SABnzbd: images/sabnzbd.md
+      - Transmission: images/transmission.md
+      - Transmission with WireGuard: images/transmission-wireguard.md
+    - Infrastructure:
+      - Gitea: images/gitea.md
+      - Tailscale: images/tailscale.md
+      - Traefik: images/traefik.md
+      - Woodpecker CI: images/woodpecker.md
+    - Media Management:
+      - Lidarr: images/lidarr.md
+      - Overseerr: images/overseerr.md
+      - Prowlarr: images/prowlarr.md
+      - Radarr: images/radarr.md
+      - Sonarr: images/sonarr.md
+    - Media Servers:
+      - Jellyfin: images/jellyfin.md
+      - Plex Media Server: images/plex.md
+      - Tautulli: images/tautulli.md
+    - Network:
+      - AdGuard Home: images/adguardhome.md
+      - AdGuardHome Sync: images/adguardhome-sync.md
+    - Photos & Media:
+      - Immich: images/immich.md
+      - Immich Machine Learning: images/immich-ml.md
+      - Immich Server: images/immich-server.md
+    - Utilities:
+      - Homepage: images/homepage.md
+      - Mealie: images/mealie.md
+      - Nextcloud: images/nextcloud.md
+      - OpenSpeedTest: images/openspeedtest.md
+      - Organizr: images/organizr.md
+      - SmokePing: images/smokeping.md
+      - UniFi Network: images/unifi.md
+      - Uptime Kuma: images/uptime-kuma.md
+      - Vaultwarden: images/vaultwarden.md
+      - n8n: images/n8n.md
   - Guides:
       - Permissions: guides/permissions.md
       - Networking: guides/networking.md

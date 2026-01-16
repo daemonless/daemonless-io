@@ -782,6 +782,9 @@ placeholders:
   INTERFACE:
     default: em0
     description: Host Network Interface
+  IMMICH_ETC_LOCALTIME_PATH:
+    default: immich/etc/localtime
+    description: Immich /etc/localtime Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

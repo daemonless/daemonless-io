@@ -17,11 +17,9 @@ flowchart LR
     end
 
     subgraph arr_apps[".NET Apps"]
-        jellyfin["jellyfin"]
         lidarr["lidarr"]
         prowlarr["prowlarr"]
         radarr["radarr"]
-        readarr["readarr"]
         sonarr["sonarr"]
     end
 
@@ -34,12 +32,20 @@ flowchart LR
     end
 
     subgraph base_apps["Direct Apps"]
+        adguardhome["adguardhome"]
+        adguardhome-sync["adguardhome-sync"]
+        cloudflared["cloudflared"]
         gitea["gitea"]
+        homepage["homepage"]
+        hugo["hugo"]
         immich-ml["immich-ml"]
         immich-postgres["immich-postgres"]
         immich-server["immich-server"]
+        jellyfin["jellyfin"]
+        mealie["mealie"]
         overseerr["overseerr"]
         plex["plex"]
+        postgres["postgres"]
         redis["redis"]
         sabnzbd["sabnzbd"]
         tailscale["tailscale"]
@@ -55,16 +61,12 @@ flowchart LR
     %% Connections
     base --> arr-base
     base --> nginx-base
-    arr-base --> jellyfin
-    click jellyfin "../images/jellyfin/" "View jellyfin Docs"
     arr-base --> lidarr
     click lidarr "../images/lidarr/" "View lidarr Docs"
     arr-base --> prowlarr
     click prowlarr "../images/prowlarr/" "View prowlarr Docs"
     arr-base --> radarr
     click radarr "../images/radarr/" "View radarr Docs"
-    arr-base --> readarr
-    click readarr "../images/readarr/" "View readarr Docs"
     arr-base --> sonarr
     click sonarr "../images/sonarr/" "View sonarr Docs"
     nginx-base --> nextcloud
@@ -77,18 +79,34 @@ flowchart LR
     click smokeping "../images/smokeping/" "View smokeping Docs"
     nginx-base --> vaultwarden
     click vaultwarden "../images/vaultwarden/" "View vaultwarden Docs"
+    base --> adguardhome
+    click adguardhome "../images/adguardhome/" "View adguardhome Docs"
+    base --> adguardhome-sync
+    click adguardhome-sync "../images/adguardhome-sync/" "View adguardhome-sync Docs"
+    base --> cloudflared
+    click cloudflared "../images/cloudflared/" "View cloudflared Docs"
     base --> gitea
     click gitea "../images/gitea/" "View gitea Docs"
+    base --> homepage
+    click homepage "../images/homepage/" "View homepage Docs"
+    base --> hugo
+    click hugo "../images/hugo/" "View hugo Docs"
     base --> immich-ml
     click immich-ml "../images/immich-ml/" "View immich-ml Docs"
     base --> immich-postgres
     click immich-postgres "../images/immich-postgres/" "View immich-postgres Docs"
     base --> immich-server
     click immich-server "../images/immich-server/" "View immich-server Docs"
+    base --> jellyfin
+    click jellyfin "../images/jellyfin/" "View jellyfin Docs"
+    base --> mealie
+    click mealie "../images/mealie/" "View mealie Docs"
     base --> overseerr
     click overseerr "../images/overseerr/" "View overseerr Docs"
     base --> plex
     click plex "../images/plex/" "View plex Docs"
+    base --> postgres
+    click postgres "../images/postgres/" "View postgres Docs"
     base --> redis
     click redis "../images/redis/" "View redis Docs"
     base --> sabnzbd
@@ -116,7 +134,7 @@ flowchart LR
     classDef appStyle fill:#2980b9,stroke:#333,color:#fff
     class base baseStyle
     class arr-base,nginx-base intermediateStyle
-    class jellyfin,lidarr,prowlarr,radarr,readarr,sonarr,nextcloud,openspeedtest,organizr,smokeping,vaultwarden,gitea,immich-ml,immich-postgres,immich-server,overseerr,plex,redis,sabnzbd,tailscale,tautulli,traefik,transmission,transmission-wireguard,unifi,uptime-kuma,woodpecker appStyle
+    class lidarr,prowlarr,radarr,sonarr,nextcloud,openspeedtest,organizr,smokeping,vaultwarden,adguardhome,adguardhome-sync,cloudflared,gitea,homepage,hugo,immich-ml,immich-postgres,immich-server,jellyfin,mealie,overseerr,plex,postgres,redis,sabnzbd,tailscale,tautulli,traefik,transmission,transmission-wireguard,unifi,uptime-kuma,woodpecker appStyle
 ```
 
 ## Layer Descriptions
@@ -159,11 +177,9 @@ When a base image changes, dependent images must be rebuilt:
 FreeBSD 15 Base
 └── base (s6, execline)
     ├── arr-base (sqlite3, icu, .NET compat)
-    │   ├── jellyfin
     │   ├── lidarr
     │   ├── prowlarr
     │   ├── radarr
-    │   ├── readarr
     │   └── sonarr
     ├── nginx-base (nginx)
     │   ├── nextcloud
@@ -171,12 +187,20 @@ FreeBSD 15 Base
     │   ├── organizr
     │   ├── smokeping
     │   └── vaultwarden
+    ├── adguardhome
+    ├── adguardhome-sync
+    ├── cloudflared
     ├── gitea
+    ├── homepage
+    ├── hugo
     ├── immich-ml
     ├── immich-postgres
     ├── immich-server
+    ├── jellyfin
+    ├── mealie
     ├── overseerr
     ├── plex
+    ├── postgres
     ├── redis
     ├── sabnzbd
     ├── tailscale
