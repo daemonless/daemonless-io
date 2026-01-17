@@ -89,6 +89,7 @@ nav:
       - Transmission: images/transmission.md
       - Transmission with WireGuard: images/transmission-wireguard.md
     - Infrastructure:
+      - Cloudflared: images/cloudflared.md
       - Gitea: images/gitea.md
       - Tailscale: images/tailscale.md
       - Traefik: images/traefik.md

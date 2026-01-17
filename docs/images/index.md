@@ -14,6 +14,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
+| [:simple-cloudflare: Cloudflared](cloudflared.md) | 2000 | Cloudflare Tunnel client for exposing services securely. |
 | [:simple-gitea: Gitea](gitea.md) | 3000 | Gitea self-hosted Git service on FreeBSD. |
 | [:simple-tailscale: Tailscale](tailscale.md) | - | Tailscale mesh VPN on FreeBSD. |
 | [:material-server-network: Traefik](traefik.md) | 80 | Modern HTTP reverse proxy and load balancer on FreeBSD. |

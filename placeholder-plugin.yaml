@@ -785,6 +785,11 @@ placeholders:
   IMMICH_ETC_LOCALTIME_PATH:
     default: immich/etc/localtime
     description: Immich /etc/localtime Path
+  CLOUDFLARED_PORT:
+    default: '2000'
+    description: Cloudflared Host Port
+    validators:
+    - port_number
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
