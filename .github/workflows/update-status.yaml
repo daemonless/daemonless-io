@@ -1,0 +1,47 @@
+name: Update Version Status
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:  # Manual trigger
+  repository_dispatch:
+    types: [status-update]  # Triggered by other repos after builds
+
+permissions:
+  contents: write
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch scripts from daemonless repo
+        run: |
+          # The script expects daemonless-versions.json at parent.parent/daemonless-versions.json
+          # So we create: scripts/compare-versions.py and daemonless-versions.json at root
+          mkdir -p scripts
+          curl -sL https://raw.githubusercontent.com/daemonless/daemonless/main/scripts/compare-versions.py -o scripts/compare-versions.py
+          curl -sL https://raw.githubusercontent.com/daemonless/daemonless/main/daemonless-versions.json -o daemonless-versions.json
+          chmod +x scripts/compare-versions.py
+
+      - name: Run version comparison
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # gh CLI is pre-installed on ubuntu-latest
+          # Run comparison and generate status.md
+          python scripts/compare-versions.py --format markdown > docs/status.md
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/status.md
+          git diff --staged --quiet || git commit -m "Update version status [skip ci]"
+          git push
