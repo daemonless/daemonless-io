@@ -65,6 +65,7 @@ Launch your first container in seconds with a familiar syntax.
 <div class="termy">
 
 ```bash
+pkg install podman-suite
 podman run -d --name plex \
   -p 32400:32400 \
   -e PUID=1000 -e PGID=1000 \
