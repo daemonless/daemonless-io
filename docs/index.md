@@ -65,12 +65,12 @@ Launch your first container in seconds with a familiar syntax.
 <div class="termy">
 
 ```bash
-podman run -d --name radarr \
-  -p 7878:7878 \
-  --annotation 'org.freebsd.jail.allow.mlock=true' \
+podman run -d --name plex \
+  -p 32400:32400 \
   -e PUID=1000 -e PGID=1000 \
-  -v /data/config/radarr:/config \
-  ghcr.io/daemonless/radarr:latest
+  -v /data/config/plex:/config \
+  -v /data/media:/media \
+  ghcr.io/daemonless/plex:latest
 ```
 
 </div>
