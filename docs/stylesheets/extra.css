@@ -146,3 +146,12 @@
   padding: 1em !important;
   background-color: transparent !important;
 }
+
+/* Version Status Icons */
+.current {
+  color: #4caf50 !important;
+}
+
+.outdated {
+  color: #ff5722 !important;
+}
