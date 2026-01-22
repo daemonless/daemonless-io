@@ -36,7 +36,8 @@ jobs:
         run: |
           # gh CLI is pre-installed on ubuntu-latest
           # Run comparison and generate status.md
-          python scripts/compare-versions.py --format markdown > docs/status.md
+          # Script exits 1 if outdated images exist (not an error for us)
+          python scripts/compare-versions.py --format markdown > docs/status.md || true
 
       - name: Commit and push if changed
         run: |
