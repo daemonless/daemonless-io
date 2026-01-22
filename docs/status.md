@@ -30,8 +30,10 @@
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
 | :material-check-circle:{ .current } | overseerr | latest | 1.34.0 |
 | :material-check-circle:{ .current } | plex | latest | 1.42.2.10156-f737b826c |
-| :material-check-circle:{ .current } | postgres | pkg | 17 |
-| :material-check-circle:{ .current } | postgres | pkg-latest | 17 |
+| :material-check-circle:{ .current } | postgres-14 | pkg | 14.20 |
+| :material-check-circle:{ .current } | postgres-14 | pkg-latest | 14.20 |
+| :material-check-circle:{ .current } | postgres-17 | pkg | 17.7 |
+| :material-check-circle:{ .current } | postgres-17 | pkg-latest | 17.7 |
 | :material-check-circle:{ .current } | prowlarr | pkg | 2.0.5.5160_1 |
 | :material-check-circle:{ .current } | prowlarr | pkg-latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | prowlarr | latest | 2.3.0.5236 |
@@ -71,5 +73,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 29
+- :material-check-circle:{ .current } Current: 30
 - :material-close-circle:{ .outdated } Outdated: 3
