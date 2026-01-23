@@ -24,7 +24,7 @@
 | :material-check-circle:{ .current } | lidarr | pkg-latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | lidarr | latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | mealie | latest | 3.9.2 |
-| :material-close-circle:{ .outdated } | n8n | latest | 2.2.4 → **2.4.4** |
+| :material-close-circle:{ .outdated } | n8n | latest | 2.2.4 → **2.4.5** |
 | :material-close-circle:{ .outdated } | nextcloud | pkg | 32.0.0 → **32.0.3_4** |
 | :material-check-circle:{ .current } | nextcloud | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
