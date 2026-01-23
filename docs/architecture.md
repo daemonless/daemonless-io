@@ -24,35 +24,26 @@ flowchart LR
     end
 
     subgraph nginx_apps["Nginx Apps"]
-        nextcloud["nextcloud"]
         openspeedtest["openspeedtest"]
         organizr["organizr"]
         smokeping["smokeping"]
-        vaultwarden["vaultwarden"]
     end
 
     subgraph base_apps["Direct Apps"]
         adguardhome["adguardhome"]
         adguardhome-sync["adguardhome-sync"]
-        cloudflared["cloudflared"]
-        gitea["gitea"]
         homepage["homepage"]
         hugo["hugo"]
         immich-ml["immich-ml"]
         immich-postgres["immich-postgres"]
         immich-server["immich-server"]
-        jellyfin["jellyfin"]
         mealie["mealie"]
+        n8n["n8n"]
         overseerr["overseerr"]
         plex["plex"]
-        postgres["postgres"]
-        redis["redis"]
         sabnzbd["sabnzbd"]
-        tailscale["tailscale"]
         tautulli["tautulli"]
         traefik["traefik"]
-        transmission["transmission"]
-        transmission-wireguard["transmission-wireguard"]
         unifi["unifi"]
         uptime-kuma["uptime-kuma"]
         woodpecker["woodpecker"]
@@ -69,24 +60,16 @@ flowchart LR
     click radarr "../images/radarr/" "View radarr Docs"
     arr-base --> sonarr
     click sonarr "../images/sonarr/" "View sonarr Docs"
-    nginx-base --> nextcloud
-    click nextcloud "../images/nextcloud/" "View nextcloud Docs"
     nginx-base --> openspeedtest
     click openspeedtest "../images/openspeedtest/" "View openspeedtest Docs"
     nginx-base --> organizr
     click organizr "../images/organizr/" "View organizr Docs"
     nginx-base --> smokeping
     click smokeping "../images/smokeping/" "View smokeping Docs"
-    nginx-base --> vaultwarden
-    click vaultwarden "../images/vaultwarden/" "View vaultwarden Docs"
     base --> adguardhome
     click adguardhome "../images/adguardhome/" "View adguardhome Docs"
     base --> adguardhome-sync
     click adguardhome-sync "../images/adguardhome-sync/" "View adguardhome-sync Docs"
-    base --> cloudflared
-    click cloudflared "../images/cloudflared/" "View cloudflared Docs"
-    base --> gitea
-    click gitea "../images/gitea/" "View gitea Docs"
     base --> homepage
     click homepage "../images/homepage/" "View homepage Docs"
     base --> hugo
@@ -97,30 +80,20 @@ flowchart LR
     click immich-postgres "../images/immich-postgres/" "View immich-postgres Docs"
     base --> immich-server
     click immich-server "../images/immich-server/" "View immich-server Docs"
-    base --> jellyfin
-    click jellyfin "../images/jellyfin/" "View jellyfin Docs"
     base --> mealie
     click mealie "../images/mealie/" "View mealie Docs"
+    base --> n8n
+    click n8n "../images/n8n/" "View n8n Docs"
     base --> overseerr
     click overseerr "../images/overseerr/" "View overseerr Docs"
     base --> plex
     click plex "../images/plex/" "View plex Docs"
-    base --> postgres
-    click postgres "../images/postgres/" "View postgres Docs"
-    base --> redis
-    click redis "../images/redis/" "View redis Docs"
     base --> sabnzbd
     click sabnzbd "../images/sabnzbd/" "View sabnzbd Docs"
-    base --> tailscale
-    click tailscale "../images/tailscale/" "View tailscale Docs"
     base --> tautulli
     click tautulli "../images/tautulli/" "View tautulli Docs"
     base --> traefik
     click traefik "../images/traefik/" "View traefik Docs"
-    base --> transmission
-    click transmission "../images/transmission/" "View transmission Docs"
-    base --> transmission-wireguard
-    click transmission-wireguard "../images/transmission-wireguard/" "View transmission-wireguard Docs"
     base --> unifi
     click unifi "../images/unifi/" "View unifi Docs"
     base --> uptime-kuma
@@ -134,7 +107,7 @@ flowchart LR
     classDef appStyle fill:#2980b9,stroke:#333,color:#fff
     class base baseStyle
     class arr-base,nginx-base intermediateStyle
-    class lidarr,prowlarr,radarr,sonarr,nextcloud,openspeedtest,organizr,smokeping,vaultwarden,adguardhome,adguardhome-sync,cloudflared,gitea,homepage,hugo,immich-ml,immich-postgres,immich-server,jellyfin,mealie,overseerr,plex,postgres,redis,sabnzbd,tailscale,tautulli,traefik,transmission,transmission-wireguard,unifi,uptime-kuma,woodpecker appStyle
+    class lidarr,prowlarr,radarr,sonarr,openspeedtest,organizr,smokeping,adguardhome,adguardhome-sync,homepage,hugo,immich-ml,immich-postgres,immich-server,mealie,n8n,overseerr,plex,sabnzbd,tautulli,traefik,unifi,uptime-kuma,woodpecker appStyle
 ```
 
 ## Layer Descriptions
@@ -182,32 +155,23 @@ FreeBSD 15 Base
     │   ├── radarr
     │   └── sonarr
     ├── nginx-base (nginx)
-    │   ├── nextcloud
     │   ├── openspeedtest
     │   ├── organizr
-    │   ├── smokeping
-    │   └── vaultwarden
+    │   └── smokeping
     ├── adguardhome
     ├── adguardhome-sync
-    ├── cloudflared
-    ├── gitea
     ├── homepage
     ├── hugo
     ├── immich-ml
     ├── immich-postgres
     ├── immich-server
-    ├── jellyfin
     ├── mealie
+    ├── n8n
     ├── overseerr
     ├── plex
-    ├── postgres
-    ├── redis
     ├── sabnzbd
-    ├── tailscale
     ├── tautulli
     ├── traefik
-    ├── transmission
-    ├── transmission-wireguard
     ├── unifi
     ├── uptime-kuma
     └── woodpecker
