@@ -1,3 +1,8 @@
+---
+title: "Why Daemonless: FreeBSD Containers Without the Sysadmin Work"
+description: "The philosophy behind daemonless. Bridging FreeBSD jails with OCI container workflows. Get Docker convenience on your preferred BSD operating system."
+---
+
 # Daemonless: Native OCI containers for FreeBSD
 
 **TL;DR:** Native FreeBSD container images for self-hosted apps using Podman + ocijail. No Linux VM needed.  See: [https://daemonless.io/quick-start/](https://daemonless.io/quick-start/)

@@ -1,3 +1,8 @@
+---
+title: "PUID/PGID Permissions Guide for FreeBSD Containers"
+description: "Solve container permission issues on FreeBSD. Configure PUID and PGID environment variables to match your host user and avoid file ownership problems."
+---
+
 # Permissions (PUID/PGID)
 
 All daemonless containers support running as a non-root user via `PUID` and `PGID` environment variables.

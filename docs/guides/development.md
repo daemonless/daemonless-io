@@ -1,3 +1,8 @@
+---
+title: "Development Guide: Building Daemonless Container Images"
+description: "Build and contribute to daemonless containers. Containerfile patterns, s6 process supervision, labels reference, CI/CD pipelines, and conventions checklist."
+---
+
 # Development
 
 This guide covers the internal architecture, conventions, and patterns for building and contributing to daemonless containers.

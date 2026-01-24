@@ -1,3 +1,8 @@
+---
+title: "Version Status: Daemonless Container Image Updates"
+description: "Track which daemonless FreeBSD container images are current or need updates. Compare upstream releases against pkg and pkg-latest tags at a glance."
+---
+
 # Daemonless Version Status
 
 | Status | Image | Tag | Version |

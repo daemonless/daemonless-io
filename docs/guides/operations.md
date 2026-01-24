@@ -1,3 +1,8 @@
+---
+title: "Container Operations: Updates, Backups, and Maintenance"
+description: "Day-to-day management of daemonless containers. Update images, backup configs with ZFS snapshots, prune old layers, and troubleshoot common issues."
+---
+
 # Operations
 
 Day-to-day management of your containers: updates, backups, and maintenance.

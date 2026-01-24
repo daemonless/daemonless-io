@@ -1,3 +1,8 @@
+---
+title: "ZFS Storage for Podman Containers on FreeBSD"
+description: "Configure Podman to use ZFS for container storage on FreeBSD. Get copy-on-write layering, instant snapshots, compression, and data integrity checksums."
+---
+
 # ZFS Storage
 
 Configure Podman to use ZFS on FreeBSD for optimal container storage.

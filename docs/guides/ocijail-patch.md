@@ -1,3 +1,8 @@
+---
+title: "ocijail Patch for .NET Apps on FreeBSD (allow.mlock)"
+description: "Enable .NET applications like Radarr and Sonarr in FreeBSD containers. Patch ocijail to support allow.mlock, allow.sysvipc, and other jail parameters."
+---
+
 # ocijail Patch
 
 .NET applications require the `allow.mlock` jail parameter. Stock ocijail doesn't support this — you need the patched version.

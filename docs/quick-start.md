@@ -1,5 +1,6 @@
 ---
-title: Quick Start
+title: "Quick Start: FreeBSD Containers in 5 Minutes"
+description: "Get Podman containers running on FreeBSD fast. Install podman-suite, configure pf firewall, and deploy your first daemonless container with this step-by-step guide."
 placeholders:
   INTERFACE:
     default: "em0"

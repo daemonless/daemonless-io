@@ -1,3 +1,8 @@
+---
+title: "FreeBSD Container Networking: Bridge, Host, and VNET Modes"
+description: "Configure Podman networking on FreeBSD. Learn bridge mode with pf firewall, host networking for discovery, and VNET for isolation. Includes DNS setup guide."
+---
+
 # Networking
 
 FreeBSD Podman containers support several networking modes. Understanding which one to use is critical for connectivity and performance.

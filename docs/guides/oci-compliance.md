@@ -1,3 +1,8 @@
+---
+title: "OCI v1.3.0 FreeBSD Support: Compliance and Roadmap"
+description: "Technical deep dive into OCI Runtime Specification v1.3.0 FreeBSD support. How daemonless images comply and the roadmap for native jail parameter handling."
+---
+
 # Deep Dive: OCI v1.3.0 Compliance & Roadmap
 
 This document analyzes the current state of **Daemonless** in relation to the [OCI Runtime Specification v1.3.0](https://github.com/opencontainers/runtime-spec/releases/tag/v1.3.0), which officially introduces support for FreeBSD Jails.

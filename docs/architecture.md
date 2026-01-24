@@ -1,3 +1,8 @@
+---
+title: "Daemonless Architecture: Image Layers and Build System"
+description: "Understand how daemonless container images are structured. Base layers, intermediate images for .NET and nginx apps, and the inheritance hierarchy explained."
+---
+
 # Architecture
 
 How daemonless container images are structured and built.
