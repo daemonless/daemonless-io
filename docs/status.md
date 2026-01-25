@@ -1,8 +1,3 @@
----
-title: "Version Status: Daemonless Container Image Updates"
-description: "Track which daemonless FreeBSD container images are current or need updates. Compare upstream releases against pkg and pkg-latest tags at a glance."
----
-
 # Daemonless Version Status
 
 | Status | Image | Tag | Version |
@@ -29,8 +24,8 @@ description: "Track which daemonless FreeBSD container images are current or nee
 | :material-check-circle:{ .current } | lidarr | pkg-latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | lidarr | latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | mealie | latest | 3.9.2 |
-| :material-close-circle:{ .outdated } | n8n | latest | 2.2.4 → **2.4.5** |
-| :material-close-circle:{ .outdated } | nextcloud | pkg | 32.0.0 → **32.0.3_4** |
+| :material-close-circle:{ .outdated } | n8n | latest | 2.4.6 → **2.4.4** |
+| :material-check-circle:{ .current } | nextcloud | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | nextcloud | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
 | :material-check-circle:{ .current } | overseerr | latest | 1.34.0 |
@@ -78,5 +73,5 @@ description: "Track which daemonless FreeBSD container images are current or nee
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 30
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 31
+- :material-close-circle:{ .outdated } Outdated: 2
