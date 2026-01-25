@@ -7,6 +7,8 @@ description: "Understand how daemonless container images are structured. Base la
 
 How daemonless container images are structured and built.
 
+[:material-presentation: View Presentation](https://docs.google.com/presentation/d/1g1GmA9z67rQ6hMx3IV2pC6iyzQzpDeAE7bAfKM1i0c4/edit){ .md-button }
+
 ## Image Layers
 
 ```mermaid
@@ -115,6 +117,38 @@ flowchart LR
     class lidarr,prowlarr,radarr,sonarr,openspeedtest,organizr,smokeping,adguardhome,adguardhome-sync,homepage,hugo,immich-ml,immich-postgres,immich-server,mealie,n8n,overseerr,plex,sabnzbd,tautulli,traefik,unifi,uptime-kuma,woodpecker appStyle
 ```
 
+## s6-overlay: The Init System
+
+All daemonless containers use [s6-overlay](https://github.com/just-containers/s6-overlay) for process supervision. This choice enables several critical capabilities:
+
+### Zombie Reaping & Signal Propagation
+
+- `s6-svscan` acts as a proper sub-reaper (PID 1)
+- Ensures signals from `podman stop` (`SIGTERM`/`SIGQUIT`) reach the application binary, not just a shell wrapper
+- Prevents "stuck" jails that don't terminate cleanly
+
+### The "Fix-on-Startup" Pattern
+
+- **Dynamic Permissions**: Jails often face UID/GID mismatches with host ZFS datasets. s6 scripts use `PUID`/`PGID` env vars to `pw usermod` and `chown` volumes at runtime
+- **Path Shimming**: Transparently symlink `/config` or `/data` to FreeBSD-native paths before the app binary executes
+
+### Dependency Management
+
+Lightweight service readiness checks:
+
+```
+# Wait for postgres before starting the app
+s6-svwait -U /var/run/s6-rc/servicedirs/postgres
+```
+
+### Multi-Process Coordination
+
+Essential for images like `nginx-base` where Nginx and PHP-FPM run as side-by-side services in a single container.
+
+### User Familiarity
+
+Provides a "LinuxServer.io" style interface. Users moving from Linux already understand how to troubleshoot via s6 logs and init scripts.
+
 ## Layer Descriptions
 
 ### Base Layer
@@ -122,7 +156,7 @@ flowchart LR
 The `base` image provides the foundation for all daemonless containers:
 
 - **FreeBSD 15** (or 14) minimal base
-- **s6** - Process supervision
+- **s6-overlay** - Process supervision and init system
 - **execline** - Scripting language for s6
 - **FreeBSD-utilities** - Core utilities
 

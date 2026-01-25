@@ -126,6 +126,9 @@ nav:
       - Permissions: guides/permissions.md
       - Networking: guides/networking.md
       - ZFS Storage: guides/zfs.md
+      - Image Tagging: guides/tagging.md
+      - Container Testing (CIT): guides/cit.md
+      - CI/CD Pipeline: guides/ci-cd.md
       - ocijail Patch: guides/ocijail-patch.md
       - Operations: guides/operations.md
       - Development: guides/development.md
