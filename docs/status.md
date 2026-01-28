@@ -16,8 +16,8 @@
 | :material-check-circle:{ .current } | hugo | pkg | 0.154.5_1 |
 | :material-check-circle:{ .current } | hugo | pkg-latest | 0.154.5_1_1 |
 | :material-check-circle:{ .current } | hugo | latest | 0.154.5 |
-| :material-check-circle:{ .current } | immich-ml | latest | 2.4.1 |
-| :material-check-circle:{ .current } | immich-server | latest | 2.4.1 |
+| :material-close-circle:{ .outdated } | immich-ml | latest | 2.4.1 → **2.5.0** |
+| :material-close-circle:{ .outdated } | immich-server | latest | 2.4.1 → **2.5.0** |
 | :material-check-circle:{ .current } | jellyfin | pkg | 10.11.5 |
 | :material-check-circle:{ .current } | jellyfin | pkg-latest | 10.11.5 |
 | :material-check-circle:{ .current } | lidarr | pkg | 2.13.3.4711_1 |
@@ -29,7 +29,7 @@
 | :material-check-circle:{ .current } | nextcloud | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
 | :material-check-circle:{ .current } | overseerr | latest | 1.34.0 |
-| :material-check-circle:{ .current } | plex | latest | 1.42.2.10156-f737b826c |
+| :material-close-circle:{ .outdated } | plex | latest | 1.42.2.10156-f737b826c → **1.43.0.10467-2b1ba6e69** |
 | :material-check-circle:{ .current } | postgres-14 | pkg | 14.20 |
 | :material-check-circle:{ .current } | postgres-14 | pkg-latest | 14.20 |
 | :material-check-circle:{ .current } | postgres-17 | pkg | 17.7 |
@@ -73,5 +73,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 32
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 29
+- :material-close-circle:{ .outdated } Outdated: 4
