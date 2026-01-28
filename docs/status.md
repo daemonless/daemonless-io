@@ -29,7 +29,7 @@
 | :material-check-circle:{ .current } | nextcloud | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
 | :material-check-circle:{ .current } | overseerr | latest | 1.34.0 |
-| :material-close-circle:{ .outdated } | plex | latest | 1.42.2.10156-f737b826c → **1.43.0.10467-2b1ba6e69** |
+| :material-check-circle:{ .current } | plex | latest | 1.43.0.10467-2b1ba6e69 |
 | :material-check-circle:{ .current } | postgres-14 | pkg | 14.20 |
 | :material-check-circle:{ .current } | postgres-14 | pkg-latest | 14.20 |
 | :material-check-circle:{ .current } | postgres-17 | pkg | 17.7 |
@@ -73,5 +73,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 29
-- :material-close-circle:{ .outdated } Outdated: 4
+- :material-check-circle:{ .current } Current: 30
+- :material-close-circle:{ .outdated } Outdated: 3
