@@ -15,7 +15,7 @@
 | :material-check-circle:{ .current } | homepage | latest | 1.9.0 |
 | :material-check-circle:{ .current } | hugo | pkg | 0.154.5_1 |
 | :material-check-circle:{ .current } | hugo | pkg-latest | 0.154.5_1_1 |
-| :material-check-circle:{ .current } | hugo | latest | 0.154.5 |
+| :material-check-circle:{ .current } | hugo | latest | 0.155.0 |
 | :material-close-circle:{ .outdated } | immich-ml | latest | 2.4.1 → **2.5.0** |
 | :material-close-circle:{ .outdated } | immich-server | latest | 2.4.1 → **2.5.0** |
 | :material-check-circle:{ .current } | jellyfin | pkg | 10.11.5 |
@@ -23,17 +23,19 @@
 | :material-check-circle:{ .current } | lidarr | pkg | 2.13.3.4711_1 |
 | :material-check-circle:{ .current } | lidarr | pkg-latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | lidarr | latest | 3.1.0.4875 |
+| :material-close-circle:{ .outdated } | mariadb-11.4 | pkg | 11.4.9-pkg → **11.4.9** |
+| :material-close-circle:{ .outdated } | mariadb-11.4 | pkg-latest | 11.4.9-pkg-latest → **11.4.9** |
 | :material-check-circle:{ .current } | mealie | latest | 3.9.2 |
 | :material-check-circle:{ .current } | n8n | latest | 2.4.6 |
 | :material-check-circle:{ .current } | nextcloud | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | nextcloud | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | openspeedtest | latest | 2.0.5 |
 | :material-check-circle:{ .current } | overseerr | latest | 1.34.0 |
-| :material-check-circle:{ .current } | plex | latest | 1.43.0.10467-2b1ba6e69 |
-| :material-check-circle:{ .current } | postgres-14 | pkg | 14.20 |
-| :material-check-circle:{ .current } | postgres-14 | pkg-latest | 14.20 |
-| :material-check-circle:{ .current } | postgres-17 | pkg | 17.7 |
-| :material-check-circle:{ .current } | postgres-17 | pkg-latest | 17.7 |
+| :material-check-circle:{ .current } | plex | latest | 1.42.2.10156-f737b826c |
+| :material-close-circle:{ .outdated } | postgres-14 | pkg | 14.20-pkg → **14.20_1** |
+| :material-close-circle:{ .outdated } | postgres-14 | pkg-latest | 14.20-pkg-latest → **14.20_1** |
+| :material-close-circle:{ .outdated } | postgres-17 | pkg | 17.7-pkg → **17.7_1** |
+| :material-close-circle:{ .outdated } | postgres-17 | pkg-latest | 17.7-pkg-latest → **17.7_1** |
 | :material-check-circle:{ .current } | prowlarr | pkg | 2.0.5.5160_1 |
 | :material-check-circle:{ .current } | prowlarr | pkg-latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | prowlarr | latest | 2.3.0.5236 |
@@ -73,5 +75,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 30
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 28
+- :material-close-circle:{ .outdated } Outdated: 6
