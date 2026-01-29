@@ -96,6 +96,7 @@ nav:
       - Traefik: images/traefik.md
       - Woodpecker CI: images/woodpecker.md
     - Media Management:
+      - BookLore: images/booklore.md
       - Lidarr: images/lidarr.md
       - Overseerr: images/overseerr.md
       - Prowlarr: images/prowlarr.md

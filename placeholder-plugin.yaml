@@ -798,6 +798,20 @@ placeholders:
   MARIADB_CONFIG_PATH:
     default: mariadb
     description: MariaDB /config Path
+  BOOKLORE_PORT:
+    default: '6060'
+    description: BookLore Host Port
+    validators:
+    - port_number
+  BOOKLORE_CONFIG_PATH:
+    default: booklore
+    description: BookLore /config Path
+  BOOKLORE_BOOKDROP_PATH:
+    default: booklore/bookdrop
+    description: BookLore /bookdrop Path
+  BOOKLORE_APP_DATA_PATH:
+    default: booklore/app/data
+    description: BookLore /app/data Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
