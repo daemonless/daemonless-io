@@ -63,6 +63,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 | Image | Port | Description |
 |-------|------|-------------|
 | [:simple-postgresql: Immich PostgreSQL](immich-postgres.md) | 5432 | PostgreSQL 14 with pgvector/pgvecto.rs extensions for Immich. |
+| [:material-database: MariaDB](mariadb.md) | 3306 | MariaDB database server for FreeBSD. |
 | [:simple-postgresql: PostgreSQL](postgres.md) | 5432 | The World's Most Advanced Open Source Relational Database on FreeBSD. |
 | [:simple-redis: Redis](redis.md) | 6379 | Redis key-value store on FreeBSD. |
 

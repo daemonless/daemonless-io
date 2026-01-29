@@ -790,6 +790,14 @@ placeholders:
     description: Cloudflared Host Port
     validators:
     - port_number
+  MARIADB_PORT:
+    default: '3306'
+    description: MariaDB Host Port
+    validators:
+    - port_number
+  MARIADB_CONFIG_PATH:
+    default: mariadb
+    description: MariaDB /config Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

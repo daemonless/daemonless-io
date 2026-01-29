@@ -332,7 +332,17 @@ def update_placeholders(configs):
 
 def generate_index_page(configs):
     """Generate the Fleet index page."""
-    lines = ["# Container Fleet", "", "Explore our collection of high-performance, FreeBSD-native OCI containers.", ""]
+    lines = [
+        "---",
+        'title: "Container Fleet: 30+ Native FreeBSD OCI Images"',
+        'description: "Browse all daemonless container images. Media servers, downloaders, databases, and utilities - all running natively on FreeBSD with Podman and ocijail."',
+        "---",
+        "",
+        "# Container Fleet",
+        "",
+        "Explore our collection of high-performance, FreeBSD-native OCI containers.",
+        ""
+    ]
     categories = ["Base", "Infrastructure", "Network", "Media Management", "Downloaders", "Media Servers", "Databases", "Photos & Media", "Utilities", "Uncategorized"]
 
     by_category = {}

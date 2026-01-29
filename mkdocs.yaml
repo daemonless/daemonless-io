@@ -80,6 +80,7 @@ nav:
       - Nginx Base: images/nginx-base.md
     - Databases:
       - Immich PostgreSQL: images/immich-postgres.md
+      - MariaDB: images/mariadb.md
       - PostgreSQL: images/postgres.md
       - Redis: images/redis.md
     - Development:
