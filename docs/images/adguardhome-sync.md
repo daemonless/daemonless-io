@@ -89,16 +89,21 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_SYNC_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8080` | TCP | Metrics/API |
+
 
 !!! info "Implementation Details"
 
@@ -107,3 +112,8 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_SYNC_PORT@`
 
 [Website](https://github.com/bakito/adguardhome-sync){ .md-button .md-button--primary }
 [Source Code](https://github.com/bakito/adguardhome-sync){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

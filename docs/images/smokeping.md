@@ -92,17 +92,22 @@ Access the Web UI at: `http://localhost:@SMOKEPING_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (Probes, Targets, etc.) |
 | `/data` | Data directory (RRD database files) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8081` | TCP |  |
+
 
 !!! info "Implementation Details"
 
@@ -112,3 +117,7 @@ Access the Web UI at: `http://localhost:@SMOKEPING_PORT@`
 [Website](https://oss.oetiker.ch/smokeping/){ .md-button .md-button--primary }
 [Source Code](https://github.com/oetiker/smokeping){ .md-button }
 [FreshPorts](https://www.freshports.org/net-mgmt/smokeping/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

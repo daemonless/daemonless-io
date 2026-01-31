@@ -97,11 +97,15 @@ Access the Web UI at: `http://localhost:@TRAEFIK_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (traefik.yml, dynamic/, letsencrypt/) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -109,6 +113,7 @@ Access the Web UI at: `http://localhost:@TRAEFIK_PORT@`
 | `80` | TCP | HTTP |
 | `443` | TCP | HTTPS |
 | `8080` | TCP | Dashboard/API |
+
 
 !!! info "Implementation Details"
 
@@ -118,3 +123,7 @@ Access the Web UI at: `http://localhost:@TRAEFIK_PORT@`
 [Website](https://traefik.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/traefik/traefik){ .md-button }
 [FreshPorts](https://www.freshports.org/net/traefik/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

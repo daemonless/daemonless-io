@@ -112,17 +112,22 @@ Access the Web UI at: `http://localhost:@IMMICH_SERVER_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (unused but mounted) |
 | `/data` | Media storage (photos, videos, thumbnails) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `2283` | TCP | Web UI/API |
+
 
 This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
@@ -133,3 +138,8 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 [Website](https://immich.app/){ .md-button .md-button--primary }
 [Source Code](https://github.com/immich-app/immich){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

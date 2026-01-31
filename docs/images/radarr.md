@@ -105,6 +105,8 @@ Access the Web UI at: `http://localhost:@RADARR_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
@@ -112,11 +114,14 @@ Access the Web UI at: `http://localhost:@RADARR_PORT@`
 | `/config` | Configuration directory |
 | `/movies` | Movie library (Optional) |
 | `/downloads` | Download directory (Optional) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `7878` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -127,3 +132,7 @@ Access the Web UI at: `http://localhost:@RADARR_PORT@`
 [Website](https://radarr.video/){ .md-button .md-button--primary }
 [Source Code](https://github.com/Radarr/Radarr){ .md-button }
 [FreshPorts](https://www.freshports.org/net-p2p/radarr/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

@@ -82,11 +82,14 @@ Access the Web UI at: `http://localhost:@CLOUDFLARED_PORT@`
 |----------|---------|-------------|
 | `TUNNEL_TOKEN` | `YOUR_CLOUDFLARE_TOKEN_HERE` | Required: The Cloudflare Tunnel token. |
 | `TUNNEL_METRICS` | `0.0.0.0:2000` | Optional: Address to bind metrics server (default: 0.0.0.0:2000) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `2000` | TCP |  |
+
 
 !!! info "Implementation Details"
 
@@ -96,3 +99,7 @@ Access the Web UI at: `http://localhost:@CLOUDFLARED_PORT@`
 [Website](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps){ .md-button .md-button--primary }
 [Source Code](https://github.com/cloudflare/cloudflared){ .md-button }
 [FreshPorts](https://www.freshports.org/net/cloudflared/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

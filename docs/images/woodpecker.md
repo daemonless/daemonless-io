@@ -108,17 +108,22 @@ Access the Web UI at: `http://localhost:@WOODPECKER_PORT@`
 | `PUID` | `1000` |  |
 | `PGID` | `1000` |  |
 | `TZ` | `UTC` |  |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, logs) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8000` | TCP | Server Web UI/API |
 | `9000` | TCP | GRPC (Server/Agent communication) |
+
 
 !!! info "Implementation Details"
 
@@ -128,3 +133,7 @@ Access the Web UI at: `http://localhost:@WOODPECKER_PORT@`
 [Website](https://woodpecker-ci.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/woodpecker-ci/woodpecker){ .md-button }
 [FreshPorts](https://www.freshports.org/devel/woodpecker-server/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

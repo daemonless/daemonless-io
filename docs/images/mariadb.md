@@ -107,16 +107,21 @@ Access the Web UI at: `http://localhost:@MARIADB_PORT@`
 | `MYSQL_DATABASE` | `mydb` | Database to create on first run |
 | `MYSQL_USER` | `myuser` | User to create on first run |
 | `MYSQL_PASSWORD` | `mypassword` | Password for MYSQL_USER |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration and database data directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3306` | TCP | MariaDB port |
+
 
 !!! info "Implementation Details"
 
@@ -126,3 +131,7 @@ Access the Web UI at: `http://localhost:@MARIADB_PORT@`
 [Website](https://mariadb.org/){ .md-button .md-button--primary }
 [Source Code](https://mariadb.org/download/){ .md-button }
 [FreshPorts](https://www.freshports.org/databases/mariadb114-server/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

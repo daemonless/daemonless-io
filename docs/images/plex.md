@@ -127,6 +127,8 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 | `TZ` | `UTC` | Timezone for the container |
 | `VERSION` | `container` | Plex update channel (container, public, plexpass) |
 | `PLEX_CLAIM` | `` | Optional: Claim token from https://plex.tv/claim |
+
+
 ### Volumes
 
 | Path | Description |
@@ -135,6 +137,8 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 | `/transcode` | Transcode directory (Optional) |
 | `/movies` | Movie library |
 | `/tv` | TV series library |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -148,6 +152,7 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 | `32469` | TCP |  |
 | `8324` | TCP |  |
 
+
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
@@ -156,3 +161,7 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 [Website](https://plex.tv/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/plex){ .md-button }
 [FreshPorts](https://www.freshports.org/multimedia/plexmediaserver/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

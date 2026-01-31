@@ -165,9 +165,10 @@ Access the Web UI at: `http://localhost:{{ port_var }}`
 {%- for e in env %}
 | `{{ e.name }}` | `{{ e.default }}` | {{ e.desc }} |
 {%- endfor %}
-{%- endif %}
+{% endif %}
 
 {%- if volumes %}
+
 ### Volumes
 
 | Path | Description |
@@ -175,9 +176,10 @@ Access the Web UI at: `http://localhost:{{ port_var }}`
 {%- for v in volumes %}
 | `{{ v.path }}` | {{ v.desc }}{{ " (Optional)" if v.optional else "" }} |
 {%- endfor %}
-{%- endif %}
+{% endif %}
 
 {%- if ports %}
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -185,7 +187,7 @@ Access the Web UI at: `http://localhost:{{ port_var }}`
 {%- for p in ports %}
 | `{{ p.port }}` | {{ p.protocol|upper }} | {{ p.desc }} |
 {%- endfor %}
-{%- endif %}
+{% endif %}
 
 {%- if notes %}
 
@@ -204,6 +206,10 @@ Access the Web UI at: `http://localhost:{{ port_var }}`
 [Website]({{ web_url }}){ .md-button .md-button--primary }
 [Source Code]({{ upstream_url }}){ .md-button }
 {% if freshports_url %}[FreshPorts]({{ freshports_url }}){ .md-button }{% endif %}
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
 
 {%- else -%}
 # {{ title }}

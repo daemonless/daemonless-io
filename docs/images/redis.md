@@ -91,16 +91,21 @@ Access the Web UI at: `http://localhost:@REDIS_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data and configuration directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `6379` | TCP | Redis port |
+
 
 !!! info "Implementation Details"
 
@@ -110,3 +115,7 @@ Access the Web UI at: `http://localhost:@REDIS_PORT@`
 [Website](https://redis.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/redis/redis){ .md-button }
 [FreshPorts](https://www.freshports.org/databases/redis/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

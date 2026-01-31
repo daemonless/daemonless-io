@@ -136,12 +136,16 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/opt/adguardhome/conf` | Configuration files |
 | `/opt/adguardhome/work` | Work directory (database, logs, data) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -162,6 +166,7 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 | `6060` | TCP | Admin API |
 | `8853` | TCP |  |
 
+
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
@@ -170,3 +175,7 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 [Website](https://adguard.com/adguard-home.html){ .md-button .md-button--primary }
 [Source Code](https://github.com/AdguardTeam/AdGuardHome){ .md-button }
 [FreshPorts](https://www.freshports.org/net-mgmt/adguardhome/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

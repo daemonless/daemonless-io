@@ -95,16 +95,21 @@ Access the Web UI at: `http://localhost:@TAUTULLI_PORT@`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `TAUTULLI_DOCKER` | `True` | Disable internal updater (True/False) |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8181` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -114,3 +119,7 @@ Access the Web UI at: `http://localhost:@TAUTULLI_PORT@`
 [Website](https://tautulli.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/Tautulli/Tautulli){ .md-button }
 [FreshPorts](https://www.freshports.org/multimedia/tautulli/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

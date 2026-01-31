@@ -111,6 +111,8 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 | `TZ` | `UTC` | Timezone for the container |
 | `USER` | `` | Optional: Web UI Username |
 | `PASS` | `<PASS>` | Optional: Web UI Password |
+
+
 ### Volumes
 
 | Path | Description |
@@ -118,6 +120,8 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 | `/config` | Configuration directory |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for .torrent files |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -125,6 +129,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 | `9091` | TCP | Web UI |
 | `51413` | TCP | Torrent peer port |
 | `51413` | TCP | Torrent peer port |
+
 
 !!! info "Implementation Details"
 
@@ -134,3 +139,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 [Website](https://transmissionbt.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/transmission/transmission){ .md-button }
 [FreshPorts](https://www.freshports.org/net-p2p/transmission-daemon/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

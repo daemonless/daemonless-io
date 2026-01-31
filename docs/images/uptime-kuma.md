@@ -105,16 +105,21 @@ Access the Web UI at: `http://localhost:@UPTIME_KUMA_PORT@`
 | `UPTIME_KUMA_ALLOW_ALL_CHROME_EXEC` | `1` |  |
 | `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` | `1` |  |
 | `DATA_DIR` | `/config` |  |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, settings) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3001` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -124,3 +129,7 @@ Access the Web UI at: `http://localhost:@UPTIME_KUMA_PORT@`
 [Website](https://uptime.kuma.pet/){ .md-button .md-button--primary }
 [Source Code](https://github.com/louislam/uptime-kuma){ .md-button }
 [FreshPorts](https://www.freshports.org/net-mgmt/uptime-kuma/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

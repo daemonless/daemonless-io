@@ -105,6 +105,8 @@ Access the Web UI at: `http://localhost:@SONARR_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
@@ -112,11 +114,14 @@ Access the Web UI at: `http://localhost:@SONARR_PORT@`
 | `/config` | Configuration directory |
 | `/tv` | TV Series library (Optional) |
 | `/downloads` | Download directory (Optional) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8989` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -127,3 +132,7 @@ Access the Web UI at: `http://localhost:@SONARR_PORT@`
 [Website](https://sonarr.tv/){ .md-button .md-button--primary }
 [Source Code](https://github.com/Sonarr/Sonarr){ .md-button }
 [FreshPorts](https://www.freshports.org/net-p2p/sonarr/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

@@ -69,14 +69,12 @@ plugins:
 
 nav:
   - Home: index.md
-  - Philosophy: philosophy.md
-  - Quick Start: quick-start.md
-  - Architecture: architecture.md
+  - Getting Started: quick-start.md
   - Fleet:
     - Overview: images/index.md
     - Base:
       - Arr Base: images/arr-base.md
-      - Base: images/base.md
+      - FreeBSD Base: images/base.md
       - Nginx Base: images/nginx-base.md
     - Databases:
       - Immich PostgreSQL: images/immich-postgres.md
@@ -128,10 +126,15 @@ nav:
       - Permissions: guides/permissions.md
       - Networking: guides/networking.md
       - ZFS Storage: guides/zfs.md
-      - Image Tagging: guides/tagging.md
-      - Container Testing (CIT): guides/cit.md
-      - CI/CD Pipeline: guides/ci-cd.md
       - ocijail Patch: guides/ocijail-patch.md
       - Operations: guides/operations.md
+  - Contributing:
       - Development: guides/development.md
+      - CI/CD Pipeline: guides/ci-cd.md
+      - Container Testing (CIT): guides/cit.md
+      - Image Tagging: guides/tagging.md
       - OCI Compliance: guides/oci-compliance.md
+  - About:
+      - Philosophy: philosophy.md
+      - Architecture: architecture.md
+      - Community: community.md

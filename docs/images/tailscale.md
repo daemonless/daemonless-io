@@ -77,11 +77,14 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 |----------|---------|-------------|
 | `TS_AUTHKEY` | `tskey-auth-xxxx` | Optional: Tailscale Auth Key for automatic login |
 | `TS_EXTRA_ARGS` | `--advertise-exit-node` | Optional: Additional arguments for tailscale up |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | State directory (tailscaled.state) |
+
 
 !!! info "Implementation Details"
 
@@ -91,3 +94,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 [Website](https://tailscale.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/tailscale/tailscale){ .md-button }
 [FreshPorts](https://www.freshports.org/security/tailscale/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

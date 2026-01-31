@@ -2,9 +2,6 @@
 title: "BookLore on FreeBSD: Native OCI Container using Podman & Jails"
 description: "Install BookLore on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
 placeholders:
-  BOOKLORE_PORT:
-    default: "6060"
-    description: BookLore Host Port
 ---
 
 # :material-book-open-page-variant: BookLore
@@ -37,15 +34,13 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - PUID=@PUID@
           - PGID=@PGID@
           - TZ=@TZ@
-          - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/booklore
+          - SPRING_DATASOURCE_URL=jdbc:mariadb://127.0.0.1:3306/booklore
           - SPRING_DATASOURCE_USERNAME=booklore
           - SPRING_DATASOURCE_PASSWORD=changeme
         volumes:
           - @CONTAINER_CONFIG_ROOT@/@BOOKLORE_APP_DATA_PATH@:/app/data
           - @BOOKS_PATH@:/books
           - @CONTAINER_CONFIG_ROOT@/@BOOKLORE_BOOKDROP_PATH@:/bookdrop
-        ports:
-          - @BOOKLORE_PORT@:6060
         restart: unless-stopped
     ```
 
@@ -53,11 +48,10 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     ```bash
     podman run -d --name booklore \
-      -p @BOOKLORE_PORT@:6060 \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      -e SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/booklore \
+      -e SPRING_DATASOURCE_URL=jdbc:mariadb://127.0.0.1:3306/booklore \
       -e SPRING_DATASOURCE_USERNAME=booklore \
       -e SPRING_DATASOURCE_PASSWORD=changeme \
       -v @CONTAINER_CONFIG_ROOT@/@BOOKLORE_APP_DATA_PATH@:/app/data \ 
@@ -79,18 +73,14 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           PUID: "@PUID@"
           PGID: "@PGID@"
           TZ: "@TZ@"
-          SPRING_DATASOURCE_URL: "jdbc:mariadb://mariadb:3306/booklore"
+          SPRING_DATASOURCE_URL: "jdbc:mariadb://127.0.0.1:3306/booklore"
           SPRING_DATASOURCE_USERNAME: "booklore"
           SPRING_DATASOURCE_PASSWORD: "changeme"
-        ports:
-          - "@BOOKLORE_PORT@:6060"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@BOOKLORE_APP_DATA_PATH@:/app/data"
           - "@BOOKS_PATH@:/books"
           - "@CONTAINER_CONFIG_ROOT@/@BOOKLORE_BOOKDROP_PATH@:/bookdrop"
     ```
-
-Access the Web UI at: `http://localhost:@BOOKLORE_PORT@`
 
 ### Interactive Configuration
 
@@ -104,9 +94,11 @@ Access the Web UI at: `http://localhost:@BOOKLORE_PORT@`
 | `PUID` | `1000` |  |
 | `PGID` | `1000` |  |
 | `TZ` | `Etc/UTC` |  |
-| `SPRING_DATASOURCE_URL` | `jdbc:mariadb://mariadb:3306/booklore` | MariaDB JDBC URL (e.g., jdbc:mariadb://mariadb:3306/booklore) |
+| `SPRING_DATASOURCE_URL` | `jdbc:mariadb://127.0.0.1:3306/booklore` | MariaDB JDBC URL (e.g., jdbc:mariadb://mariadb:3306/booklore) |
 | `SPRING_DATASOURCE_USERNAME` | `booklore` | Database username |
 | `SPRING_DATASOURCE_PASSWORD` | `changeme` | Database password |
+
+
 ### Volumes
 
 | Path | Description |
@@ -114,11 +106,27 @@ Access the Web UI at: `http://localhost:@BOOKLORE_PORT@`
 | `/app/data` | Configuration and application data |
 | `/books` | Book library directory |
 | `/bookdrop` | Drop folder for automatic imports |
-### Ports
 
-| Port | Protocol | Description |
-|------|----------|-------------|
-| `6060` | TCP | Web interface |
+
+## Networking
+
+This compose uses `network_mode: host` so services communicate via `127.0.0.1`.
+
+For isolated networking (multiple stacks, no port conflicts), use bridge mode with the [dnsname CNI plugin](https://github.com/containers/dnsname):
+
+```yaml
+services:
+  booklore:
+    # remove network_mode: host, add ports
+    ports:
+      - "6060:6060"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mariadb://mariadb:3306/booklore"
+
+  mariadb:
+    # remove network_mode: host
+    # container name becomes DNS hostname
+```
 
 ## Migration from Official Image
 
@@ -138,3 +146,8 @@ The MariaDB data format is compatible between Linux and FreeBSD.
 
 [Website](https://booklore.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/booklore-app/booklore){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

@@ -91,16 +91,21 @@ Access the Web UI at: `http://localhost:@HOMEPAGE_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory (settings, bookmarks, services) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3000` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -110,3 +115,7 @@ Access the Web UI at: `http://localhost:@HOMEPAGE_PORT@`
 [Website](https://gethomepage.dev/){ .md-button .md-button--primary }
 [Source Code](https://github.com/gethomepage/homepage){ .md-button }
 [FreshPorts](https://www.freshports.org/www/homepage/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

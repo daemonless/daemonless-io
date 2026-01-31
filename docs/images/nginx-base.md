@@ -64,3 +64,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
 [Website](https://nginx.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/nginx-base){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

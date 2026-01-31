@@ -108,6 +108,8 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
@@ -116,11 +118,14 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 | `/cache` | Cache directory (Optional) |
 | `/tv` | TV Series library (Optional) |
 | `/movies` | Movie library (Optional) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8096` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -131,3 +136,7 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 [Website](https://jellyfin.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/jellyfin/jellyfin){ .md-button }
 [FreshPorts](https://www.freshports.org/multimedia/jellyfin/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

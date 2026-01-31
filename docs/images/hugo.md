@@ -95,16 +95,21 @@ Access the Web UI at: `http://localhost:@HUGO_PORT@`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `HUGO_BASEURL` | `http://localhost:1313` | Hostname (and path) to the root |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/app` | Website source code (mount your repo here) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `1313` | TCP | Dev Server Port |
+
 
 !!! info "Implementation Details"
 
@@ -114,3 +119,7 @@ Access the Web UI at: `http://localhost:@HUGO_PORT@`
 [Website](https://gohugo.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/gohugoio/hugo){ .md-button }
 [FreshPorts](https://www.freshports.org/www/gohugo/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

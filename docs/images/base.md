@@ -1,15 +1,15 @@
 ---
-title: "Base on FreeBSD: Native OCI Container using Podman & Jails"
-description: "Install Base on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+title: "FreeBSD Base on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install FreeBSD Base on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
 placeholders:
 ---
 
-# :simple-freebsd: Base
+# :simple-freebsd: FreeBSD Base
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/base/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/base/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/base?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/base/commits)
 
-FreeBSD base image with s6 supervision.
+FreeBSD base image with s6 supervision
 
 ## Version Tags
 
@@ -64,3 +64,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
 [Website](https://www.freebsd.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/freebsd/freebsd-src){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

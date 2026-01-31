@@ -94,17 +94,22 @@ Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration and application files |
 | `/data` | User data storage |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8082` | TCP |  |
+
 
 !!! info "Implementation Details"
 
@@ -114,3 +119,7 @@ Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
 [Website](https://nextcloud.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/nextcloud/server){ .md-button }
 [FreshPorts](https://www.freshports.org/www/nextcloud/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

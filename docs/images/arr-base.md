@@ -64,3 +64,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
 [Website](https://wiki.servarr.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/arr-base){ .md-button }
+
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

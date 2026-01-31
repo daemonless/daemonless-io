@@ -107,6 +107,8 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
@@ -114,6 +116,8 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 | `/config` | Configuration directory (settings.json, WireGuard configs) |
 | `/downloads` | Download directory |
 | `/watch` | Watch directory for torrent files |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -121,6 +125,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 | `9091` | TCP | Web UI |
 | `51413` | TCP | Torrent traffic (TCP/UDP) |
 | `51413` | TCP | Torrent traffic (TCP/UDP) |
+
 
 !!! info "Implementation Details"
 
@@ -130,3 +135,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_WIREGUARD_PORT@`
 [Website](https://transmissionbt.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/transmission/transmission){ .md-button }
 [FreshPorts](https://www.freshports.org/net-p2p/transmission-daemon/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

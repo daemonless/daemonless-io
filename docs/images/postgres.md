@@ -103,16 +103,21 @@ Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
 | `PUID` | `1000` |  |
 | `PGID` | `1000` |  |
 | `TZ` | `UTC` |  |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/var/lib/postgresql/data` | Database data directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `5432` | TCP | PostgreSQL port |
+
 
 !!! info "Implementation Details"
 
@@ -122,3 +127,7 @@ Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
 [Website](https://www.postgresql.org/){ .md-button .md-button--primary }
 [Source Code](https://www.postgresql.org/){ .md-button }
 [FreshPorts](https://www.freshports.org/databases/postgresql17-server/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

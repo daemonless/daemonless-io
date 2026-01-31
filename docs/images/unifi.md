@@ -117,11 +117,15 @@ Access the Web UI at: `http://localhost:@UNIFI_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration and database directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
@@ -134,6 +138,7 @@ Access the Web UI at: `http://localhost:@UNIFI_PORT@`
 | `3478` | TCP | STUN (UDP) |
 | `10001` | TCP | Device discovery (UDP) |
 
+
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
@@ -143,3 +148,7 @@ Access the Web UI at: `http://localhost:@UNIFI_PORT@`
 [Website](https://ui.com/){ .md-button .md-button--primary }
 [Source Code](https://ui.com/){ .md-button }
 [FreshPorts](https://www.freshports.org/net-mgmt/unifi8/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

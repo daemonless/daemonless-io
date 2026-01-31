@@ -94,17 +94,22 @@ Access the Web UI at: `http://localhost:@GITEA_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration, repositories, and data directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3000` | TCP | Web UI |
 | `2222` | TCP |  |
+
 
 !!! info "Implementation Details"
 
@@ -114,3 +119,7 @@ Access the Web UI at: `http://localhost:@GITEA_PORT@`
 [Website](https://about.gitea.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/go-gitea/gitea){ .md-button }
 [FreshPorts](https://www.freshports.org/www/gitea/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

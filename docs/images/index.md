@@ -12,7 +12,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 | Image | Port | Description |
 |-------|------|-------------|
 | [:material-layers: Arr Base](arr-base.md) | - | Shared base image for *Arr applications (Radarr, Sonarr, Lidarr, Prowlarr) containing common dependencies. |
-| [:simple-freebsd: Base](base.md) | - | FreeBSD base image with s6 supervision. |
+| [:simple-freebsd: FreeBSD Base](base.md) | - | FreeBSD base image with s6 supervision |
 | [:simple-nginx: Nginx Base](nginx-base.md) | - | Shared base image for Nginx-based applications. |
 
 ## Infrastructure
@@ -36,7 +36,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
-| [:material-book-open-page-variant: BookLore](booklore.md) | 6060 | Self-hosted digital library with smart shelves, metadata, OPDS support, and built-in reader. |
+| [:material-book-open-page-variant: BookLore](booklore.md) | - | Self-hosted digital library with smart shelves, metadata, OPDS support, and built-in reader. |
 | [:material-music: Lidarr](lidarr.md) | 8686 | Lidarr music management on FreeBSD. |
 | [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD. |
 | [:material-magnet: Prowlarr](prowlarr.md) | 9696 | Prowlarr indexer management on FreeBSD. |

@@ -99,16 +99,21 @@ Access the Web UI at: `http://localhost:@PROWLARR_PORT@`
 | `PUID` | `1000` | User ID for the application process |
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Configuration directory |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `9696` | TCP | Web UI |
+
 
 !!! info "Implementation Details"
 
@@ -119,3 +124,7 @@ Access the Web UI at: `http://localhost:@PROWLARR_PORT@`
 [Website](https://prowlarr.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/Prowlarr/Prowlarr){ .md-button }
 [FreshPorts](https://www.freshports.org/net-p2p/prowlarr/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.

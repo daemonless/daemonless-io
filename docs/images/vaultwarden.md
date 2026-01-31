@@ -95,16 +95,21 @@ Access the Web UI at: `http://localhost:@VAULTWARDEN_PORT@`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `SIGNUPS_ALLOWED` | `true` | Enable/disable user registration (true/false) |
+
+
 ### Volumes
 
 | Path | Description |
 |------|-------------|
 | `/config` | Data directory (database, attachments, icons) |
+
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `8080` | TCP |  |
+
 
 !!! info "Implementation Details"
 
@@ -114,3 +119,7 @@ Access the Web UI at: `http://localhost:@VAULTWARDEN_PORT@`
 [Website](https://github.com/dani-garcia/vaultwarden){ .md-button .md-button--primary }
 [Source Code](https://github.com/dani-garcia/vaultwarden){ .md-button }
 [FreshPorts](https://www.freshports.org/security/vaultwarden/){ .md-button }
+
+---
+
+Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
