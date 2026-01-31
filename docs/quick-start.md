@@ -134,6 +134,10 @@ podman run -d --name radarr \
 
 ---
 
+### Interactive Configuration
+
+<div class="placeholder-settings-panel"></div>
+
 ### Next Steps
 - [Available Images](images/index.md) — Full image fleet
 - [Permissions](guides/permissions.md) — Understanding PUID/PGID
