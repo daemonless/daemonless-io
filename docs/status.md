@@ -41,7 +41,7 @@
 | :material-check-circle:{ .current } | prowlarr | pkg-latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | prowlarr | latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | radarr | pkg | 5.28.0.10274 |
-| :material-check-circle:{ .current } | radarr | pkg-latest | 6.0.4.10291 |
+| :material-check-circle:{ .current } | radarr | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | radarr | latest | 6.0.4.10291 |
 | :material-check-circle:{ .current } | redis | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | redis | pkg-latest | 8.4.0_1 |
@@ -55,7 +55,7 @@
 | :material-check-circle:{ .current } | sonarr | pkg-latest | 4.0.16.2944 |
 | :material-check-circle:{ .current } | sonarr | latest | 4.0.16.2944 |
 | :material-check-circle:{ .current } | tailscale | pkg | 1.92.5_1 |
-| :material-check-circle:{ .current } | tailscale | pkg-latest | 1.92.5_1 |
+| :material-close-circle:{ .outdated } | tailscale | pkg-latest | 1.94.1 → **1.92.5_1** |
 | :material-check-circle:{ .current } | tautulli | pkg | 2.16.0_1 |
 | :material-check-circle:{ .current } | tautulli | pkg-latest | 2.16.0_1 |
 | :material-check-circle:{ .current } | tautulli | latest | 2.16.0 |
@@ -76,5 +76,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 34
+- :material-close-circle:{ .outdated } Outdated: 1
