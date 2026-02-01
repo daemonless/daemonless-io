@@ -20,8 +20,8 @@ placeholders:
 
 Get daemonless containers running on FreeBSD in 5 minutes.
 
-!!! info "Customize Your Guide"
-    Click the **Global Settings** :material-cog: icon in the top navigation bar to automatically update all commands and configuration snippets in this guide.
+!!! tip "Customize Your Guide"
+    Scroll to [Interactive Configuration](#interactive-configuration) at the bottom to set your PUID, PGID, and paths. All commands will update automatically.
 
 ## Prerequisites
 
