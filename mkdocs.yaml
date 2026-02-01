@@ -64,6 +64,10 @@ markdown_extensions:
 
 plugins:
   - search
+  - social:
+      cards_layout_options:
+        background_color: "#1a1a1a"
+        color: "#ff5555"
   - placeholder:
       placeholder_file: placeholder-plugin.yaml
 
