@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       smokeping:
-        image: ghcr.io/daemonless/smokeping:latest
+        image: @REGISTRY@/smokeping:latest
         container_name: smokeping
         environment:
           - PUID=@PUID@
@@ -55,7 +55,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@SMOKEPING_CONFIG_PATH@:/config \ 
       -v @CONTAINER_CONFIG_ROOT@/@SMOKEPING_DATA_PATH@:/data \ 
-      ghcr.io/daemonless/smokeping:latest
+      @REGISTRY@/smokeping:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -64,7 +64,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy smokeping
       containers.podman.podman_container:
         name: smokeping
-        image: ghcr.io/daemonless/smokeping:latest
+        image: @REGISTRY@/smokeping:latest
         state: started
         restart_policy: always
         env:
@@ -112,7 +112,7 @@ Access the Web UI at: `http://localhost:@SMOKEPING_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://oss.oetiker.ch/smokeping/){ .md-button .md-button--primary }
 [Source Code](https://github.com/oetiker/smokeping){ .md-button }

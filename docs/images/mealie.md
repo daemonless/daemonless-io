@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       mealie:
-        image: ghcr.io/daemonless/mealie:latest
+        image: @REGISTRY@/mealie:latest
         container_name: mealie
         environment:
           - BASE_URL=http://localhost:9000
@@ -55,7 +55,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@MEALIE_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/mealie:latest
+      @REGISTRY@/mealie:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -64,7 +64,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy mealie
       containers.podman.podman_container:
         name: mealie
-        image: ghcr.io/daemonless/mealie:latest
+        image: @REGISTRY@/mealie:latest
         state: started
         restart_policy: always
         env:
@@ -173,7 +173,7 @@ See [daemonless/postgres README](https://github.com/daemonless/postgres#migratin
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://mealie.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/mealie-recipes/mealie){ .md-button }

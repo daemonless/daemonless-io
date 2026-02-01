@@ -48,7 +48,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       {{ name }}:
-        image: ghcr.io/daemonless/{{ name }}:latest
+        image: @REGISTRY@/{{ name }}:latest
         container_name: {{ name }}
     {%- if env %}
         environment:
@@ -106,7 +106,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     {%- for v in volumes %}
       -v {{ v.root_var ~ "/" if v.root_var else "" }}{{ v.placeholder if v.placeholder else v.source }}:{{ v.path }} \ {{ " # optional" if v.optional else "" }}
     {%- endfor %}
-      ghcr.io/daemonless/{{ name }}:latest
+      @REGISTRY@/{{ name }}:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -115,7 +115,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy {{ name }}
       containers.podman.podman_container:
         name: {{ name }}
-        image: ghcr.io/daemonless/{{ name }}:latest
+        image: @REGISTRY@/{{ name }}:latest
         state: started
         restart_policy: always
     {%- if env %}
@@ -198,7 +198,7 @@ Access the Web UI at: `http://localhost:{{ port_var }}`
 !!! info "Implementation Details"
 
     - **User:** `{{ user }}` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     {%- if mlock %}
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
     {%- endif %}
@@ -221,7 +221,7 @@ Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
 {%- if main_port %}
 | **Port** | {{ main_port.port }} |
 {%- endif %}
-| **Registry** | `ghcr.io/daemonless/{{ name }}` |
+| **Registry** | `@REGISTRY@/{{ name }}` |
 | **Source** | [{{ upstream_url }}]({{ upstream_url }}) |
 {%- if web_url %}
 | **Website** | [{{ web_url }}]({{ web_url }}) |
@@ -234,7 +234,7 @@ Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
 ```yaml
 services:
   {{ name }}:
-    image: ghcr.io/daemonless/{{ name }}:latest
+    image: @REGISTRY@/{{ name }}:latest
     container_name: {{ name }}
     environment:
 {%- for e in env %}
@@ -278,7 +278,7 @@ podman run -d --name {{ name }} \
 {%- for v in volumes %}
   -v {% if v.root_var %}/path/to/containers/{{ v.source }}{% else %}/path/to/{{ v.source }}{% endif %}:{{ v.path }} \ {{ " # optional" if v.optional else "" }}
 {%- endfor %}
-  ghcr.io/daemonless/{{ name }}:latest
+  @REGISTRY@/{{ name }}:latest
 ```
 
 {%- if main_port %}
@@ -291,7 +291,7 @@ Access at: `http://localhost:{{ main_port.port }}`
 - name: Deploy {{ name }}
   containers.podman.podman_container:
     name: {{ name }}
-    image: ghcr.io/daemonless/{{ name }}:latest
+    image: @REGISTRY@/{{ name }}:latest
     state: started
     restart_policy: always
 {%- if env %}
@@ -347,7 +347,7 @@ Access at: `http://localhost:{{ main_port.port }}`
 ## Notes
 
 - **User:** `{{ user }}` (UID/GID set via PUID/PGID)
-- **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD)
+- **Base:** Built on `@REGISTRY@/base` (FreeBSD)
 {%- if mlock %}
 - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](https://daemonless.io/guides/ocijail-patch).
 {%- endif %}

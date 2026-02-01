@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       plex:
-        image: ghcr.io/daemonless/plex:latest
+        image: @REGISTRY@/plex:latest
         container_name: plex
         environment:
           - PUID=@PUID@
@@ -77,7 +77,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@PLEX_TRANSCODE_PATH@:/transcode \  # optional
       -v @MOVIES_PATH@:/movies \ 
       -v @TV_PATH@:/tv \ 
-      ghcr.io/daemonless/plex:latest
+      @REGISTRY@/plex:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -86,7 +86,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy plex
       containers.podman.podman_container:
         name: plex
-        image: ghcr.io/daemonless/plex:latest
+        image: @REGISTRY@/plex:latest
         state: started
         restart_policy: always
         env:
@@ -156,7 +156,7 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://plex.tv/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/plex){ .md-button }

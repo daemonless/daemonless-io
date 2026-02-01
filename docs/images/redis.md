@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       redis:
-        image: ghcr.io/daemonless/redis:latest
+        image: @REGISTRY@/redis:latest
         container_name: redis
         environment:
           - PUID=@PUID@
@@ -55,7 +55,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@REDIS_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/redis:latest
+      @REGISTRY@/redis:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -64,7 +64,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy redis
       containers.podman.podman_container:
         name: redis
-        image: ghcr.io/daemonless/redis:latest
+        image: @REGISTRY@/redis:latest
         state: started
         restart_policy: always
         env:
@@ -110,7 +110,7 @@ Access the Web UI at: `http://localhost:@REDIS_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://redis.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/redis/redis){ .md-button }

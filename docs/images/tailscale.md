@@ -30,7 +30,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       tailscale:
-        image: ghcr.io/daemonless/tailscale:latest
+        image: @REGISTRY@/tailscale:latest
         container_name: tailscale
         environment:
           - TS_AUTHKEY=tskey-auth-xxxx
@@ -47,7 +47,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TS_AUTHKEY=tskey-auth-xxxx \
       -e TS_EXTRA_ARGS=--advertise-exit-node \
       -v @CONTAINER_CONFIG_ROOT@/@TAILSCALE_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/tailscale:latest
+      @REGISTRY@/tailscale:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -56,7 +56,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy tailscale
       containers.podman.podman_container:
         name: tailscale
-        image: ghcr.io/daemonless/tailscale:latest
+        image: @REGISTRY@/tailscale:latest
         state: started
         restart_policy: always
         env:
@@ -89,7 +89,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 !!! info "Implementation Details"
 
     - **User:** `root` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://tailscale.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/tailscale/tailscale){ .md-button }

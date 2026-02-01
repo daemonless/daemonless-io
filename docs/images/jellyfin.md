@@ -36,7 +36,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       jellyfin:
-        image: ghcr.io/daemonless/jellyfin:latest
+        image: @REGISTRY@/jellyfin:latest
         container_name: jellyfin
         environment:
           - PUID=@PUID@
@@ -67,7 +67,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@:/cache \  # optional
       -v @TV_PATH@:/tv \  # optional
       -v @MOVIES_PATH@:/movies \  # optional
-      ghcr.io/daemonless/jellyfin:latest
+      @REGISTRY@/jellyfin:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -76,7 +76,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy jellyfin
       containers.podman.podman_container:
         name: jellyfin
-        image: ghcr.io/daemonless/jellyfin:latest
+        image: @REGISTRY@/jellyfin:latest
         state: started
         restart_policy: always
         env:
@@ -130,7 +130,7 @@ Access the Web UI at: `http://localhost:@JELLYFIN_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
 [Website](https://jellyfin.org/){ .md-button .md-button--primary }

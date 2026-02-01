@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       transmission:
-        image: ghcr.io/daemonless/transmission:latest
+        image: @REGISTRY@/transmission:latest
         container_name: transmission
         environment:
           - PUID=@PUID@
@@ -67,7 +67,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_CONFIG_PATH@:/config \ 
       -v @DOWNLOADS_PATH@:/downloads \ 
       -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WATCH_PATH@:/watch \ 
-      ghcr.io/daemonless/transmission:latest
+      @REGISTRY@/transmission:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -76,7 +76,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy transmission
       containers.podman.podman_container:
         name: transmission
-        image: ghcr.io/daemonless/transmission:latest
+        image: @REGISTRY@/transmission:latest
         state: started
         restart_policy: always
         env:
@@ -134,7 +134,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://transmissionbt.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/transmission/transmission){ .md-button }

@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       adguardhome:
-        image: ghcr.io/daemonless/adguardhome:latest
+        image: @REGISTRY@/adguardhome:latest
         container_name: adguardhome
         environment:
           - PUID=@PUID@
@@ -85,7 +85,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_CONF_PATH@:/opt/adguardhome/conf \ 
       -v @CONTAINER_CONFIG_ROOT@/@ADGUARDHOME_WORK_PATH@:/opt/adguardhome/work \ 
-      ghcr.io/daemonless/adguardhome:latest
+      @REGISTRY@/adguardhome:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -94,7 +94,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy adguardhome
       containers.podman.podman_container:
         name: adguardhome
-        image: ghcr.io/daemonless/adguardhome:latest
+        image: @REGISTRY@/adguardhome:latest
         state: started
         restart_policy: always
         env:
@@ -170,7 +170,7 @@ Access the Web UI at: `http://localhost:@ADGUARDHOME_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://adguard.com/adguard-home.html){ .md-button .md-button--primary }
 [Source Code](https://github.com/AdguardTeam/AdGuardHome){ .md-button }

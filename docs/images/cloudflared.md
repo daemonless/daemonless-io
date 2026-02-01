@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       cloudflared:
-        image: ghcr.io/daemonless/cloudflared:latest
+        image: @REGISTRY@/cloudflared:latest
         container_name: cloudflared
         environment:
           - TUNNEL_TOKEN=YOUR_CLOUDFLARE_TOKEN_HERE
@@ -50,7 +50,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -p @CLOUDFLARED_PORT@:2000 \
       -e TUNNEL_TOKEN=YOUR_CLOUDFLARE_TOKEN_HERE \
       -e TUNNEL_METRICS=0.0.0.0:2000 \
-      ghcr.io/daemonless/cloudflared:latest
+      @REGISTRY@/cloudflared:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -59,7 +59,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy cloudflared
       containers.podman.podman_container:
         name: cloudflared
-        image: ghcr.io/daemonless/cloudflared:latest
+        image: @REGISTRY@/cloudflared:latest
         state: started
         restart_policy: always
         env:
@@ -94,7 +94,7 @@ Access the Web UI at: `http://localhost:@CLOUDFLARED_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `root` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps){ .md-button .md-button--primary }
 [Source Code](https://github.com/cloudflare/cloudflared){ .md-button }

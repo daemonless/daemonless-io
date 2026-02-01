@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       hugo:
-        image: ghcr.io/daemonless/hugo:latest
+        image: @REGISTRY@/hugo:latest
         container_name: hugo
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -e HUGO_BASEURL=http://localhost:1313 \
       -v @CONTAINER_CONFIG_ROOT@/@HUGO_APP_PATH@:/app \ 
-      ghcr.io/daemonless/hugo:latest
+      @REGISTRY@/hugo:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy hugo
       containers.podman.podman_container:
         name: hugo
-        image: ghcr.io/daemonless/hugo:latest
+        image: @REGISTRY@/hugo:latest
         state: started
         restart_policy: always
         env:
@@ -114,7 +114,7 @@ Access the Web UI at: `http://localhost:@HUGO_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://gohugo.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/gohugoio/hugo){ .md-button }

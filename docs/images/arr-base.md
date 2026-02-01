@@ -28,7 +28,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       arr-base:
-        image: ghcr.io/daemonless/arr-base:latest
+        image: @REGISTRY@/arr-base:latest
         container_name: arr-base
         restart: unless-stopped
     ```
@@ -37,7 +37,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     ```bash
     podman run -d --name arr-base \
-      ghcr.io/daemonless/arr-base:latest
+      @REGISTRY@/arr-base:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -46,7 +46,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy arr-base
       containers.podman.podman_container:
         name: arr-base
-        image: ghcr.io/daemonless/arr-base:latest
+        image: @REGISTRY@/arr-base:latest
         state: started
         restart_policy: always
     ```
@@ -60,7 +60,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 !!! info "Implementation Details"
 
     - **User:** `root` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://wiki.servarr.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/arr-base){ .md-button }

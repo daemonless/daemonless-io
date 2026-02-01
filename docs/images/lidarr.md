@@ -36,7 +36,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       lidarr:
-        image: ghcr.io/daemonless/lidarr:latest
+        image: @REGISTRY@/lidarr:latest
         container_name: lidarr
         environment:
           - PUID=@PUID@
@@ -65,7 +65,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@LIDARR_CONFIG_PATH@:/config \ 
       -v @MUSIC_PATH@:/music \  # optional
       -v @DOWNLOADS_PATH@:/downloads \  # optional
-      ghcr.io/daemonless/lidarr:latest
+      @REGISTRY@/lidarr:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -74,7 +74,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy lidarr
       containers.podman.podman_container:
         name: lidarr
-        image: ghcr.io/daemonless/lidarr:latest
+        image: @REGISTRY@/lidarr:latest
         state: started
         restart_policy: always
         env:
@@ -126,7 +126,7 @@ Access the Web UI at: `http://localhost:@LIDARR_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
 [Website](https://lidarr.audio/){ .md-button .md-button--primary }

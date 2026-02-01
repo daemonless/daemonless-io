@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       immich-postgres:
-        image: ghcr.io/daemonless/immich-postgres:latest
+        image: @REGISTRY@/immich-postgres:latest
         container_name: immich-postgres
         environment:
           - POSTGRES_USER=postgres
@@ -53,7 +53,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e POSTGRES_PASSWORD=postgres \
       -e POSTGRES_DB=immich \
       -v @CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_PATH@:/var/lib/postgresql/data \ 
-      ghcr.io/daemonless/immich-postgres:latest
+      @REGISTRY@/immich-postgres:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -62,7 +62,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy immich-postgres
       containers.podman.podman_container:
         name: immich-postgres
-        image: ghcr.io/daemonless/immich-postgres:latest
+        image: @REGISTRY@/immich-postgres:latest
         state: started
         restart_policy: always
         env:
@@ -110,7 +110,7 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 !!! info "Implementation Details"
 
     - **User:** `postgres` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://immich.app/){ .md-button .md-button--primary }
 [Source Code](https://github.com/immich-app/immich){ .md-button }

@@ -28,7 +28,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       booklore:
-        image: ghcr.io/daemonless/booklore:latest
+        image: @REGISTRY@/booklore:latest
         container_name: booklore
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@BOOKLORE_APP_DATA_PATH@:/app/data \ 
       -v @BOOKS_PATH@:/books \ 
       -v @CONTAINER_CONFIG_ROOT@/@BOOKLORE_BOOKDROP_PATH@:/bookdrop \ 
-      ghcr.io/daemonless/booklore:latest
+      @REGISTRY@/booklore:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy booklore
       containers.podman.podman_container:
         name: booklore
-        image: ghcr.io/daemonless/booklore:latest
+        image: @REGISTRY@/booklore:latest
         state: started
         restart_policy: always
         env:
@@ -142,7 +142,7 @@ The MariaDB data format is compatible between Linux and FreeBSD.
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://booklore.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/booklore-app/booklore){ .md-button }

@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       woodpecker:
-        image: ghcr.io/daemonless/woodpecker:latest
+        image: @REGISTRY@/woodpecker:latest
         container_name: woodpecker
         environment:
           - WOODPECKER_SERVER_ENABLE=true
@@ -63,7 +63,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@WOODPECKER_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/woodpecker:latest
+      @REGISTRY@/woodpecker:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -72,7 +72,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy woodpecker
       containers.podman.podman_container:
         name: woodpecker
-        image: ghcr.io/daemonless/woodpecker:latest
+        image: @REGISTRY@/woodpecker:latest
         state: started
         restart_policy: always
         env:
@@ -128,7 +128,7 @@ Access the Web UI at: `http://localhost:@WOODPECKER_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://woodpecker-ci.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/woodpecker-ci/woodpecker){ .md-button }

@@ -2,6 +2,9 @@
 title: "Quick Start: FreeBSD Containers in 5 Minutes"
 description: "Get Podman containers running on FreeBSD fast. Install podman-suite, configure pf firewall, and deploy your first daemonless container with this step-by-step guide."
 placeholders:
+  REGISTRY:
+    default: "GitHub Container Registry"
+    description: "Container Registry"
   INTERFACE:
     default: "em0"
     description: "Network Interface"
@@ -89,7 +92,7 @@ podman run -d --name tautulli \
   -p 8181:8181 \
   -e PUID=@PUID@ -e PGID=@PGID@ \
   -v @CONTAINER_CONFIG_ROOT@/tautulli:/config \
-  ghcr.io/daemonless/tautulli:latest
+  @REGISTRY@/tautulli:latest
 ```
 
 Check the status:
@@ -108,7 +111,7 @@ podman run -d --name radarr \
   --annotation 'org.freebsd.jail.allow.mlock=true' \
   -e PUID=@PUID@ -e PGID=@PGID@ \
   -v @CONTAINER_CONFIG_ROOT@/radarr:/config \
-  ghcr.io/daemonless/radarr:latest
+  @REGISTRY@/radarr:latest
 ```
 
 ## Advanced Setup (Optional)

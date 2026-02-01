@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       mariadb:
-        image: ghcr.io/daemonless/mariadb:latest
+        image: @REGISTRY@/mariadb:latest
         container_name: mariadb
         environment:
           - PUID=@PUID@
@@ -63,7 +63,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e MYSQL_USER=myuser \
       -e MYSQL_PASSWORD=mypassword \
       -v @CONTAINER_CONFIG_ROOT@/@MARIADB_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/mariadb:latest
+      @REGISTRY@/mariadb:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -72,7 +72,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy mariadb
       containers.podman.podman_container:
         name: mariadb
-        image: ghcr.io/daemonless/mariadb:latest
+        image: @REGISTRY@/mariadb:latest
         state: started
         restart_policy: always
         env:
@@ -126,7 +126,7 @@ Access the Web UI at: `http://localhost:@MARIADB_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://mariadb.org/){ .md-button .md-button--primary }
 [Source Code](https://mariadb.org/download/){ .md-button }

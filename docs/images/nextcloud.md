@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       nextcloud:
-        image: ghcr.io/daemonless/nextcloud:latest
+        image: @REGISTRY@/nextcloud:latest
         container_name: nextcloud
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_CONFIG_PATH@:/config \ 
       -v @CONTAINER_CONFIG_ROOT@/@NEXTCLOUD_DATA_PATH@:/data \ 
-      ghcr.io/daemonless/nextcloud:latest
+      @REGISTRY@/nextcloud:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy nextcloud
       containers.podman.podman_container:
         name: nextcloud
-        image: ghcr.io/daemonless/nextcloud:latest
+        image: @REGISTRY@/nextcloud:latest
         state: started
         restart_policy: always
         env:
@@ -114,7 +114,7 @@ Access the Web UI at: `http://localhost:@NEXTCLOUD_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://nextcloud.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/nextcloud/server){ .md-button }

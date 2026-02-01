@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       traefik:
-        image: ghcr.io/daemonless/traefik:latest
+        image: @REGISTRY@/traefik:latest
         container_name: traefik
         environment:
           - PUID=@PUID@
@@ -59,7 +59,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@TRAEFIK_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/traefik:latest
+      @REGISTRY@/traefik:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -68,7 +68,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy traefik
       containers.podman.podman_container:
         name: traefik
-        image: ghcr.io/daemonless/traefik:latest
+        image: @REGISTRY@/traefik:latest
         state: started
         restart_policy: always
         env:
@@ -118,7 +118,7 @@ Access the Web UI at: `http://localhost:@TRAEFIK_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://traefik.io/){ .md-button .md-button--primary }
 [Source Code](https://github.com/traefik/traefik){ .md-button }

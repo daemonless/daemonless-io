@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       tautulli:
-        image: ghcr.io/daemonless/tautulli:latest
+        image: @REGISTRY@/tautulli:latest
         container_name: tautulli
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -e TAUTULLI_DOCKER=True \
       -v @CONTAINER_CONFIG_ROOT@/@TAUTULLI_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/tautulli:latest
+      @REGISTRY@/tautulli:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy tautulli
       containers.podman.podman_container:
         name: tautulli
-        image: ghcr.io/daemonless/tautulli:latest
+        image: @REGISTRY@/tautulli:latest
         state: started
         restart_policy: always
         env:
@@ -114,7 +114,7 @@ Access the Web UI at: `http://localhost:@TAUTULLI_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://tautulli.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/Tautulli/Tautulli){ .md-button }

@@ -1,4 +1,10 @@
 placeholders:
+  REGISTRY:
+    default: GitHub Container Registry
+    description: Container Registry
+    values:
+      GitHub Container Registry: ghcr.io/daemonless
+      Docker Hub: docker.io/daemonless
   CONTAINER_CONFIG_ROOT:
     default: /path/to/containers
     description: Container Configuration Root Path

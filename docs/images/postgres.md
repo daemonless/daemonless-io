@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       postgres:
-        image: ghcr.io/daemonless/postgres:latest
+        image: @REGISTRY@/postgres:latest
         container_name: postgres
         environment:
           - POSTGRES_USER=postgres
@@ -61,7 +61,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@POSTGRES_PATH@:/var/lib/postgresql/data \ 
-      ghcr.io/daemonless/postgres:latest
+      @REGISTRY@/postgres:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -70,7 +70,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy postgres
       containers.podman.podman_container:
         name: postgres
-        image: ghcr.io/daemonless/postgres:latest
+        image: @REGISTRY@/postgres:latest
         state: started
         restart_policy: always
         env:
@@ -122,7 +122,7 @@ Access the Web UI at: `http://localhost:@POSTGRES_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://www.postgresql.org/){ .md-button .md-button--primary }
 [Source Code](https://www.postgresql.org/){ .md-button }

@@ -36,7 +36,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       radarr:
-        image: ghcr.io/daemonless/radarr:latest
+        image: @REGISTRY@/radarr:latest
         container_name: radarr
         environment:
           - PUID=@PUID@
@@ -65,7 +65,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@RADARR_CONFIG_PATH@:/config \ 
       -v @MOVIES_PATH@:/movies \  # optional
       -v @DOWNLOADS_PATH@:/downloads \  # optional
-      ghcr.io/daemonless/radarr:latest
+      @REGISTRY@/radarr:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -74,7 +74,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy radarr
       containers.podman.podman_container:
         name: radarr
-        image: ghcr.io/daemonless/radarr:latest
+        image: @REGISTRY@/radarr:latest
         state: started
         restart_policy: always
         env:
@@ -126,7 +126,7 @@ Access the Web UI at: `http://localhost:@RADARR_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
 [Website](https://radarr.video/){ .md-button .md-button--primary }

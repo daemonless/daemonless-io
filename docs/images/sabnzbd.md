@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       sabnzbd:
-        image: ghcr.io/daemonless/sabnzbd:latest
+        image: @REGISTRY@/sabnzbd:latest
         container_name: sabnzbd
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@SABNZBD_CONFIG_PATH@:/config \ 
       -v @DOWNLOADS_PATH@:/downloads \ 
-      ghcr.io/daemonless/sabnzbd:latest
+      @REGISTRY@/sabnzbd:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy sabnzbd
       containers.podman.podman_container:
         name: sabnzbd
-        image: ghcr.io/daemonless/sabnzbd:latest
+        image: @REGISTRY@/sabnzbd:latest
         state: started
         restart_policy: always
         env:
@@ -114,7 +114,7 @@ Access the Web UI at: `http://localhost:@SABNZBD_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://sabnzbd.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/sabnzbd/sabnzbd){ .md-button }

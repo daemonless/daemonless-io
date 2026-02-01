@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       uptime-kuma:
-        image: ghcr.io/daemonless/uptime-kuma:latest
+        image: @REGISTRY@/uptime-kuma:latest
         container_name: uptime-kuma
         environment:
           - PUID=@PUID@
@@ -61,7 +61,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
       -e DATA_DIR=/config \
       -v @CONTAINER_CONFIG_ROOT@/@UPTIME_KUMA_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/uptime-kuma:latest
+      @REGISTRY@/uptime-kuma:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -70,7 +70,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy uptime-kuma
       containers.podman.podman_container:
         name: uptime-kuma
-        image: ghcr.io/daemonless/uptime-kuma:latest
+        image: @REGISTRY@/uptime-kuma:latest
         state: started
         restart_policy: always
         env:
@@ -124,7 +124,7 @@ Access the Web UI at: `http://localhost:@UPTIME_KUMA_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://uptime.kuma.pet/){ .md-button .md-button--primary }
 [Source Code](https://github.com/louislam/uptime-kuma){ .md-button }

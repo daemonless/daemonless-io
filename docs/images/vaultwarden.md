@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       vaultwarden:
-        image: ghcr.io/daemonless/vaultwarden:latest
+        image: @REGISTRY@/vaultwarden:latest
         container_name: vaultwarden
         environment:
           - PUID=@PUID@
@@ -57,7 +57,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -e SIGNUPS_ALLOWED=true \
       -v @CONTAINER_CONFIG_ROOT@/@VAULTWARDEN_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/vaultwarden:latest
+      @REGISTRY@/vaultwarden:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -66,7 +66,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy vaultwarden
       containers.podman.podman_container:
         name: vaultwarden
-        image: ghcr.io/daemonless/vaultwarden:latest
+        image: @REGISTRY@/vaultwarden:latest
         state: started
         restart_policy: always
         env:
@@ -114,7 +114,7 @@ Access the Web UI at: `http://localhost:@VAULTWARDEN_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://github.com/dani-garcia/vaultwarden){ .md-button .md-button--primary }
 [Source Code](https://github.com/dani-garcia/vaultwarden){ .md-button }

@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       openspeedtest:
-        image: ghcr.io/daemonless/openspeedtest:latest
+        image: @REGISTRY@/openspeedtest:latest
         container_name: openspeedtest
         environment:
           - PUID=@PUID@
@@ -50,7 +50,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      ghcr.io/daemonless/openspeedtest:latest
+      @REGISTRY@/openspeedtest:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -59,7 +59,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy openspeedtest
       containers.podman.podman_container:
         name: openspeedtest
-        image: ghcr.io/daemonless/openspeedtest:latest
+        image: @REGISTRY@/openspeedtest:latest
         state: started
         restart_policy: always
         env:
@@ -96,7 +96,7 @@ Access the Web UI at: `http://localhost:@OPENSPEEDTEST_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://openspeedtest.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/openspeedtest/Speed-Test){ .md-button }

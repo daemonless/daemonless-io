@@ -36,7 +36,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       prowlarr:
-        image: ghcr.io/daemonless/prowlarr:latest
+        image: @REGISTRY@/prowlarr:latest
         container_name: prowlarr
         environment:
           - PUID=@PUID@
@@ -61,7 +61,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@PROWLARR_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/prowlarr:latest
+      @REGISTRY@/prowlarr:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -70,7 +70,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy prowlarr
       containers.podman.podman_container:
         name: prowlarr
-        image: ghcr.io/daemonless/prowlarr:latest
+        image: @REGISTRY@/prowlarr:latest
         state: started
         restart_policy: always
         env:
@@ -118,7 +118,7 @@ Access the Web UI at: `http://localhost:@PROWLARR_PORT@`
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).
 
 [Website](https://prowlarr.com/){ .md-button .md-button--primary }

@@ -28,7 +28,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       nginx-base:
-        image: ghcr.io/daemonless/nginx-base:latest
+        image: @REGISTRY@/nginx-base:latest
         container_name: nginx-base
         restart: unless-stopped
     ```
@@ -37,7 +37,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     ```bash
     podman run -d --name nginx-base \
-      ghcr.io/daemonless/nginx-base:latest
+      @REGISTRY@/nginx-base:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -46,7 +46,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy nginx-base
       containers.podman.podman_container:
         name: nginx-base
-        image: ghcr.io/daemonless/nginx-base:latest
+        image: @REGISTRY@/nginx-base:latest
         state: started
         restart_policy: always
     ```
@@ -60,7 +60,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 !!! info "Implementation Details"
 
     - **User:** `root` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://nginx.org/){ .md-button .md-button--primary }
 [Source Code](https://github.com/daemonless/nginx-base){ .md-button }

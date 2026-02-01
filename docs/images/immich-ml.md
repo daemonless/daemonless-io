@@ -31,7 +31,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       immich-ml:
-        image: ghcr.io/daemonless/immich-ml:latest
+        image: @REGISTRY@/immich-ml:latest
         container_name: immich-ml
         environment:
           - MACHINE_LEARNING_HOST=0.0.0.0
@@ -61,7 +61,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -e TZ=@TZ@ \
       -v @CONTAINER_CONFIG_ROOT@/@IMMICH_CACHE_PATH@:/cache \ 
       -v @CONTAINER_CONFIG_ROOT@/@IMMICH_ML_CONFIG_PATH@:/config \ 
-      ghcr.io/daemonless/immich-ml:latest
+      @REGISTRY@/immich-ml:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -70,7 +70,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy immich-ml
       containers.podman.podman_container:
         name: immich-ml
-        image: ghcr.io/daemonless/immich-ml:latest
+        image: @REGISTRY@/immich-ml:latest
         state: started
         restart_policy: always
         env:
@@ -126,7 +126,7 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://immich.app/){ .md-button .md-button--primary }
 [Source Code](https://github.com/immich-app/immich){ .md-button }

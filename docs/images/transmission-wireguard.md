@@ -33,7 +33,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```yaml
     services:
       transmission-wireguard:
-        image: ghcr.io/daemonless/transmission-wireguard:latest
+        image: @REGISTRY@/transmission-wireguard:latest
         container_name: transmission-wireguard
         environment:
           - WG_PRIVATE_KEY=your-private-key
@@ -73,7 +73,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WIREGUARD_CONFIG_PATH@:/config \ 
       -v @DOWNLOADS_PATH@:/downloads \ 
       -v @CONTAINER_CONFIG_ROOT@/@TRANSMISSION_WIREGUARD_WATCH_PATH@:/watch \ 
-      ghcr.io/daemonless/transmission-wireguard:latest
+      @REGISTRY@/transmission-wireguard:latest
     ```
 
 === ":simple-ansible: Ansible"
@@ -82,7 +82,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     - name: Deploy transmission-wireguard
       containers.podman.podman_container:
         name: transmission-wireguard
-        image: ghcr.io/daemonless/transmission-wireguard:latest
+        image: @REGISTRY@/transmission-wireguard:latest
         state: started
         restart_policy: always
         env:
@@ -183,7 +183,7 @@ podman exec transmission-wireguard fetch -qo - https://ifconfig.me
 !!! info "Implementation Details"
 
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
-    - **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD 15.0).
+    - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://transmissionbt.com/){ .md-button .md-button--primary }
 [Source Code](https://github.com/transmission/transmission){ .md-button }
