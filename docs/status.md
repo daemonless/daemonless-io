@@ -16,7 +16,7 @@
 | :material-check-circle:{ .current } | homepage | latest | 1.9.0 |
 | :material-check-circle:{ .current } | hugo | pkg | 0.154.5_1_1 |
 | :material-check-circle:{ .current } | hugo | pkg-latest | 0.155.1_1 |
-| :material-check-circle:{ .current } | hugo | latest | 0.155.1 |
+| :material-close-circle:{ .outdated } | hugo | latest | 0.155.2 → **0.155.1** |
 | :material-check-circle:{ .current } | immich-ml | latest | 2.5.2 |
 | :material-check-circle:{ .current } | immich-server | latest | 2.5.2 |
 | :material-check-circle:{ .current } | jellyfin | pkg | 10.11.5 |
@@ -70,5 +70,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 32
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 31
+- :material-close-circle:{ .outdated } Outdated: 1
