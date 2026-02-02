@@ -15,7 +15,7 @@
 | :material-check-circle:{ .current } | homepage | pkg-latest | 1.8.0 |
 | :material-check-circle:{ .current } | homepage | latest | 1.9.0 |
 | :material-check-circle:{ .current } | hugo | pkg | 0.154.5_1_1 |
-| :material-check-circle:{ .current } | hugo | pkg-latest | 0.154.5_1_1 |
+| :material-close-circle:{ .outdated } | hugo | pkg-latest | 0.155.1_1 → **0.154.5_1,1** |
 | :material-check-circle:{ .current } | hugo | latest | 0.155.1 |
 | :material-check-circle:{ .current } | immich-ml | latest | 2.5.2 |
 | :material-check-circle:{ .current } | immich-server | latest | 2.5.2 |
@@ -52,7 +52,7 @@
 | :material-check-circle:{ .current } | smokeping | pkg-latest | 2.9.0_1 |
 | :material-check-circle:{ .current } | smokeping | latest | 2.9.0_1 |
 | :material-check-circle:{ .current } | sonarr | pkg | 4.0.16.2944 |
-| :material-check-circle:{ .current } | sonarr | pkg-latest | 4.0.16.2944 |
+| :material-check-circle:{ .current } | sonarr | pkg-latest | 4.0.16.2944_1 |
 | :material-check-circle:{ .current } | sonarr | latest | 4.0.16.2944 |
 | :material-check-circle:{ .current } | tailscale | pkg | 1.92.5_1 |
 | :material-close-circle:{ .outdated } | tailscale | pkg-latest | 1.94.1 → **1.92.5_1** |
@@ -71,10 +71,10 @@
 | :material-check-circle:{ .current } | unifi | latest | 10.0.162 |
 | :material-check-circle:{ .current } | uptime-kuma | latest | 2.0.2 |
 | :material-check-circle:{ .current } | vaultwarden | pkg | 1.35.2 |
-| :material-check-circle:{ .current } | vaultwarden | pkg-latest | 1.35.2 |
+| :material-check-circle:{ .current } | vaultwarden | pkg-latest | 1.35.2_1 |
 | :material-check-circle:{ .current } | woodpecker | latest | 3.13.0 |
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 34
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 33
+- :material-close-circle:{ .outdated } Outdated: 2
