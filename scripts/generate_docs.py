@@ -36,6 +36,16 @@ def get_tags(repo_path):
         tags.extend(["pkg", "pkg-latest"])
     return tags
 
+def load_architectures(repo_path):
+    """Load architectures from .daemonless/config.yaml."""
+    config_path = repo_path / ".daemonless" / "config.yaml"
+    if config_path.exists():
+        with open(config_path, "r") as f:
+            dc = yaml.safe_load(f)
+            if dc:
+                return dc.get("build", {}).get("architectures", ["amd64"])
+    return ["amd64"]
+
 def load_compose_config(repo_path):
     """Load configuration from compose.yaml x-daemonless extension."""
     compose_path = repo_path / "compose.yaml"
@@ -70,7 +80,8 @@ def load_compose_config(repo_path):
             'volumes': [],
             'ports': [],
             'tags': get_tags(repo_path),
-            'repo_url': f"https://github.com/daemonless/{repo_path.name}"
+            'repo_url': f"https://github.com/daemonless/{repo_path.name}",
+            'architectures': load_architectures(repo_path),
         }
         return config
 
@@ -99,7 +110,8 @@ def load_compose_config(repo_path):
         'volumes': [],
         'ports': [],
         'tags': get_tags(repo_path),
-        'repo_url': f"https://github.com/daemonless/{repo_path.name}"
+        'repo_url': f"https://github.com/daemonless/{repo_path.name}",
+        'architectures': load_architectures(repo_path),
     }
 
     # Parse Environment
@@ -227,7 +239,8 @@ def load_fallback_config(repo_path):
         'volumes': [],
         'ports': [{'port': data.get('port', '80'), 'protocol': 'tcp', 'desc': 'Web UI'}] if data.get('port') else [],
         'tags': get_tags(repo_path),
-        'repo_url': f"https://github.com/daemonless/{repo_path.name}"
+        'repo_url': f"https://github.com/daemonless/{repo_path.name}",
+        'architectures': data.get('build', {}).get('architectures', ['amd64']),
     }
 
 def update_placeholders(configs):

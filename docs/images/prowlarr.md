@@ -117,6 +117,7 @@ Access the Web UI at: `http://localhost:@PROWLARR_PORT@`
 
 !!! info "Implementation Details"
 
+    - **Architectures:** amd64
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
     - **.NET App:** Requires `--annotation 'org.freebsd.jail.allow.mlock=true'` and a [patched ocijail](../guides/ocijail-patch.md).

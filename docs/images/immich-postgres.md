@@ -109,6 +109,7 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 !!! info "Implementation Details"
 
+    - **Architectures:** amd64
     - **User:** `postgres` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 

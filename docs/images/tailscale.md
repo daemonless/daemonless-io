@@ -88,6 +88,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
 !!! info "Implementation Details"
 
+    - **Architectures:** amd64
     - **User:** `root` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 

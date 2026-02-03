@@ -133,6 +133,7 @@ Access the Web UI at: `http://localhost:@TRANSMISSION_PORT@`
 
 !!! info "Implementation Details"
 
+    - **Architectures:** amd64
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
