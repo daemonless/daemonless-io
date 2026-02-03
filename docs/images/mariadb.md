@@ -7,7 +7,7 @@ placeholders:
     description: MariaDB Host Port
 ---
 
-# :material-database: MariaDB
+# :simple-mariadb: MariaDB
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/mariadb/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/mariadb/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/mariadb?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/mariadb/commits)
@@ -113,7 +113,7 @@ Access the Web UI at: `http://localhost:@MARIADB_PORT@`
 
 | Path | Description |
 |------|-------------|
-| `/config` | Configuration and database data directory |
+| `/config` | MariaDB configuration and data |
 
 
 ### Ports
@@ -129,7 +129,7 @@ Access the Web UI at: `http://localhost:@MARIADB_PORT@`
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
 [Website](https://mariadb.org/){ .md-button .md-button--primary }
-[Source Code](https://mariadb.org/download/){ .md-button }
+[Source Code](https://github.com/MariaDB/server){ .md-button }
 [FreshPorts](https://www.freshports.org/databases/mariadb114-server/){ .md-button }
 
 ---
