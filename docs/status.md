@@ -17,8 +17,8 @@
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | pkg | 0.154.5_1_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | pkg-latest | 0.155.1_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | latest | 0.155.2 |
-| :material-check-circle:{ .current } | [immich-ml](https://github.com/daemonless/immich-ml/actions) | latest | 2.5.2 |
-| :material-check-circle:{ .current } | [immich-server](https://github.com/daemonless/immich-server/actions) | latest | 2.5.2 |
+| :material-close-circle:{ .outdated } | [immich-ml](https://github.com/daemonless/immich-ml/actions) | latest | 2.5.2 → **2.5.3** |
+| :material-close-circle:{ .outdated } | [immich-server](https://github.com/daemonless/immich-server/actions) | latest | 2.5.2 → **2.5.3** |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions) | pkg | 10.11.5 |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions) | pkg-latest | 10.11.5 |
 | :material-check-circle:{ .current } | [lidarr](https://github.com/daemonless/lidarr/actions) | pkg | 2.13.3.4711_1 |
@@ -76,5 +76,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 33
+- :material-close-circle:{ .outdated } Outdated: 2
