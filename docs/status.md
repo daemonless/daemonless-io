@@ -13,7 +13,7 @@
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions) | pkg-latest | 1.24.2_8 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions) | pkg | 1.8.0 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions) | pkg-latest | 1.8.0 |
-| :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions) | latest | 1.9.0 |
+| :material-close-circle:{ .outdated } | [homepage](https://github.com/daemonless/homepage/actions) | latest | 1.9.0 → **1.10.0** |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | pkg | 0.154.5_1_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | pkg-latest | 0.155.1_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | latest | 0.155.2 |
@@ -26,7 +26,7 @@
 | :material-check-circle:{ .current } | [lidarr](https://github.com/daemonless/lidarr/actions) | latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg | 11.4.9 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg-latest | 11.4.9 |
-| :material-close-circle:{ .outdated } | [mealie](https://github.com/daemonless/mealie/actions) | latest | 3.10.2 → **3.10.1** |
+| :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions) | latest | 3.10.2 |
 | :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.3 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg-latest | 32.0.5 |
