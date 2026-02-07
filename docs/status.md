@@ -69,12 +69,12 @@
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg-latest | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.0.162 |
-| :material-check-circle:{ .current } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.0.2 |
+| :material-close-circle:{ .outdated } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.0.2 → **2.1.0** |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg | 1.35.2 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
 | :material-check-circle:{ .current } | [woodpecker](https://github.com/daemonless/woodpecker/actions) | latest | 3.13.0 |
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 32
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 31
+- :material-close-circle:{ .outdated } Outdated: 4
