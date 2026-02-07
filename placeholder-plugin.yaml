@@ -818,6 +818,23 @@ placeholders:
   BOOKLORE_APP_DATA_PATH:
     default: booklore/app/data
     description: BookLore /app/data Path
+  READMEABOOK_PORT:
+    default: '3030'
+    description: ReadMeABook Host Port
+    validators:
+    - port_number
+  READMEABOOK_CONFIG_PATH:
+    default: readmeabook/config
+    description: ReadMeABook /app/config Path
+  READMEABOOK_CACHE_PATH:
+    default: readmeabook/cache
+    description: ReadMeABook /app/cache Path
+  READMEABOOK_POSTGRES_PATH:
+    default: readmeabook/postgres
+    description: ReadMeABook /var/lib/postgresql/data Path
+  READMEABOOK_REDIS_PATH:
+    default: readmeabook/redis
+    description: ReadMeABook /var/lib/redis Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

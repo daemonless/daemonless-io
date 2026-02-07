@@ -41,6 +41,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 | [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD. |
 | [:material-magnet: Prowlarr](prowlarr.md) | 9696 | Prowlarr indexer management on FreeBSD. |
 | [:material-movie: Radarr](radarr.md) | 7878 | Radarr movie management on FreeBSD. |
+| [:material-book-music: ReadMeABook](readmeabook.md) | 3030 | Audiobook request and management platform with AI recommendations. |
 | [:material-television: Sonarr](sonarr.md) | 8989 | Sonarr TV series management on FreeBSD. |
 
 ## Downloaders

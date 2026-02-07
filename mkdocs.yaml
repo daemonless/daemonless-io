@@ -103,6 +103,7 @@ nav:
       - Overseerr: images/overseerr.md
       - Prowlarr: images/prowlarr.md
       - Radarr: images/radarr.md
+      - ReadMeABook: images/readmeabook.md
       - Sonarr: images/sonarr.md
     - Media Servers:
       - Jellyfin: images/jellyfin.md
