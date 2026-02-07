@@ -18,7 +18,7 @@
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | pkg-latest | 0.155.1_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions) | latest | 0.155.2 |
 | :material-close-circle:{ .outdated } | [immich-ml](https://github.com/daemonless/immich-ml/actions) | latest | 2.5.3 → **2.5.5** |
-| :material-close-circle:{ .outdated } | [immich-server](https://github.com/daemonless/immich-server/actions) | latest | 2.5.3 → **2.5.5** |
+| :material-check-circle:{ .current } | [immich-server](https://github.com/daemonless/immich-server/actions) | latest | 2.5.5 |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions) | pkg | 10.11.5 |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions) | pkg-latest | 10.11.6 |
 | :material-check-circle:{ .current } | [lidarr](https://github.com/daemonless/lidarr/actions) | pkg | 2.13.3.4711_1 |
@@ -27,7 +27,7 @@
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg | 11.4.9 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg-latest | 11.4.9 |
 | :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions) | latest | 3.10.2 |
-| :material-close-circle:{ .outdated } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.3 → **2.6.4** |
+| :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions) | latest | 2.0.5 |
@@ -69,12 +69,12 @@
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg-latest | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.0.162 |
-| :material-close-circle:{ .outdated } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.0.2 → **2.1.0** |
+| :material-check-circle:{ .current } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.1.0 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg | 1.35.2 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
 | :material-check-circle:{ .current } | [woodpecker](https://github.com/daemonless/woodpecker/actions) | latest | 3.13.0 |
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 31
-- :material-close-circle:{ .outdated } Outdated: 4
+- :material-check-circle:{ .current } Current: 34
+- :material-close-circle:{ .outdated } Outdated: 1
