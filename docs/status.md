@@ -43,6 +43,7 @@
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg | 5.28.0.10274 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | latest | 6.0.4.10291 |
+| :material-check-circle:{ .current } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.3 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg | 4.5.5 |
@@ -76,5 +77,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
+- :material-check-circle:{ .current } Current: 36
 - :material-close-circle:{ .outdated } Outdated: 0
