@@ -43,7 +43,7 @@
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg | 5.28.0.10274 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | latest | 6.0.4.10291 |
-| :material-check-circle:{ .current } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.3 |
+| :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.3 → **1.0.5** |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg | 4.5.5 |
@@ -52,9 +52,6 @@
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions) | pkg | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions) | pkg-latest | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions) | latest | 2.9.0_1 |
-| :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | pkg | 4.0.16.2944 |
-| :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | pkg-latest | 4.0.16.2944_1 |
-| :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | latest | 4.0.16.2944 |
 | :material-check-circle:{ .current } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg | 1.94.1 |
 | :material-check-circle:{ .current } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg-latest | 1.94.1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg | 2.16.0_1 |
@@ -75,7 +72,12 @@
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
 | :material-check-circle:{ .current } | [woodpecker](https://github.com/daemonless/woodpecker/actions) | latest | 3.13.0 |
 
+## Errors
+
+- :material-alert-circle: **sonarr**: No tags found in ghcr.io
+
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 33
+- :material-close-circle:{ .outdated } Outdated: 2
+- :material-alert-circle: Errors: 1
