@@ -69,7 +69,7 @@
 | :material-check-circle:{ .current } | [transmission-wireguard](https://github.com/daemonless/transmission-wireguard/actions) | pkg-latest | 4.0.6_7 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg-latest | 10.0.160 |
-| :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.0.162 |
+| :material-close-circle:{ .outdated } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.0.162 → **10.1.84** |
 | :material-check-circle:{ .current } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.1.0 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg | 1.35.2 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
@@ -77,5 +77,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 36
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 35
+- :material-close-circle:{ .outdated } Outdated: 1
