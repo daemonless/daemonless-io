@@ -43,7 +43,7 @@
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg | 5.28.0.10274 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | latest | 6.0.4.10291 |
-| :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.3 → **1.0.6** |
+| :material-check-circle:{ .current } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.6 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg | 4.5.5 |
@@ -60,8 +60,8 @@
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg-latest | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | latest | 2.16.0 |
-| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg | 3.6.6_1 |
-| :material-close-circle:{ .outdated } | [traefik](https://github.com/daemonless/traefik/actions) | pkg-latest | 3.6.6_1 → **3.6.7** |
+| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg | 3.6.6_2 |
+| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg-latest | 3.6.7 |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | latest | 3.6.7 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg | 4.0.6_7 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg-latest | 4.0.6_7 |
@@ -77,5 +77,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 33
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 35
+- :material-close-circle:{ .outdated } Outdated: 1
