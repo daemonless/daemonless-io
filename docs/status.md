@@ -27,12 +27,12 @@
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg | 11.4.9 |
 | :material-close-circle:{ .outdated } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg-latest | 11.4.9 → **11.4.10** |
 | :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions) | latest | 3.10.2 |
-| :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.4 |
+| :material-close-circle:{ .outdated } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.4 → **2.7.4** |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions) | latest | 2.0.5 |
 | :material-check-circle:{ .current } | [overseerr](https://github.com/daemonless/overseerr/actions) | latest | 1.34.0 |
-| :material-check-circle:{ .current } | [plex](https://github.com/daemonless/plex/actions) | latest | 1.42.2.10156-f737b826c |
+| :material-check-circle:{ .current } | [plex](https://github.com/daemonless/plex/actions) | latest | 1.43.0.10492-121068a07 |
 | :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg | 14.20 |
 | :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg-latest | 14.20 |
 | :material-check-circle:{ .current } | [postgres-17](https://github.com/daemonless/postgres-17/actions) | pkg | 17.7 |
@@ -60,9 +60,9 @@
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg-latest | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | latest | 2.16.0 |
-| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg | 3.6.6_2 |
+| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg | 3.6.7 |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg-latest | 3.6.7 |
-| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | latest | 3.6.7 |
+| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | latest | 3.6.8 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg | 4.0.6_7 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg-latest | 4.0.6_7 |
 | :material-check-circle:{ .current } | [transmission-wireguard](https://github.com/daemonless/transmission-wireguard/actions) | pkg | 4.0.6_7 |
@@ -77,5 +77,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 34
+- :material-close-circle:{ .outdated } Outdated: 2
