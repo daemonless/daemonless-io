@@ -27,7 +27,7 @@
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg | 11.4.9 |
 | :material-close-circle:{ .outdated } | [mariadb-11.4](https://github.com/daemonless/mariadb-11.4/actions) | pkg-latest | 11.4.9 → **11.4.10** |
 | :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions) | latest | 3.10.2 |
-| :material-close-circle:{ .outdated } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.6.4 → **2.7.4** |
+| :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions) | latest | 2.7.4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions) | pkg-latest | 32.0.5 |
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions) | latest | 2.0.5 |
@@ -77,5 +77,5 @@
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 33
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 34
+- :material-close-circle:{ .outdated } Outdated: 2
