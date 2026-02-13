@@ -1,13 +1,6 @@
----
-title: "Daemonless Architecture: Image Layers and Build System"
-description: "Understand how daemonless container images are structured. Base layers, intermediate images for .NET and nginx apps, and the inheritance hierarchy explained."
----
-
 # Architecture
 
 How daemonless container images are structured and built.
-
-[:material-presentation: View Presentation](https://docs.google.com/presentation/d/1g1GmA9z67rQ6hMx3IV2pC6iyzQzpDeAE7bAfKM1i0c4/edit){ .md-button }
 
 ## Image Layers
 
@@ -31,6 +24,7 @@ flowchart LR
     end
 
     subgraph nginx_apps["Nginx Apps"]
+        booklore["booklore"]
         openspeedtest["openspeedtest"]
         organizr["organizr"]
         smokeping["smokeping"]
@@ -48,6 +42,7 @@ flowchart LR
         n8n["n8n"]
         overseerr["overseerr"]
         plex["plex"]
+        readmeabook["readmeabook"]
         sabnzbd["sabnzbd"]
         tautulli["tautulli"]
         traefik["traefik"]
@@ -67,6 +62,8 @@ flowchart LR
     click radarr "../images/radarr/" "View radarr Docs"
     arr-base --> sonarr
     click sonarr "../images/sonarr/" "View sonarr Docs"
+    nginx-base --> booklore
+    click booklore "../images/booklore/" "View booklore Docs"
     nginx-base --> openspeedtest
     click openspeedtest "../images/openspeedtest/" "View openspeedtest Docs"
     nginx-base --> organizr
@@ -95,6 +92,8 @@ flowchart LR
     click overseerr "../images/overseerr/" "View overseerr Docs"
     base --> plex
     click plex "../images/plex/" "View plex Docs"
+    base --> readmeabook
+    click readmeabook "../images/readmeabook/" "View readmeabook Docs"
     base --> sabnzbd
     click sabnzbd "../images/sabnzbd/" "View sabnzbd Docs"
     base --> tautulli
@@ -114,40 +113,8 @@ flowchart LR
     classDef appStyle fill:#2980b9,stroke:#333,color:#fff
     class base baseStyle
     class arr-base,nginx-base intermediateStyle
-    class lidarr,prowlarr,radarr,sonarr,openspeedtest,organizr,smokeping,adguardhome,adguardhome-sync,homepage,hugo,immich-ml,immich-postgres,immich-server,mealie,n8n,overseerr,plex,sabnzbd,tautulli,traefik,unifi,uptime-kuma,woodpecker appStyle
+    class lidarr,prowlarr,radarr,sonarr,booklore,openspeedtest,organizr,smokeping,adguardhome,adguardhome-sync,homepage,hugo,immich-ml,immich-postgres,immich-server,mealie,n8n,overseerr,plex,readmeabook,sabnzbd,tautulli,traefik,unifi,uptime-kuma,woodpecker appStyle
 ```
-
-## s6-overlay: The Init System
-
-All daemonless containers use [s6-overlay](https://github.com/just-containers/s6-overlay) for process supervision. This choice enables several critical capabilities:
-
-### Zombie Reaping & Signal Propagation
-
-- `s6-svscan` acts as a proper sub-reaper (PID 1)
-- Ensures signals from `podman stop` (`SIGTERM`/`SIGQUIT`) reach the application binary, not just a shell wrapper
-- Prevents "stuck" jails that don't terminate cleanly
-
-### The "Fix-on-Startup" Pattern
-
-- **Dynamic Permissions**: Jails often face UID/GID mismatches with host ZFS datasets. s6 scripts use `PUID`/`PGID` env vars to `pw usermod` and `chown` volumes at runtime
-- **Path Shimming**: Transparently symlink `/config` or `/data` to FreeBSD-native paths before the app binary executes
-
-### Dependency Management
-
-Lightweight service readiness checks:
-
-```
-# Wait for postgres before starting the app
-s6-svwait -U /var/run/s6-rc/servicedirs/postgres
-```
-
-### Multi-Process Coordination
-
-Essential for images like `nginx-base` where Nginx and PHP-FPM run as side-by-side services in a single container.
-
-### User Familiarity
-
-Provides a "LinuxServer.io" style interface. Users moving from Linux already understand how to troubleshoot via s6 logs and init scripts.
 
 ## Layer Descriptions
 
@@ -156,7 +123,7 @@ Provides a "LinuxServer.io" style interface. Users moving from Linux already und
 The `base` image provides the foundation for all daemonless containers:
 
 - **FreeBSD 15** (or 14) minimal base
-- **s6-overlay** - Process supervision and init system
+- **s6** - Process supervision
 - **execline** - Scripting language for s6
 - **FreeBSD-utilities** - Core utilities
 
@@ -194,6 +161,7 @@ FreeBSD 15 Base
     │   ├── radarr
     │   └── sonarr
     ├── nginx-base (nginx)
+    │   ├── booklore
     │   ├── openspeedtest
     │   ├── organizr
     │   └── smokeping
@@ -208,6 +176,7 @@ FreeBSD 15 Base
     ├── n8n
     ├── overseerr
     ├── plex
+    ├── readmeabook
     ├── sabnzbd
     ├── tautulli
     ├── traefik

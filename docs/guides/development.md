@@ -393,93 +393,63 @@ s6-log automatically rotates when files reach `S6_LOG_MAX_SIZE`. Old logs are na
 
 ## Build System
 
-### Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `scripts/build.sh` | Main build engine (downloaded by CI) |
-| `scripts/local-build.sh` | Local development builds |
-| `scripts/build-ocijail.sh` | Patch ocijail for mlock support |
-| `scripts/check-upstream-dynamic.sh` | Check for upstream updates |
+The Daemonless project uses [dbuild](dbuild.md) as its primary build engine. `dbuild` handles the full lifecycle of an image, from initial build to integration testing and publishing.
 
 ### Local Building
 
+To build an image locally, navigate to the image repository and use `dbuild`:
+
 ```bash
-# Build specific image
-./scripts/local-build.sh 15 radarr latest
-./scripts/local-build.sh 15 radarr pkg
-./scripts/local-build.sh 15 radarr pkg-latest
+cd daemonless/radarr
 
-# Build all images
-./scripts/local-build.sh 15
+# Build all variants (latest, pkg, pkg-latest)
+dbuild build
 
-# Build with options
-./scripts/local-build.sh 15 radarr latest --push
+# Build a specific variant
+dbuild build --variant latest
+
+# Build and run tests
+dbuild build --variant latest
+dbuild test --variant latest
 ```
-
-### Tag Strategy
-
-| Tag | Source | Packages | Use Case |
-|-----|--------|----------|----------|
-| `:latest` | Upstream binaries | FreeBSD latest | Bleeding edge |
-| `:pkg` | Containerfile.pkg | FreeBSD quarterly | Stable |
-| `:pkg-latest` | Containerfile.pkg | FreeBSD latest | Middle ground |
-| `:<version>` | Auto-generated | Matches :latest | Pinned version |
 
 ### CI/CD Pipeline
 
-Standard `.woodpecker.yml`:
+Standard `.woodpecker.yaml` for a new image repository:
 
 ```yaml
 steps:
-  - name: build-latest
-    image: /bin/sh
+  - name: pipeline
+    image: ghcr.io/daemonless/base:15
     environment:
       GITHUB_TOKEN: { from_secret: GITHUB_TOKEN }
       GITHUB_ACTOR: { from_secret: GITHUB_USER }
     commands:
-      - |
-        mkdir -p scripts
-        fetch -qo scripts/build.sh \
-          "https://raw.githubusercontent.com/daemonless/daemonless/build-v1.1.1/scripts/build.sh"
-        chmod +x scripts/build.sh
-        ./scripts/build.sh \
-          --doas \
-          --registry ghcr.io \
-          --image ghcr.io/daemonless/<app> \
-          --containerfile Containerfile \
-          --tag latest \
-          --tag-version \
-          --skip-wip \
-          --login --push
-
-  - name: build-pkg
-    # Same but with Containerfile.pkg, --base-version 15-quarterly, --tag pkg
-
-  - name: build-pkg-latest
-    # Same but with Containerfile.pkg, --base-version 15, --tag pkg-latest
-
-when:
-  - event: push
-    branch: main
-    path:
-      exclude: ["*.md", "docs/**", "LICENSE", ".gitignore"]
-  - event: manual
+      - dbuild ci-run --prepare
 ```
+
+The `dbuild ci-run` command handles environment preparation, multi-variant building, CIT testing, pushing to the registry, and SBOM generation.
 
 ## Adding a New Image
 
 ### 1. Create Repository
 
 ```bash
-cd /path/to/daemonless
 mkdir myapp && cd myapp
 git init
 ```
 
-### 2. Create Containerfile
+### 2. Initialize with dbuild
 
-Use the standard pattern above. Required labels:
+```bash
+dbuild init --woodpecker
+```
+
+This creates a starter `Containerfile`, `.daemonless/config.yaml`, and `.woodpecker.yaml`.
+
+### 3. Configure Containerfile
+
+Required labels for `dbuild` to function correctly:
 
 ```dockerfile
 LABEL io.daemonless.port="8080"
@@ -487,47 +457,21 @@ LABEL io.daemonless.category="Utilities"
 LABEL io.daemonless.packages="${PACKAGES}"
 ```
 
-### 3. Create Service Files
+### 4. Create Service Files
 
 ```bash
 mkdir -p root/etc/services.d/myapp root/etc/cont-init.d
 ```
 
-Create `root/etc/services.d/myapp/run`:
+### 5. Test Locally
 
 ```bash
-#!/bin/sh
-exec 2>&1
-exec s6-setuidgid bsd /app/myapp
+# Build and test
+dbuild build
+dbuild test
 ```
 
-### 4. Create Containerfile.pkg
-
-If a FreeBSD package exists, sync all labels from Containerfile and add:
-
-```dockerfile
-LABEL io.daemonless.pkg-name="myapp"
-LABEL io.daemonless.pkg-source="containerfile"
-```
-
-### 5. Create .woodpecker.yml
-
-Copy from an existing image and update the image name.
-
-### 6. Test Locally
-
-```bash
-# Build
-doas podman build -t localhost/myapp:test -f Containerfile .
-
-# Run
-doas podman run --rm -it -p 8080:8080 localhost/myapp:test
-
-# Check logs
-doas podman logs myapp
-```
-
-### 7. Push to Registry
+### 6. Push to Registry
 
 ```bash
 git add .

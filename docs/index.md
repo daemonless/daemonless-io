@@ -86,24 +86,24 @@ podman run -d --name plex \
 
     ---
 
-    We believe in the power of FreeBSD Jails but understand the convenience of OCI containers. Daemonless bridges the gap.
+    We believe in the power of FreeBSD Jails and the convenience of OCI containers. Daemonless is about bridging that gap for the community.
 
-    [:octicons-arrow-right-24: Read Philosophy](philosophy.md)
+    [:octicons-arrow-right-24: Our Mission](philosophy.md)
 
 -   **Architecture**
 
     ---
 
-    Understanding how Podman, ocijail, and FreeBSD kernel features work together.
+    Deep dive into how Podman, ocijail, and the FreeBSD kernel work together to provide native performance.
 
-    [:octicons-arrow-right-24: View Architecture](architecture.md)
+    [:octicons-arrow-right-24: How it Works](architecture.md)
 
--   **Community**
+-   **Join the Lab**
 
     ---
 
-    Open source and community driven. Join us in building the future of FreeBSD containers.
+    Daemonless is more than a tool—it's a community of FreeBSD enthusiasts. Help us build the next generation of images.
 
-    [:octicons-mark-github-24: GitHub](https://github.com/daemonless)
+    [:octicons-mark-github-24: Start Contributing](community.md)
 
 </div>

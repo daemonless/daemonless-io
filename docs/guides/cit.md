@@ -1,132 +1,189 @@
 ---
-title: "Container Integration Testing (CIT)"
-description: "CIT provides conditional quality gates for daemonless container images. Functional testing, visual regression, and platform QA before every push."
+title: "Quality Gates (CIT)"
+description: "CIT defines the testing specification executed by dbuild. Functional testing, visual regression, and platform QA before every push."
 ---
 
-# Container Integration Testing (CIT)
+# Quality Gates (CIT)
 
-> "A successful build is only 50% of the job."
-
-CIT (Container Integration Test) is the quality gate system that validates every daemonless container before it reaches the registry.
-
-## How It Works
+CIT (Container Integration Test) is the testing specification executed by [dbuild](dbuild.md) during the `test` and `ci-run` commands. It defines what success looks like for each container image.
 
 ```mermaid
 flowchart LR
-    A[Start Container] --> B[Read config.yaml]
-    B --> C{Mode?}
-    C -->|None| D[Pass & Push]
-    C -->|shell| E[Shell Test]
-    C -->|port| F[Check Port?]
+    subgraph dbuild ["dbuild (The Engine)"]
+        direction LR
+        B[Build] --> T[Test]
+        T --> P[Push]
+    end
 
-    E -->|Pass| F
-    E -->|Fail| X[Fail & Abort]
+    subgraph CIT ["CIT (The Gates)"]
+        direction TB
+        T1[Shell]
+        T2[Port]
+        T3[Health]
+        T4[Screenshot]
+    end
 
-    F -->|No| G{Check Health?}
-    F -->|Yes| H[Wait For Socket]
-
-    H -->|Pass| G
-    H -->|Fail| X
-
-    G -->|No| D
-    G -->|Yes| I[Get /healthz Status 200]
-
-    I -->|Pass| J{Check Screenshot?}
-    I -->|Fail| X
-
-    J -->|No| D
-    J -->|Yes| K[Check SSIM]
-
-    K -->|Score >= 0.95| D
-    K -->|Score < 0.95| X
+    T -.-> CIT
 ```
 
-## Config-Driven Testing
+While dbuild manages the container lifecycle (start, stop, cleanup), CIT defines the **success criteria** through a cumulative mode system.
 
-Each image defines its test requirements in `.daemonless/config.yaml`:
+## Cumulative Modes
 
-```yaml
-# Example: radarr/.daemonless/config.yaml
-icon: ':material-movie:'
+Each mode includes all checks from lower modes:
 
-cit:
-  mode: port
-  port: 7878
-  health_path: /ping
-  screenshot: true
+```
+screenshot = health + visual regression
+health     = port   + HTTP endpoint check
+port       = shell  + TCP port listening
+shell      = container starts successfully
 ```
 
-### Test Modes
+| Mode | What it checks | Use case |
+|------|----------------|----------|
+| `shell` | Container starts, `echo ok` via exec | Base images, CLI tools |
+| `port` | Shell + TCP port is listening | Services with network listeners |
+| `health` | Port + HTTP endpoint returns non-error | Web apps with health endpoints |
+| `screenshot` | Health + visual regression against baseline | Web UIs |
 
-| Mode | Description | Use Case |
-|------|-------------|----------|
-| `shell` | Container starts and exits cleanly | Base images, CLI tools |
-| `port` | Container binds to specified port | Services with network listeners |
+### Mode Auto-Detection
 
-## Quality Gates
+If no `mode` is set in config, CIT picks the highest applicable mode:
 
-### 1. Shell Test
+- If a screenshot baseline image exists, use `screenshot`
+- If `health` is set, use `health`
+- If `port` is set, use `port`
+- Otherwise, use `shell`
 
-Verifies the container starts successfully and the init system works:
+## Gate Details
+
+### Shell Test
+
+Verifies the container starts successfully:
 
 - s6-overlay initializes
 - Services start without errors
-- No immediate crash or panic
+- `echo ok` succeeds via exec
 
-### 2. Port Binding
+This is the baseline gate -- every mode includes it.
 
-For services that listen on a port:
+### Port Binding
 
-```yaml
-cit:
-  mode: port
-  port: 7878
-```
-
-CIT waits for the socket to become available, ensuring the application is actually running.
-
-### 3. Health Check
-
-HTTP health endpoint validation:
+Waits for the application to bind to a TCP port:
 
 ```yaml
 cit:
-  mode: port
   port: 7878
-  health_path: /ping
 ```
 
-CIT sends a GET request and expects HTTP 200.
+CIT polls the socket until it becomes available or the `wait` timeout expires.
 
-### 4. Visual Regression
+### Health Check
 
-For applications with a web UI, CIT captures a screenshot and compares it against a known-good baseline using structural similarity (SSIM):
+Sends an HTTP GET request to the specified endpoint:
 
 ```yaml
 cit:
-  mode: port
   port: 7878
-  health_path: /ping
-  screenshot: true
+  health: /ping
 ```
 
-- Uses `skimage` for SSIM comparison
-- Threshold: **SSIM > 0.95** (95% similar)
+Expects a non-error HTTP response (2xx or 4xx). A 502 or 503 indicates the app isn't ready yet and CIT will retry.
+
+For HTTPS-only applications:
+
+```yaml
+cit:
+  port: 8443
+  health: /health
+  https: true
+```
+
+### Visual Regression (SSIM)
+
+Captures a browser screenshot and compares it against a known-good baseline using **Structural Similarity Index (SSIM)**:
+
+```yaml
+cit:
+  mode: screenshot
+  port: 7878
+  health: /ping
+  screenshot_wait: 10
+```
+
+- Threshold: **SSIM >= 0.95** (95% structural similarity)
 - Catches UI regressions, broken CSS, missing assets
+- Uses scikit-image for SSIM comparison and Selenium + Chromium for capture
+- Requires `pip install ".[dev]"` on the dbuild installation
+- If screenshot dependencies are missing, the mode automatically downgrades to `health`
+
+**Baseline search order:**
+
+1. `.daemonless/baseline-{tag}.png` (per-variant)
+2. `.daemonless/baselines/baseline-{tag}.png`
+3. `.daemonless/baseline.png` (shared across variants)
+4. `.daemonless/baselines/baseline.png`
+
+If a baseline exists and no mode is configured, screenshot mode is auto-selected.
+
+## Readiness Detection
+
+Before running port/health checks, CIT watches container logs for a readiness pattern. The default pattern matches common startup messages:
+
+```
+Warmup complete | services.d.*done | Application started | Startup complete | listening on
+```
+
+Override with the `ready` field:
+
+```yaml
+cit:
+  ready: "Server initialized"
+  wait: 300
+```
+
+The `wait` timeout (default: 120 seconds) applies to the readiness check. If the pattern isn't seen within the timeout, CIT proceeds to port/health checks anyway -- the timeout is not fatal on its own.
+
+## Compose Testing
+
+For multi-service stacks (e.g., app + database), set `compose: true`:
+
+```yaml
+cit:
+  compose: true
+  port: 8080
+  health: /api/health
+```
+
+This uses `podman-compose` with the compose file at `.daemonless/compose.yaml`. Shell exec tests are skipped for compose stacks since they don't support single-container exec.
+
+## Jail Annotations
+
+Some applications require specific FreeBSD jail permissions to function:
+
+```yaml
+cit:
+  annotations:
+    - "org.freebsd.jail.allow.mlock=true"
+    - "org.freebsd.jail.allow.sysvipc=true"
+```
+
+| Annotation | Required by |
+|------------|-------------|
+| `allow.mlock` | .NET apps (Radarr, Sonarr, Prowlarr, Lidarr) |
+| `allow.sysvipc` | PostgreSQL |
+
+These annotations are passed to `podman run` during testing. In production, they are set via `--annotation` in the deploy playbook.
 
 ## Platform QA
 
-CIT serves as a functional regression suite for:
+CIT serves as a functional regression suite for the entire FreeBSD container stack:
 
-- **FreeBSD 15 kernel** - Validates syscalls, socket binding, process management
-- **ocijail runtime** - Ensures jail isolation works correctly
-- **s6-overlay** - Verifies init system behavior
+- **FreeBSD 15 kernel** -- validates syscalls, socket binding, process management
+- **ocijail runtime** -- ensures jail isolation works correctly
+- **s6-overlay** -- verifies init system behavior
 
-Every image build runs CIT in a real FreeBSD VM, not emulation.
-
-## High-Trust Registry
-
-The push step is **unreachable** if any enabled gate fails:
+Every image build runs CIT in a real FreeBSD VM, not emulation. The push step is **unreachable** if any gate fails, ensuring `ghcr.io/daemonless/*` contains only validated containers.
 
 ```mermaid
 flowchart LR
@@ -136,62 +193,51 @@ flowchart LR
     D --> E[No Push]
 ```
 
-This ensures `ghcr.io/daemonless/*` contains only validated, working containers.
-
-## Running CIT Locally
-
-Download and run CIT against any image:
-
-```bash
-# Download cit
-fetch -qo - https://github.com/daemonless/cit/releases/latest/download/cit.tar.gz | tar xz
-
-# Setup (first time only)
-./cit --setup
-
-# Test an image
-./cit ghcr.io/daemonless/radarr:latest --verbose
-
-# Test with JSON output
-./cit ghcr.io/daemonless/radarr:latest --json results.json
-```
-
-## CI Integration
-
-CIT is integrated into every GitHub Actions workflow:
-
-```yaml
-# Example from build workflow
-- name: Run CIT
-  run: |
-    ./cit ${{ env.IMAGE }}:build \
-      --mode port \
-      --json cit-results/${{ env.APP }}.json \
-      --verbose
-```
-
 ## Configuration Reference
 
-Full `.daemonless/config.yaml` schema for CIT:
+Full `cit:` schema for `.daemonless/config.yaml`:
 
 ```yaml
 cit:
-  # Test mode: shell, port
-  mode: port
+  # Test mode: shell | port | health | screenshot
+  # Auto-detected if omitted (see Mode Auto-Detection above)
+  mode: health
 
-  # Port to check (required for mode: port)
+  # TCP port to check (required for port, health, screenshot modes)
   port: 8080
 
-  # Health endpoint path (optional)
-  health_path: /health
+  # Health endpoint path (required for health, screenshot modes)
+  health: /health
 
-  # Enable screenshot comparison (optional)
-  screenshot: true
+  # Use HTTPS for health checks (default: false)
+  https: false
 
-  # Timeout in seconds (optional, default: 60)
-  timeout: 120
+  # Startup timeout in seconds (default: 120)
+  wait: 120
 
-  # Environment variables for the container (optional)
-  env:
-    - "DATABASE_URL=postgres://..."
+  # Log pattern to wait for before testing (regex)
+  ready: "Server started"
+
+  # Use podman-compose for multi-service stacks (default: false)
+  compose: false
+
+  # Extra wait in seconds before screenshot capture
+  screenshot_wait: 10
+
+  # Jail annotations passed to the test container
+  annotations:
+    - "org.freebsd.jail.allow.mlock=true"
+    - "org.freebsd.jail.allow.sysvipc=true"
 ```
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `mode` | Auto-detected | Test mode: `shell`, `port`, `health`, or `screenshot` |
+| `port` | | TCP port to check |
+| `health` | `/` | Health endpoint path |
+| `https` | `false` | Use HTTPS for health checks |
+| `wait` | `120` | Startup timeout in seconds |
+| `ready` | Built-in pattern | Log regex to wait for before testing |
+| `compose` | `false` | Use podman-compose with `.daemonless/compose.yaml` |
+| `screenshot_wait` | | Extra seconds to wait before screenshot capture |
+| `annotations` | `[]` | Jail annotations for the test container |

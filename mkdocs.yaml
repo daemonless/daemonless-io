@@ -134,9 +134,10 @@ nav:
       - ocijail Patch: guides/ocijail-patch.md
       - Operations: guides/operations.md
   - Contributing:
-      - Development: guides/development.md
+      - Overview: guides/development.md
+      - Image Lifecycle (dbuild): guides/dbuild.md
+      - Quality Gates (CIT): guides/cit.md
       - CI/CD Pipeline: guides/ci-cd.md
-      - Container Testing (CIT): guides/cit.md
       - Image Tagging: guides/tagging.md
       - OCI Compliance: guides/oci-compliance.md
   - About:
