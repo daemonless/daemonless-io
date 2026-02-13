@@ -43,7 +43,7 @@
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg | 5.28.0.10274 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | latest | 6.0.4.10291 |
-| :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.6 → **1.0.7** |
+| :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.6 → **1.0.8** |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg | 4.5.5 |
@@ -69,7 +69,7 @@
 | :material-check-circle:{ .current } | [transmission-wireguard](https://github.com/daemonless/transmission-wireguard/actions) | pkg-latest | 4.0.6_7 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg | 10.0.160 |
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | pkg-latest | 10.0.160 |
-| :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.1.84 |
+| :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.1.85 |
 | :material-check-circle:{ .current } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.1.0 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg | 1.35.2 |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
