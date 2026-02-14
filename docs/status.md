@@ -12,10 +12,10 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [adguardhome](https://github.com/daemonless/adguardhome/actions) | latest | 0.107.71 |
 | :material-check-circle:{ .current } | [adguardhome-sync](https://github.com/daemonless/adguardhome-sync/actions) | latest | 0.8.2 |
 | :material-check-circle:{ .current } | [booklore](https://github.com/daemonless/booklore/actions) | latest | 1.18.5 |
-| :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions) | pkg | 2025.8.0_5 |
-| :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions) | pkg-latest | 2025.8.0_5 |
-| :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions) | pkg | 1.24.2_8 |
-| :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions) | pkg-latest | 1.24.2_8 |
+| :material-close-circle:{ .outdated } | [cloudflared](https://github.com/daemonless/cloudflared/actions) | pkg | 2025.8.0_5 → **2025.8.0_6** |
+| :material-close-circle:{ .outdated } | [cloudflared](https://github.com/daemonless/cloudflared/actions) | pkg-latest | 2025.8.0_5 → **2025.8.0_7** |
+| :material-close-circle:{ .outdated } | [gitea](https://github.com/daemonless/gitea/actions) | pkg | 1.24.2_8 → **1.24.2_9** |
+| :material-close-circle:{ .outdated } | [gitea](https://github.com/daemonless/gitea/actions) | pkg-latest | 1.24.2_8 → **1.24.2_10** |
 | :material-close-circle:{ .outdated } | [gitea](https://github.com/daemonless/gitea/actions) | latest | 1.24.2_7 → **1.25.4** |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions) | pkg | 1.8.0 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions) | pkg-latest | 1.8.0 |
@@ -41,10 +41,10 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions) | latest | 2.0.5 |
 | :material-check-circle:{ .current } | [overseerr](https://github.com/daemonless/overseerr/actions) | latest | 1.34.0 |
 | :material-check-circle:{ .current } | [plex](https://github.com/daemonless/plex/actions) | latest | 1.43.0.10492-121068a07 |
-| :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg | 14.20 |
-| :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg-latest | 14.20 |
-| :material-check-circle:{ .current } | [postgres-17](https://github.com/daemonless/postgres-17/actions) | pkg | 17.7 |
-| :material-check-circle:{ .current } | [postgres-17](https://github.com/daemonless/postgres-17/actions) | pkg-latest | 17.7 |
+| :material-close-circle:{ .outdated } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg | 14.20 → **14.20_1** |
+| :material-close-circle:{ .outdated } | [postgres-14](https://github.com/daemonless/postgres-14/actions) | pkg-latest | 14.20 → **14.20_1** |
+| :material-close-circle:{ .outdated } | [postgres-17](https://github.com/daemonless/postgres-17/actions) | pkg | 17.7 → **17.7_1** |
+| :material-close-circle:{ .outdated } | [postgres-17](https://github.com/daemonless/postgres-17/actions) | pkg-latest | 17.7 → **17.7_1** |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions) | pkg | 2.0.5.5160_1 |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions) | pkg-latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions) | latest | 2.3.0.5236 |
@@ -63,14 +63,14 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | pkg | 4.0.16.2944 |
 | :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | pkg-latest | 4.0.16.2944_1 |
 | :material-check-circle:{ .current } | [sonarr](https://github.com/daemonless/sonarr/actions) | latest | 4.0.16.2944 |
-| :material-check-circle:{ .current } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg | 1.94.1 |
-| :material-check-circle:{ .current } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg-latest | 1.94.1 |
+| :material-close-circle:{ .outdated } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg | 1.94.1 → **1.94.1_1** |
+| :material-close-circle:{ .outdated } | [tailscale](https://github.com/daemonless/tailscale/actions) | pkg-latest | 1.94.1 → **1.94.1_1** |
 | :material-close-circle:{ .outdated } | [tailscale](https://github.com/daemonless/tailscale/actions) | latest | 1.92.3 → **1.94.1** |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | pkg-latest | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions) | latest | 2.16.0 |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg | 3.6.7 |
-| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | pkg-latest | 3.6.7 |
+| :material-close-circle:{ .outdated } | [traefik](https://github.com/daemonless/traefik/actions) | pkg-latest | 3.6.7 → **3.6.7_1** |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions) | latest | 3.6.8 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg | 4.0.6_7 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions) | pkg-latest | 4.0.6_7 |
@@ -89,5 +89,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 24
-- :material-close-circle:{ .outdated } Outdated: 12
+- :material-check-circle:{ .current } Current: 20
+- :material-close-circle:{ .outdated } Outdated: 16
