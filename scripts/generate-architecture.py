@@ -206,7 +206,12 @@ def generate_page(images: dict) -> str:
     if base_apps:
         base_tree += f"\n    └── {sorted(base_apps)[-1]}"
 
-    page = f"""# Architecture
+    page = f"""---
+title: "Architecture: How Daemonless Container Images Are Built"
+description: "Explore the layered architecture of Daemonless FreeBSD containers. Understand how base, intermediate, and application images inherit from each other."
+---
+
+# Architecture
 
 How daemonless container images are structured and built.
 

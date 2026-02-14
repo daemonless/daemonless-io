@@ -1,6 +1,6 @@
 ---
-title: "Quality Gates (CIT)"
-description: "CIT defines the testing specification executed by dbuild. Functional testing, visual regression, and platform QA before every push."
+title: "CIT: High-Trust Quality Gates for FreeBSD Container Images"
+description: "Ensure container reliability with Container Integration Testing. CIT validates port binding, health endpoints, and visual regressions before every registry push."
 ---
 
 # Quality Gates (CIT)

@@ -1,6 +1,6 @@
 ---
-title: "Image Lifecycle (dbuild)"
-description: "The official build tool for Daemonless container images. One tool for the full image lifecycle: build, integration test, SBOM, and push."
+title: "dbuild: The Universal Build Engine for FreeBSD OCI Containers"
+description: "Master the full lifecycle of FreeBSD OCI images with dbuild. Automate native builds, cumulative integration tests, SBOM generation, and multi-arch registry pushes."
 ---
 
 # dbuild

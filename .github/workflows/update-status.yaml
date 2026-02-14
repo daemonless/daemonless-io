@@ -37,7 +37,8 @@ jobs:
           # gh CLI is pre-installed on ubuntu-latest
           # Run comparison and generate status.md
           # Script exits 1 if outdated images exist (not an error for us)
-          python scripts/compare-versions.py --format markdown > docs/status.md || true
+          printf '%s\n' '---' 'title: "Fleet Status: Live Build Health for All FreeBSD Container Images"' 'description: "Real-time version tracking for every Daemonless image. See which containers are current, outdated, or building across the entire fleet."' '---' '' > docs/status.md
+          python scripts/compare-versions.py --format markdown >> docs/status.md || true
 
       - name: Commit and push if changed
         run: |

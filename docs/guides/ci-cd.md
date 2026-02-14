@@ -1,6 +1,6 @@
 ---
-title: "CI/CD Pipeline"
-description: "How daemonless builds native FreeBSD container images on GitHub Actions without a physical build farm. Automated builds, testing, and publishing."
+title: "CI/CD Pipeline: Native FreeBSD Builds on GitHub Actions"
+description: "How Daemonless builds FreeBSD OCI images without a physical build farm. dbuild automates native builds, CIT testing, and registry publishing inside QEMU VMs."
 ---
 
 # CI/CD Pipeline

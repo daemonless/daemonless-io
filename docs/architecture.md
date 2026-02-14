@@ -1,3 +1,8 @@
+---
+title: "Architecture: How Daemonless Container Images Are Built"
+description: "Explore the layered architecture of Daemonless FreeBSD containers. Understand how base, intermediate, and application images inherit from each other."
+---
+
 # Architecture
 
 How daemonless container images are structured and built.

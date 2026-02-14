@@ -1,6 +1,6 @@
 ---
-title: "Image Tagging System"
-description: "Understanding the Triple-Track tagging strategy for daemonless container images. Choose between upstream binaries, quarterly packages, or latest packages."
+title: "Image Tagging: The Triple-Track Strategy for FreeBSD Containers"
+description: "Understand the Daemonless tagging system. Choose between upstream binaries, FreeBSD quarterly packages, or latest packages to match your stability needs."
 ---
 
 # Image Tagging System

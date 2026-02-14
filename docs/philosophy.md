@@ -1,6 +1,6 @@
 ---
-title: "Why Daemonless: FreeBSD Containers Without the Sysadmin Work"
-description: "The philosophy behind daemonless. Bridging FreeBSD jails with OCI container workflows. Get Docker convenience on your preferred BSD operating system."
+title: "Daemonless Philosophy: Bringing Modern DevOps to FreeBSD"
+description: "Discover why we built Daemonless. We are bridging the gap between the stability of FreeBSD Jails and the convenience of OCI containerization for developers."
 ---
 
 # The Daemonless Philosophy

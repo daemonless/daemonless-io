@@ -1,6 +1,6 @@
 ---
-title: "Quick Start: FreeBSD Containers in 5 Minutes"
-description: "Get Podman containers running on FreeBSD fast. Install podman-suite, configure pf firewall, and deploy your first daemonless container with this step-by-step guide."
+title: "Quick Start Guide: Deploy FreeBSD Containers in 5 Minutes"
+description: "Get started with Podman on FreeBSD. This guide walks you through host configuration, pf firewall setup, and deploying your first daemonless container in minutes."
 placeholders:
   REGISTRY:
     default: "GitHub Container Registry"

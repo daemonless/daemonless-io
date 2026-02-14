@@ -1,6 +1,6 @@
 ---
-title: Community
-description: Join the daemonless community - GitHub, Discord, and CI status.
+title: "Join the Community: Building the Future of FreeBSD Containers"
+description: "Connect with fellow FreeBSD enthusiasts. Join our Discord, contribute on GitHub, request new images, and help us scale the native container ecosystem together."
 ---
 
 # Community
