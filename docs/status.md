@@ -53,7 +53,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions) | latest | 6.0.4.10291 |
 | :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions) | latest | 1.0.6 → **1.0.8** |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg | 8.4.0_1 |
-| :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 |
+| :material-close-circle:{ .outdated } | [redis](https://github.com/daemonless/redis/actions) | pkg-latest | 8.4.0_1 → **8.4.1** |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | pkg-latest | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions) | latest | 4.5.5 |
@@ -83,11 +83,11 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [unifi](https://github.com/daemonless/unifi/actions) | latest | 10.1.85 |
 | :material-close-circle:{ .outdated } | [uptime-kuma](https://github.com/daemonless/uptime-kuma/actions) | latest | 2.1.0 → **2.1.1** |
 | :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg | 1.35.2 |
-| :material-check-circle:{ .current } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 |
+| :material-close-circle:{ .outdated } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | pkg-latest | 1.35.2_1 → **1.35.3** |
 | :material-close-circle:{ .outdated } | [vaultwarden](https://github.com/daemonless/vaultwarden/actions) | latest | 1.34.3_4 → **1.35.3** |
 | :material-check-circle:{ .current } | [woodpecker](https://github.com/daemonless/woodpecker/actions) | latest | 3.13.0 |
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 25
-- :material-close-circle:{ .outdated } Outdated: 11
+- :material-check-circle:{ .current } Current: 24
+- :material-close-circle:{ .outdated } Outdated: 12
