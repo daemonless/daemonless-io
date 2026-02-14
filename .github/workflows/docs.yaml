@@ -66,3 +66,30 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Ping IndexNow
+        run: |
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "host": "daemonless.io",
+              "key": "9165b253e91b4c86a023f24a2335428b",
+              "keyLocation": "https://daemonless.io/9165b253e91b4c86a023f24a2335428b.txt",
+              "urlList": [
+                "https://daemonless.io/",
+                "https://daemonless.io/quick-start/",
+                "https://daemonless.io/architecture/",
+                "https://daemonless.io/status/",
+                "https://daemonless.io/images/",
+                "https://daemonless.io/guides/dbuild/",
+                "https://daemonless.io/guides/cit/",
+                "https://daemonless.io/guides/ci-cd/",
+                "https://daemonless.io/guides/tagging/",
+                "https://daemonless.io/guides/permissions/",
+                "https://daemonless.io/guides/zfs/",
+                "https://daemonless.io/guides/development/",
+                "https://daemonless.io/guides/oci-compliance/",
+                "https://daemonless.io/community/",
+                "https://daemonless.io/philosophy/"
+              ]
+            }'
