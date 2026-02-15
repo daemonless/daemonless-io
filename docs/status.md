@@ -38,10 +38,10 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions/workflows/build.yaml) | latest | 2.0.5 |
 | :material-check-circle:{ .current } | [overseerr](https://github.com/daemonless/overseerr/actions/workflows/build.yaml) | latest | 1.34.0 |
 | :material-check-circle:{ .current } | [plex](https://github.com/daemonless/plex/actions/workflows/build.yaml) | latest | 1.43.0.10492-121068a07 |
-| :material-close-circle:{ .outdated } | [postgres-14](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg | 14.20 → **14.20_1** |
-| :material-close-circle:{ .outdated } | [postgres-14](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg-latest | 14.20 → **14.20_1** |
-| :material-close-circle:{ .outdated } | [postgres-17](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg | 17.7 → **17.7_1** |
-| :material-close-circle:{ .outdated } | [postgres-17](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg-latest | 17.7 → **17.7_1** |
+| :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg | 14.20_1 |
+| :material-check-circle:{ .current } | [postgres-14](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg-latest | 14.20_1 |
+| :material-check-circle:{ .current } | [postgres-17](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg | 17.7_1 |
+| :material-check-circle:{ .current } | [postgres-17](https://github.com/daemonless/postgres/actions/workflows/build.yaml) | pkg-latest | 17.7_1 |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) | pkg | 2.0.5.5160_1 |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) | pkg-latest | 2.3.0.5236 |
 | :material-check-circle:{ .current } | [prowlarr](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) | latest | 2.3.0.5236 |
@@ -82,5 +82,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 33
-- :material-close-circle:{ .outdated } Outdated: 3
+- :material-check-circle:{ .current } Current: 35
+- :material-close-circle:{ .outdated } Outdated: 1
