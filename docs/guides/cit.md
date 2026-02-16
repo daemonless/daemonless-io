@@ -131,7 +131,7 @@ If a baseline exists and no mode is configured, screenshot mode is auto-selected
 Before running port/health checks, CIT watches container logs for a readiness pattern. The default pattern matches common startup messages:
 
 ```
-Warmup complete | services.d.*done | Application started | Startup complete | listening on
+Warmup complete | services.d.*done | Application started | Startup complete | listening on | is ready
 ```
 
 Override with the `ready` field:

@@ -134,12 +134,14 @@ nav:
       - ocijail Patch: guides/ocijail-patch.md
       - Operations: guides/operations.md
   - Contributing:
-      - Overview: guides/development.md
-      - Image Lifecycle (dbuild): guides/dbuild.md
-      - Quality Gates (CIT): guides/cit.md
+      - Quickstart: guides/contributing-quickstart.md
+      - Development Guide: guides/development.md
       - CI/CD Pipeline: guides/ci-cd.md
       - Image Tagging: guides/tagging.md
       - OCI Compliance: guides/oci-compliance.md
+  - dbuild (Daemonless Build):
+      - Overview: guides/dbuild.md
+      - Quality Gates (CIT): guides/cit.md
   - About:
       - Philosophy: philosophy.md
       - Architecture: architecture.md
