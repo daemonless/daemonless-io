@@ -54,6 +54,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | pkg | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | pkg-latest | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | latest | 4.5.5 |
+| :material-check-circle:{ .current } | [seerr](https://github.com/daemonless/seerr/actions/workflows/build.yaml) | latest | 3.0.1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | pkg | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | pkg-latest | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | latest | 2.9.0_1 |
@@ -82,5 +83,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 36
+- :material-check-circle:{ .current } Current: 37
 - :material-close-circle:{ .outdated } Outdated: 0
