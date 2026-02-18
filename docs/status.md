@@ -32,7 +32,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) | pkg | 11.4.9 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) | pkg-latest | 11.4.10 |
 | :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions/workflows/build.yaml) | latest | 3.11.0 |
-| :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions/workflows/build.yaml) | latest | 2.7.5 |
+| :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions/workflows/build.yaml) | latest | 2.8.3 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) | pkg-latest | 32.0.6 |
 | :material-check-circle:{ .current } | [openspeedtest](https://github.com/daemonless/openspeedtest/actions/workflows/build.yaml) | latest | 2.0.5 |
