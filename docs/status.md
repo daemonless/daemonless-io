@@ -21,7 +21,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | latest | 1.10.1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg | 0.154.5_2_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg-latest | 0.155.3_1_1 |
-| :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | latest | 0.155.3 |
+| :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | latest | 0.156.0 |
 | :material-check-circle:{ .current } | [immich-ml](https://github.com/daemonless/immich-ml/actions/workflows/build.yaml) | latest | 2.5.6 |
 | :material-check-circle:{ .current } | [immich-server](https://github.com/daemonless/immich-server/actions/workflows/build.yaml) | latest | 2.5.6 |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions/workflows/build.yaml) | pkg | 10.11.5 |
