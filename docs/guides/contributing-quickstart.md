@@ -156,7 +156,7 @@ Before submitting a new image, verify:
 - Clean the pkg cache: `pkg clean -ay && rm -rf /var/cache/pkg/*`
 - Set ownership: `chown -R bsd:bsd /config /app`
 - Use `ARG` for `BASE_VERSION`, `PACKAGES`, and `VERSION`
-- Use `.j2` templates — run `python3 scripts/generate_docs.py` after changes
+- Use `.j2` templates — run `dbuild generate` after changes
 
 !!! note "Containerfile patterns"
     Daemonless uses three Containerfile patterns: **standard** (upstream binaries), **package** (FreeBSD packages), and **multi-stage** (compiled apps). See the [Development Guide](development.md#containerfile-patterns) for templates of each.
