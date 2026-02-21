@@ -60,8 +60,8 @@ The script will:
 ### Option 3: Manual Build
 
 ```bash
-# Requires bazel and git
-pkg install bazel git
+# Requires bazel5 and git (on FreeBSD 15.0)
+pkg install bazel5 git
 
 # Clone and build
 git clone https://github.com/dfr/ocijail /tmp/ocijail
@@ -71,11 +71,11 @@ cd /tmp/ocijail
 fetch -o - https://raw.githubusercontent.com/daemonless/daemonless/main/scripts/ocijail-allow-annotations.patch | patch -p1
 
 # Build
-bazel build //...
+bazel5 build //ocijail
 
 # Install (backs up original)
 cp /usr/local/bin/ocijail /usr/local/bin/ocijail.orig
-cp bazel-bin/ocijail /usr/local/bin/ocijail
+cp bazel-bin/ocijail/ocijail /usr/local/bin/ocijail
 ```
 
 ## Usage
