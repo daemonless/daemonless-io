@@ -10,8 +10,8 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [adguardhome](https://github.com/daemonless/adguardhome/actions/workflows/build.yaml) | pkg | 0.107.69_3 |
 | :material-check-circle:{ .current } | [adguardhome](https://github.com/daemonless/adguardhome/actions/workflows/build.yaml) | pkg-latest | 0.107.71_1 |
 | :material-check-circle:{ .current } | [adguardhome](https://github.com/daemonless/adguardhome/actions/workflows/build.yaml) | latest | 0.107.72 |
-| :material-close-circle:{ .outdated } | [adguardhome-sync](https://github.com/daemonless/adguardhome-sync/actions/workflows/build.yaml) | latest | 0.8.2 → **0.9.0** |
-| :material-close-circle:{ .outdated } | [booklore](https://github.com/daemonless/booklore/actions/workflows/build.yaml) | latest | 2.0.3 → **2.0.4** |
+| :material-check-circle:{ .current } | [adguardhome-sync](https://github.com/daemonless/adguardhome-sync/actions/workflows/build.yaml) | latest | 0.9.0 |
+| :material-check-circle:{ .current } | [booklore](https://github.com/daemonless/booklore/actions/workflows/build.yaml) | latest | 2.0.4 |
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg | 2025.8.0_6 |
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg-latest | 2026.2.0 |
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg | 1.24.2_9 |
@@ -48,13 +48,13 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions/workflows/build.yaml) | pkg | 5.28.0.10274 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions/workflows/build.yaml) | pkg-latest | 6.0.4.10291_1 |
 | :material-check-circle:{ .current } | [radarr](https://github.com/daemonless/radarr/actions/workflows/build.yaml) | latest | 6.0.4.10291 |
-| :material-close-circle:{ .outdated } | [readmeabook](https://github.com/daemonless/readmeabook/actions/workflows/build.yaml) | latest | 1.0.14 → **1.0.15** |
+| :material-check-circle:{ .current } | [readmeabook](https://github.com/daemonless/readmeabook/actions/workflows/build.yaml) | latest | 1.0.15 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions/workflows/build.yaml) | pkg | 8.4.0_1 |
 | :material-check-circle:{ .current } | [redis](https://github.com/daemonless/redis/actions/workflows/build.yaml) | pkg-latest | 8.6.0 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | pkg | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | pkg-latest | 4.5.5 |
 | :material-check-circle:{ .current } | [sabnzbd](https://github.com/daemonless/sabnzbd/actions/workflows/build.yaml) | latest | 4.5.5 |
-| :material-close-circle:{ .outdated } | [seerr](https://github.com/daemonless/seerr/actions/workflows/build.yaml) | latest | 3.0.1 → **3.1.0** |
+| :material-check-circle:{ .current } | [seerr](https://github.com/daemonless/seerr/actions/workflows/build.yaml) | latest | 3.1.0 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | pkg | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | pkg-latest | 2.9.0_1 |
 | :material-check-circle:{ .current } | [smokeping](https://github.com/daemonless/smokeping/actions/workflows/build.yaml) | latest | 2.9.0_1 |
@@ -83,5 +83,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 33
-- :material-close-circle:{ .outdated } Outdated: 4
+- :material-check-circle:{ .current } Current: 37
+- :material-close-circle:{ .outdated } Outdated: 0
