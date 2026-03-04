@@ -17,7 +17,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg | 1.24.2_9 |
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg-latest | 1.24.2_10 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg | 1.8.0 |
-| :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg-latest | 1.8.0 |
+| :material-close-circle:{ .outdated } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg-latest | 1.8.0 → **1.10.1** |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | latest | 1.10.1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg | 0.154.5_2_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg-latest | 0.157.0_1 |
@@ -67,7 +67,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions/workflows/build.yaml) | pkg-latest | 2.16.0_1 |
 | :material-check-circle:{ .current } | [tautulli](https://github.com/daemonless/tautulli/actions/workflows/build.yaml) | latest | 2.16.1 |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions/workflows/build.yaml) | pkg | 3.6.8 |
-| :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions/workflows/build.yaml) | pkg-latest | 3.6.8 |
+| :material-close-circle:{ .outdated } | [traefik](https://github.com/daemonless/traefik/actions/workflows/build.yaml) | pkg-latest | 3.6.8 → **3.6.9** |
 | :material-check-circle:{ .current } | [traefik](https://github.com/daemonless/traefik/actions/workflows/build.yaml) | latest | 3.6.9 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions/workflows/build.yaml) | pkg | 4.0.6_7 |
 | :material-check-circle:{ .current } | [transmission](https://github.com/daemonless/transmission/actions/workflows/build.yaml) | pkg-latest | 4.1.1 |
@@ -83,5 +83,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 37
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 35
+- :material-close-circle:{ .outdated } Outdated: 2
