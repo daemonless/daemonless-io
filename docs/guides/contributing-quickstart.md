@@ -219,7 +219,7 @@ dbuild build && dbuild test
 
 ## Get Help
 
-Stuck on something? Join us on [Discord](https://discord.gg/PTg5DJ2y) — it's the fastest way to get help from the community.
+Stuck on something? Join us on [Discord](https://discord.gg/Kb9tkhecZT) — it's the fastest way to get help from the community.
 
 ## Further Reading
 

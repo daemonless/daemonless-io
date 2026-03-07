@@ -15,7 +15,7 @@ Daemonless isn't just a collection of images; it's a project built by and for th
 
     The heart of our community. Join us to chat about setups, get help, or just hang out with fellow BSD fans.
 
-    [:octicons-arrow-right-24: Join the Conversation](https://discord.gg/PTg5DJ2y)
+    [:octicons-arrow-right-24: Join the Conversation](https://discord.gg/Kb9tkhecZT)
 
 -   :material-github: **GitHub**
 

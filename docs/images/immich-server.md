@@ -143,4 +143,4 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 ---
 
-Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.

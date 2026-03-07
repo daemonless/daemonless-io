@@ -192,4 +192,4 @@ podman exec transmission-wireguard fetch -qo - https://ifconfig.me
 
 ---
 
-Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.

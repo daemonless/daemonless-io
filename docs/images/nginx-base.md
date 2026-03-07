@@ -69,4 +69,4 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
 ---
 
-Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.

@@ -165,4 +165,4 @@ Access the Web UI at: `http://localhost:@PLEX_PORT@`
 
 ---
 
-Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.

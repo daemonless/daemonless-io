@@ -38,4 +38,4 @@ I've been a FreeBSD user since the late 90s and a ports committer from 2002-2010
 If this vision resonates with you, we'd love to have you. 
 *   **Explore the Fleet:** See what we've built so far in the [Image Catalog](images/index.md).
 *   **Start Building:** Learn how to create your own images with [dbuild](guides/dbuild.md).
-*   **Connect:** Join our [Discord](https://discord.gg/PTg5DJ2y) and help us shape the future of FreeBSD containers.
+*   **Connect:** Join our [Discord](https://discord.gg/Kb9tkhecZT) and help us shape the future of FreeBSD containers.

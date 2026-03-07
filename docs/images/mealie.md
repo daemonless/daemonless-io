@@ -182,4 +182,4 @@ See [daemonless/postgres README](https://github.com/daemonless/postgres#migratin
 
 ---
 
-Need help? Join our [Discord](https://discord.gg/PTg5DJ2y) community.
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
