@@ -15,7 +15,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-close-circle:{ .outdated } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg | 2026.2.0_1 → **2026.2.0** |
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg-latest | 2026.2.0_1 |
 | :material-close-circle:{ .outdated } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg | 1.24.2_10 → **1.24.2_9** |
-| :material-close-circle:{ .outdated } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg-latest | 1.24.2_10 → **1.25.4_1** |
+| :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg-latest | 1.25.4_1 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg | 1.8.0 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg-latest | 1.10.1 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | latest | 1.10.1 |
