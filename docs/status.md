@@ -31,7 +31,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [lidarr](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) | latest | 3.1.0.4875 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) | pkg | 11.4.9 |
 | :material-check-circle:{ .current } | [mariadb-11.4](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) | pkg-latest | 11.4.10 |
-| :material-check-circle:{ .current } | [mealie](https://github.com/daemonless/mealie/actions/workflows/build.yaml) | latest | 3.11.0 |
+| :material-close-circle:{ .outdated } | [mealie](https://github.com/daemonless/mealie/actions/workflows/build.yaml) | latest | 3.12.0 → **3.11.0** |
 | :material-check-circle:{ .current } | [n8n](https://github.com/daemonless/n8n/actions/workflows/build.yaml) | latest | 2.10.4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) | pkg | 32.0.3_4 |
 | :material-check-circle:{ .current } | [nextcloud](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) | pkg-latest | 33.0.0 |
@@ -83,5 +83,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 36
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 35
+- :material-close-circle:{ .outdated } Outdated: 2
