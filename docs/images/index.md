@@ -36,12 +36,14 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
+| [:material-subtitle: Bazarr](bazarr.md) | 6767 | Bazarr is a companion application to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define your preferences by TV show or movie and Bazarr takes care of everything for you. |
 | [:material-book-open-page-variant: BookLore](booklore.md) | - | Self-hosted digital library with smart shelves, metadata, OPDS support, and built-in reader. |
 | [:material-music: Lidarr](lidarr.md) | 8686 | Lidarr music management on FreeBSD. |
-| [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD. |
+| [:material-eye: Overseerr](overseerr.md) | 5055 | Overseerr media request management on FreeBSD. **Deprecated** — Overseerr is no longer maintained. Migrate to [Seerr](https://github.com/daemonless/seerr): copy /containers/overseerr to /containers/seerr and deploy. Seerr auto-migrates config. |
 | [:material-magnet: Prowlarr](prowlarr.md) | 9696 | Prowlarr indexer management on FreeBSD. |
 | [:material-movie: Radarr](radarr.md) | 7878 | Radarr movie management on FreeBSD. |
 | [:material-book-music: ReadMeABook](readmeabook.md) | 3030 | Audiobook request and management platform with AI recommendations. |
+| [:material-eye: Seerr](seerr.md) | 5055 | Unified media request management (Plex, Jellyfin, Emby) on FreeBSD. |
 | [:material-television: Sonarr](sonarr.md) | 8989 | Sonarr TV series management on FreeBSD. |
 
 ## Downloaders

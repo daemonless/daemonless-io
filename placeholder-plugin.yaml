@@ -835,6 +835,30 @@ placeholders:
   READMEABOOK_REDIS_PATH:
     default: readmeabook/redis
     description: ReadMeABook /var/lib/redis Path
+  BAZARR_PORT:
+    default: '6767'
+    description: Bazarr Host Port
+    validators:
+    - port_number
+  BAZARR_CONFIG_PATH:
+    default: bazarr
+    description: Bazarr /config Path
+  BICHON_PORT:
+    default: '15630'
+    description: Bichon Host Port
+    validators:
+    - port_number
+  BICHON_PATH:
+    default: bichon
+    description: Bichon /data Path
+  SEERR_PORT:
+    default: '5055'
+    description: Seerr Host Port
+    validators:
+    - port_number
+  SEERR_CONFIG_PATH:
+    default: seerr
+    description: Seerr /config Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'

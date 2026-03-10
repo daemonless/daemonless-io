@@ -1,18 +1,18 @@
 ---
-title: "Overseerr on FreeBSD: Native OCI Container using Podman & Jails"
-description: "Install Overseerr on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
+title: "Seerr on FreeBSD: Native OCI Container using Podman & Jails"
+description: "Install Seerr on FreeBSD natively using Podman and Daemonless. Enjoy lightweight, secure OCI containers in FreeBSD Jails without the overhead of Linux VMs."
 placeholders:
-  OVERSEERR_PORT:
+  SEERR_PORT:
     default: "5055"
-    description: Overseerr Host Port
+    description: Seerr Host Port
 ---
 
-# :material-eye: Overseerr
+# :material-eye: Seerr
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/overseerr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/overseerr/actions)
-[![Last Commit](https://img.shields.io/github/last-commit/daemonless/overseerr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/overseerr/commits)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/seerr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/seerr/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/seerr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/seerr/commits)
 
-Overseerr media request management on FreeBSD. **Deprecated** — Overseerr is no longer maintained. Migrate to [Seerr](https://github.com/daemonless/seerr): copy /containers/overseerr to /containers/seerr and deploy. Seerr auto-migrates config.
+Unified media request management (Plex, Jellyfin, Emby) on FreeBSD.
 
 ## Version Tags
 
@@ -30,39 +30,39 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     ```yaml
     services:
-      overseerr:
-        image: @REGISTRY@/overseerr:latest
-        container_name: overseerr
+      seerr:
+        image: @REGISTRY@/seerr:latest
+        container_name: seerr
         environment:
           - PUID=@PUID@
           - PGID=@PGID@
           - TZ=@TZ@
         volumes:
-          - @CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config
+          - @CONTAINER_CONFIG_ROOT@/@SEERR_CONFIG_PATH@:/config
         ports:
-          - @OVERSEERR_PORT@:5055
+          - @SEERR_PORT@:5055
         restart: unless-stopped
     ```
 
 === ":material-console: Podman CLI"
 
     ```bash
-    podman run -d --name overseerr \
-      -p @OVERSEERR_PORT@:5055 \
+    podman run -d --name seerr \
+      -p @SEERR_PORT@:5055 \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
-      -v @CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config \ 
-      @REGISTRY@/overseerr:latest
+      -v @CONTAINER_CONFIG_ROOT@/@SEERR_CONFIG_PATH@:/config \ 
+      @REGISTRY@/seerr:latest
     ```
 
 === ":simple-ansible: Ansible"
 
     ```yaml
-    - name: Deploy overseerr
+    - name: Deploy seerr
       containers.podman.podman_container:
-        name: overseerr
-        image: @REGISTRY@/overseerr:latest
+        name: seerr
+        image: @REGISTRY@/seerr:latest
         state: started
         restart_policy: always
         env:
@@ -70,12 +70,12 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           PGID: "@PGID@"
           TZ: "@TZ@"
         ports:
-          - "@OVERSEERR_PORT@:5055"
+          - "@SEERR_PORT@:5055"
         volumes:
-          - "@CONTAINER_CONFIG_ROOT@/@OVERSEERR_CONFIG_PATH@:/config"
+          - "@CONTAINER_CONFIG_ROOT@/@SEERR_CONFIG_PATH@:/config"
     ```
 
-Access the Web UI at: `http://localhost:@OVERSEERR_PORT@`
+Access the Web UI at: `http://localhost:@SEERR_PORT@`
 
 ### Interactive Configuration
 
@@ -95,7 +95,7 @@ Access the Web UI at: `http://localhost:@OVERSEERR_PORT@`
 
 | Path | Description |
 |------|-------------|
-| `/config` | Configuration directory |
+| `/config` | Configuration and database directory |
 
 
 ### Ports
@@ -111,9 +111,9 @@ Access the Web UI at: `http://localhost:@OVERSEERR_PORT@`
     - **User:** `bsd` (UID/GID set via [PUID/PGID](../guides/permissions.md)). Defaults to `1000:1000`.
     - **Base:** Built on `@REGISTRY@/base` (FreeBSD 15.0).
 
-[Website](https://overseerr.dev/){ .md-button .md-button--primary }
-[Source Code](https://github.com/sct/overseerr){ .md-button }
-[FreshPorts](https://www.freshports.org/www/overseerr/){ .md-button }
+[Website](https://seerr.io/){ .md-button .md-button--primary }
+[Source Code](https://github.com/seerr-team/seerr){ .md-button }
+
 
 ---
 

@@ -80,6 +80,8 @@ nav:
       - Arr Base: images/arr-base.md
       - FreeBSD Base: images/base.md
       - Nginx Base: images/nginx-base.md
+    - Communication:
+      - Bichon: images/bichon.md
     - Databases:
       - Immich PostgreSQL: images/immich-postgres.md
       - MariaDB: images/mariadb.md
@@ -98,12 +100,14 @@ nav:
       - Traefik: images/traefik.md
       - Woodpecker CI: images/woodpecker.md
     - Media Management:
+      - Bazarr: images/bazarr.md
       - BookLore: images/booklore.md
       - Lidarr: images/lidarr.md
       - Overseerr: images/overseerr.md
       - Prowlarr: images/prowlarr.md
       - Radarr: images/radarr.md
       - ReadMeABook: images/readmeabook.md
+      - Seerr: images/seerr.md
       - Sonarr: images/sonarr.md
     - Media Servers:
       - Jellyfin: images/jellyfin.md
