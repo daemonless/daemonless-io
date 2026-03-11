@@ -140,7 +140,9 @@ nav:
   - Contributing:
       - Quickstart: guides/contributing-quickstart.md
       - Development Guide: guides/development.md
-      - CI/CD Pipeline: guides/ci-cd.md
+      - CI/CD:
+          - Pipeline: guides/ci-cd.md
+          - Linux Pre-Build Artifacts: guides/linux-pre-build.md
       - Image Tagging: guides/tagging.md
       - OCI Compliance: guides/oci-compliance.md
   - dbuild (Daemonless Build):
