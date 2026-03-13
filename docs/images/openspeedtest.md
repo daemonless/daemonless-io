@@ -53,6 +53,42 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       @REGISTRY@/openspeedtest:latest
     ```
 
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+    
+    ```
+    DIRECTOR_PROJECT=openspeedtest
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      openspeedtest:
+        name: openspeedtest
+        options:
+          - container: 'boot args:--pull'
+          - expose: '@OPENSPEEDTEST_PORT@:3000'
+        oci:
+          environment:
+            - PUID: "@PUID@"
+            - PGID: "@PGID@"
+            - TZ: "@TZ@"
+    ```
+    
+    **Makejail**:
+    
+    ```
+    ARG tag=latest
+    
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/openspeedtest:${tag}
+    ```
+
 === ":simple-ansible: Ansible"
 
     ```yaml

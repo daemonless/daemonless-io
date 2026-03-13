@@ -64,6 +64,62 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       @REGISTRY@/postgres:latest
     ```
 
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=postgres
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      postgres:
+        name: postgres
+        options:
+          - container: 'boot args:--pull'
+          - template: 'template.conf'
+        oci:
+          environment:
+            - POSTGRES_USERNAME: 'postgres'
+            - POSTGRES_PASSWORD: 'postgres'
+            - POSTGRES_DB: 'postgres'
+            - PUID: '@PUID@'
+            - PGID: '@PGID@'
+            - TZ: '@TZ@'
+        volumes:
+          - data: /var/lib/postgresql/data
+    volumes:
+      data:
+        device: @CONTAINER_CONFIG_ROOT@/@POSTGRES_PATH@/postgres
+    ```
+
+    **template.conf**:
+
+    ```
+    exec.start: "/bin/sh /etc/rc"
+    exec.stop: "/bin/sh /etc/rc.shutdown jail"
+    sysvmsg: new
+    sysvsem: new
+    sysvshm: new
+    mount.devfs
+    persist
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/postgres:${tag}
+    ```
+
 === ":simple-ansible: Ansible"
 
     ```yaml

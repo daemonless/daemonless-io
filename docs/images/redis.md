@@ -58,6 +58,47 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       @REGISTRY@/redis:latest
     ```
 
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=redis
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      redis:
+        name: redis
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          environment:
+            - PUID: '@PUID@'
+            - PGID: '@PGID@'
+            - TZ: '@TZ@'
+            - LANG: 'C.UTF-8'
+        volumes:
+          - config: /config
+    volumes:
+      config:
+        device: @CONTAINER_CONFIG_ROOT@/@REDIS_CONFIG_PATH@/redis
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/redis:${tag}
+    ```
+
 === ":simple-ansible: Ansible"
 
     ```yaml

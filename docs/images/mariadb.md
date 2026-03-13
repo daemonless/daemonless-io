@@ -66,6 +66,50 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
       @REGISTRY@/mariadb:latest
     ```
 
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=mariadb
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      mariadb:
+        name: mariadb
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          environment:
+            - PUID: '@PUID@'
+            - PGID: '@PGID@'
+            - TZ: '@TZ@'
+            - MYSQL_ROOT_PASSWORD: 'changeme'
+            - MYSQL_DATABASE: 'mydb'
+            - MYSQL_USER: 'myuser'
+            - MYSQL_PASSWORD: 'mypassword'
+        volumes:
+          - config: /config
+    volumes:
+      config:
+        device: @CONTAINER_CONFIG_ROOT@/@MARIADB_CONFIG_PATH@
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/mariadb:${tag}
+    ```
+
 === ":simple-ansible: Ansible"
 
     ```yaml
