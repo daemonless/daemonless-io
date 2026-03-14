@@ -14,7 +14,7 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [bazarr](https://github.com/daemonless/bazarr/actions/workflows/build.yaml) | pkg | 1.5.2_3 |
 | :material-check-circle:{ .current } | [bazarr](https://github.com/daemonless/bazarr/actions/workflows/build.yaml) | pkg-latest | 1.5.4 |
 | :material-check-circle:{ .current } | [bazarr](https://github.com/daemonless/bazarr/actions/workflows/build.yaml) | latest | 1.5.6 |
-| :material-close-circle:{ .outdated } | [booklore](https://github.com/daemonless/booklore/actions/workflows/build.yaml) | latest | 2.2.0 → **2.2.1** |
+| :material-check-circle:{ .current } | [booklore](https://github.com/daemonless/booklore/actions/workflows/build.yaml) | latest | 2.2.1 |
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg | 2026.2.0_1 |
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg-latest | 2026.2.0_1 |
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg | 1.24.2_10 |
@@ -87,5 +87,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 38
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-check-circle:{ .current } Current: 39
+- :material-close-circle:{ .outdated } Outdated: 0
