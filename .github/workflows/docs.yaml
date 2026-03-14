@@ -40,11 +40,11 @@ jobs:
           cd daemonless-io
           python3 scripts/fetch_repos.py
 
-      - name: Generate docs
-        run: |
-          cd daemonless-io
-          pip install jinja2
-          python3 scripts/generate_docs.py
+      # - name: Generate docs
+      #   run: |
+      #     cd daemonless-io
+      #     pip install jinja2
+      #     python3 scripts/generate_docs.py
 
       - name: Build site
         run: |
