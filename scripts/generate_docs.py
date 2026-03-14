@@ -3,255 +3,68 @@
 Generate MkDocs documentation from compose.yaml files in daemonless repos.
 Produces docs with interactive placeholder support.
 """
-import os
-import re
+import sys
+from pathlib import Path
 import yaml
 import jinja2
-from pathlib import Path
 
 # Paths - relative to daemonless-io repo
-SCRIPT_DIR = Path(__file__).parent
-REPO_ROOT = SCRIPT_DIR.parent  # daemonless-io
-REPOS_DIR = REPO_ROOT.parent   # Parent dir where repos are cloned
-TEMPLATE_DIR = REPOS_DIR / "dbuild" / "dbuild" / "templates"
+SCRIPT_DIR = Path(__file__).parent.resolve()
+REPO_ROOT = SCRIPT_DIR.parent
+REPOS_DIR = REPO_ROOT.parent
+
+# Add dbuild repo root to sys.path so we can import 'dbuild' package
+DBUILD_REPO = (REPOS_DIR / "dbuild").resolve()
+if DBUILD_REPO.exists():
+    sys.path.insert(0, str(DBUILD_REPO))
+else:
+    print(f"Error: dbuild repository not found at {DBUILD_REPO}")
+    sys.exit(1)
+
+# pylint: disable=wrong-import-position
+from dbuild.config import load as load_dbuild_config, VALID_CATEGORIES
+from dbuild.docs import _enrich_metadata, SHARED_PATHS
+
+TEMPLATE_DIR = DBUILD_REPO / "dbuild" / "templates"
 DOCS_DIR = REPO_ROOT / "docs" / "images"
 PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 
 # Constants
 CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
 DEFAULT_CONFIG_ROOT = "/path/to/containers"
-SHARED_PATHS = ["/downloads", "/movies", "/tv", "/music", "/books", "/media"]
 
 # Skip these repos (not container images)
-SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports"}
+SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild"}
 
-# Load Template
-env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
-template = env.get_template("README.j2")
+# Load Template from dbuild
+env = jinja2.Environment(loader=jinja2.FileSystemLoader(str(TEMPLATE_DIR)))
+template = env.get_template("README.mkdocs.j2")
 
-def get_tags(repo_path):
-    """Determine available tags based on Containerfiles present."""
-    tags = ["latest"]
-    if (repo_path / "Containerfile.pkg").exists():
-        tags.extend(["pkg", "pkg-latest"])
-    return tags
-
-def load_architectures(repo_path):
-    """Load architectures from .daemonless/config.yaml."""
-    config_path = repo_path / ".daemonless" / "config.yaml"
-    if config_path.exists():
-        with open(config_path, "r") as f:
-            dc = yaml.safe_load(f)
-            if dc:
-                return dc.get("build", {}).get("architectures", ["amd64"])
-    return ["amd64"]
-
-def load_compose_config(repo_path):
-    """Load configuration from compose.yaml x-daemonless extension."""
-    compose_path = repo_path / "compose.yaml"
-    if not compose_path.exists():
-        return None
-
-    with open(compose_path, "r") as f:
-        data = yaml.safe_load(f)
-
-    if not data:
-        return None
-
-    # Handle repos without services (base images)
-    if 'services' not in data or not data['services']:
-        meta = data.get('x-daemonless', {})
-        if not meta:
+def get_repo_config(repo_path):
+    """Load configuration using dbuild's native parser."""
+    try:
+        cfg = load_dbuild_config(repo_path)
+        if not cfg:
             return None
-        config = {
-            'name': repo_path.name,
-            'title': meta.get('title', repo_path.name.title()),
-            'description': meta.get('description', ''),
-            'category': meta.get('category', 'Uncategorized'),
-            'upstream_url': meta.get('upstream_url', ''),
-            'web_url': meta.get('web_url', ''),
-            'freshports_url': meta.get('freshports_url', ''),
-            'user': meta.get('user', 'bsd'),
-            'mlock': meta.get('mlock', False),
-            'upstream_binary': meta.get('upstream_binary', True),
-            'icon': meta.get('icon', ':material-docker:'),
-            'healthcheck': None,
-            'env': [],
-            'volumes': [],
-            'ports': [],
-            'tags': get_tags(repo_path),
-            'repo_url': f"https://github.com/daemonless/{repo_path.name}",
-            'registry': "ghcr.io/daemonless",
-            'architectures': load_architectures(repo_path),
-        }
-        return config
 
-    # Get first service
-    service_name = list(data['services'].keys())[0]
-    service = data['services'][service_name]
-    meta = data.get('x-daemonless', {})
-    docs = meta.get('docs', {})
+        # Use dbuild's internal enricher to get the same context used for README.md
+        context = _enrich_metadata(cfg)
 
-    config = {
-        'name': repo_path.name,
-        'title': meta.get('title', repo_path.name.title()),
-        'description': meta.get('description', ''),
-        'category': meta.get('category', 'Uncategorized'),
-        'upstream_url': meta.get('upstream_url', ''),
-        'web_url': meta.get('web_url', ''),
-        'freshports_url': meta.get('freshports_url', ''),
-        'user': meta.get('user', 'bsd'),
-        'mlock': meta.get('mlock', False),
-        'upstream_binary': meta.get('upstream_binary', True),
-        'icon': meta.get('icon', ':material-docker:'),
-        'healthcheck': meta.get('healthcheck', None),
-        'notes': meta.get('notes', ''),
-        'docs': docs,  # Preserve for manual docs check
-        'env': [],
-        'volumes': [],
-        'ports': [],
-        'tags': get_tags(repo_path),
-        'repo_url': f"https://github.com/daemonless/{repo_path.name}",
-        'registry': "ghcr.io/daemonless",
-        'architectures': load_architectures(repo_path),
-    }
+        # Add registry if not present (dbuild uses cfg.registry)
+        if 'registry' not in context:
+            context['registry'] = cfg.registry or "ghcr.io/daemonless"
 
-    # Parse Environment
-    env_docs = {str(k): v for k, v in docs.get('env', {}).items()}
-    env_vars = service.get('environment', [])
-    if isinstance(env_vars, dict):
-        env_items = list(env_vars.items())
-    else:
-        env_items = [e.split('=', 1) if '=' in e else (e, '') for e in env_vars]
-
-    for key, val in env_items:
-        display_val = val if val and val not in ['""', "''"] else ''
-        if not display_val and any(x in key.upper() for x in ["PASS", "KEY", "SECRET", "TOKEN"]):
-            display_val = f"<{key.upper()}>"
-
-        item = {
-            'name': key,
-            'default': display_val,
-            'desc': env_docs.get(str(key), '')
-        }
-
-        if key in ["PUID", "PGID", "TZ"]:
-            item['placeholder'] = f"@{key}@"
-
-        config['env'].append(item)
-
-    # Parse Volumes
-    vol_docs = {str(k): v for k, v in docs.get('volumes', {}).items()}
-    for vol in service.get('volumes', []):
-        if isinstance(vol, str):
-            parts = vol.split(':')
-            src, tgt = parts[0], parts[1] if len(parts) > 1 else parts[0]
-        else:
-            src, tgt = vol.get('source', ''), vol.get('target', '')
-
-        clean_target = tgt.strip('/').replace('/', '_').upper()
-        vol_info = vol_docs.get(str(tgt), '')
-        desc = vol_info.get('desc', '') if isinstance(vol_info, dict) else str(vol_info)
-        optional = vol_info.get('optional', False) if isinstance(vol_info, dict) else False
-
-        if tgt in SHARED_PATHS:
-            source_path = tgt.lstrip('/')
-            placeholder = f"@{clean_target}_PATH@"
-            root_var = None
-        elif tgt == "/config":
-            placeholder = f"@{config['name'].upper().replace('-', '_')}_CONFIG_PATH@"
-            source_path = config['name']
-            root_var = CONFIG_ROOT_VAR
-        elif src.startswith("./") or src.startswith("."):
-            # Use explicit relative source from compose.yaml
-            clean_src = src.lstrip("./")
-            source_path = f"{config['name']}/{clean_src}"
-            root_var = CONFIG_ROOT_VAR
-            placeholder = f"@{config['name'].upper().replace('-', '_')}_{clean_src.upper()}_PATH@"
-        elif "/path/to/containers" in src:
-            # Handle absolute paths matching standard prefix
-            clean_src = src.replace("/path/to/containers/", "")
-            source_path = clean_src.lstrip("/")
-            root_var = CONFIG_ROOT_VAR
-            # Generate placeholder from the clean source path
-            # e.g. immich/postgres -> IMMICH_POSTGRES_PATH
-            placeholder_suffix = source_path.replace("/", "_").replace("-", "_").upper()
-            placeholder = f"@{placeholder_suffix}_PATH@"
-        else:
-            source_path = f"{config['name']}{tgt}"
-            root_var = CONFIG_ROOT_VAR
-            placeholder = f"@{config['name'].upper().replace('-', '_')}_{clean_target}_PATH@"
-
-        config['volumes'].append({
-            'path': tgt,
-            'desc': desc,
-            'optional': optional,
-            'placeholder': placeholder,
-            'source': source_path,
-            'root_var': root_var
-        })
-
-    # Parse Ports
-    port_docs = {str(k): v for k, v in docs.get('ports', {}).items()}
-    for port in service.get('ports', []):
-        if isinstance(port, str):
-            parts = port.split(':')
-            pub = parts[0]
-            tgt = parts[1] if len(parts) > 1 else parts[0]
-            proto = 'tcp'
-        else:
-            pub, tgt = port.get('published'), port.get('target')
-            proto = port.get('protocol', 'tcp')
-
-        config['ports'].append({
-            'port': pub,
-            'protocol': proto,
-            'desc': port_docs.get(str(pub), ''),
-            'name': 'web'
-        })
-
-    return config
-
-def load_fallback_config(repo_path):
-    """Fallback: load from .daemonless/config.yaml if no compose.yaml."""
-    config_path = repo_path / ".daemonless" / "config.yaml"
-    if not config_path.exists():
+        return context
+    except Exception as e: # pylint: disable=broad-exception-caught
+        print(f"Error loading {repo_path.name}: {e}")
         return None
-
-    with open(config_path, "r") as f:
-        data = yaml.safe_load(f) or {}
-
-    # Minimal config for repos without compose.yaml
-    return {
-        'name': repo_path.name,
-        'title': data.get('title', repo_path.name.title()),
-        'description': data.get('description', ''),
-        'category': data.get('category', 'Uncategorized'),
-        'upstream_url': data.get('upstream_url', ''),
-        'web_url': data.get('web_url', ''),
-        'freshports_url': data.get('freshports_url', ''),
-        'user': data.get('user', 'bsd'),
-        'mlock': data.get('mlock', False),
-        'upstream_binary': data.get('upstream_binary', True),
-        'icon': data.get('icon', ':material-docker:'),
-        'healthcheck': None,
-        'notes': data.get('notes', ''),
-        'docs': data.get('docs'),
-        'env': [],
-        'volumes': [],
-        'ports': [{'port': data.get('port', '80'), 'protocol': 'tcp', 'desc': 'Web UI'}] if data.get('port') else [],
-        'tags': get_tags(repo_path),
-        'repo_url': f"https://github.com/daemonless/{repo_path.name}",
-        'registry': "ghcr.io/daemonless",
-        'architectures': data.get('build', {}).get('architectures', ['amd64']),
-    }
 
 def update_placeholders(configs):
     """Update placeholder-plugin.yaml with all placeholder definitions."""
     try:
-        with open(PLACEHOLDER_PLUGIN, 'r') as f:
+        with open(PLACEHOLDER_PLUGIN, 'r', encoding='utf-8') as f:
             plugin_data = yaml.safe_load(f) or {}
-    except:
+    except FileNotFoundError:
         plugin_data = {}
 
     # Settings for @ syntax
@@ -297,11 +110,16 @@ def update_placeholders(configs):
         }
 
     # Common env placeholders
+    tz_map = {
+        "UTC": "UTC",
+        "America/New_York": "America/New_York",
+        "America/Los_Angeles": "America/Los_Angeles"
+    }
     try:
-        import pytz
+        import pytz # pylint: disable=import-outside-toplevel
         tz_map = {tz: tz for tz in pytz.common_timezones}
     except ImportError:
-        tz_map = {"UTC": "UTC", "America/New_York": "America/New_York", "America/Los_Angeles": "America/Los_Angeles"}
+        pass
 
     plugin_data["placeholders"]["TZ"] = {
         "default": "UTC",
@@ -333,25 +151,32 @@ def update_placeholders(configs):
         for v in config.get("volumes", []):
             if not v.get("placeholder") or v['path'] in SHARED_PATHS:
                 continue
-            default_path = v.get("source", f"{config['name']}{v['path']}").lstrip("/")
+            src_val = v.get("source", f"{config['name']}{v['path']}")
             plugin_data["placeholders"][strip_syntax(v["placeholder"])] = {
-                "default": default_path,
+                "default": src_val.lstrip("/"),
                 "description": f"{config['title']} {v['path']} Path"
             }
 
     # Clean up old SET_ keys
-    plugin_data["placeholders"] = {k: v for k, v in plugin_data["placeholders"].items() if not k.startswith("SET_")}
+    plugin_data["placeholders"] = {
+        k: v for k, v in plugin_data["placeholders"].items()
+        if not k.startswith("SET_")
+    }
 
-    with open(PLACEHOLDER_PLUGIN, 'w') as f:
+    with open(PLACEHOLDER_PLUGIN, 'w', encoding='utf-8') as f:
         yaml.dump(plugin_data, f, sort_keys=False, default_flow_style=False)
     print("Updated placeholder-plugin.yaml")
 
 def generate_index_page(configs):
     """Generate the Fleet index page."""
+    description = (
+        "Browse all daemonless container images. Media servers, downloaders, "
+        "databases, and utilities - all running natively on FreeBSD with Podman and ocijail."
+    )
     lines = [
         "---",
         'title: "Container Fleet: 30+ Native FreeBSD OCI Images"',
-        'description: "Browse all daemonless container images. Media servers, downloaders, databases, and utilities - all running natively on FreeBSD with Podman and ocijail."',
+        f'description: "{description}"',
         "---",
         "",
         "# Container Fleet",
@@ -359,7 +184,9 @@ def generate_index_page(configs):
         "Explore our collection of high-performance, FreeBSD-native OCI containers.",
         ""
     ]
-    categories = ["Base", "Infrastructure", "Network", "Media Management", "Downloaders", "Media Servers", "Databases", "Photos & Media", "Utilities", "Uncategorized"]
+
+    # Use VALID_CATEGORIES from dbuild + Uncategorized for index grouping
+    categories = VALID_CATEGORIES + ["Uncategorized"]
 
     by_category = {}
     for config in configs:
@@ -369,11 +196,16 @@ def generate_index_page(configs):
         img_list = by_category.get(cat)
         if not img_list:
             continue
-        lines.extend([f"## {cat}", "", "| Image | Port | Description |", "|-------|------|-------------|"])
+        lines.extend([
+            f"## {cat}", "",
+            "| Image | Port | Description |",
+            "|-------|------|-------------|"
+        ])
         for config in sorted(img_list, key=lambda x: x['title']):
-            port_str = str(config["ports"][0]["port"]) if config.get("ports") else "-"
+            port_info = config["ports"][0]["port"] if config.get("ports") else "-"
             icon = config.get("icon") or ":material-docker:"
-            row = f"| [{icon} {config['title']}]({config['name']}.md) | {port_str} | {config.get('description', '')} |"
+            row = f"| [{icon} {config['title']}]({config['name']}.md) | " \
+                  f"{port_info} | {config.get('description', '')} |"
             lines.append(row)
         lines.append("")
 
@@ -388,7 +220,7 @@ def generate_index_page(configs):
     ])
 
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    (DOCS_DIR / "index.md").write_text("\n".join(lines))
+    (DOCS_DIR / "index.md").write_text("\n".join(lines), encoding='utf-8')
     print("Generated docs/images/index.md")
 
 def update_mkdocs_yaml(configs):
@@ -397,7 +229,7 @@ def update_mkdocs_yaml(configs):
     if not mkdocs_path.exists():
         return
 
-    lines = mkdocs_path.read_text().splitlines()
+    lines = mkdocs_path.read_text(encoding='utf-8').splitlines()
     new_lines = []
     in_fleet = False
     processed = False
@@ -413,7 +245,10 @@ def update_mkdocs_yaml(configs):
             if not processed:
                 new_lines.append("  - Fleet:")
                 new_lines.append("    - Overview: images/index.md")
-                for cat in sorted(by_cat.keys()):
+                # Use VALID_CATEGORIES from dbuild for navigation ordering
+                for cat in VALID_CATEGORIES + ["Uncategorized"]:
+                    if cat not in by_cat:
+                        continue
                     new_lines.append(f"    - {cat}:")
                     for config in sorted(by_cat[cat], key=lambda x: x['title']):
                         new_lines.append(f"      - {config['title']}: images/{config['name']}.md")
@@ -426,24 +261,27 @@ def update_mkdocs_yaml(configs):
             continue
         new_lines.append(line)
 
-    mkdocs_path.write_text("\n".join(new_lines) + "\n")
+    mkdocs_path.write_text("\n".join(new_lines) + "\n", encoding='utf-8')
     print("Updated mkdocs.yaml")
 
 def main():
+    """Main entry point for the documentation generator."""
     configs = []
 
     # Discover repos
     for repo in sorted(REPOS_DIR.iterdir()):
-        if not repo.is_dir() or repo.name in SKIP_REPOS:
-            continue
-        if repo.name.startswith('.'):
+        if not repo.is_dir() or repo.name.startswith('.'):
             continue
 
-        # Try compose.yaml first, then fallback
-        config = load_compose_config(repo)
-        if not config:
-            config = load_fallback_config(repo)
+        # A valid image repo MUST have a compose.yaml or a .daemonless config
+        is_image_repo = (repo / "compose.yaml").exists() or \
+                        (repo / ".daemonless" / "config.yaml").exists()
 
+        if not is_image_repo:
+            continue
+
+        # Load using dbuild logic
+        config = get_repo_config(repo)
         if not config:
             continue
 
@@ -462,16 +300,16 @@ def main():
                 # Copy README.md from repo for manual docs
                 readme_path = repo / "README.md"
                 if readme_path.exists():
-                    out_path.write_text(readme_path.read_text())
+                    out_path.write_text(readme_path.read_text(encoding='utf-8'), encoding='utf-8')
                     print(f"Copied docs/images/{config['name']}.md (manual)")
                 else:
                     print(f"Warning: {repo.name} has docs: manual but no README.md")
             else:
-                # Generate from template
+                # Generate from consolidated dbuild template
                 mkdocs_content = template.render(config, render_mode="mkdocs")
-                out_path.write_text(mkdocs_content)
+                out_path.write_text(mkdocs_content, encoding='utf-8')
                 print(f"Generated docs/images/{config['name']}.md")
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-exception-caught
             print(f"Error generating {config['name']}: {e}")
 
     if not configs:

@@ -84,8 +84,6 @@ nav:
       - Arr Base: images/arr-base.md
       - FreeBSD Base: images/base.md
       - Nginx Base: images/nginx-base.md
-    - Communication:
-      - Bichon: images/bichon.md
     - Databases:
       - Immich PostgreSQL: images/immich-postgres.md
       - MariaDB: images/mariadb.md
@@ -125,6 +123,7 @@ nav:
       - Immich Machine Learning: images/immich-ml.md
       - Immich Server: images/immich-server.md
     - Utilities:
+      - Home Assistant: images/home-assistant.md
       - Homepage: images/homepage.md
       - Mealie: images/mealie.md
       - Nextcloud: images/nextcloud.md

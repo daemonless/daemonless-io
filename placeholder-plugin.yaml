@@ -27,8 +27,8 @@ placeholders:
     default: /path/to/media
     description: Global /media Path
   DATA_PATH:
-    default: /path/to/data
-    description: Global /data Path
+    default: data
+    description: SmokePing /data Path
   TZ:
     default: UTC
     description: Timezone
@@ -781,7 +781,7 @@ placeholders:
     description: Immich PostgreSQL /var/lib/postgresql/data Path
   IMMICH_DATA_PATH:
     default: immich/data
-    description: Immich Server /data Path
+    description: Immich /data Path
   POSTGRES_PATH:
     default: postgres
     description: PostgreSQL /var/lib/postgresql/data Path
@@ -859,6 +859,24 @@ placeholders:
   SEERR_CONFIG_PATH:
     default: seerr
     description: Seerr /config Path
+  HOME_ASSISTANT_CONFIG_PATH:
+    default: home-assistant
+    description: Home Assistant /config Path
+  READMEABOOK_APP_CONFIG_PATH:
+    default: readmeabook/app/config
+    description: ReadMeABook /app/config Path
+  READMEABOOK_APP_CACHE_PATH:
+    default: readmeabook/app/cache
+    description: ReadMeABook /app/cache Path
+  READMEABOOK_VAR_LIB_POSTGRESQL_DATA_PATH:
+    default: readmeabook/var/lib/postgresql/data
+    description: ReadMeABook /var/lib/postgresql/data Path
+  READMEABOOK_VAR_LIB_REDIS_PATH:
+    default: readmeabook/var/lib/redis
+    description: ReadMeABook /var/lib/redis Path
+  BICHON_DATA_PATH:
+    default: bichon/data
+    description: Bichon /data Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
