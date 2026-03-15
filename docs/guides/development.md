@@ -393,7 +393,7 @@ s6-log automatically rotates when files reach `S6_LOG_MAX_SIZE`. Old logs are na
 
 ## Build System
 
-The Daemonless project uses [dbuild](dbuild.md) as its primary build engine. `dbuild` handles the full lifecycle of an image, from initial build to integration testing and publishing.
+The Daemonless project uses [dbuild](dbuild/index.md) as its primary build engine. `dbuild` handles the full lifecycle of an image, from initial build to integration testing and publishing.
 
 ### Local Building
 

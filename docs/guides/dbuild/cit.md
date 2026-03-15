@@ -5,7 +5,7 @@ description: "Ensure container reliability with Container Integration Testing. C
 
 # Quality Gates (CIT)
 
-CIT (Container Integration Test) is the testing specification executed by [dbuild](dbuild.md) during the `test` and `ci-run` commands. It defines what success looks like for each container image.
+CIT (Container Integration Test) is the testing specification executed by [dbuild](index.md) during the `test` and `ci-run` commands. It defines what success looks like for each container image.
 
 ```mermaid
 flowchart LR

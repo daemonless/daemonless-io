@@ -1,0 +1,264 @@
+# Manual Page (man 1 dbuild)
+
+This is the standard FreeBSD manual page for `dbuild`, generated from the source code.
+
+```text
+.TH DBUILD 1 "2026-03-15" "dbuild 1.6.1" "User Commands"
+.SH NAME
+dbuild \- FreeBSD OCI container image build tool
+.SH SYNOPSIS
+.B dbuild
+[\fIOPTIONS\fR] \fICOMMAND\fR [\fIARGS\fR...]
+.SH DESCRIPTION
+dbuild provides a streamlined interface for creating and managing OCI-compliant containers that run natively in FreeBSD Jails. It eliminates the friction of configuring ocijail, networking, and jail templates by using a 'Registry-First' approach. Configuration is automatically derived from Git remotes and standard Compose files, allowing for reproducible builds across local and CI environments.
+.SH COMMANDS
+.TP
+\fBbuild\fR
+Build container images from Containerfiles.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB--arch\fR
+override target architecture (e.g. amd64, aarch64)
+.RE
+.TP
+\fBci-prepare\fR
+Set up a FreeBSD CI runner with all build dependencies.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--arch\fR
+override target architecture (e.g. amd64, aarch64)
+.TP
+\fB--compose\fR
+also install podman-compose
+.RE
+.TP
+\fBci-run\fR
+Run the complete CI/CD pipeline for all (or selected) variants.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB--arch\fR
+override target architecture (e.g. amd64, aarch64)
+.TP
+\fB--prepare\fR
+run ci-prepare before the pipeline
+.RE
+.TP
+\fBci-test-env\fR
+Run read-only checks to verify the CI environment is ready.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.RE
+.TP
+\fBdetect\fR
+Auto-detect variants and output the build matrix.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--format\fR, \fB-f\fR
+output format (default: json)
+.RE
+.TP
+\fBgenerate\fR
+Render documentation and build files using Jinja2 templates.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--community\fR
+override community help link (e.g. Discord:https://...)
+.RE
+.TP
+\fBinfo\fR
+Display detected configuration in a human-readable format.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.RE
+.TP
+\fBinit\fR
+Generate starter files for a new dbuild project.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--freebsd-port\fR
+initialize from a FreeBSD port (e.g. net-p2p/bazarr)
+.TP
+\fB--name\fR
+application name (e.g. radarr)
+.TP
+\fB--title\fR
+human-readable title (e.g. Radarr)
+.TP
+\fB--category\fR
+application category (default: Apps)
+.TP
+\fB--type\fR
+application type (default: generic)
+.TP
+\fB--port\fR
+default application port (default: 8080)
+.TP
+\fB--variants\fR
+comma-separated list of variants to scaffold (default: latest)
+.TP
+\fB--community\fR
+override community help link (e.g. Discord:https://...)
+.TP
+\fB--dry-run\fR
+show what would be created without writing to disk
+.TP
+\fB--github\fR
+generate GitHub Actions workflow (.github/workflows/build.yaml)
+.TP
+\fB--woodpecker\fR
+generate Woodpecker CI pipeline (.woodpecker.yaml)
+.RE
+.TP
+\fBlint\fR
+Check compose.yaml and .daemonless/config.yaml for correctness. Lints the current repo if run from an image directory, or all subdirectories if run from a workspace root.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.RE
+.TP
+\fBmanifest\fR
+Create and push multi-architecture manifest lists.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.RE
+.TP
+\fBpush\fR
+Tag and push built images to the configured registry.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB--arch\fR
+override target architecture (e.g. amd64, aarch64)
+.RE
+.TP
+\fBsbom\fR
+Generate a CycloneDX SBOM via trivy and pkg query.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB--arch\fR
+override target architecture (e.g. amd64, aarch64)
+.RE
+.TP
+\fBscreenshot\fR
+Start a container, wait for it to be ready, and capture a screenshot.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB-o\fR, \fB--output\fR
+save screenshot to FILE (default: .daemonless/baseline.png)
+.RE
+.TP
+\fBtest\fR
+Run container integration tests against built images.
+.RS
+.TP
+\fB-h\fR, \fB--help\fR
+show this help message and exit
+.TP
+\fB--variant\fR
+filter to a single variant by tag (e.g. latest, pkg)
+.TP
+\fB--json\fR
+write test result JSON to FILE
+.RE
+.SH ENVIRONMENT
+.TP
+\fIDBUILD_REGISTRY\fR
+Override the target container registry (e.g., ghcr.io/myorg).
+.TP
+\fIGITHUB_TOKEN\fR
+Authentication token for GitHub Packages and build secrets.
+.TP
+\fIGITHUB_ACTOR\fR
+The username associated with GITHUB_TOKEN.
+.TP
+\fIDOCKERHUB_USERNAME\fR
+Enable mirroring by providing a Docker Hub username.
+.TP
+\fIDOCKERHUB_TOKEN\fR
+Personal access token for Docker Hub mirroring.
+.TP
+\fICHROME_BIN\fR
+Path to the Chrome/Chromium binary for screenshot testing.
+.SH FILES
+.TP
+\fIcompose.yaml\fR
+The primary source of truth for metadata and documentation.
+.TP
+\fI.daemonless/config.yaml\fR
+Project-specific build and test overrides.
+.TP
+\fI/usr/local/etc/daemonless.yaml\fR
+Global templates for shared build variants.
+.SH EXAMPLES
+Build and push all variants:
+.IP
+dbuild build --push
+Initialize from a FreeBSD Port:
+.IP
+dbuild init --freebsd-port net-p2p/transmission
+Run specific tests:
+.IP
+dbuild test --variant pkg
+.SH EXIT STATUS
+.TP
+\fB0\fR
+Success.
+.TP
+\fB1\fR
+Build, test, or system failure.
+.TP
+\fB2\fR
+Command-line usage error (invalid flags or arguments).
+.SH SEE ALSO
+.UR https://daemonless.io/guides/dbuild/
+Full web documentation
+.UE
+```

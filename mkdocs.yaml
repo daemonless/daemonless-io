@@ -33,6 +33,9 @@ extra:
     - icon: material/check-circle
       link: https://ci.daemonless.io
       name: CI Status
+    - icon: fontawesome/brands/discord
+      link: https://discord.com/invite/Kb9tkhecZT
+      name: Discord Community
 
 extra_css:
   - stylesheets/extra.css
@@ -74,12 +77,18 @@ plugins:
         color: "#ff5555"
   - placeholder:
       placeholder_file: placeholder-plugin.yaml
+  - redirects:
+      redirect_maps:
+        guides/cit.md: guides/dbuild/cit.md
+        guides/ci-cd.md: guides/dbuild/ci.md
+        guides/linux-pre-build.md: guides/dbuild/linux-pre-build.md
 
 nav:
   - Home: index.md
   - Getting Started: quick-start.md
   - Fleet:
     - Overview: images/index.md
+    - Version Status: status.md
     - Base:
       - Arr Base: images/arr-base.md
       - FreeBSD Base: images/base.md
@@ -143,14 +152,16 @@ nav:
   - Contributing:
       - Quickstart: guides/contributing-quickstart.md
       - Development Guide: guides/development.md
-      - CI/CD:
-          - Pipeline: guides/ci-cd.md
-          - Linux Pre-Build Artifacts: guides/linux-pre-build.md
       - Image Tagging: guides/tagging.md
       - OCI Compliance: guides/oci-compliance.md
   - dbuild (Daemonless Build):
-      - Overview: guides/dbuild.md
-      - Quality Gates (CIT): guides/cit.md
+      - Overview: guides/dbuild/index.md
+      - Command Reference: guides/dbuild/commands.md
+      - Configuration: guides/dbuild/config.md
+      - CI/CD Integration:
+          - Pipeline: guides/dbuild/ci.md
+          - Linux Pre-Build Artifacts: guides/dbuild/linux-pre-build.md
+      - Quality Gates (CIT): guides/dbuild/cit.md
   - About:
       - Philosophy: philosophy.md
       - Architecture: architecture.md

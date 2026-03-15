@@ -1,0 +1,17 @@
+# Command Reference
+
+`dbuild` provides a unified CLI for managing the entire image lifecycle.
+
+{% for choice, command in commands %}
+### `dbuild {{ choice }}`
+{{ command.description }}
+
+{% if command.options %}
+| Flag | Description |
+|------|-------------|
+{% for opts, help in command.options -%}
+| {{ opts }} | {{ help }} |
+{% endfor %}
+{% endif %}
+
+{% endfor %}

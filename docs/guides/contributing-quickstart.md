@@ -207,7 +207,7 @@ dbuild build && dbuild test
 ```
 
 !!! tip "Choosing a test mode"
-    Most web applications should use `health` mode. Use `screenshot` mode for apps with a web UI where visual regressions matter. See the [Quality Gates (CIT)](cit.md) guide for the full configuration reference.
+    Most web applications should use `health` mode. Use `screenshot` mode for apps with a web UI where visual regressions matter. See the [Quality Gates (CIT)](dbuild/cit.md) guide for the full configuration reference.
 
 ## Submitting Changes
 
@@ -224,8 +224,8 @@ Stuck on something? Join us on [Discord](https://discord.gg/Kb9tkhecZT) — it's
 ## Further Reading
 
 - [Development Guide](development.md) — Full architecture, labels reference, Containerfile patterns
-- [dbuild](dbuild.md) — Complete build engine documentation
-- [Quality Gates (CIT)](cit.md) — Test modes, configuration, visual regression
-- [CI/CD Pipeline](ci-cd.md) — CI integration and pipeline details
+- [dbuild](dbuild/index.md) — Complete build engine documentation
+- [Quality Gates (CIT)](dbuild/cit.md) — Test modes, configuration, visual regression
+- [CI/CD Pipeline](dbuild/ci.md) — CI integration and pipeline details
 - [Image Tagging](tagging.md) — Tag conventions and version strategy
 - [OCI Compliance](oci-compliance.md) — Label standards and SBOM

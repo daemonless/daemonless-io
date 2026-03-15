@@ -1,0 +1,186 @@
+# Command Reference
+
+`dbuild` provides a unified CLI for managing the entire image lifecycle.
+
+
+### `dbuild build`
+Build container images from Containerfiles.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `--arch` | override target architecture (e.g. amd64, aarch64) |
+
+
+
+
+### `dbuild ci-prepare`
+Set up a FreeBSD CI runner with all build dependencies.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--arch` | override target architecture (e.g. amd64, aarch64) |
+| `--compose` | also install podman-compose |
+
+
+
+
+### `dbuild ci-run`
+Run the complete CI/CD pipeline for all (or selected) variants.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `--arch` | override target architecture (e.g. amd64, aarch64) |
+| `--prepare` | run ci-prepare before the pipeline |
+
+
+
+
+### `dbuild ci-test-env`
+Run read-only checks to verify the CI environment is ready.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+
+
+
+
+### `dbuild detect`
+Auto-detect variants and output the build matrix.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--format`, `-f` | output format (default: json) |
+
+
+
+
+### `dbuild generate`
+Render documentation and build files using Jinja2 templates.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--community` | override community help link (e.g. Discord:https://...) |
+
+
+
+
+### `dbuild info`
+Display detected configuration in a human-readable format.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+
+
+
+
+### `dbuild init`
+Generate starter files for a new dbuild project.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--freebsd-port` | initialize from a FreeBSD port (e.g. net-p2p/bazarr) |
+| `--name` | application name (e.g. radarr) |
+| `--title` | human-readable title (e.g. Radarr) |
+| `--category` | application category (default: Apps) |
+| `--type` | application type (default: generic) |
+| `--port` | default application port (default: 8080) |
+| `--variants` | comma-separated list of variants to scaffold (default: latest) |
+| `--community` | override community help link (e.g. Discord:https://...) |
+| `--dry-run` | show what would be created without writing to disk |
+| `--github` | generate GitHub Actions workflow (.github/workflows/build.yaml) |
+| `--woodpecker` | generate Woodpecker CI pipeline (.woodpecker.yaml) |
+
+
+
+
+### `dbuild lint`
+Check compose.yaml and .daemonless/config.yaml for correctness. Lints the current repo if run from an image directory, or all subdirectories if run from a workspace root.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+
+
+
+
+### `dbuild manifest`
+Create and push multi-architecture manifest lists.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+
+
+
+
+### `dbuild push`
+Tag and push built images to the configured registry.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `--arch` | override target architecture (e.g. amd64, aarch64) |
+
+
+
+
+### `dbuild sbom`
+Generate a CycloneDX SBOM via trivy and pkg query.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `--arch` | override target architecture (e.g. amd64, aarch64) |
+
+
+
+
+### `dbuild screenshot`
+Start a container, wait for it to be ready, and capture a screenshot.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `-o`, `--output` | save screenshot to FILE (default: .daemonless/baseline.png) |
+
+
+
+
+### `dbuild test`
+Run container integration tests against built images.
+
+
+| Flag | Description |
+|------|-------------|
+| `-h`, `--help` | show this help message and exit |
+| `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
+| `--json` | write test result JSON to FILE |
+
+
+

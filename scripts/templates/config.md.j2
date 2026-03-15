@@ -1,0 +1,35 @@
+# Configuration Reference
+
+`dbuild` uses `compose.yaml` as the primary source of truth for metadata.
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+{% for var, desc in environment.items() -%}
+| `{{ var }}` | {{ desc }} |
+{% endfor %}
+
+## Config File Locations
+
+| File | Description |
+|------|-------------|
+{% for file, desc in files.items() -%}
+| `{{ file }}` | {{ desc }} |
+{% endfor %}
+
+## Metadata (`x-daemonless`)
+
+The `x-daemonless` section in `compose.yaml` (or `config.yaml`) defines discovery metadata:
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `title` | (dir name) | Human-readable application title |
+| `icon` | `:material-docker:` | Material or SimpleIcon identifier |
+| `category` | `Apps` | Application category |
+| `description` | `""` | Short description of the application |
+| `upstream_url`| `""` | URL to the upstream source repository |
+| `web_url` | `""` | URL to the official project website |
+| `community` | `""` | Help link in `Name:URL` format |
+| `appjail` | `None` | Enable AppJail documentation (bare key or config) |
+| `user` | `bsd` | Internal container user (docs only) |

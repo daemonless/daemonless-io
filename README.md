@@ -1,232 +1,84 @@
 # daemonless.io
 
-Documentation site for the daemonless FreeBSD container project.
+Documentation site for the [daemonless](https://github.com/daemonless/daemonless) FreeBSD container project.
 
 Built with [MkDocs](https://www.mkdocs.org/) and [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
 
 ## Local Development
 
+The documentation for both image repositories and the `dbuild` tool is dynamically generated from source code and metadata.
+
 ### Prerequisites
 
 ```bash
-pkg install py311-mkdocs py311-mkdocs-material
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-Or with pip:
+### Build Workflow
+
+A `Makefile` is provided to manage the generation and build process:
 
 ```bash
-pip install mkdocs-material
+# 1. Fetch/Update all image repositories (clones to sibling directories)
+# Requires GitHub CLI (gh)
+make fetch
+
+# 2. Generate all dynamic documentation
+# Runs image doc generators and dbuild guide templates
+make generate
+
+# 3. Build the static site
+make build
+
+# Or do everything at once:
+make all
 ```
 
 ### Serve Locally
 
-```bash
-mkdocs serve -a 0.0.0.0:8000
-```
-
-Open http://localhost:8000 - changes auto-reload.
-
-### Build Static Site
+To run the development server with auto-reload:
 
 ```bash
-mkdocs build
+make serve
 ```
 
-Output is in `site/` directory.
+The site will be available at `http://localhost:8888` (or `http://saturn:8888`).
+
+## Automated Documentation
+
+The site structure is partially automated:
+
+1.  **Image Docs**: `scripts/generate_docs.py` reads `compose.yaml` and `x-daemonless` metadata from each image repository to generate `docs/images/*.md`.
+2.  **dbuild Guides**: `scripts/dbuild_guide.py` uses Jinja2 templates in `scripts/templates/` to generate the command reference and configuration guides directly from the `dbuild` source code.
+3.  **Architecture**: `scripts/generate-architecture.py` generates the Mermaid-based architecture diagrams.
 
 ## Deployment
 
-The site auto-deploys to GitHub Pages on every push to `main`.
-
-### How It Works
-
-1. Push to `main` branch
-2. GitHub Actions runs `.github/workflows/docs.yml`
-3. MkDocs builds the site
-4. Deploys to GitHub Pages
-5. Live at https://daemonless.io
-
-### Manual Deploy
-
-Trigger a deploy without pushing:
-
-```bash
-gh workflow run docs.yml
-```
-
-## Adding Content
-
-### New Image Documentation
-
-1. Create `docs/images/<image-name>.md`:
-
-```markdown
-# Image Name
-
-Short description.
-
-| | |
-|---|---|
-| **Port** | 1234 |
-| **Registry** | `ghcr.io/daemonless/<image>` |
-| **Tags** | `:latest`, `:pkg`, `:pkg-latest` |
-| **Source** | [github.com/daemonless/<image>](https://github.com/daemonless/<image>) |
-
-## Quick Start
-
-\`\`\`bash
-podman run -d --name <image> \
-  -p 1234:1234 \
-  -e PUID=1000 -e PGID=1000 \
-  -v /data/config/<image>:/config \
-  ghcr.io/daemonless/<image>:latest
-\`\`\`
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PUID` | `1000` | User ID |
-| `PGID` | `1000` | Group ID |
-| `TZ` | `UTC` | Timezone |
-```
-
-2. Add to `mkdocs.yml` nav section:
-
-```yaml
-nav:
-  - Images:
-    - <Category>:
-      - Image Name: images/<image-name>.md
-```
-
-3. Push to `main`
-
-### New Guide
-
-1. Create `docs/guides/<guide-name>.md`
-2. Add to `mkdocs.yml` nav under Guides
-3. Push to `main`
+The site auto-deploys to GitHub Pages on every push to `main` via Woodpecker CI.
 
 ## Site Structure
 
 ```
 .
-├── mkdocs.yml              # Site configuration
+├── Makefile                # Unified build entry point
+├── mkdocs.yaml             # MkDocs configuration
+├── requirements.txt        # Python dependencies
 ├── docs/
 │   ├── index.md            # Homepage
-│   ├── quick-start.md      # Getting started
-│   ├── generator.md        # Command generator embed
-│   ├── CNAME               # Custom domain
-│   ├── images/             # Image documentation
-│   │   ├── index.md        # Image catalog
-│   │   └── <image>.md      # Per-image docs
-│   └── guides/             # How-to guides
-│       ├── permissions.md
-│       ├── networking.md
-│       └── ...
-└── .github/workflows/
-    └── docs.yml            # Deploy workflow
+│   ├── images/             # Generated image documentation
+│   ├── guides/             # Manual and generated guides
+│   │   └── dbuild/         # Generated dbuild engine guides
+│   └── assets/             # Images, logos, and favicons
+├── scripts/                # Documentation generators
+│   ├── templates/          # Jinja2 templates for guides
+│   ├── generate_docs.py    # Image doc generator
+│   └── dbuild_guide.py     # dbuild guide generator
+└── overrides/              # Material for MkDocs theme overrides
 ```
 
-## Configuration
+## Community
 
-### mkdocs.yml
-
-Key settings:
-
-```yaml
-site_name: daemonless
-site_url: https://daemonless.io
-
-theme:
-  name: material
-  palette:
-    primary: red          # FreeBSD-inspired
-  features:
-    - navigation.tabs     # Top nav tabs
-    - content.code.copy   # Copy button on code blocks
-    - search.suggest      # Search suggestions
-
-nav:
-  - Home: index.md
-  - ...                   # Define site structure here
-```
-
-### Custom Domain
-
-The `docs/CNAME` file contains `daemonless.io`.
-
-DNS is configured in Cloudflare with A records pointing to GitHub Pages:
-
-```
-185.199.108.153
-185.199.109.153
-185.199.110.153
-185.199.111.153
-```
-
-## MkDocs Features
-
-### Admonitions (callout boxes)
-
-```markdown
-!!! note
-    This is a note.
-
-!!! warning
-    This is a warning.
-
-!!! tip
-    This is a tip.
-```
-
-### Code Blocks with Copy Button
-
-````markdown
-```bash
-podman run -d --name example ghcr.io/daemonless/example:latest
-```
-````
-
-### Tables
-
-```markdown
-| Column 1 | Column 2 |
-|----------|----------|
-| Value 1  | Value 2  |
-```
-
-### Icons
-
-```markdown
-:material-check:       # Checkmark
-:material-close:       # X
-:material-arrow-right: # Arrow
-```
-
-See [Material Icons](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/) for full list.
-
-## Troubleshooting
-
-### Build Fails Locally
-
-```bash
-# Check Python version
-python3 --version  # Needs 3.8+
-
-# Reinstall dependencies
-pip install --upgrade mkdocs-material
-```
-
-### Deploy Fails on GitHub
-
-1. Check Actions tab for error details
-2. Ensure Pages is set to "GitHub Actions" source in repo settings
-3. Verify custom domain is configured in Pages settings
-
-### Changes Not Appearing
-
-- GitHub Pages can cache for a few minutes
-- Hard refresh: Ctrl+Shift+R
-- Check workflow completed successfully in Actions tab
+- **GitHub**: [github.com/daemonless](https://github.com/daemonless)
+- **Discord**: [Join our Community](https://discord.com/invite/Kb9tkhecZT)
+- **CI Status**: [ci.daemonless.io](https://ci.daemonless.io)

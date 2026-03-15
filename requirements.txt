@@ -1,0 +1,7 @@
+mkdocs
+mkdocs-material
+mkdocs-redirects
+mkdocs-social-plugin
+mkdocs-placeholder-plugin
+jinja2
+pyyaml
