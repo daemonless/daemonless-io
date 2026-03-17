@@ -48,7 +48,7 @@ Is there an app you love that isn't in our [Fleet](images/index.md)?
 We love seeing how people use Daemonless. Join the Discord and share a screenshot of your `podman ps` or your dashboard. Your setup might inspire someone else's homelab.
 
 ### 3. Improve the Docs
-Found a typo? Is a step in the [Quick Start](quick-start.md) confusing? Every documentation PR makes the project better for the next person.
+Found a typo? Is a step in the [Quick Start](guides/quick-start.md) confusing? Every documentation PR makes the project better for the next person.
 
 ---
 

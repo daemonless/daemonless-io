@@ -26,7 +26,7 @@ A fancy self-hosted monitoring tool on FreeBSD.
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -51,6 +51,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@CONTAINER_CONFIG_ROOT@/@UPTIME_KUMA_CONFIG_PATH@:/config"
         ports:
           - @UPTIME_KUMA_PORT@:3001
+        annotations:
+          org.freebsd.jail.allow.raw_sockets: "true"
         restart: unless-stopped
     ```
 
@@ -60,6 +62,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```bash
     podman run -d --name uptime-kuma \
       -p @UPTIME_KUMA_PORT@:3001 \
+      --annotation 'org.freebsd.jail.allow.raw_sockets=true' \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
@@ -92,6 +95,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@UPTIME_KUMA_PORT@:3001"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@UPTIME_KUMA_CONFIG_PATH@:/config"
+        annotation:
+          org.freebsd.jail.allow.raw_sockets: "true"
     ```
 
 

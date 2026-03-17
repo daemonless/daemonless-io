@@ -31,7 +31,7 @@ The Free Software Media System on FreeBSD.
 !!! warning ".NET Memory Locking (mlock)"
     This application requires `--annotation 'org.freebsd.jail.allow.mlock=true'` (Requires [patched ocijail](/guides/ocijail-patch/)).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment

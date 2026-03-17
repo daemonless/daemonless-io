@@ -29,7 +29,7 @@ Audiobook request and management platform with AI recommendations.
 !!! warning "System V IPC Required"
     This application requires `--annotation 'org.freebsd.jail.allow.sysvipc=true'` for shared memory access (Requires [patched ocijail](/guides/ocijail-patch/)).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -56,6 +56,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "/path/to/@MEDIA_PATH@:/media"
         ports:
           - @READMEABOOK_PORT@:3030
+        annotations:
+          org.freebsd.jail.allow.sysvipc: "true"
         restart: unless-stopped
     ```
 
@@ -65,6 +67,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```bash
     podman run -d --name readmeabook \
       -p @READMEABOOK_PORT@:3030 \
+      --annotation 'org.freebsd.jail.allow.sysvipc=true' \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
@@ -101,6 +104,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@CONTAINER_CONFIG_ROOT@/@READMEABOOK_VAR_LIB_REDIS_PATH@:/var/lib/redis"
           - "/path/to/@DOWNLOADS_PATH@:/downloads"
           - "/path/to/@MEDIA_PATH@:/media"
+        annotation:
+          org.freebsd.jail.allow.sysvipc: "true"
     ```
 
 

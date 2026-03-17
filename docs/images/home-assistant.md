@@ -25,7 +25,7 @@ Home Assistant on FreeBSD.
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -44,6 +44,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - TZ=@TZ@
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@HOME_ASSISTANT_CONFIG_PATH@:/config"
+        annotations:
+          org.freebsd.jail.allow.raw_sockets: "true"
         restart: unless-stopped
     ```
 
@@ -72,6 +74,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - container: 'boot args:--pull'
           - container: "boot args:--pull"
         oci:
+          user: root
           environment:
             - PUID: !ENV '${PUID}'
             - PGID: !ENV '${PGID}'
@@ -90,6 +93,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     OPTION overwrite=force
     OPTION from=@REGISTRY@/home-assistant:${tag}
+    SET allow.raw_sockets=1
     ```
 
 
@@ -97,6 +101,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 
     ```bash
     podman run -d --name home-assistant \
+      --annotation 'org.freebsd.jail.allow.raw_sockets=true' \
       -e PUID=@PUID@ \
       -e PGID=@PGID@ \
       -e TZ=@TZ@ \
@@ -119,6 +124,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           TZ: "@TZ@"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@HOME_ASSISTANT_CONFIG_PATH@:/config"
+        annotation:
+          org.freebsd.jail.allow.raw_sockets: "true"
     ```
 
 

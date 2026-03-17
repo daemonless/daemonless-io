@@ -31,7 +31,7 @@ Radarr movie management on FreeBSD.
 !!! warning ".NET Memory Locking (mlock)"
     This application requires `--annotation 'org.freebsd.jail.allow.mlock=true'` (Requires [patched ocijail](/guides/ocijail-patch/)).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -57,6 +57,58 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         annotations:
           org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=radarr
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      radarr:
+        name: radarr
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - RADARR_CONFIG_PATH: /config
+          - MOVIES_PATH: /movies
+          - DOWNLOADS_PATH: /downloads
+    volumes:
+      RADARR_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@RADARR_CONFIG_PATH@'
+      MOVIES_PATH:
+        device: '@MOVIES_PATH@'
+      DOWNLOADS_PATH:
+        device: '@DOWNLOADS_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/radarr:${tag}
+    SET allow.mlock=1
     ```
 
 

@@ -245,6 +245,7 @@ def update_mkdocs_yaml(configs):
             if not processed:
                 new_lines.append("  - Fleet:")
                 new_lines.append("    - Overview: images/index.md")
+                new_lines.append("    - Status: status.md")
                 # Use VALID_CATEGORIES from dbuild for navigation ordering
                 for cat in VALID_CATEGORIES + ["Uncategorized"]:
                     if cat not in by_cat:

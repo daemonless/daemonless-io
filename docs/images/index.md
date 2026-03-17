@@ -89,6 +89,7 @@ Explore our collection of high-performance, FreeBSD-native OCI containers.
 
 | Image | Port | Description |
 |-------|------|-------------|
+| [:material-email: Bichon](bichon.md) | 15630 | High-performance email archiver and search tool on FreeBSD. |
 | [:material-apps: Home Assistant](home-assistant.md) | - | Home Assistant on FreeBSD. |
 | [:material-view-dashboard: Homepage](homepage.md) | 3000 | A modern, highly customizable dashboard for your homelab. |
 | [:material-food: Mealie](mealie.md) | 9000 | Self-hosted recipe manager and meal planner on FreeBSD. |

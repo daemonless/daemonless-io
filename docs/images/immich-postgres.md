@@ -29,7 +29,7 @@ PostgreSQL 14 with pgvector/pgvecto.rs extensions for Immich.
 !!! warning "System V IPC Required"
     This application requires `--annotation 'org.freebsd.jail.allow.sysvipc=true'` for shared memory access (Requires [patched ocijail](/guides/ocijail-patch/)).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -50,6 +50,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data"
         ports:
           - @IMMICH_POSTGRES_PORT@:5432
+        annotations:
+          org.freebsd.jail.allow.sysvipc: "true"
         restart: unless-stopped
     ```
 
@@ -59,6 +61,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```bash
     podman run -d --name immich-postgres \
       -p @IMMICH_POSTGRES_PORT@:5432 \
+      --annotation 'org.freebsd.jail.allow.sysvipc=true' \
       -e POSTGRES_USER=postgres \
       -e POSTGRES_PASSWORD=postgres \
       -e POSTGRES_DB=immich \
@@ -83,6 +86,8 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - "@IMMICH_POSTGRES_PORT@:5432"
         volumes:
           - "@CONTAINER_CONFIG_ROOT@/@IMMICH_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH@:/var/lib/postgresql/data"
+        annotation:
+          org.freebsd.jail.allow.sysvipc: "true"
     ```
 
 

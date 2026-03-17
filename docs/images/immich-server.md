@@ -26,7 +26,7 @@ Immich photo management server on FreeBSD.
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).
 
-Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../quick-start.md) for host setup instructions.
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](../guides/quick-start.md) for host setup instructions.
 
 
 ## Deployment
@@ -85,6 +85,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         options:
           - container: 'boot args:--pull'
         oci:
+          user: root
           environment:
             - DB_HOSTNAME: !ENV '${DB_HOSTNAME}'
             - DB_USERNAME: !ENV '${DB_USERNAME}'

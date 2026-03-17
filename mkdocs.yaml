@@ -79,15 +79,16 @@ plugins:
       placeholder_file: placeholder-plugin.yaml
   - redirects:
       redirect_maps:
+        quick-start.md: guides/quick-start.md
         guides/cit.md: guides/dbuild/cit.md
         guides/ci-cd.md: guides/dbuild/ci.md
         guides/linux-pre-build.md: guides/dbuild/linux-pre-build.md
 
 nav:
   - Home: index.md
-  - Getting Started: quick-start.md
   - Fleet:
     - Overview: images/index.md
+    - Status: status.md
     - Base:
       - Arr Base: images/arr-base.md
       - FreeBSD Base: images/base.md
@@ -131,6 +132,7 @@ nav:
       - Immich Machine Learning: images/immich-ml.md
       - Immich Server: images/immich-server.md
     - Utilities:
+      - Bichon: images/bichon.md
       - Home Assistant: images/home-assistant.md
       - Homepage: images/homepage.md
       - Mealie: images/mealie.md
@@ -143,6 +145,7 @@ nav:
       - Vaultwarden: images/vaultwarden.md
       - n8n: images/n8n.md
   - Guides:
+      - Getting Started: guides/quick-start.md
       - Permissions: guides/permissions.md
       - Networking: guides/networking.md
       - ZFS Storage: guides/zfs.md

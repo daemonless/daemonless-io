@@ -39,7 +39,7 @@ pkg install podman-suite
 
 !!! warning "ocijail Patch Required"
     Currently, a temporary patch for `ocijail` is required for .NET applications (Radarr/Sonarr). 
-    See [ocijail patch](guides/ocijail-patch.md).
+    See [ocijail patch](ocijail-patch.md).
 
 ## Host Configuration
 
@@ -121,7 +121,7 @@ podman run -d --name radarr \
     ```bash
     zfs create -o mountpoint=/var/db/containers/storage <pool>/podman
     ```
-    See [ZFS Storage](guides/zfs.md) for `storage.conf` tuning.
+    See [ZFS Storage](zfs.md) for `storage.conf` tuning.
 
 === "Container DNS"
     To use container names as hostnames (e.g. `postgres`), the `cni-dnsname` plugin is required.
@@ -133,7 +133,7 @@ podman run -d --name radarr \
     cd /usr/local/daemonless-ports/net/cni-dnsname
     make install clean
     ```
-    See [Networking Guide](guides/networking.md) for details.
+    See [Networking Guide](networking.md) for details.
 
 ---
 
@@ -142,6 +142,6 @@ podman run -d --name radarr \
 <div class="placeholder-settings-panel"></div>
 
 ### Next Steps
-- [Available Images](images/index.md) — Full image fleet
-- [Permissions](guides/permissions.md) — Understanding PUID/PGID
-- [Networking](guides/networking.md) — Port forwarding vs host network
+- [Available Images](../images/index.md) — Full image fleet
+- [Permissions](permissions.md) — Understanding PUID/PGID
+- [Networking](networking.md) — Port forwarding vs host network
