@@ -18,13 +18,13 @@ description: "Real-time version tracking for every Daemonless image. See which c
 | :material-check-circle:{ .current } | [cloudflared](https://github.com/daemonless/cloudflared/actions/workflows/build.yaml) | pkg-latest | 2026.2.0_1 |
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg | 1.24.2_10 |
 | :material-check-circle:{ .current } | [gitea](https://github.com/daemonless/gitea/actions/workflows/build.yaml) | pkg-latest | 1.25.4_1 |
-| :material-close-circle:{ .outdated } | [home-assistant](https://github.com/daemonless/home-assistant/actions/workflows/build.yaml) | latest | 2026.3.1 → **2026.3.2** |
+| :material-check-circle:{ .current } | [home-assistant](https://github.com/daemonless/home-assistant/actions/workflows/build.yaml) | latest | 2026.3.2 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg | 1.8.0 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | pkg-latest | 1.10.1 |
 | :material-check-circle:{ .current } | [homepage](https://github.com/daemonless/homepage/actions/workflows/build.yaml) | latest | 1.11.0 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg | 0.154.5_3_1 |
 | :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | pkg-latest | 0.157.0_1_1 |
-| :material-close-circle:{ .outdated } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | latest | 0.157.0 → **0.158.0** |
+| :material-check-circle:{ .current } | [hugo](https://github.com/daemonless/hugo/actions/workflows/build.yaml) | latest | 0.158.0 |
 | :material-check-circle:{ .current } | [immich-ml](https://github.com/daemonless/immich-ml/actions/workflows/build.yaml) | latest | 2.5.6 |
 | :material-check-circle:{ .current } | [immich-server](https://github.com/daemonless/immich-server/actions/workflows/build.yaml) | latest | 2.5.6 |
 | :material-check-circle:{ .current } | [jellyfin](https://github.com/daemonless/jellyfin/actions/workflows/build.yaml) | pkg | 10.11.5 |
@@ -85,5 +85,5 @@ description: "Real-time version tracking for every Daemonless image. See which c
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 35
-- :material-close-circle:{ .outdated } Outdated: 2
+- :material-check-circle:{ .current } Current: 37
+- :material-close-circle:{ .outdated } Outdated: 0
