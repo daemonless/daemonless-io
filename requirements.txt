@@ -5,3 +5,4 @@ mkdocs-social-plugin
 mkdocs-placeholder-plugin
 jinja2
 pyyaml
+pytz
