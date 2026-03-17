@@ -26,6 +26,11 @@ jobs:
         with:
           path: daemonless-io
 
+      - uses: actions/checkout@v4
+        with:
+          repository: daemonless/dbuild
+          path: dbuild
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
