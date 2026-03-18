@@ -21,9 +21,9 @@ Network-wide ads & trackers blocking DNS server on FreeBSD.
 
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
+| `latest` | **FreeBSD Port**. Built from FreeBSD packages. | Most users. Matches Linux Docker behavior. |
 | `pkg` | **FreeBSD Quarterly**. Uses stable, tested packages. | Production stability. |
-| `pkg-latest` | **FreeBSD Latest**. Rolling package updates. | Newest FreeBSD features. |
+| `pkg-latest` | **FreeBSD Latest**. Rolling package updates. | Newest FreeBSD packages. |
 
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).

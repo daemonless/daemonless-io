@@ -20,7 +20,8 @@ Shared base image for Nginx-based applications.
 
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
+| `15` / `latest` / `pkg` | **FreeBSD Port**. Built from FreeBSD packages. | Production stability. |
+| `15-latest` / `pkg-latest` | **FreeBSD Latest**. Rolling package updates. | Newest FreeBSD packages. |
 
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).

@@ -20,7 +20,8 @@ FreeBSD base image with s6 supervision
 
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
+| `15` / `15-quarterly` / `latest` | **FreeBSD Port**. Built from FreeBSD packages. | Production stability. |
+| `15-latest` | **FreeBSD Port**. Built from FreeBSD packages. | Production stability. |
 
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).
