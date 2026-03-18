@@ -8,7 +8,7 @@ description: "Real-time version tracking for every Daemonless image."
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 75
+- :material-check-circle:{ .current } Current: 112
 - :material-close-circle:{ .outdated } Outdated: 0
 
 
@@ -43,18 +43,18 @@ description: "Real-time version tracking for every Daemonless image."
 | :material-check-circle:{ .current } | [lidarr](images/lidarr.md) | pkg | 2.13.3.4711_1 | [:simple-githubactions:](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [lidarr](images/lidarr.md) | pkg-latest | 3.1.0.4875 | [:simple-githubactions:](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [lidarr](images/lidarr.md) | latest | 3.1.0.4875 | [:simple-githubactions:](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb-11.4.md) | pkg | 11.4.9 | [:simple-githubactions:](https://github.com/daemonless/mariadb-11.4/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb-11.4.md) | pkg-latest | 11.4.10 | [:simple-githubactions:](https://github.com/daemonless/mariadb-11.4/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg | 11.4.9 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg-latest | 11.4.10 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [mealie](images/mealie.md) | latest | 3.12.0 | [:simple-githubactions:](https://github.com/daemonless/mealie/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [n8n](images/n8n.md) | latest | 2.11.4 | [:simple-githubactions:](https://github.com/daemonless/n8n/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg | 32.0.3_4 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg-latest | 33.0.0 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [openspeedtest](images/openspeedtest.md) | latest | 2.0.5 | [:simple-githubactions:](https://github.com/daemonless/openspeedtest/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [plex](images/plex.md) | latest | 1.43.0.10492-121068a07 | [:simple-githubactions:](https://github.com/daemonless/plex/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [postgres-14](images/postgres-14.md) | pkg | 14.20_1 | [:simple-githubactions:](https://github.com/daemonless/postgres-14/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [postgres-14](images/postgres-14.md) | pkg-latest | 14.22 | [:simple-githubactions:](https://github.com/daemonless/postgres-14/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [postgres-17](images/postgres-17.md) | pkg | 17.7_1 | [:simple-githubactions:](https://github.com/daemonless/postgres-17/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [postgres-17](images/postgres-17.md) | pkg-latest | 17.9 | [:simple-githubactions:](https://github.com/daemonless/postgres-17/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [postgres-14](images/postgres.md) | pkg | 14.20_1 | [:simple-githubactions:](https://github.com/daemonless/postgres/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [postgres-14](images/postgres.md) | pkg-latest | 14.22 | [:simple-githubactions:](https://github.com/daemonless/postgres/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [postgres-17](images/postgres.md) | pkg | 17.7_1 | [:simple-githubactions:](https://github.com/daemonless/postgres/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [postgres-17](images/postgres.md) | pkg-latest | 17.9 | [:simple-githubactions:](https://github.com/daemonless/postgres/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [prowlarr](images/prowlarr.md) | pkg | 2.0.5.5160_1 | [:simple-githubactions:](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [prowlarr](images/prowlarr.md) | pkg-latest | 2.3.0.5236 | [:simple-githubactions:](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [prowlarr](images/prowlarr.md) | latest | 2.3.0.5236 | [:simple-githubactions:](https://github.com/daemonless/prowlarr/actions/workflows/build.yaml) |
