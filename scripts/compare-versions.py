@@ -129,6 +129,7 @@ def main():
     current = []
     errors = []
     deployed_all = {}  # name -> {tag: version} for all services
+    base_names = {}   # name -> base repo name (for multi-variant images)
 
     with open(VERSIONS_FILE) as f:
         data = json.load(f)
@@ -155,7 +156,8 @@ def main():
         variant = versions.get("_variant")
 
         deployed = get_deployed_versions(base_name, variant)
-        deployed_all[name] = {"_base": base_name, **deployed}
+        deployed_all[name] = deployed
+        base_names[name] = base_name
 
         if not deployed:
             errors.append({"name": name, "error": "No tags found in ghcr.io"})
@@ -203,6 +205,7 @@ def main():
         "current": current,
         "errors": errors,
         "deployed": deployed_all,
+        "base_names": base_names,
         "summary": {
             "current_count": total_tags - outdated_tags,
             "outdated_count": outdated_tags,
