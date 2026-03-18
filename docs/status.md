@@ -8,8 +8,8 @@ description: "Real-time version tracking for every Daemonless image."
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 75
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 74
+- :material-close-circle:{ .outdated } Outdated: 1
 
 
 
@@ -45,7 +45,7 @@ description: "Real-time version tracking for every Daemonless image."
 | :material-check-circle:{ .current } | [lidarr](images/lidarr.md) | latest | 3.1.0.4875 | [:simple-githubactions:](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg | 11.4.9 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg-latest | 11.4.10 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [mealie](images/mealie.md) | latest | 3.12.0 | [:simple-githubactions:](https://github.com/daemonless/mealie/actions/workflows/build.yaml) |
+| :material-close-circle:{ .outdated } | [mealie](images/mealie.md) | latest | 3.13.0 → **3.12.0** | [:simple-githubactions:](https://github.com/daemonless/mealie/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [n8n](images/n8n.md) | latest | 2.12.2 | [:simple-githubactions:](https://github.com/daemonless/n8n/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg | 32.0.3_4 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg-latest | 33.0.0 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |

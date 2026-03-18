@@ -52,6 +52,53 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
     ```
 
 
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=mealie
+    BASE_URL=http://localhost:9000
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      mealie:
+        name: mealie
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - BASE_URL: !ENV '${BASE_URL}'
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - MEALIE_CONFIG_PATH: /config
+    volumes:
+      MEALIE_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@MEALIE_CONFIG_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/mealie:${tag}
+    ```
+
+
 === ":material-console: Podman CLI"
 
     ```bash
