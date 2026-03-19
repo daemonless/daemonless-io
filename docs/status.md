@@ -3,13 +3,13 @@ title: "Version Status: Live Build Health for All FreeBSD Container Images"
 description: "Real-time version tracking for every Daemonless image."
 ---
 
-*Versions last checked: 2026-03-18T06:56:28.385854Z*
+*Versions last checked: 2026-03-19T06:53:03.175813Z*
 
 
 ## Summary
 
 - :material-check-circle:{ .current } Current: 74
-- :material-close-circle:{ .outdated } Outdated: 1
+- :material-close-circle:{ .outdated } Outdated: 3
 
 
 
@@ -45,8 +45,10 @@ description: "Real-time version tracking for every Daemonless image."
 | :material-check-circle:{ .current } | [lidarr](images/lidarr.md) | latest | 3.1.0.4875 | [:simple-githubactions:](https://github.com/daemonless/lidarr/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg | 11.4.9 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [mariadb-11.4](images/mariadb.md) | pkg-latest | 11.4.10 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
-| :material-close-circle:{ .outdated } | [mealie](images/mealie.md) | latest | 3.13.0 → **3.12.0** | [:simple-githubactions:](https://github.com/daemonless/mealie/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [n8n](images/n8n.md) | latest | 2.12.2 | [:simple-githubactions:](https://github.com/daemonless/n8n/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [mariadb-11.8](images/mariadb.md) | pkg | 11.8.5 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
+| :material-check-circle:{ .current } | [mariadb-11.8](images/mariadb.md) | pkg-latest | 11.8.6 | [:simple-githubactions:](https://github.com/daemonless/mariadb/actions/workflows/build.yaml) |
+| :material-close-circle:{ .outdated } | [mealie](images/mealie.md) | latest | 3.13.0 → **3.13.1** | [:simple-githubactions:](https://github.com/daemonless/mealie/actions/workflows/build.yaml) |
+| :material-close-circle:{ .outdated } | [n8n](images/n8n.md) | latest | 2.12.2 → **2.12.3** | [:simple-githubactions:](https://github.com/daemonless/n8n/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg | 32.0.3_4 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [nextcloud](images/nextcloud.md) | pkg-latest | 33.0.0 | [:simple-githubactions:](https://github.com/daemonless/nextcloud/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [openspeedtest](images/openspeedtest.md) | latest | 2.0.5 | [:simple-githubactions:](https://github.com/daemonless/openspeedtest/actions/workflows/build.yaml) |
@@ -88,7 +90,7 @@ description: "Real-time version tracking for every Daemonless image."
 | :material-check-circle:{ .current } | [transmission-wireguard](images/transmission-wireguard.md) | pkg-latest | 4.1.1 | [:simple-githubactions:](https://github.com/daemonless/transmission-wireguard/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [unifi](images/unifi.md) | pkg | 10.0.160 | [:simple-githubactions:](https://github.com/daemonless/unifi/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [unifi](images/unifi.md) | pkg-latest | 10.1.85 | [:simple-githubactions:](https://github.com/daemonless/unifi/actions/workflows/build.yaml) |
-| :material-check-circle:{ .current } | [unifi](images/unifi.md) | latest | 10.1.85 | [:simple-githubactions:](https://github.com/daemonless/unifi/actions/workflows/build.yaml) |
+| :material-close-circle:{ .outdated } | [unifi](images/unifi.md) | latest | 10.1.85 → **10.1.89** | [:simple-githubactions:](https://github.com/daemonless/unifi/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [uptime-kuma](images/uptime-kuma.md) | latest | 2.2.1 | [:simple-githubactions:](https://github.com/daemonless/uptime-kuma/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [vaultwarden](images/vaultwarden.md) | pkg | 1.35.2 | [:simple-githubactions:](https://github.com/daemonless/vaultwarden/actions/workflows/build.yaml) |
 | :material-check-circle:{ .current } | [vaultwarden](images/vaultwarden.md) | pkg-latest | 1.35.4 | [:simple-githubactions:](https://github.com/daemonless/vaultwarden/actions/workflows/build.yaml) |
