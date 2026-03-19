@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/lidarr/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/lidarr/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/lidarr?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/lidarr/commits)
 
-Lidarr music management on FreeBSD.
+Music collection manager for Usenet and BitTorrent users — monitors RSS feeds, grabs, sorts, and renames tracks from your favorite artists.
 
 | | |
 |---|---|
@@ -57,6 +57,58 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         annotations:
           org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=lidarr
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      lidarr:
+        name: lidarr
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - LIDARR_CONFIG_PATH: /config
+          - MUSIC_PATH: /music
+          - DOWNLOADS_PATH: /downloads
+    volumes:
+      LIDARR_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@LIDARR_CONFIG_PATH@'
+      MUSIC_PATH:
+        device: '@MUSIC_PATH@'
+      DOWNLOADS_PATH:
+        device: '@DOWNLOADS_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/lidarr:${tag}
+    SET allow.mlock=1
     ```
 
 

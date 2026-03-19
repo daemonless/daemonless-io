@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/cloudflared/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/cloudflared/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/cloudflared?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/cloudflared/commits)
 
-Cloudflare Tunnel client for exposing services securely.
+Tunneling daemon that proxies any local webserver through the Cloudflare network without DNS records or firewall changes.
 
 | | |
 |---|---|
@@ -46,6 +46,44 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - @CLOUDFLARED_PORT@:2000
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=cloudflared
+    TUNNEL_TOKEN=YOUR_CLOUDFLARE_TOKEN_HERE
+    TUNNEL_METRICS=0.0.0.0:2000
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      cloudflared:
+        name: cloudflared
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - TUNNEL_TOKEN: !ENV '${TUNNEL_TOKEN}'
+            - TUNNEL_METRICS: !ENV '${TUNNEL_METRICS}'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/cloudflared:${tag}
     ```
 
 

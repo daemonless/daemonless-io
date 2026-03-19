@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/hugo/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/hugo/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/hugo?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/hugo/commits)
 
-The world's fastest framework for building websites.
+Fast and flexible static site generator — builds your entire site at creation time rather than on each request.
 
 | | |
 |---|---|
@@ -51,6 +51,53 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - @HUGO_PORT@:1313
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=hugo
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    HUGO_BASEURL=http://localhost:1313
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      hugo:
+        name: hugo
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+            - HUGO_BASEURL: !ENV '${HUGO_BASEURL}'
+        volumes:
+          - HUGO_APP_PATH: /app
+    volumes:
+      HUGO_APP_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@HUGO_APP_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/hugo:${tag}
     ```
 
 

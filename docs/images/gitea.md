@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/gitea/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/gitea/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/gitea?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/gitea/commits)
 
-Gitea self-hosted Git service on FreeBSD.
+Lightweight self-hosted Git service — a community managed fork of Gogs written in Go.
 
 | | |
 |---|---|
@@ -50,6 +50,51 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
           - @GITEA_PORT@:3000
           - 2222:2222
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=gitea
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      gitea:
+        name: gitea
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - GITEA_CONFIG_PATH: /config
+    volumes:
+      GITEA_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@GITEA_CONFIG_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/gitea:${tag}
     ```
 
 

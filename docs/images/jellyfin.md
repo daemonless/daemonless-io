@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/jellyfin/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/jellyfin/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/jellyfin?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/jellyfin/commits)
 
-The Free Software Media System on FreeBSD.
+Volunteer-built media solution that puts you in control — stream to any device from your own server, with no strings attached.
 
 | | |
 |---|---|
@@ -57,6 +57,61 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         annotations:
           org.freebsd.jail.allow.mlock: "true"
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=jellyfin
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      jellyfin:
+        name: jellyfin
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - JELLYFIN_CONFIG_PATH: /config
+          - JELLYFIN_CACHE_PATH: /cache
+          - TV_PATH: /tv
+          - MOVIES_PATH: /movies
+    volumes:
+      JELLYFIN_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CONFIG_PATH@'
+      JELLYFIN_CACHE_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@JELLYFIN_CACHE_PATH@'
+      TV_PATH:
+        device: '@TV_PATH@'
+      MOVIES_PATH:
+        device: '@MOVIES_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/jellyfin:${tag}
+    SET allow.mlock=1
     ```
 
 

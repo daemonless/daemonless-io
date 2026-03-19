@@ -8,7 +8,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/homepage/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/homepage/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/homepage?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/homepage/commits)
 
-A modern, highly customizable dashboard for your homelab.
+Modern, fully static, fast, secure and highly customizable application dashboard with integrations for over 100 services.
 
 | | |
 |---|---|
@@ -50,6 +50,51 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
         ports:
           - @HOMEPAGE_PORT@:3000
         restart: unless-stopped
+    ```
+
+
+=== ":appjail-appjail: AppJail Director"
+
+    **.env**:
+
+    ```
+    DIRECTOR_PROJECT=homepage
+    PUID=@PUID@
+    PGID=@PGID@
+    TZ=@TZ@
+    ```
+
+    **appjail-director.yml**:
+
+    ```yaml
+    options:
+      - virtualnet: ':<random> default'
+      - nat:
+    services:
+      homepage:
+        name: homepage
+        options:
+          - container: 'boot args:--pull'
+        oci:
+          user: root
+          environment:
+            - PUID: !ENV '${PUID}'
+            - PGID: !ENV '${PGID}'
+            - TZ: !ENV '${TZ}'
+        volumes:
+          - HOMEPAGE_CONFIG_PATH: /config
+    volumes:
+      HOMEPAGE_CONFIG_PATH:
+        device: '@CONTAINER_CONFIG_ROOT@/@HOMEPAGE_CONFIG_PATH@'
+    ```
+
+    **Makejail**:
+
+    ```
+    ARG tag=latest
+
+    OPTION overwrite=force
+    OPTION from=@REGISTRY@/homepage:${tag}
     ```
 
 
