@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 8,20 * * *"
+    - cron: "0 */6 * * *"  # Every 6 hours
   workflow_dispatch:
   repository_dispatch:
     types: [status-update]
@@ -83,6 +83,39 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Notify Discord on outdated images
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd daemonless-io
+          set +e
+          python3 scripts/compare-versions.py > /tmp/versions.json 2>/dev/null
+          EXIT=$?
+          set -e
+
+          if [ $EXIT -eq 0 ] || [ -z "$DISCORD_WEBHOOK" ]; then
+            exit 0
+          fi
+
+          DESCRIPTION=$(jq -r '
+            .outdated[] as $item |
+            (.base_names[$item.name] // $item.name) as $base |
+            "**[\($item.name)](https://daemonless.io/images/\($item.name))**: " +
+            ($item.updates | map(
+              "[\(.tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\(.deployed) → \(.available)`"
+            ) | join(", "))
+          ' /tmp/versions.json | awk '{printf "%s\\n", $0}')
+
+          COUNT=$(jq '.summary.outdated_count' /tmp/versions.json)
+
+          curl -s -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg desc "$DESCRIPTION" \
+              --arg count "$COUNT" \
+              '{embeds: [{title: "🔄 \($count) outdated image(s)", description: $desc, color: 16744272}]}')"
 
       - name: Ping IndexNow
         run: |
