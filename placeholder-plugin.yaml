@@ -877,6 +877,20 @@ placeholders:
   BICHON_DATA_PATH:
     default: bichon/data
     description: Bichon /data Path
+  AUDIOBOOKSHELF_PORT:
+    default: '13378'
+    description: Audiobookshelf Host Port
+    validators:
+    - port_number
+  AUDIOBOOKSHELF_CONFIG_PATH:
+    default: audiobookshelf
+    description: Audiobookshelf /config Path
+  AUDIOBOOKSHELF_METADATA_PATH:
+    default: audiobookshelf/metadata
+    description: Audiobookshelf /metadata Path
+  AUDIOBOOKSHELF_AUDIOBOOKS_PATH:
+    default: audiobookshelf/audiobooks
+    description: Audiobookshelf /audiobooks Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
