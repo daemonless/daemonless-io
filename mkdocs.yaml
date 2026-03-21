@@ -88,7 +88,7 @@ plugins:
 
 nav:
   - Home: index.md
-  - Fleet:
+  - Image Fleet:
     - Overview: images/index.md
     - Version Status: status.md
     - Base:
