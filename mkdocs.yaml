@@ -24,6 +24,7 @@ theme:
   custom_dir: overrides
 
 extra:
+  generator: false
   analytics:
     provider: google
     property: G-Z0TYZ35R6G

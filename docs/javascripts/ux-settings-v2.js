@@ -9,26 +9,26 @@
 
         // Find target header
         const targetHeader = document.querySelector("h3#interactive-configuration");
-        
+
         if (targetHeader) {
             console.log("UX Settings: Moving table AFTER", targetHeader);
-            
+
             // Move Table
             if (targetHeader.nextSibling) {
                 targetHeader.parentNode.insertBefore(tableDiv, targetHeader.nextSibling);
             } else {
                 targetHeader.parentNode.appendChild(tableDiv);
             }
-            
+
             // Ensure Visible
             tableDiv.style.display = "block";
             tableDiv.style.marginTop = "1rem";
             tableDiv.style.marginBottom = "1rem";
-            
+
             // Find Reset Button logic
             // The plugin often puts it in .placeholder-settings-panel (sibling) OR inside tableDiv
             const settingsPanel = document.querySelector(".placeholder-settings-panel");
-            
+
             if (settingsPanel) {
                 // Move it AFTER table
                 if (tableDiv.nextSibling) {
@@ -39,7 +39,7 @@
                 settingsPanel.style.display = "block";
                 settingsPanel.style.marginBottom = "2rem";
             }
-            
+
             moved = true;
         }
     }
@@ -129,3 +129,28 @@
     window.addEventListener('load', processAppJailTabs);
     document.addEventListener('DOMContentSwitch', processAppJailTabs);
 })();
+
+// Image Search Filtering (Event Delegation)
+document.addEventListener('input', e => {
+    if (e.target.id !== 'image-search') return;
+    const query = e.target.value.toLowerCase();
+
+    document.querySelectorAll('.md-content table').forEach(table => {
+        let matchCount = 0;
+        table.querySelectorAll('tbody tr').forEach(row => {
+            const matches = row.textContent.toLowerCase().includes(query);
+            row.style.display = matches ? '' : 'none';
+            if (matches) matchCount++;
+        });
+
+        // Hide table and its header if no matches
+        const header = table.previousElementSibling;
+        if (matchCount === 0 && query !== '') {
+            table.style.display = 'none';
+            if (header && header.tagName.startsWith('H')) header.style.display = 'none';
+        } else {
+            table.style.display = '';
+            if (header && header.tagName.startsWith('H')) header.style.display = '';
+        }
+    });
+});

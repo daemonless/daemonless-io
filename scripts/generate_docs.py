@@ -176,18 +176,18 @@ def update_placeholders(configs):
 def generate_index_page(configs):
     """Generate the Fleet index page."""
     description = (
-        "Browse all daemonless container images. Media servers, downloaders, "
-        "databases, and utilities - all running natively on FreeBSD with Podman and ocijail."
+        "Browse all daemonless OCI images. Media servers, downloaders, "
+        "databases, and utilities — all running natively on FreeBSD."
     )
     lines = [
         "---",
-        'title: "Container Fleet: 30+ Native FreeBSD OCI Images"',
+        'title: "OCI Image Fleet: 30+ Native FreeBSD Images"',
         f'description: "{description}"',
         "---",
         "",
-        "# Container Fleet",
+        "# Image Fleet",
         "",
-        "Explore our collection of high-performance, FreeBSD-native OCI containers.",
+        "Explore our collection of high-performance, FreeBSD-native OCI images.",
         ""
     ]
 
@@ -249,7 +249,7 @@ def update_mkdocs_yaml(configs):
         if line.strip() == "- Fleet:":
             in_fleet = True
             if not processed:
-                new_lines.append("  - Fleet:")
+                new_lines.append("  - Image Fleet:")
                 new_lines.append("    - Overview: images/index.md")
                 new_lines.append("    - Version Status: status.md")
                 # Use VALID_CATEGORIES from dbuild for navigation ordering
@@ -299,10 +299,54 @@ def generate_status_page(configs):
         if result.stdout.strip():
             version_data = json.loads(result.stdout)
 
-    content = version_tmpl.render(last_check=last_check, **version_data)
+    # Add last_updates map for the status page
+    last_updates = {c["name"]: c["last_update"] for c in configs}
+
+    content = version_tmpl.render(last_check=last_check, last_updates=last_updates, configs=configs, **version_data)
     (REPO_ROOT / "docs" / "status.md").write_text(content, encoding='utf-8')
     print("Generated docs/status.md")
 
+
+def get_last_commit_date(repo_path):
+    """Get the last commit date for a repo in ISO format."""
+    try:
+        # 1. Try git log
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%cI"],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=False
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            # Return YYYY-MM-DD
+            return result.stdout.strip().split('T')[0]
+
+        # 2. Try git log on the directory specifically
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%cI", "."],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=False
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip().split('T')[0]
+    except Exception as e:
+        print(f"Error getting git date for {repo_path.name}: {e}")
+
+    # 3. Fallback to filesystem mtime of compose.yaml or README.md
+    try:
+        for fname in ["compose.yaml", "README.md", "."]:
+            fpath = repo_path / fname
+            if fpath.exists():
+                import datetime
+                mtime = fpath.stat().st_mtime
+                return datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+    except Exception:
+        pass
+
+    return "Unknown"
 
 def main():
     """Main entry point for the documentation generator."""
@@ -324,6 +368,9 @@ def main():
         config = get_repo_config(repo)
         if not config:
             continue
+
+        # Add last commit date
+        config["last_update"] = get_last_commit_date(repo)
 
         configs.append(config)
 
