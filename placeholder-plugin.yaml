@@ -891,6 +891,14 @@ placeholders:
   AUDIOBOOKSHELF_AUDIOBOOKS_PATH:
     default: audiobookshelf/audiobooks
     description: Audiobookshelf /audiobooks Path
+  DISPATCHARR_PORT:
+    default: '9191'
+    description: Dispatcharr Host Port
+    validators:
+    - port_number
+  DISPATCHARR_DATA_PATH:
+    default: dispatcharr/data
+    description: Dispatcharr /data Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
