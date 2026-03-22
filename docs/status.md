@@ -3,13 +3,13 @@ title: "Version Status: Live Build Health for All FreeBSD Container Images"
 description: "Real-time version tracking and CI/CD status for every Daemonless image."
 ---
 
-*Versions last checked: 2026-03-21T19:15:46.087911Z*
+*Versions last checked: 2026-03-22T03:34:43.930613Z*
 
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 80
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 79
+- :material-close-circle:{ .outdated } Outdated: 1
 
 
 
@@ -93,7 +93,7 @@ The table below shows the technical status and current versions of all images. E
 | :material-check-circle:{ .current } | [transmission](images/transmission.md)  | `pkg-latest` | 4.1.1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/transmission/build.yaml?label= )](https://github.com/daemonless/transmission/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/transmission/commits){target=_blank} |
 | :material-check-circle:{ .current } | [transmission-wireguard](images/transmission-wireguard.md)  | `pkg` | 4.0.6_7 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/transmission-wireguard/build.yaml?label= )](https://github.com/daemonless/transmission-wireguard/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/transmission-wireguard/commits){target=_blank} |
 | :material-check-circle:{ .current } | [transmission-wireguard](images/transmission-wireguard.md)  | `pkg-latest` | 4.1.1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/transmission-wireguard/build.yaml?label= )](https://github.com/daemonless/transmission-wireguard/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/transmission-wireguard/commits){target=_blank} |
-| :material-check-circle:{ .current } | [unifi](images/unifi.md)  | `pkg` | 10.0.160 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yaml?label= )](https://github.com/daemonless/unifi/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/unifi/commits){target=_blank} |
+| :material-close-circle:{ .outdated } | [unifi](images/unifi.md)  | `pkg` | 10.0.160 → **10.1.89** | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yaml?label= )](https://github.com/daemonless/unifi/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/unifi/commits){target=_blank} |
 | :material-check-circle:{ .current } | [unifi](images/unifi.md)  | `pkg-latest` | 10.1.85 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yaml?label= )](https://github.com/daemonless/unifi/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/unifi/commits){target=_blank} |
 | :material-check-circle:{ .current } | [unifi](images/unifi.md)  | `latest` | 10.1.89 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/unifi/build.yaml?label= )](https://github.com/daemonless/unifi/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/unifi/commits){target=_blank} |
 | :material-check-circle:{ .current } | [uptime-kuma](images/uptime-kuma.md)  | `latest` | 2.2.1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/uptime-kuma/build.yaml?label= )](https://github.com/daemonless/uptime-kuma/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/uptime-kuma/commits){target=_blank} |
