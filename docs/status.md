@@ -3,13 +3,13 @@ title: "Version Status: Live Build Health for All FreeBSD Container Images"
 description: "Real-time version tracking and CI/CD status for every Daemonless image."
 ---
 
-*Versions last checked: 2026-03-23T14:06:19.386285Z*
+*Versions last checked: 2026-03-23T19:39:27.619866Z*
 
 
 ## Summary
 
-- :material-check-circle:{ .current } Current: 80
-- :material-close-circle:{ .outdated } Outdated: 0
+- :material-check-circle:{ .current } Current: 79
+- :material-close-circle:{ .outdated } Outdated: 1
 
 
 
@@ -38,7 +38,7 @@ The table below shows the technical status and current versions of all images. E
 | :material-check-circle:{ .current } | [homepage](images/homepage.md)  | `latest` | 1.11.0 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/homepage/build.yaml?label= )](https://github.com/daemonless/homepage/actions/workflows/build.yaml){target=_blank} | [2026-03-19](https://github.com/daemonless/homepage/commits){target=_blank} |
 | :material-check-circle:{ .current } | [hugo](images/hugo.md)  | `pkg` | 0.154.5_3_1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/hugo/build.yaml?label= )](https://github.com/daemonless/hugo/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/hugo/commits){target=_blank} |
 | :material-check-circle:{ .current } | [hugo](images/hugo.md)  | `pkg-latest` | 0.158.0_1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/hugo/build.yaml?label= )](https://github.com/daemonless/hugo/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/hugo/commits){target=_blank} |
-| :material-check-circle:{ .current } | [hugo](images/hugo.md)  | `latest` | 0.158.0 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/hugo/build.yaml?label= )](https://github.com/daemonless/hugo/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/hugo/commits){target=_blank} |
+| :material-close-circle:{ .outdated } | [hugo](images/hugo.md)  | `latest` | 0.158.0 → **0.159.0** | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/hugo/build.yaml?label= )](https://github.com/daemonless/hugo/actions/workflows/build.yaml){target=_blank} | [2026-03-20](https://github.com/daemonless/hugo/commits){target=_blank} |
 | :material-check-circle:{ .current } | [immich-ml](images/immich-ml.md)  | `latest` | 2.6.1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/immich-ml/build.yaml?label= )](https://github.com/daemonless/immich-ml/actions/workflows/build.yaml){target=_blank} | [2026-03-19](https://github.com/daemonless/immich-ml/commits){target=_blank} |
 | :material-check-circle:{ .current } | [immich-server](images/immich-server.md)  | `latest` | 2.6.1 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/immich-server/build.yaml?label= )](https://github.com/daemonless/immich-server/actions/workflows/build.yaml){target=_blank} | [2026-03-23](https://github.com/daemonless/immich-server/commits){target=_blank} |
 | :material-check-circle:{ .current } | [jellyfin](images/jellyfin.md)  | `pkg` | 10.11.5 | [![]( https://img.shields.io/github/actions/workflow/status/daemonless/jellyfin/build.yaml?label= )](https://github.com/daemonless/jellyfin/actions/workflows/build.yaml){target=_blank} | [2026-03-19](https://github.com/daemonless/jellyfin/commits){target=_blank} |
