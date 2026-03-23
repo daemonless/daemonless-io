@@ -161,6 +161,7 @@ nav:
       - OCI Compliance: guides/oci-compliance.md
   - dbuild (Daemonless Build):
       - Overview: guides/dbuild/index.md
+      - Building Your First Image: guides/dbuild/workflow.md
       - Command Reference: guides/dbuild/commands.md
       - Configuration: guides/dbuild/config.md
       - CI/CD Integration:

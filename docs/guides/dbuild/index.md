@@ -29,26 +29,21 @@ dbuild manages the entire journey of a container image through three main phases
 ## Key Features
 
 - **Multi-variant builds**: Automatically detects `Containerfile` and `Containerfile.<variant>` (e.g. `.pkg`).
-- **Architecture awareness**: Maps standard names (`x86_64`, `arm64`) to FreeBSD conventions (`amd64`, `aarch64`).
 - **Quality Gates**: Integrated testing that blocks registry pushes if validation fails.
 - **Documentation Automation**: Renders `README.md` and `Containerfile` from `compose.yaml` metadata.
 - **CI First**: Designed to run identically on local machines, GitHub Actions, and Woodpecker CI.
 
 ## Installation
 
-dbuild requires Python 3.11+ and Podman.
+dbuild is available as a native FreeBSD package:
 
 ```bash
-# Install dbuild from source
-git clone https://github.com/daemonless/dbuild
-cd dbuild
-doas make install
+pkg install sysutils/py-dbuild
 ```
 
 ## Quick Start
 
-Jump straight into building your first FreeBSD container image:
-
+Jump straight into building your first FreeBSD container image by following the [Complete Workflow Guide](workflow.md).
 
 **Build and push all variants**
 ```bash
