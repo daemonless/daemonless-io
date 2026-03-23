@@ -71,6 +71,7 @@ x-daemonless:
 | `replacement` | `""` | Name of the image that replaces this one (e.g. `seerr`). Used to generate a prominent migration callout. |
 | `sunset_date` | `""` | Date after which the image will no longer be available (e.g. `2026-06-01`) |
 | `migration_guide` | `""` | Free-form Markdown with migration steps shown alongside the deprecation notice |
+| `successor` | `""` | Full URL of the successor image (e.g. `https://daemonless.io/images/grimmory`). Used to generate a migration callout. |
 
 
 ### `docs:` sub-keys

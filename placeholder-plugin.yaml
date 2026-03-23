@@ -899,6 +899,12 @@ placeholders:
   DISPATCHARR_DATA_PATH:
     default: dispatcharr/data
     description: Dispatcharr /data Path
+  GRIMMORY_APP_DATA_PATH:
+    default: grimmory/app/data
+    description: Grimmory /app/data Path
+  GRIMMORY_BOOKDROP_PATH:
+    default: grimmory/bookdrop
+    description: Grimmory /bookdrop Path
 settings:
   normal_prefix: '@'
   normal_suffix: '@'
