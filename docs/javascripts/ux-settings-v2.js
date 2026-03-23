@@ -8,7 +8,7 @@
         if (!tableDiv) return;
 
         // Find target header
-        const targetHeader = document.querySelector("h3#interactive-configuration");
+        const targetHeader = document.getElementById("interactive-configuration");
 
         if (targetHeader) {
             console.log("UX Settings: Moving table AFTER", targetHeader);
