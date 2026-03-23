@@ -36,7 +36,7 @@ Get daemonless containers running on FreeBSD in 5 minutes.
 Install Podman and container networking:
 
 ```bash
-pkg install podman-suite
+pkg install podman-suite sysutils/podman-compose
 ```
 
 !!! warning "ocijail Patch Required"
