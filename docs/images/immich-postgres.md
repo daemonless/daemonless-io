@@ -9,7 +9,7 @@ Source: dbuild templates
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-postgres/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-postgres/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich-postgres?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich-postgres/commits)
 
-PostgreSQL 14 with pgvector and vectorchord extensions required by Immich for vector similarity search.
+PostgreSQL with pgvector and vectorchord extensions required by Immich for vector similarity search. Defaults to PostgreSQL 14 (:latest), PostgreSQL 18 available as :18.
 
 | | |
 |---|---|
@@ -22,7 +22,8 @@ PostgreSQL 14 with pgvector and vectorchord extensions required by Immich for ve
 
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **Upstream Binary**. Built from official release. | Most users. Matches Linux Docker behavior. |
+| `14` / `latest` | **Upstream Binary**. Built from official release. | Most users. Matches Linux Docker behavior. |
+| `18` | **Upstream Binary**. Built from official release. | Alternative build. |
 
 !!! failure "Root Privileges Required"
     **Podman on FreeBSD currently requires root.** All commands must be run as root (or via `doas`/`sudo`).
@@ -169,6 +170,11 @@ Access at: `http://localhost:@IMMICH_POSTGRES_PORT@`
 | `5432` | TCP | PostgreSQL Port |
 
 This image is part of the [Immich Stack](https://daemonless.io/images/immich).
+
+**PostgreSQL version:** `:latest` and `:14` use PostgreSQL 14. `:18` uses PostgreSQL 18.
+New installations should consider `:18`. If you are migrating an existing Immich instance,
+stay on `:14` — PostgreSQL major version upgrades require a full `pg_dumpall` and restore.
+The default `:latest` tag will follow whatever version Immich recommends upstream.
 
 PostgreSQL requires `allow.sysvipc` for shared memory. Create `immich-postgres.conf` alongside `appjail-director.yml`:
 
