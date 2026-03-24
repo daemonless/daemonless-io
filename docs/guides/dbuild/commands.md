@@ -14,6 +14,7 @@ Build container images from Containerfiles.
 | `-h`, `--help` | show this help message and exit |
 | `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
 | `--arch` | override target architecture (e.g. amd64, aarch64) |
+| `-p`, `--parallel` | build variants in parallel; optionally limit to N concurrent builds |
 
 
 
