@@ -154,6 +154,12 @@ dbuild build
 
 # Build all variants defined in .daemonless/config.yaml
 dbuild build --variant latest --variant pkg --variant pkg-latest
+
+# Build all variants in parallel
+dbuild build -p
+
+# Limit to 2 concurrent builds
+dbuild build -p 2
 ```
 
 ---
