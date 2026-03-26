@@ -155,7 +155,77 @@ cit:
   health: /api/health
 ```
 
-This uses `podman-compose` with the compose file at `.daemonless/compose.yaml`. Shell exec tests are skipped for compose stacks since they don't support single-container exec.
+This uses `podman-compose` with the compose file at `.daemonless/compose.yaml` or `.daemonless/compose.yml`. Shell exec tests are skipped for compose stacks since they don't support single-container exec.
+
+### Compose File for CIT
+
+The compose file at `.daemonless/compose.yaml` is separate from the top-level `compose.yaml`. This lets you define a test-specific stack without modifying the production deployment file — for example, to include a local database or to override image references:
+
+```
+.daemonless/
+└── compose.yaml   # CIT-only stack, used when cit.compose: true
+compose.yaml       # Production deployment + x-daemonless metadata
+```
+
+If `.daemonless/compose.yaml` is absent when `compose: true` is set, the test fails immediately.
+
+## Testing Backends
+
+By default, `dbuild test` runs the container using **Podman**. For images deployed to FreeBSD jails, you can also test with **AppJail** to validate behavior in a real jail context.
+
+```bash
+# Test with Podman only (default)
+dbuild test
+
+# Test with AppJail only
+dbuild test --backend appjail
+
+# Test with both Podman and AppJail
+dbuild test --backend all
+```
+
+### AppJail Backend
+
+When `--backend appjail` is used, dbuild runs the container via `appjail oci run` instead of `podman run`. This exercises the full jail stack:
+
+- **`appjail oci run`** — starts an OCI jail directly from local Podman image storage
+- **Shared host network** — the jail is reachable at `127.0.0.1` on the configured port
+- **Jail isolation** — syscall restrictions, mount namespaces, and jail annotations all apply
+
+AppJail backend is automatically selected when the image has `appjail: true` in `compose.yaml` and AppJail is installed on the host. If AppJail is configured but not installed, dbuild emits a warning and falls back to Podman — it does not error.
+
+!!! note
+    `compose: true` is Podman-only. AppJail does not support multi-container stacks via compose, so the AppJail backend is skipped when `compose: true` is set.
+
+### Overriding Generated AppJail Files
+
+`dbuild generate` produces three AppJail deployment files from bundled templates:
+
+| File | Purpose |
+|------|---------|
+| `Makejail` | Jail build instructions (image source, `allow.*` params) |
+| `appjail-director.yml` | Director deployment descriptor (networking, volumes, env) |
+| `.env` | Environment variable defaults for director |
+
+If an image needs custom content in any of these files, place the override in `.daemonless/appjail/`:
+
+```
+.daemonless/
+└── appjail/
+    ├── Makejail              # replaces generated Makejail
+    ├── appjail-director.yml  # replaces generated director config
+    └── .env                  # replaces generated env defaults
+```
+
+Any file found in `.daemonless/appjail/` is copied as-is; files not present fall back to the auto-generated template. Partial overrides are fine — you can override just `Makejail` and let the rest render from templates.
+
+### Backend Summary
+
+| Backend | Runtime | Use when |
+|---------|---------|---------|
+| `podman` | `podman run` | Standard containers, all hosts |
+| `appjail` | `appjail oci run` | Jail-deployed images on FreeBSD |
+| `all` | Both | Full validation before release |
 
 ## Jail Annotations
 

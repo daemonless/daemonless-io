@@ -20,8 +20,12 @@ pip install -r requirements.txt
 A `Makefile` is provided to manage the generation and build process:
 
 ```bash
-# 1. Fetch/Update all image repositories (clones to sibling directories)
-# Requires GitHub CLI (gh)
+# 1. Clone or update all image repositories (as siblings of daemonless-io/)
+#
+# generate_docs.py reads compose.yaml from each image repo to generate
+# the images index and per-image docs. All repos must exist as siblings
+# of daemonless-io/ (e.g. ../radarr, ../traefik, ../dbuild).
+# Uses the GitHub public API — no authentication required.
 make fetch
 
 # 2. Generate all dynamic documentation

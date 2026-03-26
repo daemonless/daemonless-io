@@ -4,8 +4,10 @@ Fetch all image repositories from the daemonless GitHub organization.
 Uses GitHub API to discover repos dynamically.
 """
 
+import json
 import os
 import subprocess
+import urllib.request
 from pathlib import Path
 
 # Constants
@@ -16,21 +18,25 @@ TARGET_REPOS_DIR = REPO_ROOT.parent
 SKIP_REPOS = {"daemonless", "daemonless-io"}
 
 def get_org_repos(org: str = "daemonless") -> list[str]:
-    """Get list of repos from GitHub org using gh CLI."""
-    try:
-        result = subprocess.run(
-            ["gh", "repo", "list", org, "--json", "name", "-q", ".[].name", "-L", "100"],
-            capture_output=True,
-            text=True,
-            check=True
-        )
-        return result.stdout.strip().split("\n")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to list repos: {e}")
-        return []
-    except FileNotFoundError:
-        print("Error: 'gh' CLI not found. Install GitHub CLI or set GH_TOKEN.")
-        return []
+    """Get list of public repos from GitHub org using the REST API."""
+    repos = []
+    page = 1
+    while True:
+        url = f"https://api.github.com/orgs/{org}/repos?type=public&per_page=100&page={page}"
+        req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                data = json.loads(resp.read())
+        except Exception as e:
+            print(f"Failed to list repos: {e}")
+            return []
+        if not data:
+            break
+        repos.extend(r["name"] for r in data)
+        if len(data) < 100:
+            break
+        page += 1
+    return repos
 
 def clone_repo(name: str, org: str = "daemonless"):
     """Clone a single repo."""
@@ -38,7 +44,15 @@ def clone_repo(name: str, org: str = "daemonless"):
     target_path = TARGET_REPOS_DIR / name
 
     if target_path.exists():
-        print(f"Skipping {name}: already exists")
+        print(f"Updating {name}...")
+        try:
+            subprocess.run(
+                ["git", "-C", str(target_path), "pull", "--ff-only"],
+                check=True,
+                capture_output=True
+            )
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to update {name}: {e}")
         return
 
     print(f"Cloning {name}...")

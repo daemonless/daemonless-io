@@ -139,6 +139,45 @@ COPY root/ /
 
 The core `dbuild` loop is **Generate → Build → Test**.
 
+```mermaid
+flowchart TD
+    Init["$ dbuild init\nScaffold a new project"] --> Compose
+    Init --> Template
+    Init --> Config
+
+    Compose["📝 compose.yaml\nTitle, description, ports, env vars, docs"]
+    Template["📝 Containerfile.j2\nHow the image is built"]
+    Config["📝 .daemonless/config.yaml\nBuild variants and CIT settings"]
+
+    Compose --> Generate
+    Template --> Generate
+    Config --> Generate
+
+    Generate["$ dbuild generate\nRenders templates → Containerfile + README"]
+    Generate --> Build
+
+    Build["$ dbuild build\nBuilds OCI image with podman"]
+    Build --> Test
+
+    Test["$ dbuild test\nRuns CIT: shell → port → health → screenshot"]
+    Test --> CIT{Pass?}
+
+    CIT -- "✅ yes" --> Push["$ dbuild push\nPushes to ghcr.io/daemonless/app:latest"]
+    CIT -- "❌ no" --> Fix["📝 Fix Containerfile.j2\nor .daemonless/config.yaml"]
+    Fix --> Build
+
+    style Init fill:#2563eb,color:#fff,stroke:none
+    style Generate fill:#2563eb,color:#fff,stroke:none
+    style Build fill:#2563eb,color:#fff,stroke:none
+    style Test fill:#2563eb,color:#fff,stroke:none
+    style Push fill:#2563eb,color:#fff,stroke:none
+
+    style Compose fill:#7c3aed,color:#fff,stroke:none
+    style Template fill:#7c3aed,color:#fff,stroke:none
+    style Config fill:#7c3aed,color:#fff,stroke:none
+    style Fix fill:#7c3aed,color:#fff,stroke:none
+```
+
 ### Step A: Generate
 Turn your templates and `compose.yaml` into real files:
 ```bash

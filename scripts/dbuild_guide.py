@@ -20,6 +20,7 @@ if DBUILD_REPO.exists():
     sys.path.insert(0, str(DBUILD_REPO))
 else:
     print(f"Error: dbuild repository not found at {DBUILD_REPO}")
+    print(f"  Run 'make fetch' from the daemonless-io root to clone all required repositories.")
     sys.exit(1)
 
 try:
