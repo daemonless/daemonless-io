@@ -184,6 +184,7 @@ Run container integration tests against built images.
 | `-h`, `--help` | show this help message and exit |
 | `--variant` | filter to a single variant by tag (e.g. latest, pkg) |
 | `--json` | write test result JSON to FILE |
+| `--backend` | which backend(s) to test with: podman, appjail, or all (default: all) |
 
 
 
