@@ -59,7 +59,7 @@ jobs:
           cd daemonless-io
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/ mkdocs.yaml placeholder-plugin.yaml
+          git add mkdocs.yaml
           git diff --staged --quiet || git commit -m "Update generated docs and status [skip ci]"
           git push
 
