@@ -108,7 +108,6 @@ nav:
       - Redis: images/redis.md
     - Development:
       - Hugo: images/hugo.md
-      - code-server: images/code-server.md
     - Downloaders:
       - SABnzbd: images/sabnzbd.md
       - Transmission: images/transmission.md
