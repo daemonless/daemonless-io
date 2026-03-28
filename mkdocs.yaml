@@ -41,10 +41,15 @@ extra:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/ux-overrides.css
+  - https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css
+  - https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css
 
 extra_javascript:
   - javascripts/ux-settings-v2.js
   - https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
+  - https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js
+  - https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js
+  - javascripts/splide-init.js
 
 
 markdown_extensions:
@@ -103,6 +108,7 @@ nav:
       - Redis: images/redis.md
     - Development:
       - Hugo: images/hugo.md
+      - code-server: images/code-server.md
     - Downloaders:
       - SABnzbd: images/sabnzbd.md
       - Transmission: images/transmission.md
@@ -116,6 +122,8 @@ nav:
     - Media Management:
       - Bazarr: images/bazarr.md
       - BookLore: images/booklore.md
+      - Dispatcharr: images/dispatcharr.md
+      - Grimmory: images/grimmory.md
       - Lidarr: images/lidarr.md
       - Overseerr: images/overseerr.md
       - Prowlarr: images/prowlarr.md
@@ -124,6 +132,7 @@ nav:
       - Seerr: images/seerr.md
       - Sonarr: images/sonarr.md
     - Media Servers:
+      - Audiobookshelf: images/audiobookshelf.md
       - Jellyfin: images/jellyfin.md
       - Plex Media Server: images/plex.md
       - Tautulli: images/tautulli.md

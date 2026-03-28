@@ -99,6 +99,15 @@ def update_placeholders(configs):
         return s.strip("@")
 
     # Global placeholders
+    plugin_data["placeholders"]["REGISTRY"] = {
+        "default": "GitHub Container Registry",
+        "description": "Container Registry",
+        "values": {
+            "GitHub Container Registry": "ghcr.io/daemonless",
+            "Docker Hub": "docker.io/daemonless",
+        },
+    }
+
     plugin_data["placeholders"][strip_syntax(CONFIG_ROOT_VAR)] = {
         "default": DEFAULT_CONFIG_ROOT,
         "description": "Container Configuration Root Path",
@@ -247,7 +256,7 @@ def update_mkdocs_yaml(configs):
         by_cat.setdefault(cat, []).append(config)
 
     for line in lines:
-        if line.strip() == "- Fleet:":
+        if line.strip() in ("- Fleet:", "- Image Fleet:"):
             in_fleet = True
             if not processed:
                 new_lines.append("  - Image Fleet:")
@@ -372,6 +381,20 @@ def main():
 
         # Add last commit date
         config["last_update"] = get_last_commit_date(repo)
+
+        # Copy screenshots from .daemonless/screenshots/ to docs/images/screenshots/<name>/
+        screenshot_exts = {'.png', '.jpg', '.jpeg', '.gif', '.webp'}
+        screenshots_src = repo / ".daemonless" / "screenshots"
+        screenshots_dst = DOCS_DIR / "screenshots" / config['name']
+        screenshots = []
+        if screenshots_src.exists():
+            screenshots_dst.mkdir(parents=True, exist_ok=True)
+            for f in sorted(screenshots_src.iterdir()):
+                if f.suffix.lower() in screenshot_exts:
+                    import shutil
+                    shutil.copy2(f, screenshots_dst / f.name)
+                    screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
+        config["screenshots"] = screenshots
 
         configs.append(config)
 

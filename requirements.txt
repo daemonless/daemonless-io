@@ -3,6 +3,7 @@ mkdocs-material[imaging]
 mkdocs-redirects
 mkdocs-social-plugin
 mkdocs-placeholder-plugin
+mkdocs-glightbox
 jinja2
 pyyaml
 pytz

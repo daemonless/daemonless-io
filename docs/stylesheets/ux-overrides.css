@@ -67,3 +67,26 @@
 
 /* Hide Modal stuff */
 #global-settings-modal, .settings-toggle { display: none !important; }
+
+/* Splide carousel — prevent MkDocs Material from clobbering Splide's layout */
+.screenshot-carousel .splide__list {
+  display: flex !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.screenshot-carousel .splide__slide {
+  list-style: none !important;
+  flex-shrink: 0 !important;
+}
+.screenshot-carousel .splide__track {
+  overflow: hidden !important;
+}
+.screenshot-carousel {
+  margin-bottom: 1.5rem;
+}
+.screenshot-carousel img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
