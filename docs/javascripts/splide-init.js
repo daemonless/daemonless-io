@@ -1,11 +1,15 @@
 function initSplide() {
   document.querySelectorAll('.screenshot-carousel:not(.is-initialized)').forEach(function (el) {
+    var autoplay = el.dataset.autoplay === 'true';
     new Splide(el, {
       type: 'loop',
       padding: '10%',
       gap: '1rem',
       arrows: true,
       pagination: true,
+      autoplay: autoplay,
+      interval: 3000,
+      pauseOnHover: true,
     }).mount();
   });
 }

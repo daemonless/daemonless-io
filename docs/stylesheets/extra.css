@@ -19,11 +19,15 @@
   --md-code-bg-color: #2e2e36;
 }
 
+[data-md-color-scheme="slate"] body {
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(226, 69, 67, 0.18) 0%, transparent 100%), #1e1e24;
+}
+
 /* Hero Section */
 .hero {
   padding: 6rem 1rem;
   text-align: center;
-  background: radial-gradient(circle at center, rgba(226, 69, 67, 0.15) 0%, transparent 70%);
+  background: transparent;
   margin-bottom: 2rem;
 }
 
@@ -147,6 +151,44 @@
   background-color: transparent !important;
 }
 
+
+/* Featured Apps Carousel Labels */
+.featured-carousel {
+  padding-bottom: 2rem;
+}
+
+.featured-carousel .splide__slide a {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  overflow: hidden;
+  max-height: 500px;
+}
+
+.featured-carousel .splide__slide img {
+  width: 100%;
+  height: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  display: block;
+  background: #111;
+}
+
+.featured-carousel .splide__slide .slide-label {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
 
 /* Version Status Icons */
 .current {

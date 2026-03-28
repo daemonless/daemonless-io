@@ -20,6 +20,24 @@ hide:
   </div>
 </div>
 
+## Featured Apps
+
+<section class="splide screenshot-carousel featured-carousel" aria-label="Featured apps" data-autoplay="true">
+  <div class="splide__track">
+    <ul class="splide__list">
+      <li class="splide__slide"><a href="images/plex/"><img src="images/screenshots/plex/screenshot_1.jpg" alt="Plex Media Server" loading="lazy"><span class="slide-label">Plex Media Server</span></a></li>
+      <li class="splide__slide"><a href="images/jellyfin/"><img src="images/screenshots/jellyfin/screenshot_1.png" alt="Jellyfin" loading="lazy"><span class="slide-label">Jellyfin</span></a></li>
+      <li class="splide__slide"><a href="images/sonarr/"><img src="images/screenshots/sonarr/screenshot1.png" alt="Sonarr" loading="lazy"><span class="slide-label">Sonarr</span></a></li>
+      <li class="splide__slide"><a href="images/radarr/"><img src="images/screenshots/radarr/blacklist_1.png" alt="Radarr" loading="lazy"><span class="slide-label">Radarr</span></a></li>
+      <li class="splide__slide"><a href="images/immich/"><img src="images/screenshots/immich/screenshot_hu_27e3b673de9529e2_1.webp" alt="Immich" loading="lazy"><span class="slide-label">Immich</span></a></li>
+      <li class="splide__slide"><a href="images/nextcloud/"><img src="images/screenshots/nextcloud/nextcloud-hub-25-files_1.png" alt="Nextcloud" loading="lazy"><span class="slide-label">Nextcloud</span></a></li>
+      <li class="splide__slide"><a href="images/tautulli/"><img src="images/screenshots/tautulli/activity_1.png" alt="Tautulli" loading="lazy"><span class="slide-label">Tautulli</span></a></li>
+      <li class="splide__slide"><a href="images/adguardhome/"><img src="images/screenshots/adguardhome/1.gif" alt="AdGuard Home" loading="lazy"><span class="slide-label">AdGuard Home</span></a></li>
+      <li class="splide__slide"><a href="images/uptime-kuma/"><img src="images/screenshots/uptime-kuma/212262296-e6205815-ad62-488c-83ec-a5b0d0689f7c_1.jpg" alt="Uptime Kuma" loading="lazy"><span class="slide-label">Uptime Kuma</span></a></li>
+    </ul>
+  </div>
+</section>
+
 <div class="grid cards" markdown>
 
 -   :material-server-network: **Reliable Foundation**
