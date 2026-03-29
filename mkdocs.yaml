@@ -145,6 +145,7 @@ nav:
       - Immich Server: images/immich-server.md
     - Utilities:
       - Bichon: images/bichon.md
+      - Heimdall: images/heimdall.md
       - Home Assistant: images/home-assistant.md
       - Homepage: images/homepage.md
       - Mealie: images/mealie.md
