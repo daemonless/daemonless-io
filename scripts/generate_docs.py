@@ -262,13 +262,6 @@ def update_mkdocs_yaml(configs):
                 new_lines.append("  - Image Fleet:")
                 new_lines.append("    - Overview: images/index.md")
                 new_lines.append("    - Version Status: status.md")
-                # Use VALID_CATEGORIES from dbuild for navigation ordering
-                for cat in VALID_CATEGORIES + ["Uncategorized"]:
-                    if cat not in by_cat:
-                        continue
-                    new_lines.append(f"    - {cat}:")
-                    for config in sorted(by_cat[cat], key=lambda x: x['title']):
-                        new_lines.append(f"      - {config['title']}: images/{config['name']}.md")
                 processed = True
             continue
         if in_fleet:
