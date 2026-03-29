@@ -20,6 +20,13 @@ hide:
   </div>
 </div>
 
+<div class="what-is">
+  <h2>What is Daemonless?</h2>
+  <p>
+    Daemonless is a collection of <strong>FreeBSD-native OCI images</strong> that run directly on the FreeBSD kernel. It combines the power and security of Jails with the modern container ecosystem—compatible with <strong>Podman</strong>, <strong>AppJail</strong>, or any OCI-compliant runtime. No Linux virtual machines or overhead required.
+  </p>
+</div>
+
 ## Featured Apps
 
 <section class="splide screenshot-carousel featured-carousel" aria-label="Featured apps" data-autoplay="true">

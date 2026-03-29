@@ -25,10 +25,10 @@
 
 /* Hero Section */
 .hero {
-  padding: 6rem 1rem;
+  padding: 6rem 1rem 3rem;
   text-align: center;
   background: transparent;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 
 .hero-content h1 {
@@ -73,6 +73,28 @@
 .hero-buttons .md-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(226, 69, 67, 0.3);
+}
+
+/* What is Daemonless Section */
+.what-is {
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.what-is h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--md-primary-fg-color);
+  border: none;
+}
+
+.what-is p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--md-default-fg-color--light);
 }
 
 /* Card Improvements */
