@@ -34,11 +34,11 @@ invokes a reusable workflow (`daemonless-build.yaml`), both run under the same r
 This means a job in the caller can upload an artifact, and a job inside the reusable
 workflow can download it by name — no URLs, no cross-repo magic.
 
-```
+```text
 build-web (ubuntu-latest)          build (FreeBSD VM)
-─────────────────────────          ──────────────────────────────────────
-pnpm install && pnpm build   →  artifact store (run-scoped)
-upload-artifact: web-dist          download-artifact: web-dist → web/dist/
+-------------------------          --------------------------------------
+pnpm install && pnpm build   ->  artifact store (run-scoped)
+upload-artifact: web-dist          download-artifact: web-dist -> web/dist/
                                    vmactions/freebsd-vm syncs web/dist/
                                    cargo build (embeds web/dist at compile time)
 ```
@@ -133,10 +133,10 @@ set `packageManager` in `package.json`. Check the upstream lockfile header:
 
 ```bash
 head -1 web/pnpm-lock.yaml
-# lockfileVersion: '9.0'  →  use pnpm version 9
+# lockfileVersion: '9.0'  ->  use pnpm version 9
 ```
 
-## Determining the lockfile version → pnpm version
+## Determining the lockfile version -> pnpm version
 
 | lockfileVersion | pnpm version |
 |-----------------|--------------|
