@@ -114,7 +114,7 @@ COPY web/dist /build/web/dist
 
 Since assets are now built in CI, they should not be committed:
 
-```gitignore
+```text
 # web/dist is built by CI (build-web job) and passed as an artifact
 web/dist/
 ```
