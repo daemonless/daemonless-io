@@ -1,0 +1,49 @@
+# Daemonless
+
+Native FreeBSD OCI container images for self-hosted applications.
+
+**No Linux VM required.** Run your containers directly on FreeBSD using Podman + ocijail.
+
+## Features
+
+- **s6 Process Supervision** - Proper signal handling, no zombie processes
+- **PUID/PGID Support** - Seamless permission mapping for ZFS datasets and bind mounts
+- **Multiple Tags** - Choose between upstream binaries (`:latest`), quarterly packages (`:pkg`), or rolling packages (`:pkg-latest`)
+- **Automated CI/CD** - Every image built and tested automatically
+
+## Available Images
+
+{% for category in categories %}
+### {{ category }}
+
+| Image | Port | Description |
+|-------|------|-------------|
+{%- for config in by_category[category] %}
+| [{{ config.title }}](https://github.com/daemonless/{{ config.name }}) | {{ config.port }} | {{ config.description }} |
+{%- endfor %}
+
+{% endfor %}
+
+## Quick Links
+
+- [Quick Start Guide](https://daemonless.io/quick-start/)
+- [Available Images](https://daemonless.io/images/)
+- [Documentation](https://daemonless.io)
+
+## Getting Started
+
+```sh
+# Pull an image
+podman pull ghcr.io/daemonless/radarr:latest
+
+# Run with PUID/PGID mapping
+podman run -d --name radarr \
+  -e PUID=1000 -e PGID=1000 \
+  -v /data/radarr:/config \
+  -v /media:/media \
+  ghcr.io/daemonless/radarr:latest
+```
+
+## License
+
+BSD

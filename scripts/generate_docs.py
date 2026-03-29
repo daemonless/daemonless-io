@@ -38,7 +38,7 @@ CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
 DEFAULT_CONFIG_ROOT = "/path/to/containers"
 
 # Skip these repos (not container images)
-SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild"}
+SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild", ".github", "ci-daemonless-io", "arr-base", "nginx-base", "base", "base-core"}
 
 # Local templates override dbuild templates
 env = jinja2.Environment(loader=jinja2.ChoiceLoader([
@@ -358,6 +358,39 @@ def get_last_commit_date(repo_path):
 
     return "Unknown"
 
+def generate_org_readme(configs):
+    """Generate the GitHub Organization README (daemonless/README.md)."""
+    try:
+        org_tmpl = env.get_template("ORGANIZATION_README.j2")
+    except jinja2.TemplateNotFound:
+        print("Warning: ORGANIZATION_README.j2 not found, skipping Org README")
+        return
+
+    # Group by category
+    by_category = {}
+    for config in configs:
+        cat = config.get("category", "Uncategorized")
+        by_category.setdefault(cat, []).append(config)
+
+    # Sort categories: valid dbuild categories first, then others
+    categories = [c for c in VALID_CATEGORIES if c in by_category]
+    for cat in sorted(by_category.keys()):
+        if cat not in categories:
+            categories.append(cat)
+
+    # Sort images within categories
+    for cat in categories:
+        by_category[cat].sort(key=lambda x: x["title"])
+
+    content = org_tmpl.render(
+        categories=categories,
+        by_category=by_category
+    )
+
+    org_readme_path = REPOS_DIR / "daemonless" / "README.md"
+    org_readme_path.write_text(content, encoding='utf-8')
+    print(f"Updated {org_readme_path}")
+
 def main():
     """Main entry point for the documentation generator."""
     configs = []
@@ -431,6 +464,7 @@ def main():
     update_placeholders(configs)
     update_mkdocs_yaml(configs)
     generate_status_page(configs)
+    generate_org_readme(configs)
 
     print(f"\nGenerated {len(configs)} image docs")
 
