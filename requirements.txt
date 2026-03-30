@@ -7,3 +7,5 @@ mkdocs-glightbox
 jinja2
 pyyaml
 pytz
+beautifulsoup4
+mkdocs-zip-bundle-plugin

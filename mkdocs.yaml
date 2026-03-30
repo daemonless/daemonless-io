@@ -46,7 +46,6 @@ extra_css:
 
 extra_javascript:
   - javascripts/ux-settings-v2.js
-  - https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
   - https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js
   - https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js
   - javascripts/splide-init.js
@@ -78,6 +77,7 @@ markdown_extensions:
 
 plugins:
   - search
+  - zip-bundle
   - social:
       cards_layout_options:
         background_color: "#1a1a1a"
