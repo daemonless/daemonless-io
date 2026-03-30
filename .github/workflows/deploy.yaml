@@ -22,22 +22,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           path: daemonless-io
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           repository: daemonless/daemonless
           token: ${{ secrets.DISPATCH_TOKEN }}
           path: daemonless
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           repository: daemonless/dbuild
           path: dbuild
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -86,7 +86,7 @@ jobs:
           make build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: daemonless-io/site/
 
@@ -99,10 +99,10 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Notify Discord on outdated images
         env:
