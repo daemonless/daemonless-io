@@ -414,10 +414,12 @@ def main():
         screenshots_dst = DOCS_DIR / "screenshots" / config['name']
         screenshots = []
         if screenshots_src.exists():
+            import shutil
+            if screenshots_dst.exists():
+                shutil.rmtree(screenshots_dst)
             screenshots_dst.mkdir(parents=True, exist_ok=True)
             for f in sorted(screenshots_src.iterdir()):
                 if f.suffix.lower() in screenshot_exts:
-                    import shutil
                     shutil.copy2(f, screenshots_dst / f.name)
                     screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
         config["screenshots"] = screenshots
