@@ -31,7 +31,7 @@ Daemonless isn't just a collection of images; it's a project built by and for th
 
     Transparency is key. Monitor our automated build pipelines and quality gates in real-time.
 
-    [:octicons-arrow-right-24: View CI Dashboard](https://github.com/orgs/daemonless/actions)
+    [:octicons-arrow-right-24: View CI Dashboard](https://daemonless.io/status/)
 
 </div>
 
