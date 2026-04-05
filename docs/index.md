@@ -1,6 +1,6 @@
 ---
 title: "Daemonless: Native FreeBSD OCI Containers with Podman"
-description: "Run Docker-like containers natively on FreeBSD using Podman and ocijail. 30+ pre-built images for Radarr, Sonarr, Plex, Immich and more. No Linux VM required."
+description: "Run Docker-like containers natively on FreeBSD using Podman and ocijail. Pre-built images for Radarr, Sonarr, Plex, Immich and more. No Linux VM required."
 hide:
   - navigation
   - toc
