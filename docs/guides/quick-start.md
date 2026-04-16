@@ -21,7 +21,28 @@ placeholders:
 
 # Quick Start
 
-Get daemonless containers running on FreeBSD in 5 minutes.
+Daemonless images are standard OCI images—the same format used by Docker and Podman. Because they follow open standards, **you can run them with any OCI-compatible tool on FreeBSD.**
+
+The project officially supports two primary runtimes. Choose the one that matches your background and requirements:
+
+| Feature | **Podman** | **AppJail** |
+| :--- | :--- | :--- |
+| **The Experience** | **Familiar.** Feels like Docker on Linux. | **Native.** Built for the FreeBSD way. |
+| **Best For** | Quick migrations and `compose.yaml` fans. | Production stability and deep system control. |
+| **Primary Tool** | `podman` / `podman-compose` | `appjail` / `appjail-director` |
+| **Config Format** | Standard `compose.yaml` | `Director YAML` + `Makejail` |
+| **Networking** | CNI-based (Bridge, Host) | Native VNET, IP aliases, and virtual nets. |
+| **Privileges** | Root only (on FreeBSD) | Unprivileged via `doas` delegation. |
+
+### Which should I choose?
+
+*   [**Choose Podman**](#podman) if you want to reuse existing Docker knowledge and Compose files. It is the path of least resistance for users coming from Linux.
+*   [**Choose AppJail**](#appjail) if you want a powerhouse FreeBSD-native orchestrator. It offers deeper integration with FreeBSD features and supports unprivileged management.
+
+Both are first-class citizens in the Daemonless ecosystem. Pick whichever fits your workflow — or use both. Any other OCI-compatible tool with FreeBSD support should work as well.
+
+!!! info "Coexistence: Using Both Together"
+    It is perfectly safe to follow both guides on the same host. They manage separate configurations and storage, and their naming conventions do not overlap.
 
 !!! tip "Customize Your Guide"
     Scroll to [Interactive Configuration](#interactive-configuration) at the bottom to set your PUID, PGID, and paths. All commands will update automatically.
@@ -41,6 +62,7 @@ pkg install podman-suite sysutils/podman-compose
 
 !!! info "ocijail 0.5.0+ Required"
     `ocijail` version **0.5.0** or higher is required for .NET applications (Radarr/Sonarr) and PostgreSQL. This version natively supports the required jail parameters via OCI annotations.
+
 ### Host Configuration
 
 #### 1. Enable Networking
