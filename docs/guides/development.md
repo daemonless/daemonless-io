@@ -497,14 +497,14 @@ git push -u origin main
 
 ### .NET Apps Won't Start
 
-Ensure ocijail is patched and annotation is set:
+Ensure `ocijail` 0.5.0+ is installed and the annotation is set:
 
 ```bash
-./scripts/build-ocijail.sh
+pkg install ocijail
 podman run --annotation 'org.freebsd.jail.allow.mlock=true' ...
 ```
 
-See [ocijail Patch](ocijail-patch.md) for details.
+See [ocijail Native Support](ocijail-patch.md) for details.
 
 ### Permission Denied
 

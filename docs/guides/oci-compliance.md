@@ -9,19 +9,19 @@ This document analyzes the current state of **Daemonless** in relation to the [O
 
 ## 1. Executive Summary
 
-**Status:** `compliant-via-extension`
+**Status:** `compliant-via-extension` (Standard in `ocijail` 0.5.0+)
 
-Daemonless images are fully OCI-compliant. However, the runtime environment (`ocijail` + `podman`) currently relies on a **custom patch** to support critical features (like `mlock` for .NET apps) via Annotations.
+Daemonless images are fully OCI-compliant. As of `ocijail` 0.5.0, the runtime environment natively supports critical FreeBSD features (like `mlock` for .NET apps) via standard OCI Annotations and the OCI v1.3.0 `freebsd` object.
 
-OCI v1.3.0 standardizes these features into the core specification. The path forward involves updating the runtime toolchain to support this new spec, while maintaining the annotation-based approach for compatibility with existing Podman versions.
+The previous requirement for a custom patch is obsolete. Our annotation-based approach (`org.freebsd.jail.*`) is now the standard mechanism for passing FreeBSD-specific jail parameters through generic OCI generators like Podman.
 
 ## 2. OCI v1.3.0: The FreeBSD Spec
 
-The new specification adds a dedicated `freebsd` object to the runtime configuration (`config.json`). This eliminates the need for "hacks" or overloading generic fields.
+The specification adds a dedicated `freebsd` object to the runtime configuration (`config.json`). This eliminates the need for overloading generic fields. `ocijail` 0.5.0+ fully supports this structure.
 
 ### Key Schema Changes
 
-The `config.json` will now support a structure like this:
+The `config.json` supports a structure like this:
 
 ```json
 {
@@ -46,49 +46,40 @@ The `config.json` will now support a structure like this:
 | **Mounts** | `mount` (generic) | `freebsd.jail.allow.mount.*` | Better ZFS integration potential. |
 | **VNET** | Auto-calculated | `freebsd.jail.vnetInterfaces` | More explicit network control. |
 
-## 3. The Implementation Gap
+## 3. The Implementation Status
 
-While the **Spec** (JSON schema) is ready, the **Toolchain** is catching up.
+The toolchain has caught up with the specification.
 
 ### The Components
 
 1.  **The Runtime (`ocijail`):** Reads `config.json` -> Creates Jail.
-    *   *Current:* Does not read `freebsd` object.
-    *   *Goal:* Update `ocijail` to parse the v1.3.0 `freebsd` object.
+    *   **Status:** Native support for `freebsd` object and `org.freebsd.jail.*` annotations since version 0.5.0.
 2.  **The Generator (`podman`/`conmon`):** Users run commands -> Generates `config.json`.
-    *   *Current:* Podman has no native flags for FreeBSD (e.g., no `--allow-mlock`). It generates a generic Linux-like config.
-    *   *Goal:* Podman needs to be patched or configured to emit the `freebsd` object in the JSON.
+    *   *Current:* Podman generates a generic OCI config. It does not yet natively emit the `freebsd` object from CLI flags.
+    *   *Solution:* Users continue to use `--annotation` which `ocijail` now handles natively.
 
 ### The "Generator Gap"
 
-Even if we update `ocijail` tomorrow to support v1.3.0, **Podman will not send it the right JSON** because Podman doesn't know about FreeBSD flags yet.
+While `ocijail` now supports the v1.3.0 JSON natively, **Podman does not yet emit that JSON** from standard CLI flags (e.g., no `--allow-mlock`).
 
-Therefore, our **Annotation Patch** (`org.freebsd.jail.*`) remains the only viable user-facing mechanism for now.
+Therefore, our **Annotation mechanism** (`org.freebsd.jail.*`) remains the primary user-facing tool, but it is now a **native feature of the runtime** rather than a custom patch.
 
-## 4. Roadmap & Suggestions
+## 4. Roadmap Status
 
-### Phase 1: Support v1.3.0 in `ocijail` (Immediate)
-We should update our custom `ocijail` patch (or fork) to support **both**:
-1.  The legacy Annotations (`org.freebsd.jail...`).
-2.  The new `freebsd` JSON object.
+### Phase 1: Support v1.3.0 in `ocijail` (Completed)
+`ocijail 0.5.0` supports both the legacy Annotations and the new `freebsd` JSON object.
 
-*Why?* This makes the runtime "future-proof". If a user manually edits `config.json` or uses a custom generator, it works.
+### Phase 2: Bridge the Gap (Completed)
+`ocijail` natively translates `org.freebsd.jail.*` annotations into the internal jail parameters. This makes the runtime "future-proof" while remaining compatible with today's Podman.
 
-### Phase 2: Bridge the Gap (Short Term)
-We should modify `ocijail` to **translate** annotations into the internal v1.3.0 struct before execution.
-*   Input: `annotation: org.freebsd.jail.allow.mlock=true`
-*   Internal Logic: Sets `conf.FreeBSD.Jail.Mlock = true`
-
-This aligns our internal logic with the spec, even if the input is legacy.
-
-### Phase 3: Update Podman / Containers.conf (Long Term)
-Work with the upstream Podman/FreeBSD team to allow mapping CLI flags or `containers.conf` entries to the new OCI spec fields.
+### Phase 3: Update Podman / Containers.conf (In Progress)
+Work continues with the upstream Podman/FreeBSD team to allow mapping CLI flags or `containers.conf` entries directly to the OCI spec fields.
 
 ## 5. Action Items for Daemonless
 
-1.  **Docs:** Update documentation to reference OCI v1.3.0 as the "North Star" but clarify why annotations are still needed (The Generator Gap).
-2.  **Patch:** Review the current `ocijail` patch to ensure it doesn't *conflict* with upcoming native support.
-3.  **Testing:** Once an upstream `ocijail` beta with v1.3.0 support lands, verify our images work without modification (using manually crafted `config.json`).
+1.  **Docs:** (Updated) Documentation now reflects `ocijail 0.5.0` as the baseline.
+2.  **Patch:** (Retired) The custom patch is no longer maintained; users are directed to the official package.
+3.  **Testing:** Verified that `ocijail` 0.5.0+ runs all Daemonless images without modification.
 
 ## 6. Image Labels & Metadata
 
@@ -114,4 +105,4 @@ This allows tools (like Renovate, Watchtower, or generic OCI scanners) to better
 
 ## 7. Conclusion
 
-Daemonless is effectively compliant because it produces standard OCI images. The burden of v1.3.0 compliance lies with the runtime tools (`ocijail`, `podman`). We will continue to ship our compatibility patch until the upstream toolchain fully matures to support the new specification end-to-end.
+Daemonless is effectively compliant because it produces standard OCI images. The burden of v1.3.0 compliance lies with the runtime tools (`ocijail`, `podman`). We will continue to use the annotation-based configuration as it is now natively supported by the toolchain.

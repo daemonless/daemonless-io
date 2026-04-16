@@ -39,10 +39,8 @@ Install Podman and container networking:
 pkg install podman-suite sysutils/podman-compose
 ```
 
-!!! warning "ocijail Patch Required"
-    Currently, a temporary patch for `ocijail` is required for .NET applications (Radarr/Sonarr). 
-    See [ocijail patch](ocijail-patch.md).
-
+!!! info "ocijail 0.5.0+ Required"
+    `ocijail` version **0.5.0** or higher is required for .NET applications (Radarr/Sonarr) and PostgreSQL. This version natively supports the required jail parameters via OCI annotations.
 ### Host Configuration
 
 #### 1. Enable Networking

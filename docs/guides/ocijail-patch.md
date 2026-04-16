@@ -1,116 +1,84 @@
 ---
-title: "ocijail Patch for .NET Apps on FreeBSD (allow.mlock)"
-description: "Enable .NET applications like Radarr and Sonarr in FreeBSD containers. Patch ocijail to support allow.mlock, allow.sysvipc, and other jail parameters."
+title: "ocijail 0.5.0+: Native FreeBSD OCI Support"
+description: "Native support for allow.mlock, allow.sysvipc, and other jail parameters in ocijail 0.5.0. No custom patching required."
 ---
 
-# ocijail Patch
+# ocijail Native Support
 
-.NET applications require the `allow.mlock` jail parameter. Stock ocijail doesn't support this — you need the patched version.
+Starting with version **0.5.0**, `ocijail` natively supports mapping OCI annotations directly to FreeBSD jail parameters. The custom patching process previously required for .NET and PostgreSQL applications is now obsolete.
 
-## Why This Is Needed
+## Why This Is Important
 
-!!! note "Upcoming Native Support (OCI v1.3.0)"
-    **Good News:** The `allow.*` parameters required for .NET/Postgres have been accepted into the **OCI Runtime Specification v1.3.0**.
-    
-    Support is currently being implemented in `ocijail` by the upstream maintainer. Once released, this manual patching process will become obsolete.
-
-FreeBSD jails have `allow.*` parameters controlling permitted operations. Some applications require specific permissions:
+FreeBSD jails use `allow.*` parameters to control permitted operations. Some applications require specific permissions that aren't part of the standard Linux-centric OCI specification:
 
 | Parameter | Required By | Purpose |
 |-----------|-------------|---------|
-| `allow.mlock` | .NET apps (Radarr, Sonarr, etc.) | Memory locking for GC |
-| `allow.sysvipc` | PostgreSQL | Shared memory |
-| `allow.raw_sockets` | Ping tools, SmokePing | ICMP functionality |
+| `allow.mlock` | .NET apps (Radarr, Sonarr, etc.) | Memory locking for Garbage Collection |
+| `allow.sysvipc` | PostgreSQL, Redis | Shared memory / Inter-process communication |
+| `allow.raw_sockets` | Ping, SmokePing | ICMP functionality |
 
-The stock ocijail runtime doesn't provide a way to pass generic `allow.*` flags through the OCI specification. Our patch adds support for mapping OCI annotations directly to jail parameters.
+In `ocijail` 0.5.0+, these are supported natively via OCI annotations.
 
 ## Installation
 
-### Option 1: Pre-built Package (Recommended)
+### Standard Method (Recommended)
 
-Pre-built packages are published by [daemonless/freebsd-ports](https://github.com/daemonless/freebsd-ports) — no compilation required.
-
-=== "amd64"
-    ```bash
-    doas pkg add https://github.com/daemonless/freebsd-ports/releases/download/v0.4.0-patched/ocijail-0.4.0_3-amd64.pkg
-    ```
-
-=== "aarch64"
-    ```bash
-    doas pkg add https://github.com/daemonless/freebsd-ports/releases/download/v0.4.0-patched/ocijail-0.4.0_3-aarch64.pkg
-    ```
-
-### Option 2: Manual Ports Method
+Simply install or upgrade the official `ocijail` package from the FreeBSD repository.
 
 ```bash
-# Fetch patch
-fetch  https://raw.githubusercontent.com/daemonless/daemonless/refs/heads/main/scripts/ocijail-allow-annotations.patch -o /tmp
-mkdir -p /usr/ports/sysutils/ocijail/files 
-# Copy patch to port's files directory
-cp /tmp/ocijail-allow-annotations.patch /usr/ports/sysutils/ocijail/files/patch-daemonless-annotations
+# Update package repo
+doas pkg update
 
-# Rebuild and install
+# Install or upgrade ocijail
+doas pkg install ocijail
+```
+
+Verify you have version **0.5.0** or higher:
+
+```bash
+ocijail --version
+```
+
+### From Ports
+
+If you prefer building from source, use the standard `sysutils/ocijail` port. No custom patches are needed.
+
+```bash
 cd /usr/ports/sysutils/ocijail
-make reinstall clean
-# Remove patch
-rm /usr/ports/sysutils/ocijail/files/patch-daemonless-annotations
-```
-
-### Option 3: Automated Script
-
-```bash
-git clone https://github.com/daemonless/daemonless.git
-cd daemonless
-doas ./scripts/build-ocijail.sh
-```
-
-The script will:
-
-1. Copy the port to a temporary directory (if `/usr/ports/sysutils/ocijail` exists)
-2. Apply the patch
-3. Build using the ports framework or bazel
-4. Back up original and install patched version to `/usr/local/bin/ocijail`
-
-### Option 4: Manual Build
-
-```bash
-# Requires bazel5 and git (on FreeBSD 15.0)
-pkg install bazel5 git
-
-# Clone and build
-git clone https://github.com/dfr/ocijail /tmp/ocijail
-cd /tmp/ocijail
-
-# Apply patch
-fetch -o - https://raw.githubusercontent.com/daemonless/daemonless/main/scripts/ocijail-allow-annotations.patch | patch -p1
-
-# Build
-bazel5 build //ocijail
-
-# Install (backs up original)
-cp /usr/local/bin/ocijail /usr/local/bin/ocijail.orig
-cp bazel-bin/ocijail/ocijail /usr/local/bin/ocijail
+doas make reinstall clean
 ```
 
 ## Usage
 
-After patching, use annotations to enable jail parameters:
+Use annotations in your `podman run` command or Compose file to enable specific jail parameters.
+
+### Podman CLI
 
 ```bash
-# For .NET apps
+# For .NET apps (Radarr, Sonarr, etc.)
 podman run -d --name radarr \
   --annotation 'org.freebsd.jail.allow.mlock=true' \
   ghcr.io/daemonless/radarr:latest
 
-# For ping functionality
-podman run -d --name smokeping \
-  --annotation 'org.freebsd.jail.allow.raw_sockets=true' \
-  ghcr.io/daemonless/smokeping:latest
+# For PostgreSQL
+podman run -d --name postgres \
+  --annotation 'org.freebsd.jail.allow.sysvipc=true' \
+  ghcr.io/daemonless/postgres:15
+```
+
+### Podman Compose
+
+```yaml
+services:
+  radarr:
+    image: ghcr.io/daemonless/radarr:latest
+    annotations:
+      org.freebsd.jail.allow.mlock: "true"
 ```
 
 ## Supported Annotations
 
-Any `allow.*` jail parameter works:
+Any `allow.*` jail parameter can be toggled via the `org.freebsd.jail.` prefix:
 
 | Annotation | Jail Parameter |
 |------------|----------------|
@@ -119,11 +87,11 @@ Any `allow.*` jail parameter works:
 | `org.freebsd.jail.allow.sysvipc=true` | `allow.sysvipc` |
 | `org.freebsd.jail.allow.chflags=true` | `allow.chflags` |
 
-See `jail(8)` for all available parameters.
+See `jail(8)` for a full list of available parameters.
 
 ## Verification
 
-Verify the patch is working:
+You can verify that a parameter is correctly applied from the host:
 
 ```bash
 # Start a test container
@@ -135,8 +103,8 @@ podman run -d --name test-jail \
 jexec test-jail sysctl security.jail.param.allow.mlock
 ```
 
-If output shows `security.jail.param.allow.mlock: 1`, the patch is working.
+If the output shows `security.jail.param.allow.mlock: 1`, the parameter is active.
 
-## Upstream Status
+## Legacy Patching (Obsolete)
 
-The long-term plan for ocijail is to support jail parameters through the FreeBSD extensions in the OCI v1.3.0 runtime specification. The maintainer has agreed that annotation-based controls make sense as a transitionary solution.
+Prior to version 0.5.0, `ocijail` required a custom patch (or the `build-ocijail.sh` script) to support these annotations. If you are running an older version of FreeBSD or `ocijail`, we strongly recommend upgrading to the official 0.5.0 release rather than maintaining a custom build.

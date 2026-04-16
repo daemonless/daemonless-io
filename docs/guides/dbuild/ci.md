@@ -82,7 +82,7 @@ See the [Linux Pre-Build guide](linux-pre-build.md) for the full implementation 
 
 1. Configures the FreeBSD `latest` package repository.
 2. Installs `podman`, `buildah`, `skopeo`, `jq`, `trivy`, and `python3`.
-3. Installs the patched `ocijail` (required for specific jail annotations).
+3. Installs `ocijail` 0.5.0+ (required for jail annotations like `allow.mlock`).
 4. Cleans stale container state.
 5. Loads the `pf` kernel module and enables IP forwarding.
 
