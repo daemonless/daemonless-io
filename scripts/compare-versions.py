@@ -46,61 +46,54 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
         has_latest = "latest" in tags
 
         if variant:
-            # Multi-version mode: look for variant-specific tags
+            # Multi-version mode: discover all build types by scanning for {variant}-*
+            # alias tags, then read the version from the co-located version tag.
+            # Works for both postgres-style (14.22-14-pkg, alias=14-pkg) and
+            # samba-style (4.16.11_10-pkg, alias=416-pkg; 4.22.7_1-422-pkg-krb, alias=422-pkg-krb).
+            prefix = f"{variant}-"
             for tag in tags:
-                # Version tags from push.py: {version}-{variant_tag}
-                # e.g., "14.20_1-14-pkg-latest", "14.20_1-14", "11.4.9-11.4-pkg-latest"
-                suffix_pkg_latest = f"-{variant}-pkg-latest"
-                suffix_pkg = f"-{variant}-pkg"
-                suffix_variant = f"-{variant}"
-
-                if tag.endswith(suffix_pkg_latest) and tag.startswith(f"{variant}."):
-                    version = tag[: -len(suffix_pkg_latest)]
-                    if "pkg-latest" not in deployed:
-                        deployed["pkg-latest"] = version
-                elif tag.endswith(suffix_pkg) and tag.startswith(f"{variant}."):
-                    version = tag[: -len(suffix_pkg)]
-                    if "pkg" not in deployed:
-                        deployed["pkg"] = version
-                # Legacy: "14.20-pkg-latest" (without variant in suffix)
-                elif tag.endswith("-pkg-latest") and tag.startswith(f"{variant}."):
-                    version = tag.replace("-pkg-latest", "")
-                    if "pkg-latest" not in deployed:
-                        deployed["pkg-latest"] = version
-                elif tag.endswith("-pkg") and tag.startswith(f"{variant}."):
-                    version = tag.replace("-pkg", "")
-                    if "pkg" not in deployed:
-                        deployed["pkg"] = version
-                # Plain version tag: "14.20_1-14" or "14.20"
-                elif tag.endswith(suffix_variant) and tag.startswith(f"{variant}."):
-                    version = tag[: -len(suffix_variant)]
-                    if "pkg" not in deployed:
-                        deployed["pkg"] = version
-                elif tag.startswith(f"{variant}.") and "-" not in tag:
-                    if "pkg" not in deployed:
-                        deployed["pkg"] = tag
-                    if "pkg-latest" not in deployed:
-                        deployed["pkg-latest"] = tag
-        else:
-            # Standard single-version mode
-            for tag in tags:
-                if tag in ("latest", "pkg", "pkg-latest"):
+                if not tag.startswith(prefix):
                     continue
-                if tag.endswith("-pkg-latest"):
-                    # Only set if not already set (newest first from API)
-                    if "pkg-latest" not in deployed:
-                        deployed["pkg-latest"] = tag.replace("-pkg-latest", "")
-                    if has_latest:
-                        latest_is_pkg = True
-                elif tag.endswith("-pkg"):
-                    if "pkg" not in deployed:
-                        deployed["pkg"] = tag.replace("-pkg", "")
-                    if has_latest:
-                        latest_is_pkg = True
-                elif not "-" in tag or re.match(r"^\d+\.\d+", tag):
-                    # Version tag without suffix = latest/upstream
-                    if "latest" not in deployed and not latest_is_pkg:
-                        deployed["latest"] = tag
+                build_type = tag[len(prefix):]  # "pkg", "pkg-latest", "pkg-krb", etc.
+                if build_type in deployed:
+                    continue
+                alias = tag
+                suffix = f"-{alias}"  # e.g. "-422-pkg-krb"
+                # Primary: version tag embeds variant (e.g. 4.22.7_1-422-pkg-krb)
+                for t in tags:
+                    if t != alias and t.endswith(suffix):
+                        deployed[build_type] = t[:-len(suffix)]
+                        break
+                # Fallback: variant is an alias for a plain-named tag
+                # (e.g. 4.16.11_10-pkg when alias is 416-pkg, variant tag is pkg)
+                if build_type not in deployed:
+                    plain_suffix = f"-{build_type}"
+                    for t in tags:
+                        if t != alias and t not in (build_type, "latest") and t.endswith(plain_suffix):
+                            deployed[build_type] = t.removesuffix(plain_suffix)
+                            break
+        else:
+            # Standard single-version mode: find the digest that carries each alias,
+            # then read the version from the co-located version tag on that digest.
+            if "pkg-latest" in tags and "pkg-latest" not in deployed:
+                for t in tags:
+                    if t != "pkg-latest" and t.endswith("-pkg-latest"):
+                        deployed["pkg-latest"] = t.removesuffix("-pkg-latest")
+                        if has_latest:
+                            latest_is_pkg = True
+                        break
+            if "pkg" in tags and "pkg" not in deployed:
+                for t in tags:
+                    if t != "pkg" and t.endswith("-pkg"):
+                        deployed["pkg"] = t.removesuffix("-pkg")
+                        if has_latest:
+                            latest_is_pkg = True
+                        break
+            if "latest" in tags and "latest" not in deployed and not latest_is_pkg:
+                for t in tags:
+                    if t not in ("latest", "pkg", "pkg-latest") and not t.endswith(("-pkg", "-pkg-latest")):
+                        deployed["latest"] = t
+                        break
 
             # If latest is just an alias to pkg, don't track it separately
             if latest_is_pkg:
@@ -165,23 +158,17 @@ def main():
 
         service_outdated = []
 
-        # Check pkg
-        if "pkg" in versions and "pkg" in deployed:
-            if not versions_match(versions["pkg"], deployed["pkg"]):
-                service_outdated.append({
-                    "tag": "pkg",
-                    "available": versions["pkg"],
-                    "deployed": deployed["pkg"]
-                })
-
-        # Check pkg-latest
-        if "pkg-latest" in versions and "pkg-latest" in deployed:
-            if not versions_match(versions["pkg-latest"], deployed["pkg-latest"]):
-                service_outdated.append({
-                    "tag": "pkg-latest",
-                    "available": versions["pkg-latest"],
-                    "deployed": deployed["pkg-latest"]
-                })
+        # Check all tracked build types
+        for build_type, available in versions.items():
+            if build_type.startswith("_") or build_type == "upstream":
+                continue
+            if build_type in deployed:
+                if not versions_match(available, deployed[build_type]):
+                    service_outdated.append({
+                        "tag": build_type,
+                        "available": available,
+                        "deployed": deployed[build_type]
+                    })
 
         # Check upstream (latest tag)
         if "upstream" in versions and "latest" in deployed:
