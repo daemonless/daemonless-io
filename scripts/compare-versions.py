@@ -64,13 +64,21 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
                     if t != alias and t.endswith(suffix):
                         deployed[build_type] = t[:-len(suffix)]
                         break
-                # Fallback: variant is an alias for a plain-named tag
+                # Fallback 1: variant is an alias for a plain-named tag
                 # (e.g. 4.16.11_10-pkg when alias is 416-pkg, variant tag is pkg)
                 if build_type not in deployed:
                     plain_suffix = f"-{build_type}"
                     for t in tags:
                         if t != alias and t not in (build_type, "latest") and t.endswith(plain_suffix):
                             deployed[build_type] = t.removesuffix(plain_suffix)
+                            break
+                # Fallback 2: version tag ends in just the variant id, not the full alias
+                # (e.g. postgres: alias=14-pkg, version tag=14.22-14, ends in "-14" not "-14-pkg")
+                if build_type not in deployed:
+                    id_suffix = f"-{variant}"
+                    for t in tags:
+                        if t != alias and t not in (build_type, "latest", variant) and t.endswith(id_suffix):
+                            deployed[build_type] = t[:-len(id_suffix)]
                             break
         else:
             # Standard single-version mode: find the digest that carries each alias,
@@ -121,6 +129,7 @@ def main():
     outdated = []
     current = []
     errors = []
+    warnings = []
     deployed_all = {}  # name -> {tag: version} for all services
     base_names = {}   # name -> base repo name (for multi-variant images)
 
@@ -157,10 +166,14 @@ def main():
             continue
 
         service_outdated = []
+        broken = versions.get("_broken", [])
 
         # Check all tracked build types
         for build_type, available in versions.items():
             if build_type.startswith("_") or build_type == "upstream":
+                continue
+            if build_type in broken:
+                warnings.append({"name": name, "tag": build_type, "reason": "build broken"})
                 continue
             if build_type in deployed:
                 if not versions_match(available, deployed[build_type]):
@@ -191,12 +204,14 @@ def main():
         "outdated": outdated,
         "current": current,
         "errors": errors,
+        "warnings": warnings,
         "deployed": deployed_all,
         "base_names": base_names,
         "summary": {
             "current_count": total_tags - outdated_tags,
             "outdated_count": outdated_tags,
-            "error_count": len(errors)
+            "error_count": len(errors),
+            "warning_count": len(warnings)
         }
     }, indent=2))
 
