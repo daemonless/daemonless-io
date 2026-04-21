@@ -36,7 +36,7 @@ The table below shows the technical status and current versions of all images. E
 {%- set svc_tags = display_tags[name] if display_tags is defined and name in display_tags else {} %}
 {%- set variant_prefix = (name[base_repo | length + 1:] ~ '-') if name != base_repo else '' %}
 {%- set svc_update = last_updates[name] if last_updates is defined and name in last_updates else (last_updates[base_repo] if last_updates is defined and base_repo in last_updates else "Unknown") %}
-{%- for tag in ['pkg', 'pkg-latest', 'latest'] %}
+{%- for tag in svc_deployed | sort %}
 {%- if (name, tag) in outdated_lookup %}
 {%- set update = outdated_lookup[(name, tag)] %}
 {%- set tag_list = svc_tags[tag] if tag in svc_tags else [variant_prefix ~ tag] %}
