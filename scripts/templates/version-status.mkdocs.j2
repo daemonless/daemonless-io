@@ -34,17 +34,18 @@ The table below shows the technical status and current versions of all images. E
 {%- set actions_url = 'https://github.com/daemonless/' ~ base_repo ~ '/actions/workflows/build.yaml' %}
 {%- set badge_url = 'https://img.shields.io/github/actions/workflow/status/daemonless/' ~ base_repo ~ '/build.yaml?label=' %}
 {%- set svc_tags = display_tags[name] if display_tags is defined and name in display_tags else {} %}
+{%- set variant_prefix = (name[base_repo | length + 1:] ~ '-') if name != base_repo else '' %}
 {%- set svc_update = last_updates[name] if last_updates is defined and name in last_updates else (last_updates[base_repo] if last_updates is defined and base_repo in last_updates else "Unknown") %}
 {%- for tag in ['pkg', 'pkg-latest', 'latest'] %}
 {%- if (name, tag) in outdated_lookup %}
 {%- set update = outdated_lookup[(name, tag)] %}
-{%- set tag_list = svc_tags[tag] if tag in svc_tags else [tag] %}
+{%- set tag_list = svc_tags[tag] if tag in svc_tags else [variant_prefix ~ tag] %}
 {%- set svc_config = configs | selectattr('name', 'equalto', name) | first if configs is defined else none %}
-| :material-close-circle:{ .outdated } | [{{ base_repo }}](images/{{ base_repo }}.md) {% if svc_config and svc_config.deprecated %} [![](https://img.shields.io/badge/status-deprecated-orange)](images/{{ base_repo }}.md) {% endif %} | `{{ tag_list | join('`, `') }}` | {{ update.deployed }} → **{{ update.available | replace('v', '', 1) }}** | [![]( {{ badge_url }} )]({{ actions_url }}){target=_blank} | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
+| :material-close-circle:{ .outdated } | [{{ name if name != base_repo else base_repo }}](images/{{ base_repo }}.md) {% if svc_config and svc_config.deprecated %} [![](https://img.shields.io/badge/status-deprecated-orange)](images/{{ base_repo }}.md) {% endif %} | `{{ tag_list | join('`, `') }}` | {{ update.deployed }} → **{{ update.available | replace('v', '', 1) }}** | [![]( {{ badge_url }} )]({{ actions_url }}){target=_blank} | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
 {%- elif tag in svc_deployed %}
 {%- set svc_config = configs | selectattr('name', 'equalto', name) | first if configs is defined else none %}
-{%- set tag_list = svc_tags[tag] if tag in svc_tags else [tag] %}
-| :material-check-circle:{ .current } | [{{ base_repo }}](images/{{ base_repo }}.md) {% if svc_config and svc_config.deprecated %} [![](https://img.shields.io/badge/status-deprecated-orange)](images/{{ base_repo }}.md) {% endif %} | `{{ tag_list | join('`, `') }}` | {{ svc_deployed[tag] }} | [![]( {{ badge_url }} )]({{ actions_url }}){target=_blank} | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
+{%- set tag_list = svc_tags[tag] if tag in svc_tags else [variant_prefix ~ tag] %}
+| :material-check-circle:{ .current } | [{{ name if name != base_repo else base_repo }}](images/{{ base_repo }}.md) {% if svc_config and svc_config.deprecated %} [![](https://img.shields.io/badge/status-deprecated-orange)](images/{{ base_repo }}.md) {% endif %} | `{{ tag_list | join('`, `') }}` | {{ svc_deployed[tag] }} | [![]( {{ badge_url }} )]({{ actions_url }}){target=_blank} | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
 {%- endif %}
 {%- endfor %}
 {%- endfor %}
