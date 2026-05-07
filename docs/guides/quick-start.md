@@ -69,6 +69,10 @@ pkg install podman-suite sysutils/podman-compose
 Configure the kernel to allow packet filtering for local traffic and ensure `fdescfs` is mounted.
 
 ```bash
+# Load pf (required before setting pf sysctls)
+kldload pf
+sysrc kld_list+=pf
+
 # Enable pf filtering for jails
 sysctl net.pf.filter_local=1
 echo 'net.pf.filter_local=1' >> /etc/sysctl.conf
