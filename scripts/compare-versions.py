@@ -120,9 +120,43 @@ def normalize_version(v: str) -> str:
     return v
 
 
+def parse_version_tuple(v: str):
+    """Parse a version string into a comparable tuple.
+
+    Handles FreeBSD pkg versioning: X.Y.Z_PORTREVISION
+    e.g. "4.23.6_1" -> ((4, 23, 6), 1)
+         "4.23.7"   -> ((4, 23, 7), 0)
+    """
+    v = normalize_version(v)
+    revision = 0
+    if "_" in v:
+        v, rev = v.rsplit("_", 1)
+        try:
+            revision = int(rev)
+        except ValueError:
+            pass
+    parts = []
+    for part in re.split(r"[.\-]", v):
+        try:
+            parts.append(int(part))
+        except ValueError:
+            parts.append(part)
+    return (parts, revision)
+
+
 def versions_match(available: str, deployed: str) -> bool:
-    """Check if versions match (with normalization)."""
-    return normalize_version(available) == normalize_version(deployed)
+    """Return True if versions match or deployed is already newer than available."""
+    a = normalize_version(available)
+    d = normalize_version(deployed)
+    if a == d:
+        return True
+    # If what's deployed is already newer, don't flag as outdated
+    try:
+        if parse_version_tuple(d) > parse_version_tuple(a):
+            return True
+    except Exception:
+        pass
+    return False
 
 
 def main():
@@ -150,6 +184,14 @@ def main():
                     "_variant": variant_id,
                     **variant_versions
                 }
+            # Also expand top-level pkg/pkg-latest as a plain base entry
+            base = {k: v for k, v in versions.items()
+                    if k not in ("type", "variants", "default", "upstream") and not k.startswith("_")}
+            if base:
+                entry = base.copy()
+                if "upstream" in versions:
+                    entry["upstream"] = versions["upstream"]
+                expanded_services[name] = entry
         else:
             expanded_services[name] = versions
 
