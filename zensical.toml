@@ -1,0 +1,136 @@
+# TRIAL Zensical config — parallel to mkdocs.yaml (production stays on MkDocs).
+# Build with:  zensical build -f zensical.toml
+# NOTE: placeholder-plugin is NOT supported on Zensical, so interactive
+# @PLACEHOLDER@ values do not substitute here — zip-bundle downloads the
+# literal template text. This config is for evaluation only.
+
+[project]
+site_name = "daemonless"
+site_url = "https://daemonless.io"
+site_description = "Native FreeBSD OCI Containers - Jails without the System Administration"
+repo_url = "https://github.com/daemonless/daemonless"
+repo_name = "daemonless/daemonless"
+site_dir = "site-zen"
+
+extra_css = [
+  "stylesheets/extra.css",
+  "stylesheets/ux-overrides.css",
+  "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css",
+  "https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css",
+  # zip-bundle (Zensical: load assets directly, no plugin)
+  "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.2.0/mkdocs_zip_bundle/assets/zip-bundle.css",
+]
+
+extra_javascript = [
+  "javascripts/ux-settings-v2.js",
+  "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js",
+  "https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js",
+  "javascripts/splide-init.js",
+  "https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js",
+  "javascripts/tablesort.js",
+  # zip-bundle (Zensical: load assets directly, no plugin)
+  "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
+  "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.2.0/mkdocs_zip_bundle/assets/zip-bundle.js",
+]
+
+# Curated navigation (ported from mkdocs.yaml). Without this, Zensical
+# auto-derives nav from the docs tree and flattens every image page into the
+# sidebar using its long SEO title.
+nav = [
+  { "Home" = "index.md" },
+  { "Image Fleet" = [
+    { "Overview" = "images/index.md" },
+    { "Version Status" = "status.md" },
+  ] },
+  { "Guides" = [
+    { "Getting Started" = "guides/quick-start.md" },
+    { "Permissions" = "guides/permissions.md" },
+    { "Networking" = "guides/networking.md" },
+    { "ZFS Storage" = "guides/zfs.md" },
+    { "Hardware Acceleration" = "guides/hardware-acceleration.md" },
+    { "ocijail Patch" = "guides/ocijail-patch.md" },
+    { "Operations" = "guides/operations.md" },
+  ] },
+  { "Contributing" = [
+    { "Quickstart" = "guides/contributing-quickstart.md" },
+    { "Development Guide" = "guides/development.md" },
+    { "Image Tagging" = "guides/tagging.md" },
+    { "OCI Compliance" = "guides/oci-compliance.md" },
+  ] },
+  { "dbuild (Daemonless Build)" = [
+    { "Overview" = "guides/dbuild/index.md" },
+    { "Building Your First Image" = "guides/dbuild/workflow.md" },
+    { "Command Reference" = "guides/dbuild/commands.md" },
+    { "Configuration" = "guides/dbuild/config.md" },
+    { "CI/CD Integration" = [
+      { "Pipeline" = "guides/dbuild/ci.md" },
+      { "Linux Pre-Build Artifacts" = "guides/dbuild/linux-pre-build.md" },
+    ] },
+    { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
+  ] },
+  { "About" = [
+    { "Philosophy" = "philosophy.md" },
+    { "Architecture" = "architecture.md" },
+    { "Community" = "community.md" },
+  ] },
+]
+
+[project.theme]
+variant = "classic"          # traditional Material for MkDocs look
+custom_dir = "overrides"
+logo = "assets/daemonless-logo.svg"
+favicon = "assets/favicon.ico"
+features = [
+  "navigation.tabs",
+  "navigation.sections",
+  "navigation.top",
+  "search.highlight",
+  "content.code.copy",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "red"
+accent = "red"
+toggle.icon = "material/brightness-7"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "red"
+accent = "red"
+toggle.icon = "material/brightness-4"
+toggle.name = "Switch to dark mode"
+
+# Markdown extensions — attr_list is REQUIRED for zip-bundle to read the
+# data-zip-* attributes on code blocks.
+[project.markdown_extensions.tables]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.snippets]
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+
+# Material icons / emoji shortcodes (e.g. :simple-adguard:). Zensical uses the
+# `zensical.extensions.emoji.*` namespace (string), not the MkDocs
+# `!!python/name:material.extensions.emoji.*` hooks.
+[project.markdown_extensions.pymdownx.emoji]
+emoji_index = "zensical.extensions.emoji.twemoji"
+emoji_generator = "zensical.extensions.emoji.to_svg"
+options.custom_icons = ["overrides/.icons"]
+
+# Deliberately omitted in this first pass (need Zensical-specific handling):
+#  - pymdownx.emoji with !!python/name material hooks
+#  - superfences custom_fence for mermaid (Python hook)
+#  - plugins: search/redirects/social (configured differently on Zensical),
+#    placeholder (unsupported), zip-bundle (loaded as assets above)
+#  - nav (letting Zensical derive from docs/ for the trial)

@@ -114,6 +114,7 @@ nav:
       - Permissions: guides/permissions.md
       - Networking: guides/networking.md
       - ZFS Storage: guides/zfs.md
+      - Hardware Acceleration: guides/hardware-acceleration.md
       - ocijail Patch: guides/ocijail-patch.md
       - Operations: guides/operations.md
   - Contributing:

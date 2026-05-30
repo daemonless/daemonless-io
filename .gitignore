@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 site/
+site-zen/
 test_site/
 .cache/
 serve.log
