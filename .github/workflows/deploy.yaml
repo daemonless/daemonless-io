@@ -117,6 +117,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set +e
+          # This job does a plain checkout; daemonless-versions.json is gitignored
+          # and only generated in the build job, so fetch it here before comparing.
+          curl -sL https://raw.githubusercontent.com/daemonless/daemonless/main/daemonless-versions.json \
+            -o daemonless-versions.json
           python3 scripts/compare-versions.py > /tmp/versions.json 2>/dev/null
           EXIT=$?
           set -e
