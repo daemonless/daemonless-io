@@ -135,13 +135,13 @@ jobs:
           fi
 
           DESCRIPTION=$(jq -r '
-            .outdated[] as $item |
+            [.outdated[] as $item |
             (.base_names[$item.name] // $item.name) as $base |
             "**[\($item.name)](https://daemonless.io/images/\($item.name))**: " +
             ($item.updates | map(
               "[\(.tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\(.deployed) → \(.available)`"
-            ) | join(", "))
-          ' /tmp/versions.json | awk '{printf "%s\\n", $0}')
+            ) | join(", "))] | join("\n")
+          ' /tmp/versions.json)
 
           curl -s -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
