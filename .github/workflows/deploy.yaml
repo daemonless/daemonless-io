@@ -115,6 +115,7 @@ jobs:
         id: check
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           # This job does a plain checkout; daemonless-versions.json is gitignored
