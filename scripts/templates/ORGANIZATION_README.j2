@@ -16,10 +16,10 @@ Native FreeBSD OCI container images for self-hosted applications.
 {% for category in categories %}
 ### {{ category }}
 
-| Image | Port | Description |
-|-------|------|-------------|
+| Image | Description |
+|-------|-------------|
 {%- for config in by_category[category] %}
-| [{{ config.title }}](https://github.com/daemonless/{{ config.name }}) | {{ config.port }} | {{ config.description }} |
+| [{{ config.title }}](https://github.com/daemonless/{{ config.name }}) | {{ config.description }} |
 {%- endfor %}
 
 {% endfor %}

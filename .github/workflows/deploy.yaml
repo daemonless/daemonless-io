@@ -111,10 +111,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Notify Discord on outdated images
+      - name: Check for outdated images
+        id: check
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
-          GH_TOKEN: ${{ github.token }}
         run: |
           set +e
           # This job does a plain checkout; daemonless-versions.json is gitignored
@@ -125,15 +125,37 @@ jobs:
           EXIT=$?
           set -e
 
-          if [ $EXIT -eq 0 ] || [ -z "$DISCORD_WEBHOOK" ] || [ ! -s /tmp/versions.json ]; then
+          COUNT=$(jq '.summary.outdated_count // 0' /tmp/versions.json 2>/dev/null || echo 0)
+          if [ "$EXIT" -eq 0 ] || [ -z "$DISCORD_WEBHOOK" ] || [ ! -s /tmp/versions.json ] || [ "$COUNT" -eq 0 ]; then
+            echo "should_notify=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          COUNT=$(jq '.summary.outdated_count // 0' /tmp/versions.json)
-          if [ "$COUNT" -eq 0 ]; then
-            exit 0
-          fi
+          # Signature of the outdated SET (name+tag+versions). Same set => same sig =>
+          # we only ping Discord once per distinct state instead of every rebuild.
+          SIG=$(jq -S -c '[.outdated[] | {name, updates: [.updates[] | {tag, deployed, available}]}] | sort_by(.name)' \
+            /tmp/versions.json | sha256sum | cut -d' ' -f1)
+          mkdir -p .vc-state
+          echo "$SIG" > .vc-state/sig
+          echo "should_notify=true" >> "$GITHUB_OUTPUT"
+          echo "sig=$SIG" >> "$GITHUB_OUTPUT"
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
 
+      # Cache acts as a dedup ledger: a hit means we've already announced this exact
+      # outdated set, so skip the Discord ping.
+      - name: Check if already announced
+        id: dedup
+        if: steps.check.outputs.should_notify == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .vc-state
+          key: version-check-${{ steps.check.outputs.sig }}
+
+      - name: Notify Discord on outdated images
+        if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
+        run: |
           DESCRIPTION=$(jq -r '
             [.outdated[] as $item |
             (.base_names[$item.name] // $item.name) as $base |
@@ -147,8 +169,15 @@ jobs:
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg desc "$DESCRIPTION" \
-              --arg count "$COUNT" \
+              --arg count "${{ steps.check.outputs.count }}" \
               '{embeds: [{title: "🔄 \($count) outdated image(s)", description: $desc, color: 16744272}]}')"
+
+      - name: Mark outdated set as announced
+        if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .vc-state
+          key: version-check-${{ steps.check.outputs.sig }}
 
       - name: Ping IndexNow
         run: |
