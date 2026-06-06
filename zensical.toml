@@ -1,8 +1,9 @@
 # TRIAL Zensical config — parallel to mkdocs.yaml (production stays on MkDocs).
-# Build with:  zensical build -f zensical.toml
-# NOTE: placeholder-plugin is NOT supported on Zensical, so interactive
-# @PLACEHOLDER@ values do not substitute here — zip-bundle downloads the
-# literal template text. This config is for evaluation only.
+# Build with:  make build-zen   (NOT `zensical build` directly)
+# NOTE: Zensical can't run the MkDocs placeholder plugin, so `make build-zen`
+# post-processes the output with `markdown-placeholder-standalone --phase both`
+# to wire up the interactive @PLACEHOLDER@ widgets. Running `zensical build`
+# on its own (or `make serve-zen`) leaves placeholders as literal @VAR@ text.
 
 [project]
 site_name = "daemonless"
@@ -19,6 +20,8 @@ extra_css = [
   "https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css",
   # zip-bundle (Zensical: load assets directly, no plugin)
   "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.2.0/mkdocs_zip_bundle/assets/zip-bundle.css",
+  # placeholder plugin (generated post-build by markdown-placeholder-standalone)
+  "assets/stylesheets/placeholders.css",
 ]
 
 extra_javascript = [
@@ -31,6 +34,8 @@ extra_javascript = [
   # zip-bundle (Zensical: load assets directly, no plugin)
   "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
   "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.2.0/mkdocs_zip_bundle/assets/zip-bundle.js",
+  # placeholder plugin (generated post-build by markdown-placeholder-standalone)
+  "assets/javascripts/placeholder-combined.js",
 ]
 
 # Curated navigation (ported from mkdocs.yaml). Without this, Zensical

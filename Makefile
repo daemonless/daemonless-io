@@ -7,8 +7,10 @@ SCRIPTS_DIR = scripts
 # Zensical (trial, parallel to the MkDocs build — uses zensical.toml)
 ZENSICAL = zensical
 ZEN_CONFIG = zensical.toml
-# Zensical 0.0.30 opens many files via pygments; raise the fd limit first
-ZEN_ULIMIT = ulimit -n 200000;
+# Zensical 0.0.30 opens many files via pygments; raise the fd limit to the max
+# the host allows. Soft->hard works locally and on CI runners (where a fixed
+# 200000 exceeds the hard limit and errors). Never fail the recipe over it.
+ZEN_ULIMIT = ulimit -n $$(ulimit -Hn) 2>/dev/null || true;
 
 .PHONY: all fetch generate generate-images generate-guides generate-architecture build build-zen clean clean-zen serve serve-zen status help
 
@@ -64,14 +66,21 @@ build:
 build-zen:
 	@echo "==> Building site with Zensical..."
 	$(ZEN_ULIMIT) $(ZENSICAL) build -f $(ZEN_CONFIG)
+	@echo "==> Injecting interactive placeholders (Zensical doesn't run the MkDocs plugin)..."
+	@# --phase both: mark @VAR@ -> convert in ONE process (shared unique id). The
+	@# default 'html' phase alone is a no-op here (no markers to convert).
+	markdown-placeholder-standalone site-zen/ --phase both --placeholder-config placeholder-plugin.yaml
 
 # Local development server
 serve:
 	$(MKDOCS) serve -a 0.0.0.0:8888
 
-# Local development server (Zensical trial)
-serve-zen:
-	$(ZEN_ULIMIT) $(ZENSICAL) serve -f $(ZEN_CONFIG) -a 0.0.0.0:8001
+# Preview the Zensical build (trial). Serves the post-processed static output so
+# placeholders work. NOTE: not `zensical serve` — that rebuilds without the
+# placeholder post-process (leaving raw @VAR@) and there's no live reload here.
+serve-zen: build-zen
+	@echo "==> Serving post-processed site-zen/ at http://0.0.0.0:8001 (placeholders work; no live-reload)"
+	python3 -m http.server -d site-zen --bind 0.0.0.0 8001
 
 # Cleanup
 clean:
