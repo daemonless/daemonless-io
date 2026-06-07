@@ -32,6 +32,8 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
 
     deployed = {}
     latest_is_pkg = False  # Track if 'latest' is aliased to a pkg build
+    all_tags = set()       # Flat union of every tag across all digests
+    ARCH_SUFFIXES = ("-aarch64", "-riscv64")
 
     for line in lines:
         if not line.strip():
@@ -42,8 +44,7 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
         except json.JSONDecodeError:
             continue
 
-        # Check if this version has the 'latest' alias alongside a pkg tag
-        has_latest = "latest" in tags
+        all_tags.update(tags)
 
         if variant:
             # Multi-version mode: discover all build types by scanning for {variant}-*
@@ -81,31 +82,52 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
                             deployed[build_type] = t[:-len(id_suffix)]
                             break
         else:
-            # Standard single-version mode: find the digest that carries each alias,
-            # then read the version from the co-located version tag on that digest.
-            if "pkg-latest" in tags and "pkg-latest" not in deployed:
-                for t in tags:
-                    if t != "pkg-latest" and t.endswith("-pkg-latest"):
-                        deployed["pkg-latest"] = t.removesuffix("-pkg-latest")
-                        if has_latest:
-                            latest_is_pkg = True
-                        break
-            if "pkg" in tags and "pkg" not in deployed:
-                for t in tags:
-                    if t != "pkg" and t.endswith("-pkg"):
-                        deployed["pkg"] = t.removesuffix("-pkg")
-                        if has_latest:
-                            latest_is_pkg = True
-                        break
-            if "latest" in tags and "latest" not in deployed and not latest_is_pkg:
-                for t in tags:
-                    if t not in ("latest", "pkg", "pkg-latest") and not t.endswith(("-pkg", "-pkg-latest")):
-                        deployed["latest"] = t
-                        break
+            # 'latest' is a pkg alias when it shares a digest with pkg/pkg-latest
+            # (this co-location survives multi-arch: both ride the manifest digest).
+            if "latest" in tags and (
+                "pkg" in tags
+                or "pkg-latest" in tags
+                or any(t.endswith(("-pkg", "-pkg-latest")) for t in tags)
+            ):
+                latest_is_pkg = True
 
-            # If latest is just an alias to pkg, don't track it separately
-            if latest_is_pkg:
-                deployed.pop("latest", None)
+    if not variant:
+        # Pair alias -> version tag by name across ALL digests, not by same-digest
+        # co-location: multi-arch manifests own the aliases while `<ver>-pkg` tags
+        # stay on the per-arch image digests. Highest version wins so stale leftover
+        # tags can't. Arch-suffixed tags don't end in `-pkg`, so they self-exclude.
+        def _best(suffix: str) -> str:
+            cands = [
+                t.removesuffix(suffix)
+                for t in all_tags
+                if t not in ("pkg", "pkg-latest", "latest") and t.endswith(suffix)
+            ]
+            if not cands:
+                return None
+            try:
+                return max(cands, key=parse_version_tuple)
+            except TypeError:
+                return cands[0]
+
+        if "pkg-latest" in all_tags:
+            v = _best("-pkg-latest")
+            if v is not None:
+                deployed["pkg-latest"] = v
+        if "pkg" in all_tags:
+            v = _best("-pkg")  # `<ver>-pkg-latest` ends in `-latest`, won't match
+            if v is not None:
+                deployed["pkg"] = v
+        if "latest" in all_tags and not latest_is_pkg:
+            for t in all_tags:
+                if (t not in ("latest", "pkg", "pkg-latest")
+                        and not t.endswith(("-pkg", "-pkg-latest"))
+                        and not t.endswith(ARCH_SUFFIXES)):
+                    deployed["latest"] = t
+                    break
+
+        # If latest is just an alias to pkg, don't track it separately
+        if latest_is_pkg:
+            deployed.pop("latest", None)
 
     return deployed
 
