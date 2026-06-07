@@ -118,12 +118,19 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
             if v is not None:
                 deployed["pkg"] = v
         if "latest" in all_tags and not latest_is_pkg:
-            for t in all_tags:
-                if (t not in ("latest", "pkg", "pkg-latest")
-                        and not t.endswith(("-pkg", "-pkg-latest"))
-                        and not t.endswith(ARCH_SUFFIXES)):
-                    deployed["latest"] = t
-                    break
+            # Highest bare version = current :latest build; ghcr keeps old bare
+            # tags (0.107.74 ... 0.107.77), so first-from-set would pick a stale one.
+            cands = [
+                t for t in all_tags
+                if t not in ("latest", "pkg", "pkg-latest")
+                and not t.endswith(("-pkg", "-pkg-latest"))
+                and not t.endswith(ARCH_SUFFIXES)
+            ]
+            if cands:
+                try:
+                    deployed["latest"] = max(cands, key=parse_version_tuple)
+                except TypeError:
+                    deployed["latest"] = cands[0]
 
         # If latest is just an alias to pkg, don't track it separately
         if latest_is_pkg:
