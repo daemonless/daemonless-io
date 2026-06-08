@@ -82,8 +82,28 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
                             deployed[build_type] = t[:-len(id_suffix)]
                             break
         else:
+            # Pass 1 (per-digest co-location): read the version tag that shares a
+            # digest with the alias. Correct for single-arch and immune to stray
+            # version tags on other digests (e.g. a bogus "15.0-RELEASE").
+            if "pkg-latest" in tags and "pkg-latest" not in deployed:
+                for t in tags:
+                    if t != "pkg-latest" and t.endswith("-pkg-latest"):
+                        deployed["pkg-latest"] = t.removesuffix("-pkg-latest")
+                        break
+            if "pkg" in tags and "pkg" not in deployed:
+                for t in tags:
+                    if t != "pkg" and t.endswith("-pkg") and not t.endswith("-pkg-latest"):
+                        deployed["pkg"] = t.removesuffix("-pkg")
+                        break
+            if "latest" in tags and "latest" not in deployed:
+                for t in tags:
+                    if (t not in ("latest", "pkg", "pkg-latest")
+                            and not t.endswith(("-pkg", "-pkg-latest"))
+                            and not t.endswith(ARCH_SUFFIXES)):
+                        deployed["latest"] = t
+                        break
             # 'latest' is a pkg alias when it shares a digest with pkg/pkg-latest
-            # (this co-location survives multi-arch: both ride the manifest digest).
+            # (survives multi-arch: both ride the manifest digest).
             if "latest" in tags and (
                 "pkg" in tags
                 or "pkg-latest" in tags
@@ -92,15 +112,19 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
                 latest_is_pkg = True
 
     if not variant:
-        # Pair alias -> version tag by name across ALL digests, not by same-digest
-        # co-location: multi-arch manifests own the aliases while `<ver>-pkg` tags
-        # stay on the per-arch image digests. Highest version wins so stale leftover
-        # tags can't. Arch-suffixed tags don't end in `-pkg`, so they self-exclude.
+        # Pass 2 (cross-digest fallback) for multi-arch manifests: the alias rides
+        # the manifest digest while the `<ver>-pkg` tag sits on a per-arch image
+        # digest, so pass-1 co-location found nothing. Only fills build types still
+        # missing; picks the highest matching version. No bare-`latest` fallback —
+        # pass 1 already handles single-arch `latest`, and matching bare tags across
+        # digests would risk grabbing a stray like "15.0-RELEASE".
         def _best(suffix: str) -> str:
             cands = [
                 t.removesuffix(suffix)
                 for t in all_tags
-                if t not in ("pkg", "pkg-latest", "latest") and t.endswith(suffix)
+                if t not in ("pkg", "pkg-latest", "latest")
+                and t.endswith(suffix)
+                and not t.endswith(ARCH_SUFFIXES)
             ]
             if not cands:
                 return None
@@ -109,28 +133,14 @@ def get_deployed_versions(package: str, variant: str = None) -> dict:
             except TypeError:
                 return cands[0]
 
-        if "pkg-latest" in all_tags:
+        if "pkg-latest" in all_tags and "pkg-latest" not in deployed:
             v = _best("-pkg-latest")
             if v is not None:
                 deployed["pkg-latest"] = v
-        if "pkg" in all_tags:
+        if "pkg" in all_tags and "pkg" not in deployed:
             v = _best("-pkg")  # `<ver>-pkg-latest` ends in `-latest`, won't match
             if v is not None:
                 deployed["pkg"] = v
-        if "latest" in all_tags and not latest_is_pkg:
-            # Highest bare version = current :latest build; ghcr keeps old bare
-            # tags (0.107.74 ... 0.107.77), so first-from-set would pick a stale one.
-            cands = [
-                t for t in all_tags
-                if t not in ("latest", "pkg", "pkg-latest")
-                and not t.endswith(("-pkg", "-pkg-latest"))
-                and not t.endswith(ARCH_SUFFIXES)
-            ]
-            if cands:
-                try:
-                    deployed["latest"] = max(cands, key=parse_version_tuple)
-                except TypeError:
-                    deployed["latest"] = cands[0]
 
         # If latest is just an alias to pkg, don't track it separately
         if latest_is_pkg:
