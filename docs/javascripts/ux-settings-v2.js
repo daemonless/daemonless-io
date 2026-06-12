@@ -83,3 +83,40 @@ document.addEventListener('input', e => {
         }
     });
 });
+
+// Status page: filter chips (All / Needs attention / Current)
+document.addEventListener('click', e => {
+    const chip = e.target.closest('.status-chip');
+    if (!chip) return;
+    document.querySelectorAll('.status-chip').forEach(c =>
+        c.classList.toggle('active', c === chip));
+    const filter = chip.dataset.filter;
+    document.querySelectorAll('.md-content table tbody tr').forEach(row => {
+        const isOutdated = !!row.querySelector('.outdated');
+        const show = filter === 'all' || (filter === 'outdated') === isOutdated;
+        row.style.display = show ? '' : 'none';
+    });
+});
+
+// Status page: humanize the "last checked" timestamp
+(function () {
+    function humanizeLastCheck() {
+        const el = document.getElementById('last-check');
+        if (!el || el.dataset.humanized) return;
+        const then = new Date(el.getAttribute('datetime'));
+        if (isNaN(then)) return;
+        const mins = Math.round((Date.now() - then.getTime()) / 60000);
+        let rel;
+        if (mins < 1) rel = 'just now';
+        else if (mins < 60) rel = mins + ' min ago';
+        else if (mins < 1440) rel = Math.round(mins / 60) + ' h ago';
+        else rel = Math.round(mins / 1440) + ' d ago';
+        el.dataset.humanized = '1';
+        el.textContent = rel + ' (' + el.textContent.trim() + ')';
+    }
+    // Material instant navigation swaps page content without a full load,
+    // so run on both initial load and subsequent DOM mutations.
+    new MutationObserver(humanizeLastCheck)
+        .observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('DOMContentLoaded', humanizeLastCheck);
+})();

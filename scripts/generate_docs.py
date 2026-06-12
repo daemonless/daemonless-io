@@ -309,6 +309,12 @@ def generate_status_page(configs):
     (REPO_ROOT / "docs" / "status.md").write_text(content, encoding='utf-8')
     print("Generated docs/status.md")
 
+    # Publish the fleet data alongside the page for machine consumption
+    if versions_file.exists():
+        (REPO_ROOT / "docs" / "daemonless-versions.json").write_text(
+            versions_file.read_text(), encoding='utf-8')
+        print("Published docs/daemonless-versions.json")
+
 
 def get_last_commit_date(repo_path):
     """Get the last commit date for a repo in ISO format."""
