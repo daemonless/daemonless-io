@@ -29,7 +29,7 @@ description: "Real-time version tracking and CI/CD status for every Daemonless i
 ## Needs Attention
 
 {% if outdated %}
-| Status | Image | Tag | Version | Build Health | Last Update |
+| Version Status | Image | Tag | Version | Build Health | Last Update |
 |:------:|-------|-----|---------|:-----:|:---:|
 {%- for item in outdated %}
 {%- set name = item.name %}
@@ -72,7 +72,7 @@ Build health badges are live GitHub Actions status; versions are from the last f
   </div>
 </div>
 
-| Status | Image | Tags | Version | Build Health | Last Update |
+| Version Status | Image | Tags | Version | Build Health | Last Update |
 |:------:|-------|------|---------|:-----:|:---:|
 {%- for name in deployed | sort %}
 {%- set svc_deployed = deployed[name] %}
