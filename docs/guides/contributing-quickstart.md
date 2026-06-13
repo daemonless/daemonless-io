@@ -5,227 +5,144 @@ description: "A 10-minute guide to setting up your environment, building a daemo
 
 # Contributing Quickstart
 
-A 10-minute guide to building and testing your first FreeBSD container image.
+Welcome to Daemonless! Whether you're fixing a bug in an existing image or bringing a completely new service to the FreeBSD container ecosystem, this guide will get you set up and submitting your first Pull Request in under 10 minutes.
 
-## Prerequisites
+---
 
-- **FreeBSD** (physical host or VM with Podman access)
-- **Python 3.11+** and **git**
-- **Podman** with **ocijail 0.5.0+** runtime (`pkg install ocijail`)
-- A GitHub account (for forking and PRs)
+## 1. Environment Setup
 
-!!! tip "Check your environment"
-    After installing dbuild, run `dbuild ci-test-env` to verify all required tools, networking, and jail support are in place.
+Before you start building, you need to prepare your FreeBSD host.
 
-## Setup (~5 minutes)
+### Prerequisites
 
-### 1. Clone the repos
+- **FreeBSD Host** (physical machine or VM).
+- A GitHub account.
 
-```bash
-# The main project (scripts, docs, version tracking)
-git clone https://github.com/daemonless/daemonless
+### Installation
 
-# The build tool
-git clone https://github.com/daemonless/dbuild
+Install the required tools, the `dbuild` engine, and optionally the testing dependencies.
 
-# An image repo to use as a reference
-git clone https://github.com/daemonless/tautulli
-```
-
-### 2. Install dependencies
-
-```bash
-# Core build tools
-pkg install podman buildah skopeo jq trivy py311-pyyaml
-
+```bash { linenums="0" }
+pkg install dbuild podman-suite ocijail jq security/trivy devel/py-pyyaml devel/git
 # Optional: for screenshot-based visual regression testing
-pkg install chromium py311-selenium py311-scikit-image
+pkg install chromium www/py-selenium graphics/py-scikit-image # (1)!
 ```
 
-### 3. Install dbuild
+1.  **Optional:** Only required if you intend to run screenshot-based visual regression tests locally.
 
-```bash
-cd dbuild
-make install
+### Clone the Repositories
+
+The Daemonless project is organized into multiple repositories under the `@daemonless` organization. You'll need the main repository for scripts and documentation.
+
+```bash { linenums="0" }
+git clone https://github.com/daemonless/daemonless
+cd daemonless
 ```
 
-Or manually:
-
-```bash
-pkg install py311-pyyaml
-export PYTHONPATH=/path/to/dbuild
-alias dbuild='python3 -m dbuild'
-```
-
-!!! tip "Alternative: pip install"
-    You can also install dbuild via pip if you prefer:
-    ```bash
-    cd dbuild
-    pip install .
+!!! tip "Clone the entire fleet"
+    To clone all daemonless image repositories at once, you must first install the GitHub CLI (`pkg install gh`), then run:
+    ```bash { linenums="0" }
+    gh repo list daemonless --no-archived -L 1000 | awk '{print $1}' | while read repo; do git clone "https://github.com/$repo.git"; done
     ```
 
-### 3. Verify your environment
+### Verify Setup
 
-```bash
+Ensure everything is configured correctly:
+
+```bash { linenums="0" }
 dbuild ci-test-env
 ```
 
-All required checks should pass. Optional tools (like podman-compose) are only needed for multi-service stacks.
+---
 
-## Your First Image (~5 minutes)
+## 2. Your First Contribution
 
-### 1. Scaffold a new image
+Daemonless uses a standardized toolchain. Choose your path below:
 
-```bash
-mkdir myapp && cd myapp
-git init
-dbuild init
-```
+=== "Create a New Image"
 
-This creates:
+    1. **Scaffold the project:** Use `dbuild init` to generate the boilerplate.
+    ```bash { linenums="0" }
+    mkdir myapp && cd myapp
+    git init
+    dbuild init
+    ```
+    2. **Edit the Containerfile:** Define how your app installs and runs. See [Containerfile Patterns](development.md#containerfile-patterns).
+    3. **Configure testing:** Edit `.daemonless/config.yaml` to define how the image should be tested.
 
-```
-myapp/
-├── Containerfile           # Build from upstream binaries (:latest tag)
-├── Containerfile.pkg       # Build from FreeBSD packages (:pkg tag)
-├── .daemonless/
-│   └── config.yaml         # Build + test configuration
-├── .woodpecker.yaml        # CI/CD pipeline (or .github/workflows/)
-└── root/                   # Files copied into container
-    └── etc/
-        ├── cont-init.d/    # Initialization scripts
-        └── services.d/     # s6 service definitions
-            └── myapp/
-                └── run     # Service start script
-```
+=== "Update an Existing Image"
 
-!!! info "Repository structure"
-    Each image is a standalone git repo with this layout. See the [Development Guide](development.md#repository-structure) for a detailed walkthrough.
+    1. **Find the repository:** Each image has its own repository (e.g., `@daemonless/radarr`).
+    2. **Fork and clone:** Fork the repository on GitHub, then clone it locally.
+    ```bash { linenums="0" }
+    git clone https://github.com/YOUR_USERNAME/radarr
+    cd radarr
+    ```
+    3. **Make your changes:** Whether you're bumping a version or fixing a bug, edit the `Containerfile` or service scripts under `root/etc/services.d/`.
 
-### 2. Build it
+---
 
-```bash
+## 3. Build & Test Loop
+
+We use **CIT** (Container Integration Testing) to ensure every image works natively on FreeBSD. 
+
+Build your image locally:
+
+```bash { linenums="0" }
 dbuild build
 ```
 
-### 3. Test it
+Run the automated tests:
 
-```bash
+```bash { linenums="0" }
 dbuild test
 ```
 
-### 4. Run it manually
+!!! tip "Test Modes"
+    Tests are defined in `.daemonless/config.yaml`. Most web apps should use `mode: health`. For apps with complex UIs, use `mode: screenshot` to catch visual regressions. See [Quality Gates (CIT)](dbuild/cit.md) for details.
 
-```bash
-podman run -d --name myapp \
-  -p 8080:8080 \
-  -e PUID=1000 -e PGID=1000 \
-  -v /tmp/myapp-config:/config \
-  localhost/myapp:build-latest
+To manually verify your image, run it with Podman:
+
+```bash { linenums="0" }
+podman run -d --name test-app -p 8080:8080 localhost/YOUR_IMAGE:build-latest
 ```
 
-## Contribution Types
+---
 
-| Type | Description | Where |
-|------|-------------|-------|
-| **New images** | Package a new application as a FreeBSD container | New repo under `daemonless/` |
-| **Image fixes** | Bug fixes or improvements to existing images | The image's repo |
-| **Tooling** | Improvements to dbuild or CIT | `daemonless/dbuild` |
-| **Documentation** | Guides, corrections, image docs | `daemonless/daemonless-io` |
+## 4. Submitting Your PR
 
-## Image Checklist
+Before you open a Pull Request, run through this checklist to ensure a smooth review process:
 
-Before submitting a new image, verify:
+### Pre-Flight Checklist
 
-- [x] `Containerfile` with required labels (`io.daemonless.port`, `io.daemonless.category`, `io.daemonless.packages`)
-- [x] `Containerfile.pkg` with matching labels (keep both in sync)
-- [x] `root/etc/services.d/<app>/run` — s6 service script using `s6-setuidgid bsd`
-- [x] `.daemonless/config.yaml` with CIT test configuration
-- [x] CI pipeline configured (`.woodpecker.yaml` or `.github/workflows/`)
-- [x] Upstream license verified — check the [SPDX identifier](https://spdx.org/licenses/)
-- [x] `dbuild build && dbuild test` passes locally
+- [ ] **License Check:** Upstream license verified using the [SPDX identifier](https://spdx.org/licenses/). Never guess a license; if none exists, use `NOASSERTION`.
+- [ ] **Labels:** `Containerfile` contains required labels (`io.daemonless.port`, `io.daemonless.category`, `io.daemonless.packages`).
+- [ ] **Sync:** `Containerfile.pkg` matches the labels of `Containerfile`.
+- [ ] **Permissions:** Run scripts (`root/etc/services.d/<app>/run`) use `s6-setuidgid bsd` so the app doesn't run as root.
+- [ ] **Testing:** `.daemonless/config.yaml` is configured and `dbuild test` passes locally.
+- [ ] **CI Pipeline:** `.woodpecker.yaml` or `.github/workflows/` is present and configured.
 
-!!! warning "Never guess a license"
-    Always check the upstream repository's LICENSE file and verify the SPDX identifier. Common licenses: MIT, Apache-2.0, GPL-3.0, AGPL-3.0, BSD-3-Clause.
+### How to Submit
 
-## Conventions
+**For existing images:** Push your branch to your fork and open a Pull Request against the `main` branch of the respective repository. Our CI will automatically run the CIT suite against your changes.
 
-### Containerfile rules
+**For new images:** You cannot open a PR until a repository exists in the Daemonless organization! Please hop on our [Discord](https://discord.gg/Kb9tkhecZT) and ask us to create a new repository for your image. Once created, you can push your scaffolded project there.
 
-- Use `fetch`, not `curl` — FreeBSD base includes `fetch`
-- Clean the pkg cache: `pkg clean -ay && rm -rf /var/cache/pkg/*`
-- Set ownership: `chown -R bsd:bsd /config /app`
-- Use `ARG` for `BASE_VERSION`, `PACKAGES`, and `VERSION`
-- Use `.j2` templates — run `dbuild generate` after changes
+---
 
-!!! note "Containerfile patterns"
-    Daemonless uses three Containerfile patterns: **standard** (upstream binaries), **package** (FreeBSD packages), and **multi-stage** (compiled apps). See the [Development Guide](development.md#containerfile-patterns) for templates of each.
+## 5. Golden Rules & Conventions
 
-### Runtime conventions
+To keep the fleet consistent, adhere to these core rules:
 
-- Run services as `bsd` user via `s6-setuidgid bsd`
-- Support `PUID`, `PGID`, and `TZ` environment variables
-- Use `/config` as the configuration volume
-- Use `exec` in run scripts for proper signal handling
+*   **Use `fetch`:** FreeBSD provides `fetch` in the base system. Do not install or use `curl`/`wget` unless absolutely necessary.
+*   **Clean Caches:** Always clean up after installing packages: `pkg clean -ay && rm -rf /var/cache/pkg/*`.
+*   **Permissions:** Use `chown -R bsd:bsd /config /app` in your Containerfile.
+*   **Configuration:** Always use `/config` as the persistent volume mount point.
 
-### Labels
+For the complete list of rules, labels, and architectural details, read the full **[Development Guide](development.md)**.
 
-Every image needs at minimum:
+---
 
-```dockerfile
-LABEL io.daemonless.port="8080"
-LABEL io.daemonless.category="Utilities"
-LABEL io.daemonless.packages="${PACKAGES}"
-```
+## Need Help?
 
-See the [Labels Reference](development.md#labels-reference) for the full list of `io.daemonless.*` and OCI labels.
-
-## Testing
-
-All images must pass CIT (Container Integration Testing) before push. CIT has four cumulative modes:
-
-| Mode | Checks | Use case |
-|------|--------|----------|
-| `shell` | Container starts, exec works | Base images, CLI tools |
-| `port` | Shell + TCP port listening | Network services |
-| `health` | Port + HTTP endpoint responds | Web apps |
-| `screenshot` | Health + visual regression | Web UIs |
-
-Configure your test mode in `.daemonless/config.yaml`:
-
-```yaml
-cit:
-  mode: health
-  port: 8080
-  health: /api/health
-```
-
-Run tests locally:
-
-```bash
-dbuild build && dbuild test
-```
-
-!!! tip "Choosing a test mode"
-    Most web applications should use `health` mode. Use `screenshot` mode for apps with a web UI where visual regressions matter. See the [Quality Gates (CIT)](dbuild/cit.md) guide for the full configuration reference.
-
-## Submitting Changes
-
-1. **Fork** the image repo on GitHub
-2. **Branch** from `main`
-3. **Build and test** locally with `dbuild build && dbuild test`
-4. **Open a PR** — CI runs CIT automatically
-5. All CIT gates must pass before merge
-
-## Get Help
-
-Stuck on something? Join us on [Discord](https://discord.gg/Kb9tkhecZT) — it's the fastest way to get help from the community.
-
-## Further Reading
-
-- [Development Guide](development.md) — Full architecture, labels reference, Containerfile patterns
-- [dbuild](dbuild/index.md) — Complete build engine documentation
-- [Quality Gates (CIT)](dbuild/cit.md) — Test modes, configuration, visual regression
-- [CI/CD Pipeline](dbuild/ci.md) — CI integration and pipeline details
-- [Image Tagging](tagging.md) — Tag conventions and version strategy
-- [OCI Compliance](oci-compliance.md) — Label standards and SBOM
+Stuck on a build error or have questions about ocijail? Join us on [Discord](https://discord.gg/Kb9tkhecZT) — it's the fastest way to get help from the Daemonless community.

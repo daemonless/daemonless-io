@@ -1,17 +1,18 @@
-# TRIAL Zensical config — parallel to mkdocs.yaml (production stays on MkDocs).
-# Build with:  make build-zen   (NOT `zensical build` directly)
-# NOTE: Zensical can't run the MkDocs placeholder plugin, so `make build-zen`
+# Zensical configuration for daemonless.io documentation.
+# Build with:  make build
+# NOTE: Zensical can't run the MkDocs placeholder plugin, so 'make build'
 # post-processes the output with `markdown-placeholder-standalone --phase both`
 # to wire up the interactive @PLACEHOLDER@ widgets. Running `zensical build`
-# on its own (or `make serve-zen`) leaves placeholders as literal @VAR@ text.
+# on its own (or `make serve`) leaves placeholders as literal @VAR@ text.
 
 [project]
 site_name = "daemonless"
 site_url = "https://daemonless.io"
 site_description = "Native FreeBSD OCI Containers - Jails without the System Administration"
-repo_url = "https://github.com/daemonless/daemonless"
-repo_name = "daemonless/daemonless"
-site_dir = "site-zen"
+repo_url = "https://github.com/daemonless/daemonless-io"
+repo_name = "daemonless/daemonless-io"
+edit_uri = "edit/main/docs/"
+site_dir = "site"
 
 extra_css = [
   "stylesheets/extra.css",
@@ -44,7 +45,7 @@ extra_javascript = [
 nav = [
   { "Home" = "index.md" },
   { "Image Fleet" = [
-    { "Overview" = "images/index.md" },
+    { "All Images" = "images/index.md" },
     { "Version Status" = "status.md" },
   ] },
   { "Guides" = [
@@ -52,7 +53,6 @@ nav = [
     { "Permissions" = "guides/permissions.md" },
     { "Networking" = "guides/networking.md" },
     { "ZFS Storage" = "guides/zfs.md" },
-    { "Hardware Acceleration" = "guides/hardware-acceleration.md" },
     { "ocijail Patch" = "guides/ocijail-patch.md" },
     { "Operations" = "guides/operations.md" },
   ] },
@@ -80,35 +80,28 @@ nav = [
   ] },
 ]
 
-[project.extra]
-generator = false
-
-[[project.extra.social]]
-icon = "fontawesome/brands/github"
-link = "https://github.com/daemonless"
-name = "GitHub"
-
-[[project.extra.social]]
-icon = "material/check-circle"
-link = "https://ci.daemonless.io"
-name = "CI Status"
-
-[[project.extra.social]]
-icon = "fontawesome/brands/discord"
-link = "https://discord.com/invite/Kb9tkhecZT"
-name = "Discord Community"
-
 [project.theme]
-variant = "classic"          # traditional Material for MkDocs look
+variant = "modern"          # modern design language
 custom_dir = "overrides"
 logo = "assets/daemonless-logo.svg"
 favicon = "assets/favicon.ico"
 features = [
   "navigation.tabs",
+  "navigation.tabs.sticky", # sticky header tabs
   "navigation.sections",
-  "navigation.top",
+  "navigation.expand",       # auto-expand sidebar
+  "navigation.instant",      # SPA-like instant loading
+  "navigation.top",          # back to top button
+  "navigation.tracking",     # highlight nav as you scroll
   "search.highlight",
+  "search.suggest",          # instant search suggestions
+  "toc.follow",              # scroll sync
   "content.code.copy",
+  "content.code.annotate",   # interactive code annotations
+  "content.tabs.link",       # sync tab selection across pages
+  "search.share",            # shareable search links
+  "navigation.path",         # breadcrumbs
+  "navigation.footer",       # previous/next buttons at the bottom of pages
 ]
 
 [[project.theme.palette]]
@@ -127,6 +120,29 @@ accent = "red"
 toggle.icon = "material/brightness-4"
 toggle.name = "Switch to dark mode"
 
+[project.extra]
+generator = false
+announce = "🚀 Daemonless Docs 2.0 is live! 100% powered by Zensical."
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/daemonless"
+name = "GitHub"
+
+[[project.extra.social]]
+icon = "material/check-circle"
+link = "https://ci.daemonless.io"
+name = "CI Status"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/discord"
+link = "https://discord.com/invite/Kb9tkhecZT"
+name = "Discord Community"
+
+[project.plugins]
+search = {}
+social = { cards_layout_options = { background_color = "#1e1e24" } }
+
 # Markdown extensions — attr_list is REQUIRED for zip-bundle to read the
 # data-zip-* attributes on code blocks.
 [project.markdown_extensions.tables]
@@ -142,6 +158,15 @@ custom_fences = [
 [project.markdown_extensions.pymdownx.snippets]
 [project.markdown_extensions.pymdownx.highlight]
 anchor_linenums = true
+linenums = true
+
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+
+[project.markdown_extensions.pymdownx.magiclink]
+repo_url_shorthand = true
+user = "daemonless"
+repo = "daemonless"
 
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
@@ -153,10 +178,3 @@ alternate_style = true
 emoji_index = "zensical.extensions.emoji.twemoji"
 emoji_generator = "zensical.extensions.emoji.to_svg"
 options.custom_icons = ["overrides/.icons"]
-
-# Deliberately omitted in this first pass (need Zensical-specific handling):
-#  - pymdownx.emoji with !!python/name material hooks
-#  - superfences custom_fence for mermaid (Python hook)
-#  - plugins: search/redirects/social (configured differently on Zensical),
-#    placeholder (unsupported), zip-bundle (loaded as assets above)
-#  - nav (letting Zensical derive from docs/ for the trial)

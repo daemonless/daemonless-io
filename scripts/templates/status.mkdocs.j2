@@ -32,7 +32,7 @@ The following images are no longer actively maintained.
 | Image | Category | Description | Links | Last Update |
 |-------|----------|-------------|-------|:------------:|
 {%- for c in deprecated_configs | sort(attribute='title') %}
-| [{{ c.icon }} **{{ c.title }}**]({{ c.name }}.md) [![](https://img.shields.io/badge/status-deprecated-orange)]({{ c.name }}.md) | **{{ c.category }}** | {{ c.description }}<br> :material-information-outline: **Deprecated**: {{ c.deprecated.reason }}{% if c.deprecated.replacement %} Use [{{ c.deprecated.replacement }}]({{ c.deprecated.replacement }}.md).{% endif %} | [:simple-github:]({{ c.repo_url }}){target=_blank} {% if c.upstream_url %} · [:material-link-variant:]({{ c.upstream_url }}){target=_blank}{% endif %} | [{{ c.last_update }}]({{ c.repo_url }}/commits){target=_blank} |
+| [{{ c.icon }} **{{ c.title }}**]({{ c.name }}.md)<br>[![](https://img.shields.io/badge/status-deprecated-orange)]({{ c.name }}.md) | **{{ c.category }}** | {{ c.description }}<br> :material-information-outline: **Deprecated**: {{ c.deprecated.reason }}{% if c.deprecated.replacement %} Use [{{ c.deprecated.replacement }}]({{ c.deprecated.replacement }}.md).{% endif %} | [:simple-github:]({{ c.repo_url }}){target=_blank} {% if c.upstream_url %} · [:material-link-variant:]({{ c.upstream_url }}){target=_blank}{% endif %} | [{{ c.last_update }}]({{ c.repo_url }}/commits){target=_blank} |
 {%- endfor %}
 {% endif %}
 

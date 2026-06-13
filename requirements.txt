@@ -1,12 +1,6 @@
-mkdocs
-mkdocs-material[imaging]
-mkdocs-redirects
-mkdocs-social-plugin
-mkdocs-placeholder-plugin>=0.7.0  # >=0.7.0 provides the markdown-placeholder-standalone CLI (Zensical build)
-mkdocs-glightbox
+mkdocs-placeholder-plugin>=0.7.0  # provides the markdown-placeholder-standalone CLI
 jinja2
 pyyaml
 pytz
 beautifulsoup4
-mkdocs-zip-bundle-plugin
-zensical  # Zensical static-site generator (build-zen target -> site-zen/)
+zensical

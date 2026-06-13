@@ -20,27 +20,9 @@ description: "Real-time version tracking and CI/CD status for every Daemonless i
 ## Summary
 
 - :material-check-circle:{ .current } Current: {{ summary.current_count }}
-- :material-close-circle:{ .outdated } {% if summary.outdated_count %}[Outdated: {{ summary.outdated_count }}](#needs-attention){% else %}Outdated: 0{% endif %}
-{% if summary.warning_count %}- :material-alert-circle: [Warnings: {{ summary.warning_count }}](#needs-attention){% endif %}
-{% if summary.error_count %}- :material-alert-circle: [Errors: {{ summary.error_count }}](#needs-attention){% endif %}
-{% endif %}
-
-{% if outdated or has_errors or has_warnings %}
-## Needs Attention
-
-{% if outdated %}
-| Version Status | Image | Tag | Version | Build Health | Last Update |
-|:------:|-------|-----|---------|:-----:|:---:|
-{%- for item in outdated %}
-{%- set name = item.name %}
-{%- set base_repo = base_names[name] if base_names is defined and name in base_names else name %}
-{%- set actions_url = 'https://github.com/daemonless/' ~ base_repo ~ '/actions/workflows/build.yaml' %}
-{%- set badge_url = 'https://img.shields.io/github/actions/workflow/status/daemonless/' ~ base_repo ~ '/build.yaml?label=' %}
-{%- set svc_update = last_updates[name] if last_updates is defined and name in last_updates else (last_updates[base_repo] if last_updates is defined and base_repo in last_updates else "Unknown") %}
-{%- for update in item.updates %}
-| :material-close-circle:{ .outdated } | [{{ name }}](images/{{ base_repo }}.md) | `{{ update.tag }}` | {{ update.deployed }} → **{{ update.available | replace('v', '', 1) }}** | <a href="{{ actions_url }}" target="_blank"><img src="{{ badge_url }}" loading="lazy" alt="build status"></a> | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
-{%- endfor %}
-{%- endfor %}
+- :material-close-circle:{ .outdated } Outdated: {% if summary.outdated_count %}{{ summary.outdated_count }}{% else %}0{% endif %}
+{% if summary.warning_count %}- :material-alert-circle: Warnings: {{ summary.warning_count }}{% endif %}
+{% if summary.error_count %}- :material-alert-circle: Errors: {{ summary.error_count }}{% endif %}
 {% endif %}
 
 {%- if has_errors %}
@@ -53,7 +35,8 @@ description: "Real-time version tracking and CI/CD status for every Daemonless i
 - :material-alert-circle: **{{ item.name }}** `{{ item.tag }}`: {{ item.reason }}
 {%- endfor %}
 {%- endif %}
-{% else %}
+
+{% if summary.outdated_count == 0 and not has_errors and not has_warnings %}
 !!! success "All images current"
     Every deployed tag matches its upstream version.
 {% endif %}

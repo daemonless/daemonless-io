@@ -108,6 +108,53 @@
   color: var(--md-default-fg-color--light);
 }
 
+/* Table Enhancements */
+.md-typeset table:not([class]) {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  display: table;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-code-bg-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 1rem;
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  vertical-align: middle;
+  padding: 0.8rem 1rem;
+}
+
+.md-typeset table:not([class]) td img {
+  vertical-align: middle;
+  margin: 2px 0;
+}
+
+/* Prevent wrapping for key columns */
+.md-typeset table:not([class]) td:last-child {
+  white-space: nowrap;
+}
+
+.md-typeset table:not([class]) tr:hover td {
+  background-color: var(--dl-card-bg);
+}
+
+/* Fix Annotation Tooltip Colors */
+.md-tooltip {
+  color: var(--md-default-fg-color) !important;
+  background-color: var(--md-default-bg-color) !important;
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
 /* Card Improvements */
 .md-typeset .grid.cards>ul>li {
   border: var(--dl-glass-border);
@@ -121,6 +168,19 @@
   transform: translateY(-4px);
   border-color: var(--md-primary-fg-color);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Download Button Styling */
+.zip-bundle-btn {
+  background-color: var(--md-primary-fg-color) !important;
+  color: var(--md-primary-bg-color) !important;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.zip-bundle-btn:hover {
+  background-color: var(--md-primary-fg-color--light) !important;
 }
 
 /* Mermaid Diagrams */
@@ -156,6 +216,16 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--dl-scrollbar-thumb-hover);
+}
+
+/* Hide sidebars scrollbars while keeping functionality */
+.md-sidebar__scrollwrap {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.md-sidebar__scrollwrap::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 /* Terminal Window Effect */
