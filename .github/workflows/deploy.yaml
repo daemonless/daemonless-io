@@ -75,7 +75,8 @@ jobs:
           cd daemonless-io
           git config user.name "daemonless-bot[bot]"
           git config user.email "3247603+daemonless-bot[bot]@users.noreply.github.com"
-          git add -A zensical.toml placeholder-plugin.yaml docs/images/index.md docs/status.md docs/daemonless-versions.json
+          git add -A zensical.toml
+          git add -f placeholder-plugin.yaml docs/images/index.md docs/status.md docs/daemonless-versions.json
           git rm --ignore-unmatch mkdocs.yaml
           git diff --staged --quiet || git commit -m "Update generated docs and status [skip ci]"
           git push
