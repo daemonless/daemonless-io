@@ -9,8 +9,8 @@
 site_name = "daemonless"
 site_url = "https://daemonless.io"
 site_description = "Native FreeBSD OCI Containers - Jails without the System Administration"
-repo_url = "https://github.com/daemonless/daemonless-io"
-repo_name = "daemonless/daemonless-io"
+repo_url = "https://github.com/daemonless/daemonless"
+repo_name = "daemonless/daemonless"
 edit_uri = "edit/main/docs/"
 site_dir = "site"
 

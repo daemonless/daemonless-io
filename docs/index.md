@@ -92,19 +92,19 @@ Launch your first container in seconds with a familiar syntax.
 <div class="termy">
 
 ```bash { linenums="0" }
-$ pkg install podman-suite # (1)!
-$ podman run -d --name plex \
->   -p 32400:32400 \
->   -e PUID=1000 -e PGID=1000 \
->   -v /data/config/plex:/config \
->   -v /data/media:/media \
->   ghcr.io/daemonless/plex:latest # (2)!
+pkg install podman-suite
+podman run -d --name plex \
+  -p 32400:32400 \
+  -e PUID=1000 -e PGID=1000 \
+  -v /data/config/plex:/config \
+  -v /data/media:/media \
+  ghcr.io/daemonless/plex:latest
 ```
+
+</div>
 
 1.  Installs Podman and its networking dependencies directly from the FreeBSD pkg repository.
 2.  Ensures the container runs securely as your host user instead of root.
-
-</div>
 
 ## Why Daemonless?
 

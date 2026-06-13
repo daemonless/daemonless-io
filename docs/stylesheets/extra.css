@@ -248,11 +248,29 @@
   border-bottom: 1px solid #333;
 }
 
+/* Kill Zensical's light code background inside the terminal and use a
+   light-on-dark palette so it reads like a real shell. */
+.termy .highlight,
+.termy pre,
+.termy code {
+  background: transparent !important;
+  color: #e6e6e6 !important;
+}
+
 .termy pre {
   margin: 0 !important;
-  padding: 1em !important;
-  background-color: transparent !important;
+  padding: 1em 1.25em !important;
+  line-height: 1.55;
 }
+
+/* Force every syntax token light so variable names (PUID/PGID) etc. aren't
+   black-on-black; then re-accent a few for readability on the dark window. */
+.termy .highlight span { color: #e6e6e6 !important; }
+.termy .highlight .c,
+.termy .highlight .c1 { color: #7fae6a !important; }   /* comments: shell green */
+.termy .highlight .m,
+.termy .highlight .mi { color: #d6a06a !important; }   /* numbers: soft amber */
+.termy .highlight .se { color: #9aa0a6 !important; }   /* line-continuation \ */
 
 
 /* Featured Apps Carousel Labels */
