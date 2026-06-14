@@ -15,7 +15,7 @@ hide:
     <p class="hero-subtitle">The native container platform for FreeBSD. Run <!-- IMAGE-COUNT-START -->72<!-- IMAGE-COUNT-END -->+ modern apps with standard OCI tooling.</p>
     <p class="hero-tagline">Production-grade images, automated builds, native performance.</p>
     <div class="hero-buttons">
-       <a href="quick-start/" class="md-button md-button--primary">Get Started</a>
+       <a href="guides/quick-start/" class="md-button md-button--primary">Get Started</a>
        <a href="images/" class="md-button">Explore Fleet</a>
     </div>
   </div>
