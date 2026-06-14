@@ -1033,6 +1033,30 @@ placeholders:
   ZENSICAL_CONFIG_PATH:
     default: zensical
     description: Zensical /config Path
+  LIBRENMS_PORT:
+    default: '8080'
+    description: LibreNMS Host Port
+    validators:
+    - port_number
+  LIBRENMS_CONFIG_PATH:
+    default: librenms
+    description: LibreNMS /config Path
+  STALWART_PORT:
+    default: '25'
+    description: Stalwart Host Port
+    validators:
+    - port_number
+  STALWART_CONFIG_PATH:
+    default: stalwart
+    description: Stalwart /config Path
+  UNIFI_OS_SERVER_PORT:
+    default: '443'
+    description: UniFi OS Server Host Port
+    validators:
+    - port_number
+  UNIFI_OS_SERVER_DATA_PATH:
+    default: unifi-os-server/data
+    description: UniFi OS Server /data Path
 validators:
   port_number:
     name: Port Number

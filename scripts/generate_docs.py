@@ -278,15 +278,21 @@ def generate_status_page(configs):
     """Generate docs/images/index.md (build overview) and docs/status.md (version status)."""
     try:
         overview_tmpl = env.get_template("status.mkdocs.j2")
+        categories_tmpl = env.get_template("status-categories.mkdocs.j2")
         version_tmpl = env.get_template("version-status.mkdocs.j2")
     except jinja2.TemplateNotFound as e:
         print(f"Warning: template not found ({e}), skipping status pages")
         return
 
-    # Fleet overview
+    # Fleet overview (flat alphabetical list)
     content = overview_tmpl.render(configs=configs, categories=VALID_CATEGORIES + ["Uncategorized"])
     (REPO_ROOT / "docs" / "images" / "index.md").write_text(content, encoding='utf-8')
     print("Generated docs/images/index.md")
+
+    # Fleet overview grouped by category
+    content = categories_tmpl.render(configs=configs, categories=VALID_CATEGORIES + ["Uncategorized"])
+    (REPO_ROOT / "docs" / "images" / "categories.md").write_text(content, encoding='utf-8')
+    print("Generated docs/images/categories.md")
 
     # Version status
     versions_file = REPO_ROOT / "daemonless-versions.json"
@@ -390,6 +396,60 @@ def generate_org_readme(configs):
     org_readme_path.write_text(content, encoding='utf-8')
     print(f"Updated {org_readme_path}")
 
+def update_zensical_nav(configs):
+    """Inject an A–Z list of image pages into zensical.toml's nav.
+
+    Replaces the lines between the AUTOGEN-IMAGES markers so the left sidebar
+    shows every image (LSIO-style). Marker-based so the rest of the hand-curated
+    nav and comments are preserved.
+    """
+    zen_path = REPO_ROOT / "zensical.toml"
+    start = "      # >>> AUTOGEN-IMAGES-START"
+    end = "      # >>> AUTOGEN-IMAGES-END"
+    if not zen_path.exists():
+        return
+    text = zen_path.read_text(encoding="utf-8")
+    if start not in text or end not in text:
+        print("Warning: AUTOGEN-IMAGES markers not found in zensical.toml; skipping nav")
+        return
+
+    active = [c for c in configs if not c.get("deprecated")]
+    lines = []
+    for c in sorted(active, key=lambda c: c["title"].lower()):
+        title = c["title"].replace("\\", "\\\\").replace('"', '\\"')
+        lines.append(f'      {{ "{title}" = "images/{c["name"]}.md" }},')
+    block = "\n".join(lines)
+
+    pre, _, rest = text.partition(start)
+    _, _, post = rest.partition(end)
+    new_text = f"{pre}{start}\n{block}\n{end}{post}"
+    zen_path.write_text(new_text, encoding="utf-8")
+    print(f"Updated zensical.toml nav with {len(lines)} image entries")
+
+
+def update_homepage_count(configs):
+    """Inject the active image count into docs/index.md's hero.
+
+    Replaces the digits between the IMAGE-COUNT markers so the hero headline
+    always reflects the real number of maintained (non-deprecated) images.
+    Marker-based so the hand-authored homepage is otherwise untouched.
+    """
+    home = REPO_ROOT / "docs" / "index.md"
+    start = "<!-- IMAGE-COUNT-START -->"
+    end = "<!-- IMAGE-COUNT-END -->"
+    if not home.exists():
+        return
+    text = home.read_text(encoding="utf-8")
+    if start not in text or end not in text:
+        print("Warning: IMAGE-COUNT markers not found in docs/index.md; skipping count")
+        return
+    count = len([c for c in configs if not c.get("deprecated")])
+    pre, _, rest = text.partition(start)
+    _, _, post = rest.partition(end)
+    home.write_text(f"{pre}{start}{count}{end}{post}", encoding="utf-8")
+    print(f"Updated docs/index.md hero image count: {count}")
+
+
 def main():
     """Main entry point for the documentation generator."""
     configs = []
@@ -464,6 +524,8 @@ def main():
     # Update supporting files
     update_placeholders(configs)
     update_mkdocs_yaml(configs)
+    update_zensical_nav(configs)
+    update_homepage_count(configs)
     generate_status_page(configs)
     generate_org_readme(configs)
 

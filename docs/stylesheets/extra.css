@@ -57,8 +57,18 @@
   font-size: 1.25rem;
   color: var(--md-default-fg-color--light);
   max-width: 600px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 0.75rem;
   line-height: 1.6;
+}
+
+.hero-tagline {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--md-primary-fg-color);
+  max-width: 600px;
+  margin: 0 auto 2rem;
 }
 
 .hero-logo img {

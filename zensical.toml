@@ -46,7 +46,84 @@ nav = [
   { "Home" = "index.md" },
   { "Image Fleet" = [
     { "All Images" = "images/index.md" },
+    { "By Category" = "images/categories.md" },
     { "Version Status" = "status.md" },
+    { "Images" = [
+      # >>> AUTOGEN-IMAGES-START
+      { "AdGuard Home" = "images/adguardhome.md" },
+      { "AdGuardHome Sync" = "images/adguardhome-sync.md" },
+      { "AFFiNE" = "images/affine.md" },
+      { "Arr Base" = "images/arr-base.md" },
+      { "Audiobookshelf" = "images/audiobookshelf.md" },
+      { "Bazarr" = "images/bazarr.md" },
+      { "Bichon" = "images/bichon.md" },
+      { "Cloudflared" = "images/cloudflared.md" },
+      { "code-server" = "images/code-server.md" },
+      { "Dispatcharr" = "images/dispatcharr.md" },
+      { "Emby" = "images/emby.md" },
+      { "Forgejo" = "images/forgejo.md" },
+      { "FreeBSD Base" = "images/base.md" },
+      { "FreeBSD Base Core" = "images/base-core.md" },
+      { "Gitea" = "images/gitea.md" },
+      { "Grimmory" = "images/grimmory.md" },
+      { "Headscale" = "images/headscale.md" },
+      { "Heimdall" = "images/heimdall.md" },
+      { "Home Assistant" = "images/home-assistant.md" },
+      { "Homepage" = "images/homepage.md" },
+      { "Hugo" = "images/hugo.md" },
+      { "Immich" = "images/immich.md" },
+      { "Immich Machine Learning" = "images/immich-ml.md" },
+      { "Immich PostgreSQL" = "images/immich-postgres.md" },
+      { "Immich Server" = "images/immich-server.md" },
+      { "Jellyfin" = "images/jellyfin.md" },
+      { "LibreNMS" = "images/librenms.md" },
+      { "Lidarr" = "images/lidarr.md" },
+      { "lldap" = "images/lldap.md" },
+      { "MariaDB" = "images/mariadb.md" },
+      { "Mealie" = "images/mealie.md" },
+      { "n8n" = "images/n8n.md" },
+      { "Nextcloud" = "images/nextcloud.md" },
+      { "Nginx Base" = "images/nginx-base.md" },
+      { "ONLYOFFICE Document Server" = "images/onlyoffice.md" },
+      { "OpenCloud" = "images/opencloud.md" },
+      { "OpenSpeedTest" = "images/openspeedtest.md" },
+      { "Organizr" = "images/organizr.md" },
+      { "Paperless-ngx" = "images/paperless-ngx.md" },
+      { "Papra" = "images/papra.md" },
+      { "Playwright" = "images/playwright.md" },
+      { "Plex Media Server" = "images/plex.md" },
+      { "PostgreSQL" = "images/postgres.md" },
+      { "Prowlarr" = "images/prowlarr.md" },
+      { "qBittorrent" = "images/qbittorrent.md" },
+      { "Radarr" = "images/radarr.md" },
+      { "ReadMeABook" = "images/readmeabook.md" },
+      { "Redis" = "images/redis.md" },
+      { "RetroAssembly" = "images/retroassembly.md" },
+      { "SABnzbd" = "images/sabnzbd.md" },
+      { "Samba" = "images/samba.md" },
+      { "SeaweedFS" = "images/seaweedfs.md" },
+      { "Seerr" = "images/seerr.md" },
+      { "SmokePing" = "images/smokeping.md" },
+      { "Sonarr" = "images/sonarr.md" },
+      { "SparkyFitness" = "images/sparkyfitness.md" },
+      { "Stalwart" = "images/stalwart.md" },
+      { "Stirling-PDF" = "images/stirling-pdf.md" },
+      { "Stump" = "images/stump.md" },
+      { "Syncthing" = "images/syncthing.md" },
+      { "Tailscale" = "images/tailscale.md" },
+      { "Tautulli" = "images/tautulli.md" },
+      { "Traefik" = "images/traefik.md" },
+      { "Transmission" = "images/transmission.md" },
+      { "Transmission with WireGuard" = "images/transmission-wireguard.md" },
+      { "Trek" = "images/trek.md" },
+      { "UniFi Network" = "images/unifi.md" },
+      { "UniFi OS Server" = "images/unifi-os-server.md" },
+      { "Uptime Kuma" = "images/uptime-kuma.md" },
+      { "Vaultwarden" = "images/vaultwarden.md" },
+      { "Woodpecker CI" = "images/woodpecker.md" },
+      { "Zensical" = "images/zensical.md" },
+      # >>> AUTOGEN-IMAGES-END
+    ] },
   ] },
   { "Guides" = [
     { "Getting Started" = "guides/quick-start.md" },
@@ -55,14 +132,13 @@ nav = [
     { "ZFS Storage" = "guides/zfs.md" },
     { "ocijail Patch" = "guides/ocijail-patch.md" },
     { "Operations" = "guides/operations.md" },
-  ] },
-  { "Contributing" = [
-    { "Quickstart" = "guides/contributing-quickstart.md" },
-    { "Development Guide" = "guides/development.md" },
-    { "Image Tagging" = "guides/tagging.md" },
-    { "OCI Compliance" = "guides/oci-compliance.md" },
-  ] },
-  { "dbuild (Daemonless Build)" = [
+    { "Contributing" = [
+      { "Quickstart" = "guides/contributing-quickstart.md" },
+      { "Development Guide" = "guides/development.md" },
+      { "Image Tagging" = "guides/tagging.md" },
+      { "OCI Compliance" = "guides/oci-compliance.md" },
+    ] },
+    { "dbuild (Daemonless Build)" = [
     { "Overview" = "guides/dbuild/index.md" },
     { "Building Your First Image" = "guides/dbuild/workflow.md" },
     { "Command Reference" = "guides/dbuild/commands.md" },
@@ -72,6 +148,7 @@ nav = [
       { "Linux Pre-Build Artifacts" = "guides/dbuild/linux-pre-build.md" },
     ] },
     { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
+    ] },
   ] },
   { "About" = [
     { "Philosophy" = "philosophy.md" },
@@ -88,14 +165,17 @@ favicon = "assets/favicon.ico"
 features = [
   "navigation.tabs",
   "navigation.tabs.sticky", # sticky header tabs
-  "navigation.sections",
-  "navigation.expand",       # auto-expand sidebar
-  "navigation.instant",      # SPA-like instant loading
+  # navigation.instant intentionally OFF: the post-build placeholder plugin
+  # (markdown-placeholder-standalone) builds its settings panel against the DOM
+  # on load; with SPA instant nav it races the content swap and the panel lands
+  # at the top of the page until a manual "Reset all placeholders". Full page
+  # loads keep the @PLACEHOLDER@ panel in its correct spot.
   "navigation.top",          # back to top button
   "navigation.tracking",     # highlight nav as you scroll
   "search.highlight",
   "search.suggest",          # instant search suggestions
   "toc.follow",              # scroll sync
+  "toc.integrate",           # show page TOC in the left sidebar (LSIO-style)
   "content.code.copy",
   "content.code.annotate",   # interactive code annotations
   "content.tabs.link",       # sync tab selection across pages
@@ -123,6 +203,11 @@ toggle.name = "Switch to dark mode"
 [project.extra]
 generator = false
 announce = "🚀 Daemonless Docs 2.0 is live! 100% powered by Zensical."
+
+# Google Analytics — restored after the mkdocs→zensical migration dropped it.
+[project.extra.analytics]
+provider = "google"
+property = "G-Z0TYZ35R6G"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"

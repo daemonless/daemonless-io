@@ -12,7 +12,8 @@ hide:
       <img src="assets/daemonless-logo.svg" alt="Daemonless">
     </div>
     <h1>daemonless</h1>
-    <p class="hero-subtitle">Native FreeBSD OCI Containers. Jails without the System Administration.</p>
+    <p class="hero-subtitle">The native container platform for FreeBSD. Run <!-- IMAGE-COUNT-START -->72<!-- IMAGE-COUNT-END -->+ modern apps with standard OCI tooling.</p>
+    <p class="hero-tagline">Production-grade images, automated builds, native performance.</p>
     <div class="hero-buttons">
        <a href="quick-start/" class="md-button md-button--primary">Get Started</a>
        <a href="images/" class="md-button">Explore Fleet</a>
@@ -105,6 +106,44 @@ podman run -d --name plex \
 
 1.  Installs Podman and its networking dependencies directly from the FreeBSD pkg repository.
 2.  Ensures the container runs securely as your host user instead of root.
+
+## Guides & How-Tos
+
+<div class="grid cards" markdown>
+
+-   :material-rocket-launch: **Quick Start**
+
+    ---
+
+    Host setup, `pf` firewall, and your first container — with Podman or AppJail.
+
+    [:octicons-arrow-right-24: Get deployed](guides/quick-start.md)
+
+-   :material-database: **ZFS Storage**
+
+    ---
+
+    Map OCI volumes to native ZFS datasets for snapshots, quotas, and replication.
+
+    [:octicons-arrow-right-24: Storage guide](guides/zfs.md)
+
+-   :material-lan-connect: **Networking**
+
+    ---
+
+    Port forwarding, bridges, and routing traffic behind a reverse proxy.
+
+    [:octicons-arrow-right-24: Networking guide](guides/networking.md)
+
+-   :material-update: **Operations & Updates**
+
+    ---
+
+    Keep services current with `podman pull` and CI-rebuilt images — no manual jails.
+
+    [:octicons-arrow-right-24: Operations guide](guides/operations.md)
+
+</div>
 
 ## Why Daemonless?
 
