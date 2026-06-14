@@ -396,58 +396,50 @@ def generate_org_readme(configs):
     org_readme_path.write_text(content, encoding='utf-8')
     print(f"Updated {org_readme_path}")
 
-def update_zensical_nav(configs):
-    """Inject an A–Z list of image pages into zensical.toml's nav.
+def render_zensical_config(configs):
+    """Render zensical.toml from its template (gitignored output).
 
-    Replaces the lines between the AUTOGEN-IMAGES markers so the left sidebar
-    shows every image (LSIO-style). Marker-based so the rest of the hand-curated
-    nav and comments are preserved.
+    The image nav list is generated from the active (non-deprecated) configs,
+    sorted by title; everything else is hand-edited in
+    scripts/templates/zensical.toml.j2 (the source of truth).
     """
-    zen_path = REPO_ROOT / "zensical.toml"
-    start = "      # >>> AUTOGEN-IMAGES-START"
-    end = "      # >>> AUTOGEN-IMAGES-END"
-    if not zen_path.exists():
+    try:
+        tmpl = env.get_template("zensical.toml.j2")
+    except jinja2.TemplateNotFound:
+        print("Warning: zensical.toml.j2 not found, skipping config")
         return
-    text = zen_path.read_text(encoding="utf-8")
-    if start not in text or end not in text:
-        print("Warning: AUTOGEN-IMAGES markers not found in zensical.toml; skipping nav")
-        return
-
-    active = [c for c in configs if not c.get("deprecated")]
-    lines = []
-    for c in sorted(active, key=lambda c: c["title"].lower()):
-        title = c["title"].replace("\\", "\\\\").replace('"', '\\"')
-        lines.append(f'      {{ "{title}" = "images/{c["name"]}.md" }},')
-    block = "\n".join(lines)
-
-    pre, _, rest = text.partition(start)
-    _, _, post = rest.partition(end)
-    new_text = f"{pre}{start}\n{block}\n{end}{post}"
-    zen_path.write_text(new_text, encoding="utf-8")
-    print(f"Updated zensical.toml nav with {len(lines)} image entries")
+    active = sorted((c for c in configs if not c.get("deprecated")),
+                    key=lambda c: c["title"].lower())
+    image_nav = [
+        {
+            "title": c["title"].replace("\\", "\\\\").replace('"', '\\"'),
+            "name": c["name"],
+        }
+        for c in active
+    ]
+    content = tmpl.render(image_nav=image_nav)
+    if not content.endswith("\n"):
+        content += "\n"
+    (REPO_ROOT / "zensical.toml").write_text(content, encoding="utf-8")
+    print(f"Generated zensical.toml ({len(image_nav)} image nav entries)")
 
 
-def update_homepage_count(configs):
-    """Inject the active image count into docs/index.md's hero.
+def generate_homepage(configs):
+    """Render the homepage template to docs/index.md (gitignored output).
 
-    Replaces the digits between the IMAGE-COUNT markers so the hero headline
-    always reflects the real number of maintained (non-deprecated) images.
-    Marker-based so the hand-authored homepage is otherwise untouched.
+    The hand-authored homepage lives in scripts/templates/home.mkdocs.j2; the
+    only dynamic value is the active (non-deprecated) image count in the hero.
+    Output is gitignored so the committed source is the template, not the page.
     """
-    home = REPO_ROOT / "docs" / "index.md"
-    start = "<!-- IMAGE-COUNT-START -->"
-    end = "<!-- IMAGE-COUNT-END -->"
-    if not home.exists():
+    try:
+        tmpl = env.get_template("home.mkdocs.j2")
+    except jinja2.TemplateNotFound:
+        print("Warning: home.mkdocs.j2 not found, skipping homepage")
         return
-    text = home.read_text(encoding="utf-8")
-    if start not in text or end not in text:
-        print("Warning: IMAGE-COUNT markers not found in docs/index.md; skipping count")
-        return
-    count = len([c for c in configs if not c.get("deprecated")])
-    pre, _, rest = text.partition(start)
-    _, _, post = rest.partition(end)
-    home.write_text(f"{pre}{start}{count}{end}{post}", encoding="utf-8")
-    print(f"Updated docs/index.md hero image count: {count}")
+    active_count = len([c for c in configs if not c.get("deprecated")])
+    content = tmpl.render(active_count=active_count)
+    (REPO_ROOT / "docs" / "index.md").write_text(content, encoding="utf-8")
+    print(f"Generated docs/index.md (homepage, {active_count} images)")
 
 
 def main():
@@ -524,8 +516,8 @@ def main():
     # Update supporting files
     update_placeholders(configs)
     update_mkdocs_yaml(configs)
-    update_zensical_nav(configs)
-    update_homepage_count(configs)
+    render_zensical_config(configs)
+    generate_homepage(configs)
     generate_status_page(configs)
     generate_org_readme(configs)
 
