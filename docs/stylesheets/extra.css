@@ -329,3 +329,132 @@
 .outdated {
   color: #ff5722 !important;
 }
+
+/* App Logo Icons */
+.app-icon {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  object-fit: contain;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+/* Adjust size for H1 headers */
+h1 .app-icon {
+  width: 38px;
+  height: 38px;
+  margin-right: 0.75rem;
+  vertical-align: -6px;
+}
+
+/* Homepage positioning table */
+.comparison-section, .architecture-section {
+  margin: 4rem auto;
+  max-width: 1000px;
+  text-align: center;
+}
+
+.section-desc {
+  color: var(--md-default-fg-color--light);
+  font-size: 1rem;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+.comparison-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: var(--dl-glass-border);
+  background: var(--dl-card-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 2rem;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.comparison-table th, .comparison-table td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: var(--dl-glass-border);
+}
+
+.comparison-table th {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--md-default-fg-color);
+}
+
+.comparison-table td {
+  color: var(--md-default-fg-color);
+  font-size: 0.9rem;
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Highlight Daemonless column */
+.comparison-table th.highlight, .comparison-table td.highlight {
+  background: rgba(226, 69, 67, 0.08);
+  font-weight: 600;
+  border-left: 1px solid rgba(226, 69, 67, 0.2);
+  border-right: 1px solid rgba(226, 69, 67, 0.2);
+}
+
+.comparison-table th.highlight {
+  color: var(--md-primary-fg-color);
+  background: rgba(226, 69, 67, 0.15);
+}
+
+/* Mermaid Container on homepage */
+.mermaid-container {
+  padding: 2rem;
+  border-radius: 8px;
+  border: var(--dl-glass-border);
+  background: var(--dl-card-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.mermaid-container .mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive overrides for the positioning table */
+@media screen and (max-width: 768px) {
+  .comparison-table th, .comparison-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .mermaid-container {
+    padding: 1rem;
+  }
+}
+
+/* Dedicated Logo Column in Tables */
+.app-logo-col {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}

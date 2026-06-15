@@ -48,6 +48,75 @@ hide:
   </div>
 </section>
 
+<div class="comparison-section">
+  <h2>Positioning & Comparison</h2>
+  <p class="section-desc">How Daemonless compares to traditional virtualization and manual jail administration.</p>
+  <div class="comparison-table-wrapper">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Docker on Linux/VM</th>
+          <th>Traditional Jails</th>
+          <th class="highlight">Daemonless</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>OCI Images</strong></td>
+          <td>Yes (Native)</td>
+          <td>No (Manual packages)</td>
+          <td class="highlight">Yes (Standard OCI compliance)</td>
+        </tr>
+        <tr>
+          <td><strong>Native FreeBSD</strong></td>
+          <td>No (Requires Linux VM)</td>
+          <td>Yes (Native Jails)</td>
+          <td class="highlight">Yes (Native Jails)</td>
+        </tr>
+        <tr>
+          <td><strong>App-Store Deploy (Compose)</strong></td>
+          <td>Yes (Docker Compose)</td>
+          <td>No (Custom shell/jails)</td>
+          <td class="highlight">Yes (Podman/AppJail Compose)</td>
+        </tr>
+        <tr>
+          <td><strong>VM Required</strong></td>
+          <td>Yes (On non-Linux hosts)</td>
+          <td>No</td>
+          <td class="highlight">No (Zero VM overhead)</td>
+        </tr>
+        <tr>
+          <td><strong>ZFS Volume Integration</strong></td>
+          <td>No (Virtual disk overhead)</td>
+          <td>Yes (Native datasets)</td>
+          <td class="highlight">Yes (Native datasets)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="architecture-section">
+  <h2>Architecture: How it Works</h2>
+  <p class="section-desc">Run standard, unmodified container commands. Podman translates them natively to FreeBSD Jails.</p>
+  <div class="mermaid-container">
+```mermaid
+flowchart TD
+    host["FreeBSD Host Kernel"] --> runtime["Podman / ocijail / runj"]
+    subgraph isolation["Native Jail Isolation (Zero VM Overhead)"]
+        runtime --> base["Base Image (s6 init)"]
+        base --> apps["Image Fleet (Plex, Radarr, Nextcloud...)"]
+    end
+
+    style host fill:#ab2b28,stroke:#333,stroke-width:2px,color:#fff
+    style runtime fill:#2980b9,stroke:#333,stroke-width:2px,color:#fff
+    style base fill:#d35400,stroke:#333,stroke-width:1px,color:#fff
+    style apps fill:#27ae60,stroke:#333,stroke-width:1px,color:#fff
+```
+  </div>
+</div>
+
 <div class="grid cards" markdown>
 
 -   :material-server-network: **Reliable Foundation**

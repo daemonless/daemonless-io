@@ -57,8 +57,8 @@ Build health badges are live GitHub Actions status; versions are from the last f
   </div>
 </div>
 
-| Version Status | Image | Tags | Version | Build Health | Last Update |
-|:------:|-------|------|---------|:-----:|:---:|
+| Version Status | | Image | Tags | Version | Build Health | Last Update |
+|:------:|:---:|-------|------|---------|:-----:|:---:|
 {%- for name in deployed | sort %}
 {%- set svc_deployed = deployed[name] %}
 {%- set base_repo = base_names[name] if base_names is defined and name in base_names else name %}
@@ -82,7 +82,7 @@ Build health badges are live GitHub Actions status; versions are from the last f
 {%- set _ = ver_cell.append(svc_deployed[tag]) %}
 {%- endif %}
 {%- endfor %}
-| {% if has_outdated %}:material-close-circle:{ .outdated }{% else %}:material-check-circle:{ .current }{% endif %} | [{{ name }}](images/{{ base_repo }}.md){% if svc_config and svc_config.deprecated %} <a href="{{ base_repo }}.md"><img src="https://img.shields.io/badge/status-deprecated-orange" loading="lazy" alt="deprecated"></a>{% endif %} | {{ tag_cell | join('<br>') }} | {{ ver_cell | join('<br>') }} | <a href="{{ actions_url }}" target="_blank"><img src="{{ badge_url }}" loading="lazy" alt="build status"></a> | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
+| {% if has_outdated %}:material-close-circle:{ .outdated }{% else %}:material-check-circle:{ .current }{% endif %} | {% if svc_config and svc_config.logo_dark %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}#only-light" alt="{{ name }}"><img class="app-logo-col" src="/images/logos/{{ svc_config.logo_dark }}#only-dark" alt="{{ name }}">{% elif svc_config and svc_config.logo %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}" alt="{{ name }}">{% elif svc_config %}{{ svc_config.icon }}{% else %}:material-docker:{% endif %} | [**{{ name }}**](images/{{ base_repo }}.md){% if svc_config and svc_config.deprecated %} <a href="{{ base_repo }}.md"><img src="https://img.shields.io/badge/status-deprecated-orange" loading="lazy" alt="deprecated"></a>{% endif %} | {{ tag_cell | join('<br>') }} | {{ ver_cell | join('<br>') }} | <a href="{{ actions_url }}" target="_blank"><img src="{{ badge_url }}" loading="lazy" alt="build status"></a> | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
 {%- endfor %}
 {% endif %}
 

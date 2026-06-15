@@ -444,6 +444,14 @@ def generate_homepage(configs):
 
 def main():
     """Main entry point for the documentation generator."""
+    import shutil
+
+    # Purge/recreate logos directory to clean up deleted/stale logos
+    logos_dst = REPO_ROOT / "docs" / "images" / "logos"
+    if logos_dst.exists():
+        shutil.rmtree(logos_dst)
+    logos_dst.mkdir(parents=True, exist_ok=True)
+
     configs = []
 
     # Discover repos
@@ -481,6 +489,36 @@ def main():
                     shutil.copy2(f, screenshots_dst / f.name)
                     screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
         config["screenshots"] = screenshots
+
+        # Copy logo from .daemonless/logo.* to docs/images/logos/<name>.<ext>
+        logo_src = None
+        for ext in ['.svg', '.png']:
+            candidate = repo / ".daemonless" / f"logo{ext}"
+            if candidate.exists():
+                logo_src = candidate
+                break
+
+        if logo_src:
+            dst_name = f"{config['name']}{logo_src.suffix.lower()}"
+            shutil.copy2(logo_src, logos_dst / dst_name)
+            config["logo"] = dst_name
+        else:
+            config["logo"] = config.get("logo", "")
+
+        # Copy dark logo from .daemonless/logo-dark.* to docs/images/logos/<name>-dark.<ext>
+        logo_dark_src = None
+        for ext in ['.svg', '.png']:
+            candidate = repo / ".daemonless" / f"logo-dark{ext}"
+            if candidate.exists():
+                logo_dark_src = candidate
+                break
+
+        if logo_dark_src:
+            dst_dark_name = f"{config['name']}-dark{logo_dark_src.suffix.lower()}"
+            shutil.copy2(logo_dark_src, logos_dst / dst_dark_name)
+            config["logo_dark"] = dst_dark_name
+        else:
+            config["logo_dark"] = config.get("logo_dark", "")
 
         configs.append(config)
 
