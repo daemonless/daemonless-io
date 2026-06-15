@@ -67,7 +67,7 @@ Build health badges are live GitHub Actions status; versions are from the last f
 {%- set svc_tags = display_tags[name] if display_tags is defined and name in display_tags else {} %}
 {%- set variant_prefix = (name[base_repo | length + 1:] ~ '-') if name != base_repo else '' %}
 {%- set svc_update = last_updates[name] if last_updates is defined and name in last_updates else (last_updates[base_repo] if last_updates is defined and base_repo in last_updates else "Unknown") %}
-{%- set svc_config = configs | selectattr('name', 'equalto', name) | first if configs is defined else none %}
+{%- set svc_config = configs | selectattr('name', 'equalto', base_repo) | first if configs is defined else none %}
 {%- set has_outdated = [] %}
 {%- set tag_cell = [] %}
 {%- set ver_cell = [] %}
@@ -143,9 +143,10 @@ Build health badges are live GitHub Actions status; versions are from the last f
   width: 100%;
 }
 
-/* Keep the Tags column on one line so tag <-> version rows stay aligned */
-.md-typeset table td:nth-child(3),
-.md-typeset table th:nth-child(3) {
+/* Keep the Tags column on one line so tag <-> version rows stay aligned.
+   Col 4 = Tags (col 2 is the logo, col 3 the image name). */
+.md-typeset table td:nth-child(4),
+.md-typeset table th:nth-child(4) {
   white-space: nowrap;
 }
 </style>
