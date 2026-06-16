@@ -1057,6 +1057,14 @@ placeholders:
   UNIFI_OS_SERVER_DATA_PATH:
     default: unifi-os-server/data
     description: UniFi OS Server /data Path
+  CNPG_POSTGRES_PORT:
+    default: '5432'
+    description: PostgreSQL (CloudNativePG) Host Port
+    validators:
+    - port_number
+  CNPG_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH:
+    default: cnpg-postgres/var/lib/postgresql/data
+    description: PostgreSQL (CloudNativePG) /var/lib/postgresql/data Path
 validators:
   port_number:
     name: Port Number
