@@ -1065,6 +1065,14 @@ placeholders:
   CNPG_POSTGRES_VAR_LIB_POSTGRESQL_DATA_PATH:
     default: cnpg-postgres/var/lib/postgresql/data
     description: PostgreSQL (CloudNativePG) /var/lib/postgresql/data Path
+  GRAFANA_PORT:
+    default: '3000'
+    description: Grafana Host Port
+    validators:
+    - port_number
+  GRAFANA_CONFIG_PATH:
+    default: grafana
+    description: Grafana /config Path
 validators:
   port_number:
     name: Port Number
