@@ -115,3 +115,12 @@
   border-radius: 4px;
   display: block;
 }
+
+/* Light/dark logo swap — re-assert both halves; Zensical splits them across
+   main.css/palette.css and the dark half can fail to apply. */
+[data-md-color-scheme="slate"] img[src$="#only-light"] {
+  display: none !important;
+}
+[data-md-color-scheme="default"] img[src$="#only-dark"] {
+  display: none !important;
+}
