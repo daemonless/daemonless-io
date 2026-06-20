@@ -38,9 +38,11 @@ hide:
 {%- endfor %}
 {%- endif %}
 
+{% if summary is defined %}
 {% if summary.outdated_count == 0 and not has_errors and not has_warnings %}
 !!! success "All images current"
     Every deployed tag matches its upstream version.
+{% endif %}
 {% endif %}
 
 {% if deployed is defined and deployed %}
