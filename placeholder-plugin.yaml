@@ -781,8 +781,8 @@ placeholders:
     default: paperless-ngx/config/media/documents
     description: Paperless-ngx /config/media/documents Path
   PAPRA_APP_DATA_PATH:
-    default: papra/app-data
-    description: Papra /app-data Path
+    default: papra/app_data
+    description: Papra /app_data Path
   PLEX_CONFIG_PATH:
     default: plex
     description: Plex Media Server /config Path
