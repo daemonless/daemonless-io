@@ -280,7 +280,7 @@ Let's deploy a simple web application.
 ```console
 # mkdir -p -- "@CONTAINER_CONFIG_ROOT@/tautulli"
 # appjail oci run \
-    -d \
+    -Pd \
     -u root \
     -o overwrite=force \
     -o virtualnet=":<random> default" \
@@ -317,17 +317,18 @@ Access the UI at `http://10.0.0.3:8181`
 
 **Notes**:
 
-1. `-d`: The process will run in the background.
-2. `-u root`: We run `s6` as root, but keep in mind that the process is already running as the `bsd` user inside the jail, which is also mapped based on the `PUID` and `PGID` environment variables. We recommend specifying the user explicitly. See [this pr](https://github.com/daemonless/dbuild/pull/7) for more details.
-3. `-o overwrite=force`: Destroy the jail if it already exists, so that AppJail will recreate it instead of refusing to do so.
-4. `-o virtualnet=":<random> default" -o nat -o expose="8181:8181"`: Network options. In this case, we chose to use Virtual Networks.
-5. `-o container="args:--pull"`: Let's pull the image every time `buildah(1)` detects changes, so that AppJail always runs the jail using the latest image.
-6. `-o ephemeral`: Mark this jail as ephemeral, so that when it stops (or starts, in the event of a power outage on the computer), AppJail will destroy it.
-7. `@REGISTRY@/tautulli:latest tautulli`: The image, tag, and the jail name. The tag is optional.
+1. `-P`: The environment variables, working directory, and user you have specified will be preserved, which means that if you restart the jail, AppJail will use the parameters you defined in this command. If the OCI image provides a command to be executed, it will also run in the background, even if the jail is restarted.
+2. `-d`: The process will run in the background.
+3. `-u root`: We run `s6` as root, but keep in mind that the process is already running as the `bsd` user inside the jail, which is also mapped based on the `PUID` and `PGID` environment variables. We recommend specifying the user explicitly. See [this pr](https://github.com/daemonless/dbuild/pull/7) for more details.
+4. `-o overwrite=force`: Destroy the jail if it already exists, so that AppJail will recreate it instead of refusing to do so.
+5. `-o virtualnet=":<random> default" -o nat -o expose="8181:8181"`: Network options. In this case, we chose to use Virtual Networks.
+6. `-o container="args:--pull"`: Let's pull the image every time `buildah(1)` detects changes, so that AppJail always runs the jail using the latest image.
+7. `-o ephemeral`: Mark this jail as ephemeral, so that when it stops (or starts, in the event of a power outage on the computer), AppJail will destroy it.
+8. `@REGISTRY@/tautulli:latest tautulli`: The image, tag, and the jail name. The tag is optional.
 
 ### AppJail Director
 
-Although you can use AppJail exclusively to deploy containers, it is recommended that you use AppJail Director. Environment variables set by `appjail-oci(1)` `run` will not be preserved after restarting the jail. You can use various `appjail-oci(1)` subcommands, such as `set-user`, `set-env`, etc., and then run the `from` subcommand, but this does not scale well when there are multiple containers. Another advantage is that Director defines its deployment file in YAML format declaratively, so it can be easily shared.
+You can use the `appjail-oci(1)` `run` command to perform quick deployments, which is very convenient; however, sometimes more complex deployments require deploy more than one jail, and that's where AppJail Director comes in. Another advantage of AppJail Director is that it deploys using a declarative format expressed in YAML.
 
 For example, the above deployment can easily be translated into a Director file:
 
