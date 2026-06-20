@@ -67,8 +67,10 @@ Daemonless uses a standardized toolchain. Choose your path below:
     git init
     dbuild init
     ```
-    2. **Edit the Containerfile:** Define how your app installs and runs. See [Containerfile Patterns](development.md#containerfile-patterns).
-    3. **Configure testing:** Edit `.daemonless/config.yaml` to define how the image should be tested.
+    2. **Configure Metadata:** Edit `compose.yaml` to define the `x-daemonless` metadata (title, category, ports, volumes, etc.).
+    3. **Edit the Containerfiles:** Define how your app installs and runs in `Containerfile` and `Containerfile.pkg`. See [Containerfile Patterns](development.md#containerfile-patterns).
+    4. **Fetch Assets & Generate Docs:** Run `dbuild logo` (used in the app grid), `dbuild screenshot` (used on the website to showcase the app), and `dbuild baseline` (used for CIT visual regression tests) to pull down the app's visual assets. Then, run `dbuild generate` to auto-generate the `README.md` and inject labels into the Containerfiles.
+    5. **Configure testing:** Edit `.daemonless/config.yaml` to define how the image should be tested.
 
 === "Update an Existing Image"
 
@@ -78,7 +80,7 @@ Daemonless uses a standardized toolchain. Choose your path below:
     git clone https://github.com/YOUR_USERNAME/radarr
     cd radarr
     ```
-    3. **Make your changes:** Whether you're bumping a version or fixing a bug, edit the `Containerfile` or service scripts under `root/etc/services.d/`.
+    3. **Make your changes:** Edit `compose.yaml` (if modifying metadata), the `Containerfile`, or service scripts under `root/etc/services.d/`. Always run `dbuild generate` after modifying `compose.yaml`.
 
 ---
 
@@ -116,11 +118,10 @@ Before you open a Pull Request, run through this checklist to ensure a smooth re
 ### Pre-Flight Checklist
 
 - [ ] **License Check:** Upstream license verified using the [SPDX identifier](https://spdx.org/licenses/). Never guess a license; if none exists, use `NOASSERTION`.
-- [ ] **Labels:** `Containerfile` contains required labels (`io.daemonless.port`, `io.daemonless.category`, `io.daemonless.packages`).
-- [ ] **Sync:** `Containerfile.pkg` matches the labels of `Containerfile`.
+- [ ] **Metadata Sync:** `dbuild generate` has been run to sync `compose.yaml` metadata into `Containerfile`, `Containerfile.pkg`, and `README.md`.
 - [ ] **Permissions:** Run scripts (`root/etc/services.d/<app>/run`) use `s6-setuidgid bsd` so the app doesn't run as root.
 - [ ] **Testing:** `.daemonless/config.yaml` is configured and `dbuild test` passes locally.
-- [ ] **CI Pipeline:** `.woodpecker.yaml` or `.github/workflows/` is present and configured.
+- [ ] **CI Pipeline:** `.github/workflows/` is present and configured (Woodpecker is maintained as a fallback Plan B).
 
 ### How to Submit
 

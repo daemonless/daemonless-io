@@ -13,16 +13,16 @@ This guide covers the internal architecture, conventions, and patterns for build
 
 ```mermaid
 graph TD
-    A[freebsd/freebsd-runtime:15] --> B[daemonless/base:15]
-    B --> C[daemonless/arr-base:15]
-    B --> D[daemonless/nginx-base:15]
+    A[freebsd/freebsd-runtime:15.1] --> B[daemonless/base:15.1]
+    B --> C[daemonless/arr-base:15.1]
+    B --> D[daemonless/nginx-base:15.1]
     B --> E[Direct Services]
     C --> F[radarr, sonarr, lidarr, prowlarr, jellyfin]
     D --> G[nextcloud, vaultwarden, mealie]
     E --> H[gitea, traefik, redis, transmission, etc.]
 ```
 
-All images inherit from `base:15` which provides s6 supervision and PUID/PGID support. Specialized bases add runtime dependencies:
+All images inherit from `base:15.1` which provides s6 supervision and PUID/PGID support. Specialized bases add runtime dependencies:
 
 - **arr-base** - .NET runtime and libraries for *arr applications
 - **nginx-base** - nginx pre-installed for web applications
@@ -54,7 +54,7 @@ Each image is a standalone git repo:
 
 | Label | Required | Purpose | Example |
 |-------|----------|---------|---------|
-| `io.daemonless.port` | Yes | Primary listening port(s) | `"7878"`, `"80,443,8080"` |
+| `io.daemonless.port` | Conditional | Primary listening port(s) | `"7878"`, `"80,443,8080"` |
 | `io.daemonless.category` | Yes | Service classification | `"Media Management"` |
 | `io.daemonless.packages` | Yes | FreeBSD packages to install | `"${PACKAGES}"` |
 | `io.daemonless.volumes` | No | Suggested volume mounts | `"/movies,/downloads"` |
@@ -115,6 +115,25 @@ LABEL org.freebsd.jail.allow.mlock="required"
 podman run --annotation 'org.freebsd.jail.allow.mlock=true' ...
 ```
 
+## The Source of Truth: `compose.yaml`
+
+Daemonless uses a standardized `compose.yaml` file located in the root of each repository to define the image's metadata, dependencies, and configuration. **Do not manually add `io.daemonless.*` labels to your `Containerfile`**.
+
+Instead, define your app in `compose.yaml` under the `x-daemonless` block:
+
+```yaml
+name: myapp
+x-daemonless:
+  title: "My App"
+  category: "Utilities"
+  description: "A great utility app."
+  docs:
+    ports:
+      8080: "Web UI"
+```
+
+Then, run `dbuild generate` to automatically inject the required `io.daemonless.*` labels into your `Containerfile`s and regenerate the `README.md`.
+
 ## Containerfile Patterns
 
 ### Standard Pattern (:latest)
@@ -122,7 +141,7 @@ podman run --annotation 'org.freebsd.jail.allow.mlock=true' ...
 Downloads binaries from upstream for bleeding-edge versions:
 
 ```dockerfile
-ARG BASE_VERSION=15
+ARG BASE_VERSION="15.1"
 FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG PACKAGES="app-package dependency1 dependency2"
@@ -174,7 +193,7 @@ VOLUME /config
 Uses FreeBSD packages for stable, tested versions:
 
 ```dockerfile
-ARG BASE_VERSION=15
+ARG BASE_VERSION="15.1"
 FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG PKG_NAME=app
@@ -207,7 +226,7 @@ VOLUME /config
 For Node.js or compiled applications:
 
 ```dockerfile
-ARG BASE_VERSION=15
+ARG BASE_VERSION="15.1"
 FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
 
 # Install build dependencies
@@ -415,18 +434,24 @@ dbuild test --variant latest
 
 ### CI/CD Pipeline
 
-Standard `.woodpecker.yaml` for a new image repository:
+Standard `.github/workflows/build.yaml` for a new image repository:
 
 ```yaml
-steps:
-  - name: pipeline
-    image: ghcr.io/daemonless/base:15
-    environment:
-      GITHUB_TOKEN: { from_secret: GITHUB_TOKEN }
-      GITHUB_ACTOR: { from_secret: GITHUB_USER }
-    commands:
-      - dbuild ci-run --prepare
+name: Build and Publish
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and Test
+        run: dbuild ci-run --prepare
 ```
+
+!!! info "Legacy CI (Woodpecker as Plan-B)"
+    We previously used Woodpecker CI before migrating to GitHub Actions. Woodpecker serves as our "Plan B" if GHA ever goes down. We still maintain the configuration capability, but we don't currently use it for active builds.
 
 The `dbuild ci-run` command handles environment preparation, multi-variant building, CIT testing, pushing to the registry, and SBOM generation.
 
@@ -442,20 +467,30 @@ git init
 ### 2. Initialize with dbuild
 
 ```bash
-dbuild init --woodpecker
+dbuild init --github
 ```
 
-This creates a starter `Containerfile`, `.daemonless/config.yaml`, and `.woodpecker.yaml`.
+This creates a starter `compose.yaml`, `Containerfile`, `.daemonless/config.yaml`, and `.github/workflows/build.yaml` (use `--woodpecker` instead if you need to scaffold the fallback pipeline).
 
-### 3. Configure Containerfile
+### 3. Configure Metadata & Assets
 
-Required labels for `dbuild` to function correctly:
+Edit `compose.yaml` to set your app's title, ports, and category. Then, fetch the visual assets and generate the documentation:
 
-```dockerfile
-LABEL io.daemonless.port="8080"
-LABEL io.daemonless.category="Utilities"
-LABEL io.daemonless.packages="${PACKAGES}"
+```bash
+# Fetch the app's logo (Used in the daemonless.io app grid and README headers)
+dbuild logo
+
+# Capture a UI screenshot (Used on the website to showcase the app)
+dbuild screenshot
+
+# Capture a baseline screenshot (Used for CIT visual regression tests)
+dbuild baseline
+
+# Sync metadata and generate README.md
+dbuild generate
 ```
+
+This automatically injects the required `io.daemonless.*` labels into your Containerfiles and builds a rich `README.md` using your fetched assets.
 
 ### 4. Create Service Files
 
@@ -488,9 +523,9 @@ git push -u origin main
 - [ ] Make scripts executable: `chmod +x /etc/services.d/*/run`
 - [ ] Use `s6-setuidgid bsd` in run scripts
 - [ ] Create /config directory and set as VOLUME
-- [ ] Keep Containerfile and Containerfile.pkg labels in sync
+- [ ] Run `dbuild generate` to sync `compose.yaml` metadata to Containerfiles
 - [ ] Use ARG for BASE_VERSION, PACKAGES, VERSION
-- [ ] Include upstream-url and upstream-sed for version detection
+- [ ] Include `upstream_url` in `compose.yaml` for version detection
 - [ ] Add `io.daemonless.wip="true"` for incomplete images
 
 ## Troubleshooting

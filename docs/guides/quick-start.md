@@ -296,7 +296,7 @@ Let's deploy a simple web application.
 [00:00:54] [ info  ] [tautulli] Detached: pid:97368, log:jails/tautulli/container/2026-03-22.log
 # appjail jail list -j tautulli
 STATUS  NAME      ALT_NAME  TYPE   VERSION       PORTS  NETWORK_IP4
-UP      tautulli  -         thick  15.0-RELEASE  -      10.0.0.3
+UP      tautulli  -         thick  15.1-RELEASE  -      10.0.0.3
 # appjail jail list -j tautulli name container_pid
 NAME      CONTAINER_PID
 tautulli  97368
