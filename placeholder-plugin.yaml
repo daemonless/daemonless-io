@@ -1073,6 +1073,14 @@ placeholders:
   GRAFANA_CONFIG_PATH:
     default: grafana
     description: Grafana /config Path
+  BULWARK_WEBMAIL_PORT:
+    default: '3000'
+    description: Bulwark Webmail Host Port
+    validators:
+    - port_number
+  BULWARK_WEBMAIL_CONFIG_PATH:
+    default: bulwark-webmail
+    description: Bulwark Webmail /config Path
 validators:
   port_number:
     name: Port Number
