@@ -1081,6 +1081,14 @@ placeholders:
   BULWARK_WEBMAIL_CONFIG_PATH:
     default: bulwark-webmail
     description: Bulwark Webmail /config Path
+  NAVIDROME_PORT:
+    default: '4533'
+    description: Navidrome Host Port
+    validators:
+    - port_number
+  NAVIDROME_CONFIG_PATH:
+    default: navidrome
+    description: Navidrome /config Path
 validators:
   port_number:
     name: Port Number
