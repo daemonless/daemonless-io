@@ -1089,6 +1089,11 @@ placeholders:
   NAVIDROME_CONFIG_PATH:
     default: navidrome
     description: Navidrome /config Path
+  MEMCACHED_PORT:
+    default: '11211'
+    description: Memcached Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
