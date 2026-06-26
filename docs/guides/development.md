@@ -50,6 +50,8 @@ Each image is a standalone git repo:
 
 ## Labels Reference
 
+`dbuild generate` writes these labels into the generated `Containerfile*` from your `compose.yaml` metadata — **don't add them by hand** (see [Service Source Files](service-anatomy.md)). This section is a reference for what each one means.
+
 ### io.daemonless.* Labels
 
 | Label | Required | Purpose | Example |
@@ -58,8 +60,8 @@ Each image is a standalone git repo:
 | `io.daemonless.category` | Yes | Service classification | `"Media Management"` |
 | `io.daemonless.packages` | Yes | FreeBSD packages to install | `"${PACKAGES}"` |
 | `io.daemonless.volumes` | No | Suggested volume mounts | `"/movies,/downloads"` |
-| `io.daemonless.upstream-url` | No | Version check API endpoint | `"https://radarr.servarr.com/v1/..."` |
-| `io.daemonless.upstream-sed` | No | Regex to extract version | `"s/.*\"version\":\"\\([^\"]*\\)\".*/\\1/p"` |
+| `io.daemonless.upstream-url` | No | Version-check API endpoint | `"https://api.github.com/repos/Radarr/Radarr/releases/latest"` |
+| `io.daemonless.upstream-jq` | No | jq filter to extract the version from that endpoint | `".tag_name"` |
 | `io.daemonless.arch` | No | Supported architecture | `"amd64"` (default) |
 | `io.daemonless.type` | No | Image type (base images only) | `"base"` |
 | `io.daemonless.wip` | No | Work-in-progress flag | `"true"` |
@@ -68,28 +70,14 @@ Each image is a standalone git repo:
 
 ### Upstream Version Tracking
 
-These labels enable automated version checking:
+For upstream-binary images, version status is tracked from **two** labels, both rendered from `Containerfile*.j2` ARGs:
 
 | Label | Purpose | Example |
 |-------|---------|---------|
-| `io.daemonless.upstream-mode` | Version check method | `"github"`, `"servarr"`, `"pkg"` |
-| `io.daemonless.upstream-repo` | GitHub repo (for github mode) | `"radarr/Radarr"` |
-| `io.daemonless.upstream-url` | Version API URL | `"https://radarr.servarr.com/v1/..."` |
-| `io.daemonless.upstream-package` | Package name (for npm/pkg) | `"n8n"` |
-| `io.daemonless.upstream-branch` | Branch to track | `"develop"` |
+| `io.daemonless.upstream-url` | HTTP endpoint returning version info (usually a GitHub releases API URL) | `"https://api.github.com/repos/Radarr/Radarr/releases/latest"` |
+| `io.daemonless.upstream-jq` | `jq` filter applied to that response to get the version string | `".tag_name"` |
 
-### Upstream Mode Values
-
-| Mode | Description |
-|------|-------------|
-| `github` | Check GitHub releases |
-| `github_commits` | Track branch commits |
-| `servarr` | Use Servarr update API |
-| `sonarr` | Use Sonarr releases API |
-| `pkg` | Track FreeBSD package version |
-| `npm` | Check npm registry |
-| `ubiquiti` | Check Ubiquiti firmware API |
-| `source` | No upstream tracking |
+The version pipeline fetches `upstream-url` and applies `upstream-jq`. Package-based images skip these and read the version from `pkg` via `io.daemonless.pkg-name` instead. (The older `upstream-mode`/`-repo`/`-package`/`-branch`/`-sed` labels are obsolete and no longer read.)
 
 ### Category Values
 
@@ -134,11 +122,15 @@ x-daemonless:
 
 Then, run `dbuild generate` to automatically inject the required `io.daemonless.*` labels into your `Containerfile`s and regenerate the `README.md`.
 
+For a quick map of what belongs in `compose.yaml`, `.daemonless/config.yaml`, and `Containerfile*.j2`, see [Service Source Files](service-anatomy.md).
+
 ## Containerfile Patterns
 
 ### Standard Pattern (:latest)
 
 Downloads binaries from upstream for bleeding-edge versions:
+
+This is `Containerfile.j2`; `dbuild generate` substitutes the `{{ ... }}` values from `compose.yaml`:
 
 ```dockerfile
 ARG BASE_VERSION="15.1"
@@ -146,21 +138,22 @@ FROM ghcr.io/daemonless/base:${BASE_VERSION}
 
 ARG PACKAGES="app-package dependency1 dependency2"
 ARG VERSION=""
-ARG UPSTREAM_URL="https://api.example.com/releases"
-ARG UPSTREAM_SED="s/.*\"version\":\"\\([^\"]*\\)\".*/\\1/p"
+ARG UPSTREAM_URL="https://api.github.com/repos/owner/app/releases/latest"
+ARG UPSTREAM_JQ=".tag_name"
 
-# OCI Labels (required)
-LABEL org.opencontainers.image.title="App Name"
-LABEL org.opencontainers.image.description="App description"
-LABEL org.opencontainers.image.source="https://github.com/daemonless/app"
-LABEL org.opencontainers.image.version="${VERSION}"
-
-# Daemonless Labels (required)
-LABEL io.daemonless.port="8080"
-LABEL io.daemonless.category="Category"
-LABEL io.daemonless.packages="${PACKAGES}"
-LABEL io.daemonless.upstream-url="${UPSTREAM_URL}"
-LABEL io.daemonless.upstream-sed="${UPSTREAM_SED}"
+# Public labels — values rendered from compose.yaml. Do NOT hard-code them;
+# edit compose.yaml and run `dbuild generate`. Build/variant labels
+# (packages, upstream-url, upstream-jq, version) stay as ARGs in the template.
+LABEL org.opencontainers.image.title="{{ title }}" \
+      org.opencontainers.image.description="{{ description }}" \
+      org.opencontainers.image.source="{{ repo_url }}" \
+      org.opencontainers.image.url="{{ web_url }}" \
+      org.opencontainers.image.version="${VERSION}" \
+      io.daemonless.category="{{ category }}" \
+      io.daemonless.port="{{ ports[0].port }}" \
+      io.daemonless.packages="${PACKAGES}" \
+      io.daemonless.upstream-url="${UPSTREAM_URL}" \
+      io.daemonless.upstream-jq="${UPSTREAM_JQ}"
 
 # Environment
 ENV HOME=/config
@@ -169,9 +162,9 @@ ENV HOME=/config
 RUN pkg update && pkg install -y ${PACKAGES} && \
     pkg clean -ay && rm -rf /var/cache/pkg/*
 
-# Download and install app
-RUN APP_VERSION=${VERSION:-$(fetch -qo - "${UPSTREAM_URL}" | sed -n "${UPSTREAM_SED}" | head -1)} && \
-    fetch -qo /tmp/app.tar.gz "https://releases.example.com/app-${APP_VERSION}.tar.gz" && \
+# Download and install app (extract the version with jq, per upstream-jq)
+RUN APP_VERSION=${VERSION:-$(fetch -qo - "${UPSTREAM_URL}" | jq -r "${UPSTREAM_JQ}")} && \
+    fetch -qo /tmp/app.tar.gz "https://github.com/owner/app/releases/download/${APP_VERSION}/app-${APP_VERSION}.tar.gz" && \
     mkdir -p /app && \
     tar xzf /tmp/app.tar.gz -C /app --strip-components=1 && \
     rm /tmp/app.tar.gz && \
@@ -184,7 +177,7 @@ RUN mkdir -p /config && chown -R bsd:bsd /config /app
 COPY root/ /
 RUN chmod +x /etc/services.d/*/run /etc/cont-init.d/* 2>/dev/null || true
 
-EXPOSE 8080
+EXPOSE {{ ports[0].port }}
 VOLUME /config
 ```
 

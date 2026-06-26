@@ -31,6 +31,16 @@
   position: relative;
 }
 
+
+/* Hide placeholder scaffolding on pages that do not define placeholders. */
+.md-content .auto-input-table:empty {
+  display: none !important;
+}
+
+.md-content .auto-input-table:empty::before {
+  content: none !important;
+}
+
 /* Card Title */
 .md-content .auto-input-table::before {
   content: "Setup Your Configuration";
