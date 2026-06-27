@@ -86,6 +86,16 @@ docs:
 | `{{ field }}` | `{{ default }}` | {{ desc }} |
 {% endfor %}
 
+### Package Name Injection (`pkg_name`)
+
+When `pkg_name` is defined (either at the top level under `build.pkg_name` or per variant under `build.variants[].pkg_name`), `dbuild` automates several workflow steps:
+
+1. **Automatic Build Argument Injection**: `dbuild` passes the specified package name to `podman build` as `--build-arg PKG_NAME=<pkg_name>`. This allows your `Containerfile` to simply declare `ARG PKG_NAME` and install `${PKG_NAME}` without explicitly specifying `args: { PKG_NAME: ... }`.
+2. **Linter Redundancy Check**: If both `pkg_name` and `args.PKG_NAME` are defined on a variant, `dbuild lint` emits a warning that `args.PKG_NAME` is redundant.
+3. **Version Extraction**: CI and documentation scripts use `pkg_name` to query FreeBSD package repositories and populate multi-version comparison tables in generated project READMEs.
+4. **OCI Image Labeling**: The package name is recorded on published images under the `io.daemonless.pkg-name` label.
+
+
 
 ## CIT Config (`cit:`)
 
