@@ -276,5 +276,5 @@ jobs:
 ## Next Steps
 
 *   Learn more about [Quality Gates (CIT)](cit.md).
-*   Explore [Multi-Arch Builds](multiarch.md) for amd64 and aarch64.
+*   Explore [Multi-Arch Builds](commands.md#dbuild-build) for amd64 and aarch64.
 *   Check the [Config Reference](config.md) for advanced `.daemonless/config.yaml` options.
