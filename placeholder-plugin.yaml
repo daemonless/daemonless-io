@@ -1094,6 +1094,14 @@ placeholders:
     description: Memcached Host Port
     validators:
     - port_number
+  WAGTAIL_PORT:
+    default: '8080'
+    description: Wagtail Host Port
+    validators:
+    - port_number
+  WAGTAIL_CONFIG_PATH:
+    default: wagtail
+    description: Wagtail /config Path
 validators:
   port_number:
     name: Port Number
