@@ -1113,9 +1113,6 @@ placeholders:
   PKG_CACHE_CACHE_PATH:
     default: pkg-cache/cache
     description: FreeBSD pkg cache /cache Path
-  PKG_CACHE_ETC_RESOLV.CONF_PATH:
-    default: pkg-cache/etc/resolv.conf
-    description: FreeBSD pkg cache /etc/resolv.conf Path
   PKG_CACHE_ETC_RESOLV_CONF_PATH:
     default: pkg-cache/etc/resolv.conf
     description: FreeBSD pkg cache /etc/resolv.conf Path
