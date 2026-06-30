@@ -165,18 +165,19 @@ def update_placeholders(configs):
             }
 
         for v in config.get("volumes", []):
-            if not v.get("placeholder") or v['path'] in SHARED_PATHS:
+            ph = v.get("placeholder", "")
+            if not ph or v['path'] in SHARED_PATHS or not ph.startswith("@"):
                 continue
             src_val = v.get("source", f"{config['name']}{v['path']}")
-            plugin_data["placeholders"][strip_syntax(v["placeholder"])] = {
+            plugin_data["placeholders"][strip_syntax(ph)] = {
                 "default": src_val.lstrip("/"),
                 "description": f"{config['title']} {v['path']} Path"
             }
 
-    # Clean up old SET_ keys
+    # Clean up old SET_ keys and invalid names (dots or leading slash = literal path, not a variable)
     plugin_data["placeholders"] = {
         k: v for k, v in plugin_data["placeholders"].items()
-        if not k.startswith("SET_")
+        if not k.startswith("SET_") and "." not in k and not k.startswith("/")
     }
 
     with open(PLACEHOLDER_PLUGIN, 'w', encoding='utf-8') as f:
