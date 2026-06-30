@@ -1102,6 +1102,20 @@ placeholders:
   WAGTAIL_CONFIG_PATH:
     default: wagtail
     description: Wagtail /config Path
+  PKG_CACHE_PORT:
+    default: '80'
+    description: FreeBSD pkg cache Host Port
+    validators:
+    - port_number
+  PKG_CACHE_CONFIG_PATH:
+    default: pkg-cache
+    description: FreeBSD pkg cache /config Path
+  PKG_CACHE_CACHE_PATH:
+    default: pkg-cache/cache
+    description: FreeBSD pkg cache /cache Path
+  PKG_CACHE_ETC_RESOLV.CONF_PATH:
+    default: pkg-cache/etc/resolv.conf
+    description: FreeBSD pkg cache /etc/resolv.conf Path
 validators:
   port_number:
     name: Port Number
