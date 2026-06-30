@@ -1116,6 +1116,9 @@ placeholders:
   PKG_CACHE_ETC_RESOLV.CONF_PATH:
     default: pkg-cache/etc/resolv.conf
     description: FreeBSD pkg cache /etc/resolv.conf Path
+  PKG_CACHE_ETC_RESOLV_CONF_PATH:
+    default: pkg-cache/etc/resolv.conf
+    description: FreeBSD pkg cache /etc/resolv.conf Path
 validators:
   port_number:
     name: Port Number
