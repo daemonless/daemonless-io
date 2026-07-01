@@ -20,6 +20,24 @@
 | `{{ file }}` | {{ desc }} |
 {% endfor %}
 
+
+### Local pkg cache (`pkg_cache_url`)
+
+`$PREFIX/etc/daemonless.yaml` is host-local builder configuration. Use it for
+settings that depend on the machine running `dbuild`, not for per-image project
+configuration.
+
+To route package installs through a local pkg-cache appliance, set:
+
+```yaml
+pkg_cache_url: pkg-cache.example.lan:8080
+```
+
+During `dbuild build`, dbuild passes that value as the `PKG_CACHE_URL` build
+argument. Containerfiles that opt in can use it to point FreeBSD pkg at the
+local cache during the build. If the file or key is missing, or the
+Containerfile does not declare/use `PKG_CACHE_URL`, nothing changes.
+
 ## Metadata (`x-daemonless`)
 
 The `x-daemonless` section in `compose.yaml` defines discovery metadata used for documentation generation and the images index.
