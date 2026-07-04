@@ -1121,6 +1121,14 @@ placeholders:
     description: Immich Public Proxy Host Port
     validators:
     - port_number
+  SUPERSET_PORT:
+    default: '8088'
+    description: Superset Host Port
+    validators:
+    - port_number
+  SUPERSET_CONFIG_PATH:
+    default: superset
+    description: Superset /config Path
 validators:
   port_number:
     name: Port Number
