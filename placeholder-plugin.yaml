@@ -1116,6 +1116,11 @@ placeholders:
   PKG_CACHE_ETC_RESOLV_CONF_PATH:
     default: pkg-cache/etc/resolv.conf
     description: FreeBSD pkg cache /etc/resolv.conf Path
+  IMMICH_PUBLIC_PROXY_PORT:
+    default: '3000'
+    description: Immich Public Proxy Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
