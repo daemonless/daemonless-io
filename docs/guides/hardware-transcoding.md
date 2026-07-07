@@ -63,23 +63,63 @@ services:
       - /dev/dri/renderD128
 ```
 
-!!! warning "podman devfs bug — post-start fix required"
+!!! warning "podman devfs bug — host workaround required"
     Current podman on FreeBSD unhides the device node inside the container's
     devfs but not its parent `drm` directory, so the node stays unreachable.
-    Until this is fixed upstream, apply the missing rules after the container
-    starts (as root, using the container's name):
+    Until this is fixed upstream, use one of the two workarounds below.
+    In both, `mode 0666` matters: daemonless images run as the non-root `bsd`
+    user, and podman's own device rule creates the node root-only (0600).
 
-    ```sh
-    ROOT=$(podman mount <container>)
-    devfs -m "$ROOT/dev" rule apply path drm unhide
-    devfs -m "$ROOT/dev" rule apply path 'drm/*' unhide mode 0666
-    devfs -m "$ROOT/dev" rule apply path dri unhide
-    devfs -m "$ROOT/dev" rule apply path 'dri/*' unhide
-    podman unmount <container>
-    ```
+**Option A — extend devfs ruleset 4 (recommended for dedicated hosts).**
+podman mounts every container's `/dev` with ruleset 4 (`devfsrules_jail`), so
+adding the GPU rules there makes passthrough work with nothing to re-run —
+it survives container recreation and, via `/etc/devfs.rules`, reboots.
 
-    `mode 0666` matters: daemonless images run as the non-root `bsd` user, and
-    podman's own device rule creates the node root-only (0600).
+Apply live:
+
+```sh
+devfs rule -s 4 add path drm unhide
+devfs rule -s 4 add path dri unhide
+devfs rule -s 4 add path 'dri/*' unhide
+devfs rule -s 4 add path 'drm/*' unhide mode 0666
+```
+
+Persist by redefining the ruleset in `/etc/devfs.rules`. The rc loader
+**clears a ruleset before re-adding it** when a file redefines it, so the
+section must restate the default content, not just the additions:
+
+```
+[devfsrules_jail=4]
+add include $devfsrules_hide_all
+add include $devfsrules_unhide_basic
+add include $devfsrules_unhide_login
+add path fuse unhide
+add path zfs unhide
+add path drm unhide
+add path dri unhide
+add path 'dri/*' unhide
+add path 'drm/*' unhide mode 0666
+```
+
+Trade-offs: the GPU becomes visible to **every** ruleset-4 consumer — all
+podman containers, and any jail whose ruleset includes `$devfsrules_jail` —
+and the restated defaults must be kept in sync with
+`/etc/defaults/devfs.rules` across OS upgrades. With this in place the
+`devices:` entry is technically redundant, but keep it: it documents intent
+and becomes the proper mechanism once podman is fixed.
+
+**Option B — per-start rule application (opt-in, for shared hosts).**
+Keeps GPU access scoped to containers you pass `--device` to, at the cost of
+re-running after every container recreation or reboot (as root):
+
+```sh
+ROOT=$(podman mount <container>)
+devfs -m "$ROOT/dev" rule apply path drm unhide
+devfs -m "$ROOT/dev" rule apply path 'drm/*' unhide mode 0666
+devfs -m "$ROOT/dev" rule apply path dri unhide
+devfs -m "$ROOT/dev" rule apply path 'dri/*' unhide
+podman unmount <container>
+```
 
 ## 3. Configure the application
 
