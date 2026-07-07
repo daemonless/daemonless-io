@@ -104,9 +104,18 @@ add path 'drm/*' unhide mode 0666
 Trade-offs: the GPU becomes visible to **every** ruleset-4 consumer — all
 podman containers, and any jail whose ruleset includes `$devfsrules_jail` —
 and the restated defaults must be kept in sync with
-`/etc/defaults/devfs.rules` across OS upgrades. With this in place the
-`devices:` entry is technically redundant, but keep it: it documents intent
-and becomes the proper mechanism once podman is fixed.
+`/etc/defaults/devfs.rules` across OS upgrades.
+
+!!! danger "Remove `devices:` from compose when using Option A"
+    Do **not** combine the ruleset with a `--device`/`devices:` entry.
+    podman applies its own per-device rule *after* the mount ruleset, and
+    that rule resets the node to root-only `0600` — silently undoing the
+    ruleset's `0666` for exactly the device you passed. Apps running as the
+    non-root `bsd` user then fail to open the device and fall back to
+    software transcoding with no obvious error in the app UI. With the
+    ruleset in place the device is already exposed; drop the `devices:`
+    entry entirely and re-add it only once podman's device handling is
+    fixed upstream.
 
 **Option B — per-start rule application (opt-in, for shared hosts).**
 Keeps GPU access scoped to containers you pass `--device` to, at the cost of
