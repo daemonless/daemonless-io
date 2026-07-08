@@ -41,10 +41,26 @@ shell      = container starts successfully
 
 | Mode | What it checks | Use case |
 |------|----------------|----------|
-| `shell` | Container starts, `echo ok` via exec | Base images, CLI tools |
+| `shell` | Container starts, `echo ok` via exec | Base images |
 | `port` | Shell + TCP port is listening | Services with network listeners |
 | `health` | Port + HTTP endpoint returns non-error | Web apps with health endpoints |
 | `screenshot` | Health + visual regression against baseline | Web UIs |
+| `command` | Image runs to completion, exit code + output regex | One-shot CLI tools (run-and-exit) |
+
+`command` mode sits outside the cumulative ladder: it is for images whose
+entrypoint runs once and exits (e.g. `ffmpeg`, `immich-cli`), so there is no
+live process for shell/port/health/screenshot to probe. It runs the image to
+completion and asserts the exit code, plus an optional output regex:
+
+```yaml
+cit:
+  mode: command
+  command: ["--version"]          # args after the entrypoint (omit = image CMD)
+  expect_exit: 0                  # exit code that means success (default 0)
+  expect_output: 'ffmpeg version \d'  # regex matched against stdout/stderr
+```
+
+`command` mode is podman-only and does not support `compose: true`.
 
 ### Mode Auto-Detection
 
@@ -269,8 +285,9 @@ Full `cit:` schema for `.daemonless/config.yaml`:
 
 ```yaml
 cit:
-  # Test mode: shell | port | health | screenshot
-  # Auto-detected if omitted (see Mode Auto-Detection above)
+  # Test mode: shell | port | health | screenshot | command
+  # Auto-detected if omitted (see Mode Auto-Detection above);
+  # command is never auto-detected — set it explicitly for one-shot CLI images
   mode: health
 
   # TCP port to check (required for port, health, screenshot modes)
@@ -302,7 +319,7 @@ cit:
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `mode` | Auto-detected | Test mode: `shell`, `port`, `health`, or `screenshot` |
+| `mode` | Auto-detected | Test mode: `shell`, `port`, `health`, `screenshot`, or `command` |
 | `port` | | TCP port to check |
 | `health` | `/` | Health endpoint path |
 | `https` | `false` | Use HTTPS for health checks |
@@ -311,3 +328,6 @@ cit:
 | `compose` | `false` | Use podman-compose with `.daemonless/compose.yaml` |
 | `screenshot_wait` | | Extra seconds to wait before screenshot capture |
 | `annotations` | `[]` | Jail annotations for the test container |
+| `command` | `[]` (image CMD) | `command` mode: args appended to the entrypoint |
+| `expect_exit` | `0` | `command` mode: exit code that counts as success |
+| `expect_output` | | `command` mode: regex that must match stdout/stderr |
