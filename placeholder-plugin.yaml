@@ -1129,6 +1129,9 @@ placeholders:
   SUPERSET_CONFIG_PATH:
     default: superset
     description: Superset /config Path
+  FFMPEG_WORK_PATH:
+    default: ffmpeg/work
+    description: FFmpeg /work Path
 validators:
   port_number:
     name: Port Number
