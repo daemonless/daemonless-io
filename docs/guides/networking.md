@@ -120,19 +120,20 @@ services:
 
 The `cni-dnsname` plugin enables containers to resolve each other by name (e.g., `postgres`, `redis`). This is required for multi-container apps like Immich and Mealie when using podman-compose.
 
-!!! warning "Not Yet in FreeBSD Ports"
-    `cni-dnsname` is not in the official FreeBSD ports tree. Use our port from [daemonless/freebsd-ports](https://github.com/daemonless/freebsd-ports).
-
 #### Installation
 
-```bash
-# Clone the ports overlay
-git clone https://github.com/daemonless/freebsd-ports.git /usr/local/daemonless-ports
+`cni-dnsname` is in the official FreeBSD ports tree as [`sysutils/cni-dnsname`](https://www.freshports.org/sysutils/cni-dnsname/):
 
-# Build and install
-cd /usr/local/daemonless-ports/net/cni-dnsname
-make install clean
+```bash
+pkg install cni-dnsname
 ```
+
+!!! note "Package not found?"
+    The port landed in September 2026 — if your package repository doesn't have it yet, build from ports:
+    ```bash
+    cd /usr/ports/sysutils/cni-dnsname
+    make install clean
+    ```
 
 #### Verify Installation
 

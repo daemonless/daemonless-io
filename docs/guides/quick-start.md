@@ -160,12 +160,7 @@ podman run -d --name radarr \
 === "Container DNS"
     To use container names as hostnames (e.g. `postgres`), the `cni-dnsname` plugin is required.
     ```bash
-    # Clone the ports overlay
-    git clone https://github.com/daemonless/freebsd-ports.git /usr/local/daemonless-ports
-    
-    # Build and install
-    cd /usr/local/daemonless-ports/net/cni-dnsname
-    make install clean
+    pkg install cni-dnsname
     ```
     See [Networking Guide](networking.md) for details.
 
