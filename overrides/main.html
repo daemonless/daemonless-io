@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{#- Site-wide announcement bar. Zensical does not expose custom keys under
+    [project.extra] to templates, so the text lives here. Empty block = no bar. -#}
+{% block announce %}
+  <b>fjord 0.2.0</b> — an app store for FreeBSD containers. Pick an app, it runs as a jail on podman or AppJail.
+  <a href="https://fjord.daemonless.io">fjord.daemonless.io</a>
+{% endblock %}
