@@ -1225,6 +1225,17 @@ placeholders:
   SYLVE_SYLVE_PATH:
     default: sylve/sylve
     description: Sylve /var/db/sylve Path
+  FILEBROWSER_QUANTUM_PORT:
+    default: '8080'
+    description: FileBrowser Quantum Host Port
+    validators:
+    - port_number
+  FILEBROWSER_QUANTUM_CONFIG_PATH:
+    default: filebrowser-quantum
+    description: FileBrowser Quantum /config Path
+  FILEBROWSER_QUANTUM_SRV_PATH:
+    default: filebrowser-quantum/srv
+    description: FileBrowser Quantum /srv Path
 validators:
   port_number:
     name: Port Number
