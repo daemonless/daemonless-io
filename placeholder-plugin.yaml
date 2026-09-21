@@ -1236,6 +1236,17 @@ placeholders:
   FILEBROWSER_QUANTUM_SRV_PATH:
     default: filebrowser-quantum/srv
     description: FileBrowser Quantum /srv Path
+  GARAGE_PORT:
+    default: '3900'
+    description: Garage Host Port
+    validators:
+    - port_number
+  GARAGE_CONFIG_PATH:
+    default: garage
+    description: Garage /config Path
+  GARAGE_DATA_PATH:
+    default: garage/data
+    description: Garage /data Path
 validators:
   port_number:
     name: Port Number
