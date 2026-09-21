@@ -98,6 +98,42 @@ def deployed_versions(repo, tag):
 
 
 # --------------------------------------------------------------------------
+# manifest digest, for telling a real tag alias from a version coincidence
+# --------------------------------------------------------------------------
+_digest_cache = {}
+
+
+def tag_digest(repo, tag):
+    """Manifest digest of ghcr.io/<org>/<repo>:<tag>, or "" if it doesn't resolve."""
+    key = (repo, tag)
+    if key not in _digest_cache:
+        _digest_cache[key] = _sh(
+            f"skopeo inspect --format '{{{{.Digest}}}}' docker://ghcr.io/{ORG}/{repo}:{tag}"
+        ).strip()
+    return _digest_cache[key]
+
+
+def aliases_pkg_build(repo, binary_tag, variant):
+    """True iff `binary_tag` is the very same image as a pkg tag.
+
+    Some images pin :latest to their pkg build (emby), so the binary `upstream`
+    version says nothing about them. Identity has to come from the manifest
+    digest: an upstream-binary :latest frequently happens to carry the same
+    version string as :pkg-latest -- the port packaged the release we last
+    built -- and treating that coincidence as an alias hides every later
+    update, silently and permanently.
+    """
+    mine = tag_digest(repo, binary_tag)
+    if not mine:
+        return False
+    for bt in ("pkg", "pkg-latest"):
+        for cand in registry_tags(variant, bt):
+            if tag_digest(repo, cand) == mine:
+                return True
+    return False
+
+
+# --------------------------------------------------------------------------
 # version comparison (FreeBSD X.Y.Z_PORTREVISION aware)
 # --------------------------------------------------------------------------
 def normalize_version(v):
@@ -188,10 +224,11 @@ def check_service(name, versions):
 
     display, updates, warns, saw_any = {}, [], [], False
     for tag_key, entry_key, is_binary in checks:
-        dep = {}
+        dep, resolved_tag = {}, None
         for cand in registry_tags(variant, entry_key):
             dep = deployed_versions(base, cand)
             if dep:
+                resolved_tag = cand
                 break
         if not dep:
             continue  # this variant/arch isn't published
@@ -202,12 +239,10 @@ def check_service(name, versions):
             warns.append({"name": name, "tag": tag_key, "reason": "build broken"})
             continue
 
-        # `latest` aliased to a pkg build (deployed version matches a pkg tag)
-        # tracks the FreeBSD package, not the binary `upstream` -- skip that
-        # comparison; the pkg tag's own check covers it. (e.g. emby pins :latest=:pkg)
-        if is_binary and display.get("latest") in [
-            v for v in (display.get("pkg"), display.get("pkg-latest")) if v
-        ]:
+        # A `latest` that is literally the pkg image tracks the FreeBSD package,
+        # not the binary `upstream` -- skip that comparison; the pkg tag's own
+        # check covers it. Decided by manifest digest, never by version string.
+        if is_binary and aliases_pkg_build(base, resolved_tag, variant):
             continue
 
         up = upstream_map(versions[entry_key], is_binary, list(dep))
