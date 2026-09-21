@@ -104,16 +104,25 @@ _digest_cache = {}
 
 
 def tag_digest(repo, tag):
-    """Manifest digest of ghcr.io/<org>/<repo>:<tag>, or "" if it doesn't resolve."""
+    """Manifest digest of ghcr.io/<org>/<repo>:<tag>, or "" if it doesn't resolve.
+
+    Reads the Digest field out of the same plain `skopeo inspect` JSON that
+    deployed_versions() already relies on, rather than `--format`, which older
+    skopeo builds don't accept for inspect.
+    """
     key = (repo, tag)
     if key not in _digest_cache:
-        _digest_cache[key] = _sh(
-            f"skopeo inspect --format '{{{{.Digest}}}}' docker://ghcr.io/{ORG}/{repo}:{tag}"
-        ).strip()
+        try:
+            out = json.loads(
+                _sh(f"skopeo inspect docker://ghcr.io/{ORG}/{repo}:{tag}") or "{}"
+            )
+        except json.JSONDecodeError:
+            out = {}
+        _digest_cache[key] = (out.get("Digest") or "").strip()
     return _digest_cache[key]
 
 
-def aliases_pkg_build(repo, binary_tag, variant):
+def aliases_pkg_build(repo, binary_tag, variant, display):
     """True iff `binary_tag` is the very same image as a pkg tag.
 
     Some images pin :latest to their pkg build (emby), so the binary `upstream`
@@ -124,13 +133,20 @@ def aliases_pkg_build(repo, binary_tag, variant):
     update, silently and permanently.
     """
     mine = tag_digest(repo, binary_tag)
-    if not mine:
+    if mine:
+        for bt in ("pkg", "pkg-latest"):
+            for cand in registry_tags(variant, bt):
+                if tag_digest(repo, cand) == mine:
+                    return True
         return False
-    for bt in ("pkg", "pkg-latest"):
-        for cand in registry_tags(variant, bt):
-            if tag_digest(repo, cand) == mine:
-                return True
-    return False
+
+    # No digest (older skopeo, registry hiccup): fall back to the version-string
+    # guess. It can hide an update, but assuming "distinct" instead reports every
+    # real alias as outdated -- jellyfin against upstream v12.1 when we ship the
+    # 10.11 port. Quiet is the safer way to be wrong here.
+    return display.get("latest") in [
+        v for v in (display.get("pkg"), display.get("pkg-latest")) if v
+    ]
 
 
 # --------------------------------------------------------------------------
@@ -242,7 +258,7 @@ def check_service(name, versions):
         # A `latest` that is literally the pkg image tracks the FreeBSD package,
         # not the binary `upstream` -- skip that comparison; the pkg tag's own
         # check covers it. Decided by manifest digest, never by version string.
-        if is_binary and aliases_pkg_build(base, resolved_tag, variant):
+        if is_binary and aliases_pkg_build(base, resolved_tag, variant, display):
             continue
 
         up = upstream_map(versions[entry_key], is_binary, list(dep))
