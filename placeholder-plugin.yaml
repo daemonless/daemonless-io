@@ -1247,6 +1247,14 @@ placeholders:
   GARAGE_DATA_PATH:
     default: garage/data
     description: Garage /data Path
+  ERPNEXT_PORT:
+    default: '8080'
+    description: ERPNext Host Port
+    validators:
+    - port_number
+  ERPNEXT_SITES_PATH:
+    default: erpnext/sites
+    description: ERPNext /app/frappe-bench/sites Path
 validators:
   port_number:
     name: Port Number
