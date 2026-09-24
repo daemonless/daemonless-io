@@ -1255,6 +1255,14 @@ placeholders:
   ERPNEXT_SITES_PATH:
     default: erpnext/sites
     description: ERPNext /app/frappe-bench/sites Path
+  CLAMAV_PORT:
+    default: '3310'
+    description: ClamAV Host Port
+    validators:
+    - port_number
+  CLAMAV_CONFIG_PATH:
+    default: clamav
+    description: ClamAV /config Path
 validators:
   port_number:
     name: Port Number
