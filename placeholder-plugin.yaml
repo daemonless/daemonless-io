@@ -1263,6 +1263,9 @@ placeholders:
   CLAMAV_CONFIG_PATH:
     default: clamav
     description: ClamAV /config Path
+  READMEABOOK_AUDIOBOOKS_PATH:
+    default: readmeabook/audiobooks
+    description: ReadMeABook /audiobooks Path
 validators:
   port_number:
     name: Port Number
