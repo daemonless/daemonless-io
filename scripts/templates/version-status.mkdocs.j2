@@ -12,7 +12,10 @@ hide:
 {%- set outdated_lookup = {} %}
 {%- for item in outdated %}
 {%- for update in item.updates %}
-{%- set _ = outdated_lookup.update({(item.name, update.tag): update}) %}
+{%- if (item.name, update.tag) not in outdated_lookup %}
+{%- set _ = outdated_lookup.update({(item.name, update.tag): {}}) %}
+{%- endif %}
+{%- set _ = outdated_lookup[(item.name, update.tag)].update({update.arch: update}) %}
 {%- endfor %}
 {%- endfor %}
 {%- set has_errors = errors is defined and errors %}
@@ -22,7 +25,7 @@ hide:
 ## Summary
 
 - :material-check-circle:{ .current } Current: {{ summary.current_count }}
-- :material-close-circle:{ .outdated } Outdated: {% if summary.outdated_count %}{{ summary.outdated_count }}{% else %}0{% endif %}
+- :material-close-circle:{ .outdated } Outdated: {% if summary.outdated_count %}{{ summary.outdated_count }}{% else %}0{% endif %}{% if summary.outdated_amd64 is defined and (summary.outdated_amd64 or summary.outdated_aarch64) %} *(amd64: {{ summary.outdated_amd64 }} · arm64: {{ summary.outdated_aarch64 }})*{% endif %}
 {% if summary.warning_count %}- :material-alert-circle: Warnings: {{ summary.warning_count }}{% endif %}
 {% if summary.error_count %}- :material-alert-circle: Errors: {{ summary.error_count }}{% endif %}
 {% endif %}
@@ -56,6 +59,10 @@ Build health badges are live GitHub Actions status; versions are from the last f
     <button class="status-chip active" data-filter="all">All</button>
     <button class="status-chip" data-filter="outdated">Needs attention</button>
     <button class="status-chip" data-filter="current">Current</button>
+    <span class="chip-divider"></span>
+    <button class="arch-chip active" data-arch="all">All Arches</button>
+    <button class="arch-chip" data-arch="amd64">amd64</button>
+    <button class="arch-chip" data-arch="arm64">arm64</button>
   </div>
 </div>
 
@@ -71,20 +78,68 @@ Build health badges are live GitHub Actions status; versions are from the last f
 {%- set svc_update = last_updates[name] if last_updates is defined and name in last_updates else (last_updates[base_repo] if last_updates is defined and base_repo in last_updates else "Unknown") %}
 {%- set svc_config = configs | selectattr('name', 'equalto', base_repo) | first if configs is defined else none %}
 {%- set has_outdated = [] %}
+{%- set supported_arches = [] %}
 {%- set tag_cell = [] %}
 {%- set ver_cell = [] %}
 {%- for tag in svc_deployed | sort %}
+{%- set tag_arches = deployed_arches[name][tag] if deployed_arches is defined and name in deployed_arches and tag in deployed_arches[name] else {'amd64': svc_deployed[tag]} %}
+{%- for arch in tag_arches %}
+  {%- set a_norm = arch | replace("aarch64", "arm64") %}
+  {%- if a_norm not in supported_arches %}
+    {%- set _ = supported_arches.append(a_norm) %}
+  {%- endif %}
+{%- endfor %}
+{%- set is_outdated_tag = (name, tag) in outdated_lookup %}
+{%- set tag_updates = outdated_lookup[(name, tag)] if is_outdated_tag else {} %}
 {%- set tag_list = svc_tags[tag] if tag in svc_tags else [variant_prefix ~ tag] %}
 {%- set _ = tag_cell.append('`' ~ tag_list | join('`, `') ~ '`') %}
-{%- if (name, tag) in outdated_lookup %}
-{%- set update = outdated_lookup[(name, tag)] %}
-{%- set _ = ver_cell.append(update.deployed ~ ' → **' ~ (update.available | replace('v', '', 1)) ~ '**') %}
-{%- set _ = has_outdated.append(1) %}
+{%- if not is_outdated_tag %}
+  {%- set unique_vers = tag_arches.values() | unique | list %}
+  {%- if unique_vers | length == 1 %}
+    {%- set _ = ver_cell.append(unique_vers[0]) %}
+  {%- else %}
+    {%- set lines = [] %}
+    {%- for arch, ver in tag_arches | dictsort %}
+      {%- set _ = lines.append('<span class="arch-badge arch-' ~ (arch | replace("aarch64", "arm64")) ~ '">' ~ (arch | replace("aarch64", "arm64")) ~ '</span> ' ~ ver) %}
+    {%- endfor %}
+    {%- set _ = ver_cell.append(lines | join('<br>')) %}
+  {%- endif %}
 {%- else %}
-{%- set _ = ver_cell.append(svc_deployed[tag]) %}
+  {%- set all_outdated = (tag_updates | length) == (tag_arches | length) %}
+  {%- set lines = [] %}
+  {%- for arch, dep_ver in tag_arches | dictsort %}
+    {%- set arch_name = arch | replace("aarch64", "arm64") %}
+    {%- if arch in tag_updates %}
+      {%- set u = tag_updates[arch] %}
+      {%- set _ = lines.append('<span class="arch-badge arch-warn arch-' ~ arch_name ~ '">' ~ arch_name ~ '</span> ' ~ u.deployed ~ ' → **' ~ (u.available | replace('v', '', 1)) ~ '**') %}
+      {%- set _ = has_outdated.append(arch_name) %}
+    {%- else %}
+      {%- set _ = lines.append('<span class="arch-badge arch-' ~ arch_name ~ '">' ~ arch_name ~ '</span> ' ~ dep_ver) %}
+    {%- endif %}
+  {%- endfor %}
+  {%- set _ = ver_cell.append(lines | join('<br>')) %}
 {%- endif %}
 {%- endfor %}
-| {% if has_outdated %}:material-close-circle:{ .outdated }{% else %}:material-check-circle:{ .current }{% endif %} | {% if svc_config and svc_config.logo_dark %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}#only-light" alt="{{ name }}"><img class="app-logo-col" src="/images/logos/{{ svc_config.logo_dark }}#only-dark" alt="{{ name }}">{% elif svc_config and svc_config.logo %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}" alt="{{ name }}">{% elif svc_config %}{{ svc_config.icon }}{% else %}:material-docker:{% endif %} | [**{{ name }}**](images/{{ base_repo }}.md){% if svc_config and svc_config.deprecated %} <a href="{{ base_repo }}.md"><img src="https://img.shields.io/badge/status-deprecated-orange" loading="lazy" alt="deprecated"></a>{% endif %} | {{ tag_cell | join('<br>') }} | {{ ver_cell | join('<br>') }} | <a href="{{ actions_url }}" target="_blank"><img src="{{ badge_url }}" loading="lazy" alt="build status"></a> | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
+{%- set row_classes = [] %}
+{%- if 'amd64' in supported_arches %}{%- set _ = row_classes.append('has-amd64') %}{%- endif %}
+{%- if 'arm64' in supported_arches %}{%- set _ = row_classes.append('has-arm64') %}{%- endif %}
+{%- if not has_outdated %}
+  {%- set _ = row_classes.append('status-current') %}
+  {%- set status_icon = ':material-check-circle:{ .current }' %}
+{%- elif 'arm64' in has_outdated and 'amd64' in has_outdated %}
+  {%- set _ = row_classes.append('status-outdated outdated-all outdated-amd64 outdated-arm64') %}
+  {%- set status_icon = ':material-close-circle:{ .outdated }' %}
+{%- elif 'arm64' in has_outdated %}
+  {%- set _ = row_classes.append('status-outdated outdated-arm64 outdated-partial') %}
+  {%- set status_icon = ':material-alert-circle:{ .outdated .partial }' %}
+{%- elif 'amd64' in has_outdated %}
+  {%- set _ = row_classes.append('status-outdated outdated-amd64 outdated-partial') %}
+  {%- set status_icon = ':material-alert-circle:{ .outdated .partial }' %}
+{%- else %}
+  {%- set _ = row_classes.append('status-outdated outdated-all') %}
+  {%- set status_icon = ':material-close-circle:{ .outdated }' %}
+{%- endif %}
+| {{ status_icon }} | {% if svc_config and svc_config.logo_dark %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}#only-light" alt="{{ name }}"><img class="app-logo-col" src="/images/logos/{{ svc_config.logo_dark }}#only-dark" alt="{{ name }}">{% elif svc_config and svc_config.logo %}<img class="app-logo-col" src="/images/logos/{{ svc_config.logo }}" alt="{{ name }}">{% elif svc_config %}{{ svc_config.icon }}{% else %}:material-docker:{% endif %} | [**{{ name }}**](images/{{ base_repo }}.md){% if svc_config and svc_config.deprecated %} <a href="{{ base_repo }}.md"><img src="https://img.shields.io/badge/status-deprecated-orange" loading="lazy" alt="deprecated"></a>{% endif %}<span class="row-meta {{ row_classes | join(' ') }}" style="display:none"></span> | {{ tag_cell | join('<br>') }} | {{ ver_cell | join('<br>') }} | <a href="{{ actions_url }}" target="_blank"><img src="{{ badge_url }}" loading="lazy" alt="build status"></a> | [{{ svc_update }}](https://github.com/daemonless/{{ base_repo }}/commits){target=_blank} |
 {%- endfor %}
 {% endif %}
 
@@ -118,9 +173,12 @@ Build health badges are live GitHub Actions status; versions are from the last f
   margin-top: 0.6rem;
   display: flex;
   gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.status-chip {
+.status-chip,
+.arch-chip {
   padding: 0.25rem 0.8rem;
   border-radius: 1rem;
   border: 1px solid var(--md-default-fg-color--lightest);
@@ -131,14 +189,46 @@ Build health badges are live GitHub Actions status; versions are from the last f
   transition: background 0.2s, border-color 0.2s;
 }
 
-.status-chip:hover {
+.status-chip:hover,
+.arch-chip:hover {
   border-color: var(--md-primary-fg-color);
 }
 
-.status-chip.active {
+.status-chip.active,
+.arch-chip.active {
   background: var(--md-primary-fg-color);
   border-color: var(--md-primary-fg-color);
   color: var(--md-primary-bg-color);
+}
+
+.chip-divider {
+  width: 1px;
+  height: 1.2rem;
+  background: var(--md-default-fg-color--lightest);
+  margin: 0 0.3rem;
+}
+
+.arch-badge {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.65rem;
+  font-family: var(--md-code-font-family, monospace);
+  font-weight: 600;
+  border-radius: 3px;
+  background: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.arch-badge.arch-warn {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+  border: 1px solid rgba(255, 152, 0, 0.4);
+}
+
+.outdated.partial {
+  color: #ff9800 !important;
 }
 
 .md-typeset table {

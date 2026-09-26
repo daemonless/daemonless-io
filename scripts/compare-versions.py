@@ -238,7 +238,7 @@ def check_service(name, versions):
     if "upstream" in versions:
         checks.append(("latest", "upstream", True))
 
-    display, updates, warns, saw_any = {}, [], [], False
+    display, deployed_arches, updates, warns, saw_any = {}, {}, [], [], False
     for tag_key, entry_key, is_binary in checks:
         dep, resolved_tag = {}, None
         for cand in registry_tags(variant, entry_key):
@@ -249,6 +249,7 @@ def check_service(name, versions):
         if not dep:
             continue  # this variant/arch isn't published
         saw_any = True
+        deployed_arches[tag_key] = dict(dep)
         display[tag_key] = dep.get("amd64") or next(iter(dep.values()))
 
         if tag_key in broken:
@@ -271,6 +272,7 @@ def check_service(name, versions):
                 )
 
     return {"name": name, "base": base, "display": display,
+            "deployed_arches": deployed_arches,
             "updates": updates, "warnings": warns, "saw_any": saw_any}
 
 
@@ -307,7 +309,7 @@ def main():
         results = list(pool.map(lambda kv: check_service(*kv), sorted(expanded.items())))
 
     outdated, current, errors, warnings = [], [], [], []
-    deployed_all, base_names = {}, {}
+    deployed_all, deployed_arches_all, base_names = {}, {}, {}
     for r in results:
         name = r["name"]
         base_names[name] = r["base"]
@@ -316,13 +318,17 @@ def main():
             errors.append({"name": name, "error": "No published tags found on ghcr.io"})
             continue
         deployed_all[name] = r["display"]
+        deployed_arches_all[name] = r["deployed_arches"]
         if r["updates"]:
             outdated.append({"name": name, "updates": r["updates"]})
         else:
             current.append(name)
 
     total_tags = sum(len(v) for v in deployed_all.values())
-    outdated_tags = sum(len(item["updates"]) for item in outdated)
+    outdated_tag_set = {(item["name"], u["tag"]) for item in outdated for u in item["updates"]}
+    outdated_tags = len(outdated_tag_set)
+    amd64_outdated = len({(item["name"], u["tag"]) for item in outdated for u in item["updates"] if u["arch"] == "amd64"})
+    aarch64_outdated = len({(item["name"], u["tag"]) for item in outdated for u in item["updates"] if u["arch"] == "aarch64"})
 
     print(json.dumps({
         "schema_version": data.get("schema_version", 1),
@@ -331,10 +337,13 @@ def main():
         "errors": errors,
         "warnings": warnings,
         "deployed": deployed_all,
+        "deployed_arches": deployed_arches_all,
         "base_names": base_names,
         "summary": {
             "current_count": total_tags - outdated_tags,
             "outdated_count": outdated_tags,
+            "outdated_amd64": amd64_outdated,
+            "outdated_aarch64": aarch64_outdated,
             "error_count": len(errors),
             "warning_count": len(warnings),
         },

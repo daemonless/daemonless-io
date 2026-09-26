@@ -59,22 +59,57 @@
     window.addEventListener("load", moveTable);
 })();
 
-// Image Search Filtering (Event Delegation)
-document.addEventListener('input', e => {
-    if (e.target.id !== 'image-search') return;
-    const query = e.target.value.toLowerCase();
+// Image Search & Status Filtering
+function updateTableFilters() {
+    const input = document.getElementById('image-search');
+    const query = input ? input.value.toLowerCase().trim() : '';
+    const statusChip = document.querySelector('.status-chip.active');
+    const statusFilter = statusChip ? statusChip.dataset.filter : 'all';
+    const archChip = document.querySelector('.arch-chip.active');
+    const archFilter = archChip ? archChip.dataset.arch : 'all';
 
     document.querySelectorAll('.md-content table').forEach(table => {
         let matchCount = 0;
         table.querySelectorAll('tbody tr').forEach(row => {
-            const matches = row.textContent.toLowerCase().includes(query);
-            row.style.display = matches ? '' : 'none';
-            if (matches) matchCount++;
+            const meta = row.querySelector('.row-meta');
+            const hasMeta = !!meta;
+            const isOutdated = hasMeta ? meta.classList.contains('status-outdated') : !!row.querySelector('.outdated');
+            const hasAmd64 = hasMeta ? meta.classList.contains('has-amd64') : true;
+            const hasArm64 = hasMeta ? meta.classList.contains('has-arm64') : true;
+            const outdatedAmd64 = hasMeta ? meta.classList.contains('outdated-amd64') : isOutdated;
+            const outdatedArm64 = hasMeta ? meta.classList.contains('outdated-arm64') : isOutdated;
+
+            // Status filter logic
+            let statusMatch = true;
+            if (statusFilter === 'outdated') {
+                if (archFilter === 'amd64') statusMatch = outdatedAmd64;
+                else if (archFilter === 'arm64') statusMatch = outdatedArm64;
+                else statusMatch = isOutdated;
+            } else if (statusFilter === 'current') {
+                if (archFilter === 'amd64') statusMatch = hasAmd64 && !outdatedAmd64;
+                else if (archFilter === 'arm64') statusMatch = hasArm64 && !outdatedArm64;
+                else statusMatch = !isOutdated;
+            }
+
+            // Architecture filter logic (when status is 'all')
+            let archMatch = true;
+            if (statusFilter === 'all' && archFilter !== 'all') {
+                if (archFilter === 'amd64') archMatch = hasAmd64;
+                else if (archFilter === 'arm64') archMatch = hasArm64;
+            }
+
+            // Search query logic
+            const textMatch = !query || row.textContent.toLowerCase().includes(query);
+
+            const show = statusMatch && archMatch && textMatch;
+            row.style.display = show ? '' : 'none';
+            if (show) matchCount++;
         });
 
         // Hide table and its header if no matches
         const header = table.previousElementSibling;
-        if (matchCount === 0 && query !== '') {
+        const isFiltering = query !== '' || statusFilter !== 'all' || archFilter !== 'all';
+        if (matchCount === 0 && isFiltering) {
             table.style.display = 'none';
             if (header && header.tagName.startsWith('H')) header.style.display = 'none';
         } else {
@@ -82,20 +117,32 @@ document.addEventListener('input', e => {
             if (header && header.tagName.startsWith('H')) header.style.display = '';
         }
     });
+}
+
+// Event Delegation for Search Input
+document.addEventListener('input', e => {
+    if (e.target.id === 'image-search') {
+        updateTableFilters();
+    }
 });
 
-// Status page: filter chips (All / Needs attention / Current)
+// Event Delegation for Filter Chips (Status & Architecture)
 document.addEventListener('click', e => {
-    const chip = e.target.closest('.status-chip');
-    if (!chip) return;
-    document.querySelectorAll('.status-chip').forEach(c =>
-        c.classList.toggle('active', c === chip));
-    const filter = chip.dataset.filter;
-    document.querySelectorAll('.md-content table tbody tr').forEach(row => {
-        const isOutdated = !!row.querySelector('.outdated');
-        const show = filter === 'all' || (filter === 'outdated') === isOutdated;
-        row.style.display = show ? '' : 'none';
-    });
+    const statusChip = e.target.closest('.status-chip');
+    if (statusChip) {
+        document.querySelectorAll('.status-chip').forEach(c =>
+            c.classList.toggle('active', c === statusChip));
+        updateTableFilters();
+        return;
+    }
+
+    const archChip = e.target.closest('.arch-chip');
+    if (archChip) {
+        document.querySelectorAll('.arch-chip').forEach(c =>
+            c.classList.toggle('active', c === archChip));
+        updateTableFilters();
+        return;
+    }
 });
 
 // Status page: humanize the "last checked" timestamp

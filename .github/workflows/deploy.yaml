@@ -164,12 +164,34 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
         run: |
           DESCRIPTION=$(jq -r '
+            .deployed_arches as $deps |
+            .base_names as $bases |
             [.outdated[] as $item |
-            (.base_names[$item.name] // $item.name) as $base |
-            "**[\($item.name)](https://daemonless.io/images/\($item.name))**: " +
-            ($item.updates | map(
-              "[\(.tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\(.deployed) → \(.available)`"
-            ) | join(", "))] | join("\n")
+              ($bases[$item.name] // $item.name) as $base |
+              "**[\($item.name)](https://daemonless.io/images/\($item.name))**: " +
+              ($item.updates | group_by(.tag) | map(
+                .[0].tag as $tag |
+                ($deps[$item.name][$tag] // {}) as $all_arches |
+                if length == 1 and ($all_arches | length) > 1 then
+                  .[0] as $u |
+                  ($u.arch | sub("aarch64"; "arm64")) as $arch |
+                  "[\($tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\($u.deployed) → \($u.available)` *(\($arch))*"
+                elif length == 1 then
+                  .[0] as $u |
+                  "[\($tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\($u.deployed) → \($u.available)`"
+                else
+                  if (map(.deployed) | unique | length) == 1 and (map(.available) | unique | length) == 1 then
+                    .[0] as $u |
+                    "[\($tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\($u.deployed) → \($u.available)`"
+                  else
+                    map(
+                      (.arch | sub("aarch64"; "arm64")) as $arch |
+                      "[\($tag)](https://github.com/daemonless/\($base)/actions/workflows/build.yaml) `\(.deployed) → \(.available)` *(\($arch))*"
+                    ) | join(", ")
+                  end
+                end
+              ) | join(", "))
+            ] | join("\n")
           ' /tmp/versions.json)
 
           curl -s -X POST "$DISCORD_WEBHOOK" \

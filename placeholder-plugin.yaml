@@ -1266,6 +1266,14 @@ placeholders:
   READMEABOOK_AUDIOBOOKS_PATH:
     default: readmeabook/audiobooks
     description: ReadMeABook /audiobooks Path
+  OUTLINE_PORT:
+    default: '3000'
+    description: Outline Host Port
+    validators:
+    - port_number
+  OUTLINE_CONFIG_PATH:
+    default: outline
+    description: Outline /config Path
 validators:
   port_number:
     name: Port Number
