@@ -1274,6 +1274,20 @@ placeholders:
   OUTLINE_CONFIG_PATH:
     default: outline
     description: Outline /config Path
+  UBOOQUITY_PORT:
+    default: '2202'
+    description: Ubooquity Host Port
+    validators:
+    - port_number
+  UBOOQUITY_CONFIG_PATH:
+    default: ubooquity
+    description: Ubooquity /config Path
+  UBOOQUITY_COMICS_PATH:
+    default: ubooquity/comics
+    description: Ubooquity /comics Path
+  UBOOQUITY_FILES_PATH:
+    default: ubooquity/files
+    description: Ubooquity /files Path
 validators:
   port_number:
     name: Port Number
