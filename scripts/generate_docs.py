@@ -332,6 +332,8 @@ def generate_status_page(configs):
     if compare.exists():
         result = subprocess.run([sys.executable, str(compare)],
                                 capture_output=True, text=True)
+        if result.stderr:
+            print(result.stderr, file=sys.stderr, end="")
         if result.stdout.strip():
             version_data = json.loads(result.stdout)
 

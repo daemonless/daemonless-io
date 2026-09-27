@@ -31,6 +31,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -42,8 +43,21 @@ ORG = "daemonless"
 OCI_TO_PKG = {"amd64": "amd64", "arm64": "aarch64", "riscv64": "riscv64"}
 
 
-def _sh(cmd):
-    return subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
+def _sh(cmd, tries=3):
+    # Only "manifest unknown" means the tag is missing. Anything else (ghcr
+    # rate limits, timeouts) is retried: read as "missing", one blip put
+    # "No published tags found" on the status page for a live image.
+    err = ""
+    for attempt in range(tries):
+        r = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        if r.returncode == 0:
+            return r.stdout
+        err = r.stderr.strip()
+        if "manifest unknown" in err:
+            return ""
+        time.sleep(2 * (attempt + 1))
+    print(f"[warn] {cmd} failed after {tries} tries: {err[-300:]}", file=sys.stderr)
+    return ""
 
 
 # --------------------------------------------------------------------------
