@@ -16,14 +16,21 @@ Configure Podman to use ZFS on FreeBSD for optimal container storage.
 | Compression | Smaller storage footprint |
 | Checksums | Data integrity |
 
-## Create ZFS Dataset
+## Understanding Storage Separation
 
-Create a dedicated dataset for container storage:
+When running containers on FreeBSD, it is essential to distinguish between **engine storage** and **application data**:
+
+1. **Podman Engine Storage (`/var/db/containers/storage`):** Where Podman stores downloaded OCI layers, images, and jail root filesystems. Managed entirely by Podman. Never place personal configuration files or Compose directories here.
+2. **Persistent Application Data (`/containers`):** Where your application configuration files (like `Caddyfile`), databases, and Compose files live.
+
+## 1. Engine Storage (Podman Graphroot)
+
+Create a dedicated dataset for Podman's internal image layer storage:
 
 ```bash
-# Create dataset (adjust 'zroot' to your pool name)
-zfs create zroot/containers
-zfs set mountpoint=/var/db/containers/storage zroot/containers
+# Create dataset for Podman's internal storage (adjust 'zroot' to your pool name)
+zfs create zroot/podman-storage
+zfs set mountpoint=/var/db/containers/storage zroot/podman-storage
 ```
 
 ## Configure Podman
@@ -52,19 +59,23 @@ Expected output:
 graphDriverName: zfs
 graphRoot: /var/db/containers/storage
 graphStatus:
-  Dataset: zroot/containers
+  Dataset: zroot/podman-storage
 ```
 
-## Separate Config Storage
+## 2. Application Data & Config Storage
 
-Keep container configs on a separate dataset for easy backup:
+Keep your container configuration and persistent volumes on a separate dataset. In Daemonless documentation, `/containers` is used as the standard convention, but you can place this anywhere on your filesystem:
 
 ```bash
-zfs create zroot/data/config
-zfs set mountpoint=/data/config zroot/data/config
+# Create dataset for persistent container app data
+zfs create zroot/containers
+zfs set mountpoint=/containers zroot/containers
 
-# Snapshot before upgrades
-zfs snapshot zroot/data/config@before-upgrade
+# Individual apps live in subdirectories
+mkdir -p /containers/caddy /containers/tautulli
+
+# Easy ZFS snapshots before container upgrades!
+zfs snapshot zroot/containers@before-upgrade
 ```
 
 ## Troubleshooting

@@ -35,7 +35,7 @@ PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 
 # Constants
 CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
-DEFAULT_CONFIG_ROOT = "/path/to/containers"
+DEFAULT_CONFIG_ROOT = "/containers"
 
 # Skip these repos (not container images)
 SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild", ".github", "ci-daemonless-io", "arr-base", "nginx-base", "base", "base-core"}
