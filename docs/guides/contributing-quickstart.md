@@ -7,6 +7,12 @@ description: "A 10-minute guide to setting up your environment, building a daemo
 
 Welcome to Daemonless! Whether you're fixing a bug in an existing image or bringing a completely new service to the FreeBSD container ecosystem, this guide will get you set up and submitting your first Pull Request in under 10 minutes.
 
+!!! warning "Using a coding agent?"
+    Read the [LLM / AI Contribution Policy](llm-policy.md) **before** you
+    generate anything: understand what you commit, test it locally, and write
+    your PR description in your own words. [AI-Assisted
+    Porting](ai-assisted-porting.md) covers the tooling that helps meet it.
+
 ---
 
 ## 1. Environment Setup
@@ -122,6 +128,7 @@ Before you open a Pull Request, run through this checklist to ensure a smooth re
 - [ ] **Permissions:** Run scripts (`root/etc/services.d/<app>/run`) use `s6-setuidgid bsd` so the app doesn't run as root.
 - [ ] **Testing:** `.daemonless/config.yaml` is configured and `dbuild test` passes locally.
 - [ ] **CI Pipeline:** `.github/workflows/` is present and configured (Woodpecker is maintained as a fallback Plan B).
+- [ ] **AI policy:** if you used a coding agent, the PR description is in your own words and you can explain every line of the diff — see the [LLM / AI Contribution Policy](llm-policy.md).
 
 ### How to Submit
 
