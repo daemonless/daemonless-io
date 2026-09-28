@@ -59,9 +59,11 @@ The same commands work with `docker` — it's just files in the image.
 ### 2. Signed attestation in the registry
 
 Each pushed image also has its SBOM attached in the registry as a
-[Sigstore](https://www.sigstore.dev/) **cosign attestation**, signed keylessly
-(no long-lived keys). This is the format enterprise supply-chain tooling
-expects. Download it (no verification flags needed):
+[Sigstore](https://www.sigstore.dev/) **cosign attestation**. amd64 images
+are signed keylessly (no long-lived keys); aarch64 images are built on our own
+native arm64 runner and signed with the daemonless key. This is the format
+enterprise supply-chain tooling expects. Download it (no verification flags
+needed):
 
 ```bash
 cosign download attestation ghcr.io/daemonless/radarr:pkg
@@ -75,6 +77,16 @@ cosign verify-attestation --type cyclonedx \
   --certificate-identity-regexp 'https://github.com/daemonless/.+' \
   --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
   ghcr.io/daemonless/radarr:pkg
+```
+
+aarch64 images (`-aarch64` tags) are verified against the daemonless public
+key, [cosign.pub](https://daemonless.io/cosign.pub). They are stored in the
+newer Sigstore bundle format, so use cosign 3 or later:
+
+```bash
+cosign verify-attestation --type cyclonedx \
+  --key https://daemonless.io/cosign.pub \
+  ghcr.io/daemonless/base:15.1-aarch64
 ```
 
 ## CVE coverage
