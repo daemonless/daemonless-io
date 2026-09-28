@@ -9,7 +9,7 @@ placeholders:
       GitHub Container Registry: ghcr.io/daemonless
       Docker Hub: docker.io/daemonless
   CONTAINER_CONFIG_ROOT:
-    default: /path/to/containers
+    default: /containers
     description: Container Configuration Root Path
   INTERFACE:
     default: em0
