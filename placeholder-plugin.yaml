@@ -1288,6 +1288,11 @@ placeholders:
   UBOOQUITY_FILES_PATH:
     default: ubooquity/files
     description: Ubooquity /files Path
+  PLEX_PORT:
+    default: '32400'
+    description: Plex Media Server Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
