@@ -49,16 +49,19 @@ extra_javascript = [
 nav = [
   { "Home" = "index.md" },
   { "Image Fleet" = [
-    { "All Images" = "images/index.md" },
-    { "By Category" = "images/categories.md" },
-    { "Version Status" = "status.md" },
-    { "Images" = [
+    # images/index.md first + navigation.indexes: the section's own page, so
+    # the "Image Fleet" and "All Images" breadcrumbs on an image page go to
+    # the list, not to the first image (AdGuard Home).
+    { "All Images" = [
+      "images/index.md",
       # Image list generated from the active (non-deprecated) compose configs,
       # sorted by title. Re-run `make generate` after adding/removing an image.
 {%- for c in image_nav %}
       { "{{ c.title }}" = "images/{{ c.name }}.md" },
 {%- endfor %}
     ] },
+    { "By Category" = "images/categories.md" },
+    { "Version Status" = "status.md" },
   ] },
   { "fjord" = "https://fjord.daemonless.io" },
   { "Guides" = [
@@ -120,6 +123,7 @@ features = [
   "content.tabs.link",       # sync tab selection across pages
   "search.share",            # shareable search links
   "navigation.path",         # breadcrumbs
+  "navigation.indexes",      # a section's index.md is its own page
   "navigation.footer",       # previous/next buttons at the bottom of pages
   "announce.dismiss",        # the announcement bar (overrides/main.html) can be closed
 ]
