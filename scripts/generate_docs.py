@@ -351,6 +351,17 @@ def generate_status_page(configs):
         print("Published docs/daemonless-versions.json")
 
 
+def _is_portrait(path: Path) -> bool:
+    """Taller than 1.5x its width: a phone view or a full-page capture."""
+    try:
+        from PIL import Image
+        with Image.open(path) as im:
+            w, h = im.size
+        return h > 1.5 * w
+    except Exception:
+        return False
+
+
 def get_last_commit_date(repo_path):
     """Get the last commit date for a repo in ISO format."""
     try:
@@ -514,9 +525,15 @@ def main():
                 shutil.rmtree(screenshots_dst)
             screenshots_dst.mkdir(parents=True, exist_ok=True)
             for f in sorted(screenshots_src.iterdir()):
-                if f.suffix.lower() in screenshot_exts:
-                    shutil.copy2(f, screenshots_dst / f.name)
-                    screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
+                if f.suffix.lower() not in screenshot_exts:
+                    continue
+                # A phone-portrait or full-page capture turns the carousel
+                # into a tall strip; the page is for the desktop view.
+                if _is_portrait(f):
+                    print(f"  skip screenshot {config['name']}/{f.name}: taller than wide")
+                    continue
+                shutil.copy2(f, screenshots_dst / f.name)
+                screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
         config["screenshots"] = screenshots
 
         # Copy logo from .daemonless/logo.* to docs/images/logos/<name>.<ext>
