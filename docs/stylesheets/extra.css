@@ -523,30 +523,12 @@ h1 .app-icon {
   box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
 }
 
-/* "You get": what an option runs, before any YAML. */
+/* The line under an option: the images that run and where the data goes. */
 .you-get {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .5em;
   margin: .2em 0 .8em;
   padding-top: .7em;
   border-top: 1px dashed var(--md-default-fg-color--lightest);
   font-size: .74rem;
   color: var(--md-default-fg-color--light);
 }
-.you-get > strong { color: var(--md-default-fg-color); margin-right: .2em; }
-.you-get .part {
-  display: inline-flex;
-  align-items: center;
-  gap: .45em;
-  padding: .25em .65em;
-  border-radius: .4rem;
-  background: var(--md-code-bg-color);
-  color: var(--md-default-fg-color);
-}
-.you-get .part i { width: .5em; height: .5em; border-radius: 50%; background: var(--md-accent-fg-color); }
-.you-get .part-db i { background: #2fa37a; }
-.you-get .part-none i { background: var(--md-default-fg-color--lighter); }
-.you-get .part code, .you-get .sum code { font-size: .68rem; background: transparent; padding: 0; color: var(--md-default-fg-color--light); }
-.you-get .sum { margin-left: .2em; }
+.you-get code { font-size: .68rem; }
