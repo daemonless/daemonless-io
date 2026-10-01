@@ -1293,6 +1293,14 @@ placeholders:
     description: Plex Media Server Host Port
     validators:
     - port_number
+  VIKUNJA_PORT:
+    default: '3456'
+    description: Vikunja Host Port
+    validators:
+    - port_number
+  VIKUNJA_CONFIG_PATH:
+    default: vikunja
+    description: Vikunja /config Path
 validators:
   port_number:
     name: Port Number
