@@ -459,69 +459,52 @@ h1 .app-icon {
   vertical-align: middle;
 }
 
-/* ── Deploy section: a choice (x-daemonless.choices) as one object ──────
-   dbuild emits a `<p class="deploy-choice">` right before the option tabs,
-   so the card is the header plus the tabbed set that follows it; the option
-   labels become a segmented control instead of a second row of underlined
-   tabs under the runtime row. */
-.deploy-choice {
-  margin: 1.2em 0 0;
-  padding: .9em 1.1em .6em;
-  border: 1px solid var(--md-default-fg-color--lightest);
-  border-bottom: 0;
-  border-radius: .6rem .6rem 0 0;
-  background: var(--md-code-bg-color);
-}
-.deploy-choice { color: var(--md-default-fg-color--light); font-size: .74rem; }
-.deploy-choice strong { color: var(--md-default-fg-color); font-size: .9rem; margin-right: .5em; }
-.deploy-choice + .tabbed-set {
-  margin: 0 0 1.4em;
+/* ── Deploy section: the choices (x-daemonless.choices) as one form ──────
+   dbuild emits `.deploy-choices`, a card with a row of pills per choice,
+   followed by one `.deploy-combo` block per combination; deploy-choices.js
+   shows the block that matches the pills. */
+.deploy-choices {
+  margin: 1.2em 0 1.2em;
   padding: .3em 1.1em .9em;
   border: 1px solid var(--md-default-fg-color--lightest);
-  border-top: 0;
-  border-radius: 0 0 .6rem .6rem;
+  border-radius: .6rem;
+  background: var(--md-code-bg-color);
 }
-/* Keep Zensical's layout model for the label row (display: flex, overflow
-   auto): its script measures the row to place the active indicator and to
-   show prev/next scroll buttons over it, and an inline-flex row with visible
-   overflow made the "next" button cover the right-hand labels, which then
-   took no clicks. Only the look changes: a pill group that is as wide as
-   its labels, with the indicator and the scroll buttons hidden. */
-.deploy-choice + .tabbed-set > .tabbed-labels {
-  width: fit-content;
-  max-width: 100%;
+.deploy-choices p.choice {
+  margin: .9em 0 .35em;
+  color: var(--md-default-fg-color--light);
+  font-size: .74rem;
+}
+.deploy-choices p.choice strong { color: var(--md-default-fg-color); font-size: .86rem; margin-right: .5em; }
+.deploy-choices .opts {
+  display: inline-flex;
+  flex-wrap: wrap;
   gap: .2em;
   padding: .2em;
-  margin: 0 0 .4em;
   border-radius: 999px;
   background: var(--md-default-fg-color--lightest);
-  box-shadow: none;
 }
-.deploy-choice + .tabbed-set > .tabbed-labels::before { display: none; }
-.deploy-choice + .tabbed-set > .tabbed-button { display: none; }
-.deploy-choice + .tabbed-set > .tabbed-labels > label {
-  padding: 0;
+.deploy-choices .opts button {
+  appearance: none;
+  border: 0;
   margin: 0;
-  border-bottom: 0;
+  padding: .38em .95em;
   border-radius: 999px;
+  background: transparent;
+  color: var(--md-default-fg-color--light);
+  font: inherit;
   font-size: .72rem;
   font-weight: 500;
-  color: var(--md-default-fg-color--light);
+  cursor: pointer;
 }
-/* The script wraps each label's text in an anchor and listens there. */
-.md-typeset .deploy-choice + .tabbed-set > .tabbed-labels > label > a { padding: .35em .9em; }
-.deploy-choice + .tabbed-set > .tabbed-labels > label:not(:has(> a)) { padding: .35em .9em; }
-.deploy-choice + .tabbed-set > .tabbed-labels > label:hover { color: var(--md-default-fg-color); }
-.deploy-choice + .tabbed-set > input:nth-child(1):checked ~ .tabbed-labels > :nth-child(1),
-.deploy-choice + .tabbed-set > input:nth-child(2):checked ~ .tabbed-labels > :nth-child(2),
-.deploy-choice + .tabbed-set > input:nth-child(3):checked ~ .tabbed-labels > :nth-child(3),
-.deploy-choice + .tabbed-set > input:nth-child(4):checked ~ .tabbed-labels > :nth-child(4),
-.deploy-choice + .tabbed-set > input:nth-child(5):checked ~ .tabbed-labels > :nth-child(5),
-.deploy-choice + .tabbed-set > input:nth-child(6):checked ~ .tabbed-labels > :nth-child(6) {
+.deploy-choices .opts button:hover { color: var(--md-default-fg-color); }
+.deploy-choices .opts button[aria-pressed="true"] {
   background: var(--md-default-bg-color);
   color: var(--md-default-fg-color);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
 }
+.deploy-choices .opts button:focus-visible { outline: 2px solid var(--md-accent-fg-color); outline-offset: 1px; }
+.deploy-combo[hidden] { display: none; }
 
 /* The line under an option: the images that run and where the data goes. */
 .you-get {
