@@ -85,6 +85,31 @@ docs:
     8080: "Description of this port"
 ```
 
+### `choices:` (stack choices)
+
+Applications supporting multiple database engines or optional runtime profiles declare choices under `x-daemonless.choices`:
+
+```yaml
+x-daemonless:
+  choices:
+    database:
+      kind: database
+      offers: [sqlite, postgres, mariadb, external]
+      default: sqlite
+      env:
+        type: APP_DB_TYPE
+        host: APP_DB_HOST
+        port: APP_DB_PORT
+        user: APP_DB_USER
+        password: APP_DB_PASS
+        name: APP_DB_NAME
+      types:
+        sqlite: sqlite3
+        mariadb: mysql
+```
+
+There is also a `part` kind for optional services that switch profiles, set environment variables, or drop services. See [Stack Choices](../stack-choices.md).
+
 
 ## Build Config (`.daemonless/config.yaml`)
 

@@ -66,33 +66,34 @@ nav = [
     { "By Category" = "images/categories.md" },
     { "Version Status" = "status.md" },
   ] },
-  { "fjord" = "https://fjord.daemonless.io" },
-  { "Guides" = [
+  { "Documentation" = [
     { "Getting Started" = "guides/quick-start.md" },
-    { "Permissions" = "guides/permissions.md" },
-    { "Networking" = "guides/networking.md" },
+    { "Permissions (PUID/PGID)" = "guides/permissions.md" },
     { "ZFS Storage" = "guides/zfs.md" },
-    { "ocijail Patch" = "guides/ocijail-patch.md" },
+    { "Networking" = "guides/networking.md" },
     { "Hardware Transcoding" = "guides/hardware-transcoding.md" },
-    { "Operations" = "guides/operations.md" },
-    { "Contributing" = [
-      { "Quickstart" = "guides/contributing-quickstart.md" },
-      { "Development Guide" = "guides/development.md" },
-      { "Service Source Files" = "guides/service-anatomy.md" },
-      { "Image Tagging" = "guides/tagging.md" },
-      { "OCI Compliance" = "guides/oci-compliance.md" },
-      { "Appliances" = "guides/appliances.md" },
+    { "Operations & Maintenance" = "guides/operations.md" },
+    { "Troubleshooting" = [
+      { "ocijail Patch" = "guides/ocijail-patch.md" },
+      { "Stalwart & ClamAV Integration" = "guides/stalwart-clamav.md" },
     ] },
-    { "dbuild (Daemonless Build)" = [
-    { "Overview" = "guides/dbuild/index.md" },
-    { "Building Your First Image" = "guides/dbuild/workflow.md" },
-    { "Command Reference" = "guides/dbuild/commands.md" },
-    { "Configuration" = "guides/dbuild/config.md" },
-    { "CI/CD Integration" = [
-      { "Pipeline" = "guides/dbuild/ci.md" },
+  ] },
+  { "Development" = [
+    { "Contributor Quickstart" = "guides/contributing-quickstart.md" },
+    { "Development Guide" = "guides/development.md" },
+    { "Service Anatomy" = "guides/service-anatomy.md" },
+    { "Stack Choices" = "guides/stack-choices.md" },
+    { "Image Tagging" = "guides/tagging.md" },
+    { "OCI Compliance" = "guides/oci-compliance.md" },
+    { "Appliances" = "guides/appliances.md" },
+    { "dbuild Toolchain" = [
+      { "Overview" = "guides/dbuild/index.md" },
+      { "Building Your First Image" = "guides/dbuild/workflow.md" },
+      { "Command Reference" = "guides/dbuild/commands.md" },
+      { "Configuration" = "guides/dbuild/config.md" },
+      { "CI/CD Pipeline" = "guides/dbuild/ci.md" },
       { "Linux Pre-Build Artifacts" = "guides/dbuild/linux-pre-build.md" },
-    ] },
-    { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
+      { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
     ] },
   ] },
   { "About" = [
@@ -101,6 +102,7 @@ nav = [
     { "SBOMs" = "sbom.md" },
     { "Community" = "community.md" },
   ] },
+  { "fjord" = "https://fjord.daemonless.io" },
 ]
 
 [project.theme]
