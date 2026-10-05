@@ -1301,6 +1301,9 @@ placeholders:
   VIKUNJA_CONFIG_PATH:
     default: vikunja
     description: Vikunja /config Path
+  ACTUAL_DATA_PATH:
+    default: actual/data
+    description: Actual Budget /data Path
 validators:
   port_number:
     name: Port Number
