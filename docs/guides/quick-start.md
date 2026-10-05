@@ -15,7 +15,7 @@ placeholders:
     default: "1000"
     description: "Group ID"
   CONTAINER_CONFIG_ROOT:
-    default: "/path/to/containers"
+    default: "/containers"
     description: "Config Path"
 ---
 
@@ -116,6 +116,29 @@ pfctl -f /etc/pf.conf
 sysrc podman_enable=YES
 service podman start
 ```
+
+### Container Storage & Volume Paths
+
+In Daemonless documentation and Compose examples, `@CONTAINER_CONFIG_ROOT@` (default `/containers`) is used as a clean convention for persistent application data (e.g., `/containers/tautulli` or `/containers/caddy`).
+
+!!! tip "Placing Container Data Anywhere on FreeBSD"
+    **`/containers` is not a mandatory or fixed path—it can be anywhere on your system that you prefer.**
+
+    Whether you choose `/containers`, `/usr/local/etc/containers`, `/data/containers`, or a dedicated ZFS dataset, you can place your application configs wherever it fits your storage layout. Simply adjust the host side of the volume mount to match.
+
+!!! warning "Do Not Store Application Data in `/var/db/containers`"
+    **Keep persistent application data separate from Podman's internal engine storage.**
+
+    `/var/db/containers` (or `/var/db/containers/storage`) is where Podman manages downloaded container images, layers, and jail root filesystems. Storing your own configurations or databases inside `/var/db/containers` risks data loss during image pruning or `podman system reset`.
+
+!!! info "Volume Mount Syntax (`HOST:CONTAINER`)"
+    When mounting volumes with `-v` or in `compose.yaml`:
+    ```yaml
+    volumes:
+      - /containers/tautulli:/config
+    ```
+    * **Left side (`/containers/tautulli`):** The path on your FreeBSD host filesystem.
+    * **Right side (`/config`):** Where the application inside the container expects to read and write its data.
 
 ### Run Your First Container
 

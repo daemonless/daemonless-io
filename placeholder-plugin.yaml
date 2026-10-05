@@ -9,7 +9,7 @@ placeholders:
       GitHub Container Registry: ghcr.io/daemonless
       Docker Hub: docker.io/daemonless
   CONTAINER_CONFIG_ROOT:
-    default: /path/to/containers
+    default: /containers
     description: Container Configuration Root Path
   INTERFACE:
     default: em0
@@ -1274,6 +1274,33 @@ placeholders:
   OUTLINE_CONFIG_PATH:
     default: outline
     description: Outline /config Path
+  UBOOQUITY_PORT:
+    default: '2202'
+    description: Ubooquity Host Port
+    validators:
+    - port_number
+  UBOOQUITY_CONFIG_PATH:
+    default: ubooquity
+    description: Ubooquity /config Path
+  UBOOQUITY_COMICS_PATH:
+    default: ubooquity/comics
+    description: Ubooquity /comics Path
+  UBOOQUITY_FILES_PATH:
+    default: ubooquity/files
+    description: Ubooquity /files Path
+  PLEX_PORT:
+    default: '32400'
+    description: Plex Media Server Host Port
+    validators:
+    - port_number
+  VIKUNJA_PORT:
+    default: '3456'
+    description: Vikunja Host Port
+    validators:
+    - port_number
+  VIKUNJA_CONFIG_PATH:
+    default: vikunja
+    description: Vikunja /config Path
 validators:
   port_number:
     name: Port Number

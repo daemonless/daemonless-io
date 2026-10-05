@@ -50,7 +50,7 @@ Each image is a standalone git repo:
 
 ## Labels Reference
 
-`dbuild generate` writes these labels into the generated `Containerfile*` from your `compose.yaml` metadata — **don't add them by hand** (see [Service Source Files](service-anatomy.md)). This section is a reference for what each one means.
+`dbuild generate` writes these labels into the generated `Containerfile*` from your `compose.yaml` metadata — **don't add them by hand** (see [Service Anatomy](service-anatomy.md)). This section is a reference for what each one means.
 
 ### io.daemonless.* Labels
 
@@ -122,7 +122,7 @@ x-daemonless:
 
 Then, run `dbuild generate` to automatically inject the required `io.daemonless.*` labels into your `Containerfile`s and regenerate the `README.md`.
 
-For a quick map of what belongs in `compose.yaml`, `.daemonless/config.yaml`, and `Containerfile*.j2`, see [Service Source Files](service-anatomy.md).
+For a quick map of what belongs in `compose.yaml`, `.daemonless/config.yaml`, and `Containerfile*.j2`, see [Service Anatomy](service-anatomy.md).
 
 ## Containerfile Patterns
 

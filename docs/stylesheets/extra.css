@@ -458,3 +458,60 @@ h1 .app-icon {
   display: inline-block;
   vertical-align: middle;
 }
+
+/* ── Deploy section: the choices (x-daemonless.choices) as one form ──────
+   dbuild emits `.deploy-choices`, a card with a row of pills per choice,
+   followed by one `.deploy-combo` block per combination; deploy-choices.js
+   shows the block that matches the pills. */
+.deploy-choices {
+  margin: 1.2em 0 1.2em;
+  padding: .3em 1.1em .9em;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .6rem;
+  background: var(--md-code-bg-color);
+}
+.deploy-choices p.choice {
+  margin: .9em 0 .35em;
+  color: var(--md-default-fg-color--light);
+  font-size: .74rem;
+}
+.deploy-choices p.choice strong { color: var(--md-default-fg-color); font-size: .86rem; margin-right: .5em; }
+.deploy-choices .opts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: .2em;
+  padding: .2em;
+  border-radius: 999px;
+  background: var(--md-default-fg-color--lightest);
+}
+.deploy-choices .opts button {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: .38em .95em;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--md-default-fg-color--light);
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.deploy-choices .opts button:hover { color: var(--md-default-fg-color); }
+.deploy-choices .opts button[aria-pressed="true"] {
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+.deploy-choices .opts button:focus-visible { outline: 2px solid var(--md-accent-fg-color); outline-offset: 1px; }
+.deploy-combo[hidden] { display: none; }
+
+/* The line under an option: the images that run and where the data goes. */
+.you-get {
+  margin: .2em 0 .8em;
+  padding-top: .7em;
+  border-top: 1px dashed var(--md-default-fg-color--lightest);
+  font-size: .74rem;
+  color: var(--md-default-fg-color--light);
+}
+.you-get code { font-size: .68rem; }

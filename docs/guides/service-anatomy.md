@@ -1,9 +1,9 @@
 ---
-title: "Service Source Files"
+title: "Service Anatomy"
 description: "What compose.yaml, .daemonless/config.yaml, Containerfile templates, and root files are for in a Daemonless service repository."
 ---
 
-# Service Source Files
+# Service Anatomy
 
 ## What Each File Is For
 
@@ -24,6 +24,7 @@ Use this for the service contract people see and run:
 - `name`
 - `x-daemonless.title`, `description`, `category`, `icon`, and project links
 - documented ports, volumes, and environment variables
+- stack choices under `x-daemonless.choices` (options the person picks at install; see [Stack Choices](stack-choices.md))
 - the example service definition
 - production annotations and AppJail settings
 
@@ -76,4 +77,4 @@ If changing the file changes what is inside the built image at runtime, it belon
 
 **Package versions:** preserve the version reported by `pkg`; do not strip FreeBSD revision suffixes such as `_1` from generated version labels.
 
-See also: [Development Guide](development.md), [Building Your First Image](dbuild/workflow.md), and [Configuration Reference](dbuild/config.md).
+See also: [Stack Choices](stack-choices.md), [Development Guide](development.md), [Building Your First Image](dbuild/workflow.md), and [Configuration Reference](dbuild/config.md).

@@ -17,6 +17,8 @@ repo_url = "https://github.com/daemonless/daemonless"
 repo_name = "daemonless/daemonless"
 edit_uri = "edit/main/docs/"
 site_dir = "site"
+# The Podman tab icon is from selfh.st/icons, CC BY 4.0: the credit it asks for.
+copyright = 'Icons: <a href="https://selfh.st/icons/">selfh.st</a> (CC BY 4.0)'
 
 extra_css = [
   "stylesheets/extra.css",
@@ -31,6 +33,7 @@ extra_css = [
 
 extra_javascript = [
   "javascripts/ux-settings-v2.js",
+  "javascripts/deploy-choices.js",
   "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js",
   "https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js",
   "javascripts/splide-init.js",
@@ -49,46 +52,50 @@ extra_javascript = [
 nav = [
   { "Home" = "index.md" },
   { "Image Fleet" = [
-    { "All Images" = "images/index.md" },
-    { "By Category" = "images/categories.md" },
-    { "Version Status" = "status.md" },
-    { "Images" = [
+    # images/index.md first + navigation.indexes: the section's own page, so
+    # the "Image Fleet" and "All Images" breadcrumbs on an image page go to
+    # the list, not to the first image (AdGuard Home).
+    { "All Images" = [
+      "images/index.md",
       # Image list generated from the active (non-deprecated) compose configs,
       # sorted by title. Re-run `make generate` after adding/removing an image.
 {%- for c in image_nav %}
       { "{{ c.title }}" = "images/{{ c.name }}.md" },
 {%- endfor %}
     ] },
+    { "By Category" = "images/categories.md" },
+    { "Version Status" = "status.md" },
   ] },
-  { "fjord" = "https://fjord.daemonless.io" },
-  { "Guides" = [
+  { "Documentation" = [
     { "Getting Started" = "guides/quick-start.md" },
-    { "Permissions" = "guides/permissions.md" },
-    { "Networking" = "guides/networking.md" },
+    { "Permissions (PUID/PGID)" = "guides/permissions.md" },
     { "ZFS Storage" = "guides/zfs.md" },
-    { "ocijail Patch" = "guides/ocijail-patch.md" },
+    { "Networking" = "guides/networking.md" },
     { "Hardware Transcoding" = "guides/hardware-transcoding.md" },
-    { "Operations" = "guides/operations.md" },
-    { "Contributing" = [
-      { "Quickstart" = "guides/contributing-quickstart.md" },
-      { "LLM / AI Policy" = "guides/llm-policy.md" },
-      { "AI-Assisted Porting" = "guides/ai-assisted-porting.md" },
-      { "Development Guide" = "guides/development.md" },
-      { "Service Source Files" = "guides/service-anatomy.md" },
-      { "Image Tagging" = "guides/tagging.md" },
-      { "OCI Compliance" = "guides/oci-compliance.md" },
-      { "Appliances" = "guides/appliances.md" },
+    { "Operations & Maintenance" = "guides/operations.md" },
+    { "Troubleshooting" = [
+      { "ocijail Patch" = "guides/ocijail-patch.md" },
+      { "Stalwart & ClamAV Integration" = "guides/stalwart-clamav.md" },
     ] },
-    { "dbuild (Daemonless Build)" = [
-    { "Overview" = "guides/dbuild/index.md" },
-    { "Building Your First Image" = "guides/dbuild/workflow.md" },
-    { "Command Reference" = "guides/dbuild/commands.md" },
-    { "Configuration" = "guides/dbuild/config.md" },
-    { "CI/CD Integration" = [
-      { "Pipeline" = "guides/dbuild/ci.md" },
+  ] },
+  { "Development" = [
+    { "Contributor Quickstart" = "guides/contributing-quickstart.md" },
+    { "LLM / AI Policy" = "guides/llm-policy.md" },
+    { "AI-Assisted Porting" = "guides/ai-assisted-porting.md" },
+    { "Development Guide" = "guides/development.md" },
+    { "Service Anatomy" = "guides/service-anatomy.md" },
+    { "Stack Choices" = "guides/stack-choices.md" },
+    { "Image Tagging" = "guides/tagging.md" },
+    { "OCI Compliance" = "guides/oci-compliance.md" },
+    { "Appliances" = "guides/appliances.md" },
+    { "dbuild Toolchain" = [
+      { "Overview" = "guides/dbuild/index.md" },
+      { "Building Your First Image" = "guides/dbuild/workflow.md" },
+      { "Command Reference" = "guides/dbuild/commands.md" },
+      { "Configuration" = "guides/dbuild/config.md" },
+      { "CI/CD Pipeline" = "guides/dbuild/ci.md" },
       { "Linux Pre-Build Artifacts" = "guides/dbuild/linux-pre-build.md" },
-    ] },
-    { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
+      { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
     ] },
   ] },
   { "About" = [
@@ -97,6 +104,7 @@ nav = [
     { "SBOMs" = "sbom.md" },
     { "Community" = "community.md" },
   ] },
+  { "fjord" = "https://fjord.daemonless.io" },
 ]
 
 [project.theme]
@@ -122,6 +130,7 @@ features = [
   "content.tabs.link",       # sync tab selection across pages
   "search.share",            # shareable search links
   "navigation.path",         # breadcrumbs
+  "navigation.indexes",      # a section's index.md is its own page
   "navigation.footer",       # previous/next buttons at the bottom of pages
   "announce.dismiss",        # the announcement bar (overrides/main.html) can be closed
 ]
