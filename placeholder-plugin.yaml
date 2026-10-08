@@ -1304,6 +1304,17 @@ placeholders:
   ACTUAL_DATA_PATH:
     default: actual/data
     description: Actual Budget /data Path
+  BACKREST_PORT:
+    default: '9898'
+    description: Backrest Host Port
+    validators:
+    - port_number
+  BACKREST_CONFIG_PATH:
+    default: backrest
+    description: Backrest /config Path
+  BACKREST_DATA_PATH:
+    default: backrest/data
+    description: Backrest /data Path
 validators:
   port_number:
     name: Port Number
