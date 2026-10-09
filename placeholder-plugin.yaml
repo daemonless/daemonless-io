@@ -1323,6 +1323,46 @@ placeholders:
   LANGUAGETOOL_CONFIG_PATH:
     default: languagetool
     description: LanguageTool /config Path
+  CRAFTING_APPS_PORT:
+    default: '8080'
+    description: Crafting Apps Host Port
+    validators:
+    - port_number
+  DESIGNCRAFT_PORT:
+    default: '8086'
+    description: DesignCraft Host Port
+    validators:
+    - port_number
+  EFFECTCRAFT_PORT:
+    default: '8085'
+    description: EffectCraft Host Port
+    validators:
+    - port_number
+  FILMCRAFT_PORT:
+    default: '8082'
+    description: FilmCraft Host Port
+    validators:
+    - port_number
+  LIGHTCRAFT_PORT:
+    default: '8083'
+    description: LightCraft Host Port
+    validators:
+    - port_number
+  PDFCRAFT_PORT:
+    default: '8084'
+    description: PdfCraft Host Port
+    validators:
+    - port_number
+  PHOTOCRAFT_PORT:
+    default: '8080'
+    description: PhotoCraft Host Port
+    validators:
+    - port_number
+  VECTORCRAFT_PORT:
+    default: '8081'
+    description: VectorCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
