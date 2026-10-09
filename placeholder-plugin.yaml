@@ -1315,6 +1315,14 @@ placeholders:
   BACKREST_DATA_PATH:
     default: backrest/data
     description: Backrest /data Path
+  LANGUAGETOOL_PORT:
+    default: '8010'
+    description: LanguageTool Host Port
+    validators:
+    - port_number
+  LANGUAGETOOL_CONFIG_PATH:
+    default: languagetool
+    description: LanguageTool /config Path
 validators:
   port_number:
     name: Port Number
