@@ -1363,6 +1363,14 @@ placeholders:
     description: VectorCraft Host Port
     validators:
     - port_number
+  RADICALE_PORT:
+    default: '5232'
+    description: Radicale Host Port
+    validators:
+    - port_number
+  RADICALE_CONFIG_PATH:
+    default: radicale
+    description: Radicale /config Path
 validators:
   port_number:
     name: Port Number
