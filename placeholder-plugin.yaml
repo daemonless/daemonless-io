@@ -1374,6 +1374,21 @@ placeholders:
   SPARKYFITNESS_BACKUP_PATH:
     default: sparkyfitness/backup
     description: SparkyFitness /app/server/backup Path
+  DECKCRAFT_PORT:
+    default: '8089'
+    description: DeckCraft Host Port
+    validators:
+    - port_number
+  GRIDCRAFT_PORT:
+    default: '8088'
+    description: GridCraft Host Port
+    validators:
+    - port_number
+  WORDCRAFT_PORT:
+    default: '8087'
+    description: WordCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
