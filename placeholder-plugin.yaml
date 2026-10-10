@@ -913,7 +913,7 @@ placeholders:
     description: Sonarr /config Path
   SPARKYFITNESS_UPLOADS_PATH:
     default: sparkyfitness/uploads
-    description: SparkyFitness /uploads Path
+    description: SparkyFitness /app/server/uploads Path
   SPARKYFITNESS_BACKUPS_PATH:
     default: sparkyfitness/backups
     description: SparkyFitness /backups Path
@@ -1371,6 +1371,9 @@ placeholders:
   RADICALE_CONFIG_PATH:
     default: radicale
     description: Radicale /config Path
+  SPARKYFITNESS_BACKUP_PATH:
+    default: sparkyfitness/backup
+    description: SparkyFitness /app/server/backup Path
 validators:
   port_number:
     name: Port Number
