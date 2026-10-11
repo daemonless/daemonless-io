@@ -1389,6 +1389,14 @@ placeholders:
     description: WordCraft Host Port
     validators:
     - port_number
+  CLICKHOUSE_PORT:
+    default: '8123'
+    description: ClickHouse Host Port
+    validators:
+    - port_number
+  CLICKHOUSE_CLICKHOUSE_PATH:
+    default: clickhouse/clickhouse
+    description: ClickHouse /var/db/clickhouse Path
 validators:
   port_number:
     name: Port Number
