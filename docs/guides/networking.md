@@ -45,10 +45,13 @@ nat on $ext_if inet from 10.88.0.0/16 to any -> ($ext_if)
 Enable local filtering:
 
 ```bash
+echo 'pf_load="YES"' >> /boot/loader.conf
 sysctl net.pf.filter_local=1
 echo 'net.pf.filter_local=1' >> /etc/sysctl.conf
 pfctl -f /etc/pf.conf
 ```
+
+pf only reads `net.pf.filter_local` when it is enabled, and `/etc/sysctl.conf` is applied before `kld_list` loads modules. Load pf from `/boot/loader.conf` so the setting takes effect at boot; otherwise the host cannot reach its own containers on `localhost` until `service pf restart`.
 
 ## Host Networking
 

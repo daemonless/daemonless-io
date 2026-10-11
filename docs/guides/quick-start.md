@@ -77,9 +77,9 @@ pkg install podman-suite sysutils/podman-compose
 Configure the kernel to allow packet filtering for local traffic and ensure `fdescfs` is mounted.
 
 ```bash
-# Load pf (required before setting pf sysctls)
+# Load pf now, and from the loader on every boot
 kldload pf
-sysrc kld_list+=pf
+echo 'pf_load="YES"' >> /boot/loader.conf
 
 # Enable pf filtering for jails
 sysctl net.pf.filter_local=1
@@ -89,6 +89,9 @@ echo 'net.pf.filter_local=1' >> /etc/sysctl.conf
 mount -t fdescfs fdesc /dev/fd
 echo 'fdesc /dev/fd fdescfs rw 0 0' >> /etc/fstab
 ```
+
+!!! warning "Load pf from the loader, not `kld_list`"
+    pf only reads `net.pf.filter_local` when it is enabled. At boot, `/etc/sysctl.conf` is applied before `kld_list` modules are loaded, so the setting fails silently and pf comes up without it. The symptom is that the host cannot reach its own containers on `localhost:<port>` after a reboot until `service pf restart`, while other machines on the network can. Loading pf from `/boot/loader.conf` makes the sysctl exist when `sysctl.conf` is read.
 
 #### 2. Configure Firewall (`pf.conf`)
 Add the following to `/etc/pf.conf`. Replace `@INTERFACE@` if your external interface is different.
@@ -105,8 +108,10 @@ nat on $ext_if inet from <cni-nat> to any -> ($ext_if)
 nat on $ext_if inet from 10.88.0.0/16 to any -> ($ext_if)
 ```
 
-Reload the configuration:
+Enable pf and load the rules:
 ```bash
+sysrc pf_enable=YES
+service pf start
 pfctl -f /etc/pf.conf
 ```
 
