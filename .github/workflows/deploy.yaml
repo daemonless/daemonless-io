@@ -159,7 +159,11 @@ jobs:
           key: version-check-${{ steps.check.outputs.sig }}
 
       - name: Notify Discord on outdated images
+        id: notify
         if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        # A rejected ping must not fail the deploy, but it must not be marked
+        # announced either: the next deploy tries again.
+        continue-on-error: true
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
         run: |
@@ -191,10 +195,20 @@ jobs:
                   end
                 end
               ) | join(", "))
-            ] | join("\n")
+            ] as $lines |
+            # Discord rejects an embed description over 4096 characters (the
+            # whole message, silently to curl -s). Keep whole lines that fit,
+            # then point at the status page for the rest.
+            (reduce $lines[] as $l ({out: [], len: 0, full: false};
+              if .full or .len + ($l | length) + 1 > 3900 then .full = true
+              else .out += [$l] | .len += ($l | length) + 1 end)) as $fit |
+            ($fit.out | join("\n")) +
+            (if ($lines | length) > ($fit.out | length) then
+              "\n…and \(($lines | length) - ($fit.out | length)) more on the [status page](https://daemonless.io/status/)"
+            else "" end)
           ' /tmp/versions.json)
 
-          curl -s -X POST "$DISCORD_WEBHOOK" \
+          curl -sS --fail-with-body -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg desc "$DESCRIPTION" \
@@ -202,7 +216,7 @@ jobs:
               '{embeds: [{title: "🔄 \($count) outdated image(s)", description: $desc, color: 16744272}]}')"
 
       - name: Mark outdated set as announced
-        if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        if: steps.notify.outcome == 'success'
         uses: actions/cache/save@v6
         with:
           path: .vc-state
