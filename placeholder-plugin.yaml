@@ -1397,6 +1397,22 @@ placeholders:
   CLICKHOUSE_CLICKHOUSE_PATH:
     default: clickhouse/clickhouse
     description: ClickHouse /var/db/clickhouse Path
+  NGINX_PHP_FPM_PORT:
+    default: '80'
+    description: Nginx + PHP-FPM Host Port
+    validators:
+    - port_number
+  NGINX_PHP_FPM_CONFIG_PATH:
+    default: nginx-php-fpm
+    description: Nginx + PHP-FPM /config Path
+  THELOUNGE_PORT:
+    default: '9000'
+    description: Thelounge Host Port
+    validators:
+    - port_number
+  THELOUNGE_THELOUNGE_PATH:
+    default: thelounge/thelounge
+    description: Thelounge /var/opt/thelounge Path
 validators:
   port_number:
     name: Port Number
