@@ -1413,6 +1413,14 @@ placeholders:
   THELOUNGE_THELOUNGE_PATH:
     default: thelounge/thelounge
     description: Thelounge /var/opt/thelounge Path
+  VERSITYGW_PORT:
+    default: '7070'
+    description: Versitygw Host Port
+    validators:
+    - port_number
+  VERSITYGW_CONFIG_PATH:
+    default: versitygw
+    description: Versitygw /config Path
 validators:
   port_number:
     name: Port Number
