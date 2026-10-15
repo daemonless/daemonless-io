@@ -1421,6 +1421,14 @@ placeholders:
   VERSITYGW_CONFIG_PATH:
     default: versitygw
     description: Versitygw /config Path
+  NODE_RED_PORT:
+    default: '1880'
+    description: Node-RED Host Port
+    validators:
+    - port_number
+  NODE_RED_CONFIG_PATH:
+    default: node-red
+    description: Node-RED /config Path
 validators:
   port_number:
     name: Port Number
