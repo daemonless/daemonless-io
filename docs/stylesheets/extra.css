@@ -505,6 +505,69 @@ h1 .app-icon {
 }
 .deploy-choices .opts button:focus-visible { outline: 2px solid var(--md-accent-fg-color); outline-offset: 1px; }
 .deploy-combo[hidden] { display: none; }
+/* A choice that only keeps a part or drops it: one switch per part, in a
+   grid (crafting-apps' ten apps). Pressed = included. */
+.deploy-choices .toggles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: .5em;
+  margin: .9em 0 .3em;
+}
+.deploy-choices .toggle {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  gap: .15em;
+  margin: 0;
+  padding: .55em .75em .6em 2em;
+  position: relative;
+  text-align: left;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .5rem;
+  background: transparent;
+  color: var(--md-default-fg-color--light);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .12s, background-color .12s, opacity .12s;
+}
+.deploy-choices .toggle::before {
+  content: "";
+  position: absolute;
+  left: .7em;
+  top: .75em;
+  width: .8em;
+  height: .8em;
+  border-radius: .2em;
+  border: 1.5px solid var(--md-default-fg-color--lighter);
+}
+.deploy-choices .toggle[aria-pressed="true"] {
+  border-color: var(--md-accent-fg-color);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+}
+.deploy-choices .toggle[aria-pressed="true"]::before {
+  border-color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color);
+  box-shadow: inset 0 0 0 .14em var(--md-default-bg-color);
+}
+.deploy-choices .toggle[aria-pressed="false"] { opacity: .65; }
+.deploy-choices .toggle:hover { opacity: 1; border-color: var(--md-default-fg-color--lighter); }
+.deploy-choices .toggle:focus-visible { outline: 2px solid var(--md-accent-fg-color); outline-offset: 1px; }
+.deploy-choices .t-name { font-size: .78rem; font-weight: 600; }
+.deploy-choices .t-doc { font-size: .66rem; line-height: 1.35; }
+.deploy-choices .toggle-all { margin: .5em 0 0; font-size: .7rem; }
+.deploy-choices .toggle-all button {
+  appearance: none; border: 0; background: none; padding: 0; margin-right: .9em;
+  font: inherit; color: var(--md-accent-fg-color); cursor: pointer;
+}
+.deploy-choices .toggle-all button:hover { text-decoration: underline; }
+
+/* The merged block (dbuild choice_merge): lines and blocks the picks drop
+   are [hidden]; the script puts the separators between what shows. */
+.deploy-merged[hidden], .deploy-merged [hidden] { display: none !important; }
+.you-get .yg.sep::before { content: " · "; }
+.you-get .yf.first::before { content: " — data in "; }
+.you-get .yf.sep::before { content: ", "; }
 
 /* The line under an option: the images that run and where the data goes. */
 .you-get {
@@ -515,3 +578,11 @@ h1 .app-icon {
   color: var(--md-default-fg-color--light);
 }
 .you-get code { font-size: .68rem; }
+
+/* Phone: the part switches two to a row, names only. */
+@media (max-width: 600px) {
+  .deploy-choices .toggles { grid-template-columns: 1fr 1fr; gap: .35em; }
+  .deploy-choices .toggle { padding: .45em .6em .45em 1.9em; }
+  .deploy-choices .toggle::before { top: .62em; }
+  .deploy-choices .t-doc { display: none; }
+}
