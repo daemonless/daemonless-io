@@ -97,9 +97,9 @@ podman run -d --name gitea \
 
 Multi-container apps (like Immich) need services to find each other. FreeBSD has some limitations here compared to Linux.
 
-### Option 1: Host Networking (Recommended)
+### Option 1: Host Networking
 
-The simplest approach today. All containers share the host network and communicate via `localhost`:
+All containers share the host network and communicate via `localhost`. Simple, but every service binds host ports; with `cni-dnsname` packaged (Option 2), names on a bridge are the better default:
 
 ```yaml
 services:
@@ -116,7 +116,7 @@ services:
 | Works out of the box | Less isolation |
 | Matches Linux behavior | Services bind to host ports |
 
-### Option 2: DNS Resolution (cni-dnsname)
+### Option 2: DNS Resolution (cni-dnsname, recommended)
 
 The `cni-dnsname` plugin enables containers to resolve each other by name (e.g., `postgres`, `redis`). This is required for multi-container apps like Immich and Mealie when using podman-compose.
 
@@ -159,6 +159,10 @@ podman inspect -f '{{.NetworkSettings.IPAddress}}' radarr
 ```
 
 Or create a network with static IPs in your compose file. More complex but avoids both host networking and dnsname.
+
+## An Address on Your LAN
+
+For apps that need to be seen on the LAN directly (UniFi adopting devices, Home Assistant discovery, mDNS), a container can get its own address on your network, by DHCP or a fixed one, through the [cni-epair](https://github.com/daemonless/cni-epair) plugin (`pkg install cni-epair`). The image must include `dhclient` for DHCP. [fjord's networking guide](https://fjord.daemonless.io/networking/#2-lan-networks) walks through it, and fjord sets it up for you.
 
 ## Comparison Summary
 

@@ -41,16 +41,31 @@ The default `ghcr.io` registry images are versioned using tags.
     ```
     This automatically stops the old container and creates a new one *only* if the image has changed.
 
+!!! warning "Check that it really restarted"
+    `podman-compose up -d` can exit 0 after failing to recreate a container. Check `podman ps`: the container's CREATED time should be just now.
+
 ### Automated Updates
 
-Podman has a built-in auto-update system.
+`podman auto-update` drives systemd units, which FreeBSD does not have. Schedule the pull and recreate instead, for example from `/etc/crontab`:
 
-1.  Start your container with the `--label "io.containers.autoupdate=registry"` flag.
-2.  Create a systemd user unit (or standard service) for the container.
-3.  Run `podman auto-update` periodically (e.g., via cron or timer).
+```
+# m  h  dom mon dow who   command
+30   4  *   *   *   root  cd /containers/radarr && /usr/local/bin/podman-compose pull && /usr/local/bin/podman-compose up -d
+```
 
-!!! note
-    This requires running the container as a systemd service, which is advanced usage. The manual `pull && restart` method is universally supported.
+[fjord](https://fjord.daemonless.io) updates a stack in one click and can roll the update back.
+
+### AppJail Director
+
+`appjail-director up` leaves a running jail alone unless its spec changed. To move a service to a newer image, destroy its jail and bring the project up again; `container: args:--pull` in the service's options pulls the image as it rebuilds:
+
+```bash
+appjail stop radarr
+appjail jail destroy -f radarr
+appjail-director up
+```
+
+A sidecar in a bundle (a database, Redis) has no `--pull`: pull its image first with `buildah pull --policy always <image>`.
 
 ## Backups
 

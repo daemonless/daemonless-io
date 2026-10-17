@@ -25,6 +25,9 @@ Daemonless images are standard OCI images—the same format used by Docker and P
 
 The project officially supports two primary runtimes. Choose the one that matches your background and requirements:
 
+!!! tip "Rather click than type?"
+    [fjord](https://fjord.daemonless.io) is a web UI for both: it checks and sets up the host (pf, networks, storage), installs these images from a catalog, and updates and rolls them back.
+
 | Feature | **Podman** | **AppJail** |
 | :--- | :--- | :--- |
 | **The Experience** | **Familiar.** Feels like Docker on Linux. | **Native.** Built for the FreeBSD way. |
@@ -68,8 +71,8 @@ Install Podman and container networking:
 pkg install podman-suite sysutils/podman-compose
 ```
 
-!!! info "ocijail 0.5.0+ Required"
-    `ocijail` version **0.5.0** or higher is required for .NET applications (Radarr/Sonarr) and PostgreSQL. This version natively supports the required jail parameters via OCI annotations.
+!!! info "ocijail 0.6.0 or newer"
+    .NET applications (Radarr, Sonarr) and PostgreSQL need jail parameters that `ocijail` sets from OCI annotations. Check the installed version with `pkg query %v ocijail` (`ocijail --version` lags: 0.6.1 prints 0.6.0).
 
 ### Host Configuration
 
@@ -157,7 +160,7 @@ Check the status:
 podman ps
 podman logs -f tautulli
 ```
-Access the UI at: `http://localhost:8181`
+Open `http://<server>:8181` from another machine. A published port is a `pf` redirect, and `pf` does not redirect the server's own connections, so `localhost` will not answer. From the server itself, use the container's address: `podman inspect -f '{{.NetworkSettings.IPAddress}}' tautulli`.
 
 ### .NET Applications
 Applications like **Radarr** and **Sonarr** require the `allow.mlock` jail annotation to function correctly on FreeBSD.
@@ -297,7 +300,17 @@ sysrc appjail_enable=YES
 
 ### .NET Applications
 
-In an `appjail-template(5)` file, you can define any `jail(8)` parameter, including the one used by .NET applications.
+In an `appjail-template(5)` file, you can define any `jail(8)` parameter, including the one .NET applications need. This is the `template.conf` the Radarr page ships:
+
+```
+exec.start: "/bin/sh /etc/rc"
+exec.stop: "/bin/sh /etc/rc.shutdown jail"
+mount.devfs
+persist
+allow.mlock
+```
+
+The service points at it with `- template: !ENV '${PWD}/template.conf'` under `options:` in `appjail-director.yml`.
 
 ### Run Your First Container
 

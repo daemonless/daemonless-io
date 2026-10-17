@@ -33,10 +33,10 @@ doas pkg update
 doas pkg install ocijail
 ```
 
-Verify you have version **0.5.0** or higher:
+Verify you have version **0.6.0** or higher. Ask pkg: `ocijail --version` lags releases (0.6.1 prints 0.6.0).
 
 ```bash
-ocijail --version
+pkg query %v ocijail
 ```
 
 ### From Ports
