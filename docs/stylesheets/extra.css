@@ -579,6 +579,10 @@ h1 .app-icon {
 }
 .you-get code { font-size: .68rem; }
 
+/* The placeholder plugin's settings table (Interactive Configuration) is
+   wider than a phone: the whole page scrolled sideways by ~50px. */
+.auto-input-table .table-div { overflow-x: auto; max-width: 100%; }
+
 /* Phone: the part switches two to a row, names only. */
 @media (max-width: 600px) {
   .deploy-choices .toggles { grid-template-columns: 1fr 1fr; gap: .35em; }
