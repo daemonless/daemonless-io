@@ -1444,6 +1444,14 @@ placeholders:
     description: SoundCraft Host Port
     validators:
     - port_number
+  CALIBRE_WEB_PORT:
+    default: '8083'
+    description: Calibre-Web Host Port
+    validators:
+    - port_number
+  CALIBRE_WEB_CONFIG_PATH:
+    default: calibre-web
+    description: Calibre-Web /config Path
 validators:
   port_number:
     name: Port Number
