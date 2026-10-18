@@ -1429,6 +1429,21 @@ placeholders:
   NODE_RED_CONFIG_PATH:
     default: node-red
     description: Node-RED /config Path
+  CADCRAFT_PORT:
+    default: '8092'
+    description: CADCraft Host Port
+    validators:
+    - port_number
+  FIGCRAFT_PORT:
+    default: '8090'
+    description: FigCraft Host Port
+    validators:
+    - port_number
+  SOUNDCRAFT_PORT:
+    default: '8091'
+    description: SoundCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
