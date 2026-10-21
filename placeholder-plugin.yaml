@@ -1452,6 +1452,14 @@ placeholders:
   CALIBRE_WEB_CONFIG_PATH:
     default: calibre-web
     description: Calibre-Web /config Path
+  NGINX_PORT:
+    default: '80'
+    description: Nginx Host Port
+    validators:
+    - port_number
+  NGINX_HTML_PATH:
+    default: nginx/html
+    description: Nginx /usr/local/www/html Path
 validators:
   port_number:
     name: Port Number
