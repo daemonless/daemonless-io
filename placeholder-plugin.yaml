@@ -1460,6 +1460,14 @@ placeholders:
   NGINX_HTML_PATH:
     default: nginx/html
     description: Nginx /usr/local/www/html Path
+  OPENSSH_SERVER_PORT:
+    default: '2222'
+    description: OpenSSH Server Host Port
+    validators:
+    - port_number
+  OPENSSH_SERVER_CONFIG_PATH:
+    default: openssh-server
+    description: OpenSSH Server /config Path
 validators:
   port_number:
     name: Port Number
