@@ -80,7 +80,7 @@ Daemonless uses a standardized toolchain. Choose your path below:
     git clone https://github.com/YOUR_USERNAME/radarr
     cd radarr
     ```
-    3. **Make your changes:** Edit `compose.yaml` (if modifying metadata), the `Containerfile`, or service scripts under `root/etc/services.d/`. Always run `dbuild generate` after modifying `compose.yaml`.
+    3. **Make your changes:** Edit `compose.yaml` (if modifying metadata), the `Containerfile`, or the scripts under `root/daemonless/` (the launcher in `libexec/`, setup in `init.d/`). Always run `dbuild generate` after modifying `compose.yaml`.
 
 ---
 
@@ -119,7 +119,7 @@ Before you open a Pull Request, run through this checklist to ensure a smooth re
 
 - [ ] **License Check:** Upstream license verified using the [SPDX identifier](https://spdx.org/licenses/). Never guess a license; if none exists, use `NOASSERTION`.
 - [ ] **Metadata Sync:** `dbuild generate` has been run to sync `compose.yaml` metadata into `Containerfile`, `Containerfile.pkg`, and `README.md`.
-- [ ] **Permissions:** Run scripts (`root/etc/services.d/<app>/run`) use `s6-setuidgid bsd` so the app doesn't run as root.
+- [ ] **Permissions:** The app runs as `bsd`, not root: on base-exec `/init` drops to it before running `CMD`; on base-rcd each unit's launcher uses `exec dsu bsd ...`.
 - [ ] **Testing:** `.daemonless/config.yaml` is configured and `dbuild test` passes locally.
 - [ ] **CI Pipeline:** `.github/workflows/` is present and configured (Woodpecker is maintained as a fallback Plan B).
 

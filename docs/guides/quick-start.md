@@ -61,7 +61,7 @@ Both are first-class citizens in the Daemonless ecosystem. Pick whichever fits y
     If you're coming from Docker, "requires root on the host" might set off alarm bells — on Linux, that can genuinely mean weaker isolation. On FreeBSD it doesn't, because host privilege and workload privilege are two separate axes:
 
     1. **Host privilege is an admin requirement, not a workload property.** Podman/AppJail need root on the *host* to create and manage jails, the same way `jail(8)` itself always has and the same way Docker's own daemon runs as root on Linux. Rootless jail management is an active area of upstream FreeBSD development; until it lands, jail creation needs root — that says nothing about what runs *inside* the jail.
-    2. **daemonless images drop privileges immediately.** The base image's `s6` supervisor starts as root only long enough to do required setup (fixing `/config` ownership, etc.), then `exec`s the application via `s6-setuidgid bsd` — dropping to an unprivileged user (**UID:GID 1000:1000** by default, remappable via `PUID`/`PGID`) *before* Jellyfin, Immich, Navidrome, and most other apps start. The application itself does not run as root inside the container.
+    2. **daemonless images drop privileges immediately.** The image's `/init` starts as root only long enough to do required setup (fixing `/config` ownership, etc.), then `exec`s the application via `dsu bsd` — dropping to an unprivileged user (**UID:GID 1000:1000** by default, remappable via `PUID`/`PGID`) *before* Jellyfin, Immich, Navidrome, and most other apps start. The application itself does not run as root inside the container.
 
     On top of that, the container boundary is a real FreeBSD **jail** — the same kernel-level isolation primitive Bastille and hand-rolled `jail.conf` setups have used for two decades, not a namespace approximation of one. Needing root to manage jails on the host is unrelated to how privileged the workload is once it's running inside one — and daemonless images are unprivileged on that second axis by default.
 
@@ -358,7 +358,7 @@ Access the UI at `http://10.0.0.3:8181`
 
 1. `-P`: The environment variables, working directory, and user you have specified will be preserved, which means that if you restart the jail, AppJail will use the parameters you defined in this command. If the OCI image provides a command to be executed, it will also run in the background, even if the jail is restarted.
 2. `-d`: The process will run in the background.
-3. `-u root`: We run `s6` as root, but keep in mind that the process is already running as the `bsd` user inside the jail, which is also mapped based on the `PUID` and `PGID` environment variables. We recommend specifying the user explicitly. See [this pr](https://github.com/daemonless/dbuild/pull/7) for more details.
+3. `-u root`: The image's `/init` starts as root, but keep in mind that the application itself runs as the `bsd` user inside the jail, which is also mapped based on the `PUID` and `PGID` environment variables. We recommend specifying the user explicitly. See [this pr](https://github.com/daemonless/dbuild/pull/7) for more details.
 4. `-o overwrite=force`: Destroy the jail if it already exists, so that AppJail will recreate it instead of refusing to do so.
 5. `-o virtualnet=":<random> default" -o nat -o expose="8181:8181"`: Network options. In this case, we chose to use Virtual Networks.
 6. `-o container="args:--pull"`: Let's pull the image every time `buildah(1)` detects changes, so that AppJail always runs the jail using the latest image.

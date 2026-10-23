@@ -77,7 +77,7 @@ If no `mode` is set in config, CIT picks the highest applicable mode:
 
 Verifies the container starts successfully:
 
-- s6-overlay initializes
+- `/init` runs the setup scripts and starts the app
 - Services start without errors
 - `echo ok` succeeds via exec
 
@@ -267,7 +267,7 @@ CIT serves as a functional regression suite for the entire FreeBSD container sta
 
 - **FreeBSD 15 kernel** -- validates syscalls, socket binding, process management
 - **ocijail runtime** -- ensures jail isolation works correctly
-- **s6-overlay** -- verifies init system behavior
+- **The image's init** -- `/init` setup, and rcd on multi-service images
 
 Every image build runs CIT in a real FreeBSD VM, not emulation. The push step is **unreachable** if any gate fails, ensuring `ghcr.io/daemonless/*` contains only validated containers.
 
