@@ -13,7 +13,7 @@ description: "What compose.yaml, .daemonless/config.yaml, Containerfile template
 
 **`Containerfile*.j2` is the image recipe.** It says which base image to use, which packages to install, how upstream bits are fetched, and what labels or build-time values the generated `Containerfile` needs.
 
-**`root/` is the filesystem overlay.** Files here are copied into the image, including s6 service scripts, init scripts, default configs, and helper scripts.
+**`root/` is the filesystem overlay.** Files here are copied into the image, including the app's launcher, setup scripts, rcd units, default configs, and helper scripts.
 
 Generated files such as `Containerfile`, `Containerfile.pkg`, and `README.md` are outputs from `dbuild generate`. Change the source file, then regenerate.
 
@@ -57,8 +57,9 @@ The generated `Containerfile` should get standard labels from `dbuild generate`;
 
 Use this for files that need to exist inside the image:
 
-- `etc/services.d/<service>/run` scripts
-- `etc/cont-init.d/` initialization scripts
+- `daemonless/libexec/<app>`, the launcher the image runs as `CMD`
+- `daemonless/init.d/` setup scripts, run as root before the app
+- `usr/local/etc/rcd.d/<service>.ucl` units, for multi-service images on base-rcd
 - default config files
 - healthcheck helpers
 - permission or ownership setup scripts

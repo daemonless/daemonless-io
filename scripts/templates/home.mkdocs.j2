@@ -112,7 +112,7 @@ hide:
 flowchart TD
     host["FreeBSD Host Kernel"] --> runtime["Podman / ocijail / runj"]
     subgraph isolation["Native Jail Isolation (Zero VM Overhead)"]
-        runtime --> base["Base Image (s6 init)"]
+        runtime --> base["Base Image (/init, rcd for appliances)"]
         base --> apps["Image Fleet (Plex, Radarr, Nextcloud...)"]
     end
 
@@ -130,7 +130,7 @@ flowchart TD
 
     ---
 
-    Built on **FreeBSD**, utilizing `s6` for robust process supervision and native jails for secure isolation. Works with Podman, AppJail, or any OCI runtime.
+    Built on **FreeBSD** and native jails. The app is the container's process, so Podman, AppJail or Kubernetes restart, stop and log it like any other container. Appliances that bundle several services run them under `rcd(8)`.
 
 -   :material-feather: **Minimal Footprint**
 

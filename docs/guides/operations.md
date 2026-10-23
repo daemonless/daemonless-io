@@ -123,9 +123,15 @@ If a container fails to start:
 podman logs radarr
 ```
 
-If the application crashes but the container is running:
-Check the internal service logs mapped to your host:
+Everything the container prints, setup and app alike, is in `podman logs`.
+On most images the app is the container's process: when it crashes, the
+container exits and the restart policy brings it back. Multi-service appliances
+restart the crashed service inside the running container instead. Either way the
+crash is in the log:
 
 ```bash
-tail -f /path/to/config/radarr/logs/daemonless/radarr/current
+podman logs --tail 100 radarr
 ```
+
+Apps that write their own log files keep them under `/config` (for example
+`/path/to/config/radarr/logs/`).
