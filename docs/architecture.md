@@ -14,12 +14,12 @@ How daemonless container images are layered.
 ```mermaid
 flowchart LR
     base_core["base-core<br/><small>3 images</small>"]
-    base_exec["base-exec<br/><small>59 images</small>"]
-    base_rcd["base-rcd<br/><small>12 images</small>"]
-    base["base<br/><small>14 images</small>"]
+    base_exec["base-exec<br/><small>65 images</small>"]
+    base_rcd["base-rcd<br/><small>16 images</small>"]
+    base["base<br/><small>3 images</small>"]
     arr_base["arr-base<br/><small>4 images</small>"]
-    nginx_base["nginx-base<br/><small>8 images</small>"]
-    nginx["nginx<br/><small>13 images</small>"]
+    nginx_base["nginx-base<br/><small>9 images</small>"]
+    nginx["nginx<br/><small>14 images</small>"]
     postgres["postgres<br/><small>2 images</small>"]
     node["node"]
     python["python"]
@@ -79,34 +79,85 @@ When an image changes, the images built on it are rebuilt:
 
 ## Images by Parent
 
-### base-core (3)
+Each parent is indented under the image it is built on.
 
-[ffmpeg](images/ffmpeg.md), [jellyfin-ffmpeg](images/jellyfin-ffmpeg.md), [playwright](images/playwright.md)
+<div class="by-parent" style="--depth: 0" markdown>
 
-### base-exec (59)
+### [base-core](images/base-core.md) (3)
 
-[actual](images/actual.md), [adguardhome](images/adguardhome.md), [adguardhome-sync](images/adguardhome-sync.md), [affine](images/affine.md), [arr-base-exec](images/arr-base-exec.md), [audiobookshelf](images/audiobookshelf.md), [authelia-server](images/authelia-server.md), [backrest](images/backrest.md), [bazarr](images/bazarr.md), [bichon](images/bichon.md), [caddy](images/caddy.md), [cloudflared](images/cloudflared.md), [emby](images/emby.md), [filebrowser-quantum](images/filebrowser-quantum.md), [grafana](images/grafana.md), [grimmory](images/grimmory.md), [haproxy](images/haproxy.md), [headscale](images/headscale.md), [home-assistant](images/home-assistant.md), [homepage](images/homepage.md), [hugo](images/hugo.md), [immich-ml](images/immich-ml.md), [immich-public-proxy](images/immich-public-proxy.md), [immich-server](images/immich-server.md), [jellyfin](images/jellyfin.md), [languagetool](images/languagetool.md), [lldap](images/lldap.md), [mariadb](images/mariadb.md), [mealie](images/mealie.md), [memcached](images/memcached.md), [n8n](images/n8n.md), [navidrome](images/navidrome.md), [nocodb](images/nocodb.md), [node-red](images/node-red.md), [openssh-server](images/openssh-server.md), [plex](images/plex.md), [qbittorrent](images/qbittorrent.md), [radicale](images/radicale.md), [redis](images/redis.md), [retroassembly](images/retroassembly.md), [sabnzbd](images/sabnzbd.md), [samba](images/samba.md), [seaweedfs](images/seaweedfs.md), [seerr](images/seerr.md), [stirling-pdf](images/stirling-pdf.md), [stump](images/stump.md), [superset](images/superset.md), [syncthing](images/syncthing.md), [tailscale](images/tailscale.md), [tautulli](images/tautulli.md), [traefik](images/traefik.md), [transmission](images/transmission.md), [ubooquity](images/ubooquity.md), [uptime-kuma](images/uptime-kuma.md), [versitygw](images/versitygw.md), [victoriametrics](images/victoriametrics.md), [vikunja](images/vikunja.md), [wagtail](images/wagtail.md), [zensical](images/zensical.md)
+[ffmpeg](images/ffmpeg.md) [jellyfin-ffmpeg](images/jellyfin-ffmpeg.md) [playwright](images/playwright.md)
+{ .image-chips }
 
-### base-rcd (12)
+</div>
 
-[clamav](images/clamav.md), [erpnext](images/erpnext.md), [forgejo](images/forgejo.md), [garage](images/garage.md), [gitea](images/gitea.md), [readmeabook](images/readmeabook.md), [sparkyfitness](images/sparkyfitness.md), [stalwart](images/stalwart.md), [sylve](images/sylve.md), [transmission-wireguard](images/transmission-wireguard.md), [unifi](images/unifi.md), [woodpecker](images/woodpecker.md)
+<div class="by-parent" style="--depth: 1" markdown>
 
-### base (14)
+### [base-exec](images/base-exec.md) (64)
 
-[booklore](images/booklore.md), [bulwark-webmail](images/bulwark-webmail.md), [compose-build-probe](images/compose-build-probe.md), [erp-head](images/erp-head.md), [grimmory-gen](images/grimmory-gen.md), [opencloud-radicale](images/opencloud-radicale.md), [overseerr](images/overseerr.md), [paperless-build](images/paperless-build.md), [paperless-ngx](images/paperless-ngx.md), [papra-build](images/papra-build.md), [rmab-fix](images/rmab-fix.md), [uos-gen](images/uos-gen.md), [uos-gen-main](images/uos-gen-main.md), [vikunja-choices](images/vikunja-choices.md)
+[actual](images/actual.md) [adguardhome](images/adguardhome.md) [adguardhome-sync](images/adguardhome-sync.md) [affine](images/affine.md) [arr-base-exec](images/arr-base-exec.md) [audiobookshelf](images/audiobookshelf.md) [authelia-server](images/authelia-server.md) [backrest](images/backrest.md) [bazarr](images/bazarr.md) [bichon](images/bichon.md) [bulwark-webmail](images/bulwark-webmail.md) [caddy](images/caddy.md) [calibre-web](images/calibre-web.md) [clickhouse](images/clickhouse.md) [cloudflared](images/cloudflared.md) [emby](images/emby.md) [filebrowser-quantum](images/filebrowser-quantum.md) [grafana](images/grafana.md) [grimmory](images/grimmory.md) [haproxy](images/haproxy.md) [headscale](images/headscale.md) [home-assistant](images/home-assistant.md) [homepage](images/homepage.md) [hugo](images/hugo.md) [immich-ml](images/immich-ml.md) [immich-public-proxy](images/immich-public-proxy.md) [immich-server](images/immich-server.md) [jellyfin](images/jellyfin.md) [languagetool](images/languagetool.md) [lldap](images/lldap.md) [mariadb](images/mariadb.md) [mealie](images/mealie.md) [memcached](images/memcached.md) [n8n](images/n8n.md) [navidrome](images/navidrome.md) [nocodb](images/nocodb.md) [node-red](images/node-red.md) [openssh-server](images/openssh-server.md) [plausible](images/plausible.md) [plex](images/plex.md) [qbittorrent](images/qbittorrent.md) [redis](images/redis.md) [retroassembly](images/retroassembly.md) [sabnzbd](images/sabnzbd.md) [samba](images/samba.md) [seaweedfs](images/seaweedfs.md) [seerr](images/seerr.md) [stirling-pdf](images/stirling-pdf.md) [stump](images/stump.md) [superset](images/superset.md) [syncthing](images/syncthing.md) [tailscale](images/tailscale.md) [tautulli](images/tautulli.md) [thelounge](images/thelounge.md) [traefik](images/traefik.md) [transmission](images/transmission.md) [trek](images/trek.md) [ubooquity](images/ubooquity.md) [uptime-kuma](images/uptime-kuma.md) [versitygw](images/versitygw.md) [victoriametrics](images/victoriametrics.md) [vikunja](images/vikunja.md) [wagtail](images/wagtail.md) [zensical](images/zensical.md)
+{ .image-chips }
 
-### arr-base (4)
+</div>
 
-[lidarr](images/lidarr.md), [prowlarr](images/prowlarr.md), [radarr](images/radarr.md), [sonarr](images/sonarr.md)
+<div class="by-parent" style="--depth: 2" markdown>
 
-### nginx-base (8)
+### [arr-base](images/arr-base.md) (4)
 
-[heimdall](images/heimdall.md), [librenms](images/librenms.md), [librenms-backup-2026-09-29](images/librenms-backup-2026-09-29.md), [nextcloud](images/nextcloud.md), [onlyoffice](images/onlyoffice.md), [organizr](images/organizr.md), [smokeping](images/smokeping.md), [vaultwarden](images/vaultwarden.md)
+[lidarr](images/lidarr.md) [prowlarr](images/prowlarr.md) [radarr](images/radarr.md) [sonarr](images/sonarr.md)
+{ .image-chips }
 
-### nginx (13)
+</div>
 
-[cadcraft](images/cadcraft.md), [designcraft](images/designcraft.md), [effectcraft](images/effectcraft.md), [figcraft](images/figcraft.md), [filmcraft](images/filmcraft.md), [gridcraft](images/gridcraft.md), [lightcraft](images/lightcraft.md), [openspeedtest](images/openspeedtest.md), [pdfcraft](images/pdfcraft.md), [photocraft](images/photocraft.md), [soundcraft](images/soundcraft.md), [vectorcraft](images/vectorcraft.md), [wordcraft](images/wordcraft.md)
+<div class="by-parent" style="--depth: 2" markdown>
 
-### postgres (2)
+### [nginx](images/nginx.md) (14)
 
-[cnpg-postgres](images/cnpg-postgres.md), [immich-postgres](images/immich-postgres.md)
+[cadcraft](images/cadcraft.md) [deckcraft](images/deckcraft.md) [designcraft](images/designcraft.md) [effectcraft](images/effectcraft.md) [figcraft](images/figcraft.md) [filmcraft](images/filmcraft.md) [gridcraft](images/gridcraft.md) [lightcraft](images/lightcraft.md) [openspeedtest](images/openspeedtest.md) [pdfcraft](images/pdfcraft.md) [photocraft](images/photocraft.md) [soundcraft](images/soundcraft.md) [vectorcraft](images/vectorcraft.md) [wordcraft](images/wordcraft.md)
+{ .image-chips }
+
+</div>
+
+<div class="by-parent" style="--depth: 2" markdown>
+
+### [postgres](images/postgres.md) (2)
+
+[cnpg-postgres](images/cnpg-postgres.md) [immich-postgres](images/immich-postgres.md)
+{ .image-chips }
+
+</div>
+
+<div class="by-parent" style="--depth: 2" markdown>
+
+### [radicale](images/radicale.md) (1)
+
+[opencloud-radicale](images/opencloud-radicale.md)
+{ .image-chips }
+
+</div>
+
+<div class="by-parent" style="--depth: 1" markdown>
+
+### [base-rcd](images/base-rcd.md) (16)
+
+[clamav](images/clamav.md) [erpnext](images/erpnext.md) [forgejo](images/forgejo.md) [garage](images/garage.md) [gitea](images/gitea.md) [paperless-ngx](images/paperless-ngx.md) [papra](images/papra.md) [readmeabook](images/readmeabook.md) [reverse-proxy](images/reverse-proxy.md) [sparkyfitness](images/sparkyfitness.md) [stalwart](images/stalwart.md) [sylve](images/sylve.md) [transmission-wireguard](images/transmission-wireguard.md) [unifi](images/unifi.md) [unifi-os-server](images/unifi-os-server.md) [woodpecker](images/woodpecker.md)
+{ .image-chips }
+
+</div>
+
+<div class="by-parent" style="--depth: 2" markdown>
+
+### [nginx-base](images/nginx-base.md) (9)
+
+[heimdall](images/heimdall.md) [librenms](images/librenms.md) [nextcloud](images/nextcloud.md) [nginx-php-fpm](images/nginx-php-fpm.md) [onlyoffice](images/onlyoffice.md) [organizr](images/organizr.md) [pkg-cache](images/pkg-cache.md) [smokeping](images/smokeping.md) [vaultwarden](images/vaultwarden.md)
+{ .image-chips }
+
+</div>
+
+<div class="by-parent" style="--depth: 1" markdown>
+
+### [base](images/base.md) (3)
+
+[base-manifest-test](images/base-manifest-test.md) [booklore](images/booklore.md) [outline](images/outline.md)
+{ .image-chips }
+
+</div>

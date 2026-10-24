@@ -90,6 +90,20 @@ def link(name: str) -> str:
     return name
 
 
+def groups(images: dict, node: str, depth: int = 0) -> list[tuple[str, int, list[str]]]:
+    """(parent, depth, apps) depth-first, so each parent follows the one it is built on."""
+    kids = children(images, node)
+    parents = [k for k in kids if k in BASES or k in INTERMEDIATES or children(images, k)]
+    # bases first, then intermediates, then apps that are parents themselves
+    order = [*BASES, *INTERMEDIATES]
+    parents.sort(key=lambda k: (order.index(k) if k in order else len(order), k))
+    apps = [k for k in kids if k not in parents]
+    out = [(node, depth, apps)] if apps else []
+    for parent in parents:
+        out += groups(images, parent, depth + 1)
+    return out
+
+
 def mermaid(images: dict) -> str:
     nodes = [b for b in BASES if b in images] + [i for i in INTERMEDIATES if i in images]
     lines = [
@@ -121,14 +135,19 @@ def generate_page(images: dict) -> str:
     inter_rows = "\n".join(
         f"| **{i}** | {images.get(i) or '-'} | {desc} |" for i, desc in INTERMEDIATES.items() if i in images
     )
-    # apps can be parents too (opencloud-radicale is built on radicale)
-    others = sorted({p for p in images.values() if p and p not in BASES and p not in INTERMEDIATES})
-    groups = []
-    for parent in [*BASES, *INTERMEDIATES, *others]:
-        apps = [c for c in children(images, parent) if c not in BASES and c not in INTERMEDIATES]
-        if apps:
-            groups.append(f"### {parent} ({len(apps)})\n\n" + ", ".join(link(a) for a in apps))
-    groups_md = "\n\n".join(groups)
+    # roots are images whose runtime stage starts from something outside daemonless
+    roots = sorted(n for n, p in images.items() if p not in images)
+    sections = []
+    for parent, depth, apps in (g for root in roots for g in groups(images, root)):
+        # md_in_html keeps the heading and links markdown; .by-parent / .image-chips
+        # (stylesheets/extra.css) indent by --depth and lay the links out as chips
+        sections.append(
+            f'<div class="by-parent" style="--depth: {depth}" markdown>\n\n'
+            f"### {link(parent)} ({len(apps)})\n\n"
+            + " ".join(link(a) for a in apps)
+            + "\n{ .image-chips }\n\n</div>"
+        )
+    groups_md = "\n\n".join(sections)
 
     return f"""---
 title: "Architecture: How Daemonless Container Images Are Built"
@@ -177,6 +196,8 @@ When an image changes, the images built on it are rebuilt:
 3. An intermediate image changes: rebuild its children only
 
 ## Images by Parent
+
+Each parent is indented under the image it is built on.
 
 {groups_md}
 """
