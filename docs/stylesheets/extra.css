@@ -590,3 +590,51 @@ h1 .app-icon {
   .deploy-choices .toggle::before { top: .62em; }
   .deploy-choices .t-doc { display: none; }
 }
+
+/* Architecture: Images by Parent. Each group sits under the image it is built
+   on; --depth comes from scripts/generate-architecture.py. */
+.by-parent {
+  margin-left: calc(var(--depth) * 1.75rem);
+  margin-bottom: 1.5rem;
+}
+
+.by-parent[style*="--depth: 0"] {
+  margin-left: 0;
+}
+
+.by-parent:not([style*="--depth: 0"]) {
+  border-left: 2px solid var(--md-default-fg-color--lightest);
+  padding-left: 1rem;
+}
+
+.by-parent h3 {
+  margin: 0 0 0.6rem;
+}
+
+.by-parent h3 a {
+  color: inherit;
+}
+
+.image-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.image-chips a {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.image-chips a:hover {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
