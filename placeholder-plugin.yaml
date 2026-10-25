@@ -1468,6 +1468,9 @@ placeholders:
   OPENSSH_SERVER_CONFIG_PATH:
     default: openssh-server
     description: OpenSSH Server /config Path
+  PLAUSIBLE_CONFIG_PATH:
+    default: plausible
+    description: Plausible Analytics /config Path
 validators:
   port_number:
     name: Port Number
