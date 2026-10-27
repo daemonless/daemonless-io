@@ -1471,6 +1471,17 @@ placeholders:
   PLAUSIBLE_CONFIG_PATH:
     default: plausible
     description: Plausible Analytics /config Path
+  REVERSE_PROXY_PORT:
+    default: '80'
+    description: Daemonless Reverse Proxy Host Port
+    validators:
+    - port_number
+  REVERSE_PROXY_CONFIG_PATH:
+    default: reverse-proxy
+    description: Daemonless Reverse Proxy /config Path
+  REVERSE_PROXY_DATA_PATH:
+    default: reverse-proxy/data
+    description: Daemonless Reverse Proxy /data Path
 validators:
   port_number:
     name: Port Number
