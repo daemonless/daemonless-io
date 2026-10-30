@@ -1482,6 +1482,14 @@ placeholders:
   REVERSE_PROXY_DATA_PATH:
     default: reverse-proxy/data
     description: Daemonless Reverse Proxy /data Path
+  BLOCKY_PORT:
+    default: '4000'
+    description: Blocky Host Port
+    validators:
+    - port_number
+  BLOCKY_CONFIG_PATH:
+    default: blocky
+    description: Blocky /config Path
 validators:
   port_number:
     name: Port Number
