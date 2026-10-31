@@ -1490,6 +1490,11 @@ placeholders:
   BLOCKY_CONFIG_PATH:
     default: blocky
     description: Blocky /config Path
+  SOLIDCRAFT_PORT:
+    default: '8093'
+    description: SolidCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
