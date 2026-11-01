@@ -1503,6 +1503,12 @@ placeholders:
   BABYBUDDY_CONFIG_PATH:
     default: babybuddy
     description: Baby Buddy /config Path
+  K9S_KUBECONFIG_PATH:
+    default: k9s/kubeconfig
+    description: k9s /kubeconfig Path
+  K9S_CONFIG_PATH:
+    default: k9s
+    description: k9s /config Path
 validators:
   port_number:
     name: Port Number
