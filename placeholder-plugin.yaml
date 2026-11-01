@@ -1495,6 +1495,14 @@ placeholders:
     description: SolidCraft Host Port
     validators:
     - port_number
+  BABYBUDDY_PORT:
+    default: '8000'
+    description: Baby Buddy Host Port
+    validators:
+    - port_number
+  BABYBUDDY_CONFIG_PATH:
+    default: babybuddy
+    description: Baby Buddy /config Path
 validators:
   port_number:
     name: Port Number
