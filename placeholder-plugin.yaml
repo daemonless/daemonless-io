@@ -1509,6 +1509,11 @@ placeholders:
   K9S_CONFIG_PATH:
     default: k9s
     description: k9s /config Path
+  CRAFT_ANYTHING_PORT:
+    default: '8094'
+    description: Craft Anything Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
