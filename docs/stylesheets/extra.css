@@ -638,3 +638,22 @@ h1 .app-icon {
   border-color: var(--md-accent-fg-color);
   color: var(--md-accent-fg-color);
 }
+
+/* An image page's demo: a dark and a light take, one shown per scheme
+   (javascripts/demo-video.js plays only the visible one). */
+.dl-demo {
+  margin: 1.2em 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dl-demo video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+[data-md-color-scheme="slate"] .dl-demo-light,
+[data-md-color-scheme="default"] .dl-demo-dark {
+  display: none;
+}

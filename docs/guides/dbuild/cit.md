@@ -150,7 +150,9 @@ Before running port/health checks, CIT watches container logs for a readiness pa
 Warmup complete | services.d.*done | Application started | Startup complete | listening on | is ready
 ```
 
-Override with the `ready` field:
+Images built on `base-exec` complete their `/daemonless/init.d/` setup and hand execution directly to the application (`exec dsu bsd <CMD>`). Many applications print their own startup confirmations (e.g. `listening on`, `Application started`, or `is ready`).
+
+Override with the `ready` field in `.daemonless/config.yaml`:
 
 ```yaml
 cit:

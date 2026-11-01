@@ -105,14 +105,22 @@ podman run ghcr.io/daemonless/radarr:6.0.4.10291-pkg-latest
 
 ## Base Image Tags
 
-The base image (`ghcr.io/daemonless/base`) uses a similar scheme:
+Daemonless provides three primary base images:
+
+*   **`ghcr.io/daemonless/base-exec`**: Standard base for single-process containers (runs `/init` and drops to `bsd`).
+*   **`ghcr.io/daemonless/base-rcd`**: Multi-process appliance base (runs FreeBSD `rcd(8)` foreground supervisor).
+*   **`ghcr.io/daemonless/base-core`**: Minimal userland foundation (no init system).
+
+*(Note: The legacy `ghcr.io/daemonless/base` image with s6-overlay is deprecated and retained only for backwards compatibility).*
+
+The base images tag releases against FreeBSD OS releases and package branches:
 
 | Tag | Description |
 |-----|-------------|
-| `:15` | FreeBSD 15 with Quarterly packages (stable default) |
-| `:15-quarterly` | Alias for `:15` |
-| `:15-latest` | FreeBSD 15 with Latest packages |
-| `:latest` | Points to `:15` |
+| `:15.1` | FreeBSD 15.1 with Quarterly packages (stable default) |
+| `:latest`, `:15`, `:pkg` | Aliases for `:15.1` |
+| `:15.1-latest` | FreeBSD 15.1 with Latest packages branch |
+| `:15-latest`, `:pkg-latest` | Aliases for `:15.1-latest` |
 
 ## Recommendations
 

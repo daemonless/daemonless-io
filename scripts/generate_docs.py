@@ -4,6 +4,7 @@ Generate MkDocs documentation from compose.yaml files in daemonless repos.
 Produces docs with interactive placeholder support.
 """
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -27,6 +28,20 @@ else:
 # pylint: disable=wrong-import-position
 from dbuild.config import load as load_dbuild_config, VALID_CATEGORIES
 from dbuild.docs import _enrich_metadata, SHARED_PATHS
+
+try:
+    from dbuild.docs import _collect_demo
+except ImportError:
+    def _collect_demo(base: Path) -> dict[str, dict[str, str]]:
+        demo_dir = base / ".daemonless" / "demo"
+        if not demo_dir.is_dir():
+            return {}
+        demo: dict[str, dict[str, str]] = {}
+        for p in sorted(demo_dir.iterdir()):
+            m = re.fullmatch(r"demo-(light|dark)\.(mp4|webm|jpg|gif)", p.name)
+            if m and p.is_file():
+                demo.setdefault(m[1], {})[m[2]] = str(p.relative_to(base))
+        return demo
 
 TEMPLATE_DIR = DBUILD_REPO / "dbuild" / "templates"
 LOCAL_TEMPLATE_DIR = SCRIPT_DIR / "templates"
@@ -535,6 +550,20 @@ def main():
                 shutil.copy2(f, screenshots_dst / f.name)
                 screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
         config["screenshots"] = screenshots
+
+        # Copy the demo (.daemonless/demo/demo-{light,dark}.*) to docs/images/demo/<name>/
+        demo_dst = DOCS_DIR / "demo" / config['name']
+        if demo_dst.exists():
+            shutil.rmtree(demo_dst)
+        demo = {}
+        for scheme, files in _collect_demo(repo).items():
+            for ext, rel in files.items():
+                if ext == "gif":  # the README's; the site plays the video
+                    continue
+                demo_dst.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(repo / rel, demo_dst / Path(rel).name)
+                demo.setdefault(scheme, {})[ext] = f"/images/demo/{config['name']}/{Path(rel).name}"
+        config["demo"] = demo
 
         # Copy logo from .daemonless/logo.* to docs/images/logos/<name>.<ext>
         logo_src = None

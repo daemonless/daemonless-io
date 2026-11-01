@@ -56,8 +56,11 @@ traefik/
 ├── Containerfile.j2            # Template for :latest (upstream binary)
 ├── Containerfile.pkg.j2        # Template for :pkg and :pkg-latest
 └── root/
-    ├── etc/services.d/traefik/run # s6 service supervisor script
-    └── healthz                 # Optional health check script
+    └── daemonless/
+        ├── init.d/
+        │   └── 20-traefik-config # Setup script, run as root before app
+        └── libexec/
+            └── traefik           # Starts the app (the image's CMD)
 ```
 
 ---
@@ -109,15 +112,16 @@ services:
 Replace the placeholder download logic with Traefik's real GitHub releases:
 
 ```dockerfile
-ARG BASE_VERSION=15
-FROM ghcr.io/daemonless/base:${BASE_VERSION}
+ARG BASE_VERSION=15.1
+FROM ghcr.io/daemonless/base-exec:${BASE_VERSION}
 
 ARG UPSTREAM_URL="https://api.github.com/repos/traefik/traefik/releases/latest"
 ARG UPSTREAM_JQ=".tag_name"
 
 # [dbuild] labels will be automatically injected here
 
-RUN pkg update && pkg install -y ca_root_nss jq && pkg clean -ay
+RUN pkg update && pkg install -y ca_root_nss jq && \
+    pkg clean -ay && rm -rf /var/cache/pkg/* /var/db/pkg/repos/*
 
 # Fetch version and binary using 'fetch' (FreeBSD native)
 RUN TRAEFIK_VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r "${UPSTREAM_JQ}") && \
@@ -128,9 +132,14 @@ RUN TRAEFIK_VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r "${UPSTREAM_JQ}") &&
     mkdir -p /app && echo "${TRAEFIK_VERSION}" > /app/version && \
     rm /tmp/traefik.tar.gz
 
-RUN mkdir -p /config && chown -R bsd:bsd /config
+RUN mkdir -p /config /config/dynamic /config/letsencrypt && \
+    chown -R bsd:bsd /config
 
 COPY root/ /
+RUN chmod +x /daemonless/libexec/* /daemonless/init.d/*
+
+ENV DAEMONLESS_USER=root
+CMD ["/daemonless/libexec/traefik"]
 ```
 
 ---
