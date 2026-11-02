@@ -1554,6 +1554,14 @@ placeholders:
   WEAVESTREAM_WORKER_BACKUP_PATH:
     default: weavestream-worker/backup
     description: Weavestream Worker /var/lib/weavestream/backup Path
+  NTFY_PORT:
+    default: '8080'
+    description: ntfy Host Port
+    validators:
+    - port_number
+  NTFY_CONFIG_PATH:
+    default: ntfy
+    description: ntfy /config Path
 validators:
   port_number:
     name: Port Number
