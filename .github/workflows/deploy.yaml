@@ -67,6 +67,11 @@ jobs:
           cd daemonless-io
           make generate
 
+      - name: Build site
+        run: |
+          cd daemonless-io
+          make build
+
       - name: Commit generated changes
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -83,6 +88,9 @@ jobs:
           git add -f placeholder-plugin.yaml
           git rm --ignore-unmatch mkdocs.yaml
           git diff --staged --quiet || git commit -m "Update generated docs and status [skip ci]"
+          # A run queued behind another checks out the dispatch's commit, not
+          # what the earlier run pushed.
+          git pull --rebase origin main
           git push
 
           # Commit to daemonless/daemonless (Org README)
@@ -91,12 +99,8 @@ jobs:
           git config user.email "272955332+daemonless-bot[bot]@users.noreply.github.com"
           git add README.md
           git diff --staged --quiet || git commit -m "Update Org README from daemonless-io [skip ci]"
+          git pull --rebase origin main
           git push
-
-      - name: Build site
-        run: |
-          cd daemonless-io
-          make build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

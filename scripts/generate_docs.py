@@ -181,10 +181,10 @@ def update_placeholders(configs):
                 "description": f"{config['title']} {v['path']} Path"
             }
 
-    # Clean up old SET_ keys and invalid names (dots or leading slash = literal path, not a variable)
+    # Clean up old SET_ keys and invalid names (dots or slashes = literal path, not a variable)
     plugin_data["placeholders"] = {
         k: v for k, v in plugin_data["placeholders"].items()
-        if not k.startswith("SET_") and "." not in k and not k.startswith("/")
+        if not k.startswith("SET_") and "." not in k and "/" not in k
     }
 
     with open(PLACEHOLDER_PLUGIN, 'w', encoding='utf-8') as f:
