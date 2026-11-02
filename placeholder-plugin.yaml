@@ -1539,6 +1539,9 @@ placeholders:
   WEAVESTREAM_WORKER_DATA/BACKUP_PATH:
     default: weavestream-worker/data/backup
     description: Weavestream Worker /var/lib/weavestream/backup Path
+  WEAVESTREAM_DATA16_PATH:
+    default: weavestream/data16
+    description: Weavestream /var/db/postgres/data16 Path
 validators:
   port_number:
     name: Port Number
