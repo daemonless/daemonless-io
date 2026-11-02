@@ -1522,23 +1522,11 @@ placeholders:
     description: Weavestream API Host Port
     validators:
     - port_number
-  WEAVESTREAM_API_DATA/FILES_PATH:
-    default: weavestream-api/data/files
-    description: Weavestream API /var/lib/weavestream/files Path
-  WEAVESTREAM_API_DATA/BACKUP_PATH:
-    default: weavestream-api/data/backup
-    description: Weavestream API /var/lib/weavestream/backup Path
   WEAVESTREAM_WEB_PORT:
     default: '3000'
     description: Weavestream Web Host Port
     validators:
     - port_number
-  WEAVESTREAM_WORKER_DATA/FILES_PATH:
-    default: weavestream-worker/data/files
-    description: Weavestream Worker /var/lib/weavestream/files Path
-  WEAVESTREAM_WORKER_DATA/BACKUP_PATH:
-    default: weavestream-worker/data/backup
-    description: Weavestream Worker /var/lib/weavestream/backup Path
   WEAVESTREAM_DATA16_PATH:
     default: weavestream/data16
     description: Weavestream /var/db/postgres/data16 Path
