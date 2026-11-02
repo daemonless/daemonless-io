@@ -89,6 +89,33 @@ cosign verify-attestation --type cyclonedx \
   ghcr.io/daemonless/base:15.1-aarch64
 ```
 
+### 3. Image signatures
+
+The images themselves are signed the same way, so a policy that asks "is
+this image signed?" (`cosign verify`, Kyverno, Sigstore policy-controller)
+has an answer. The signature is on the image digest: every tag of that
+digest verifies, the versioned ones included. A multi-arch image's bare tag
+is a manifest list with a digest of its own, signed by whichever builder
+assembled it last: keyless when that was GitHub, with the daemonless key
+when it was our arm64 builder. Verify a bare tag with the key; verify
+`-amd64` tags keyless and `-aarch64` tags with the key.
+
+amd64, keyless:
+
+```bash
+cosign verify \
+  --certificate-identity-regexp 'https://github.com/daemonless/.+' \
+  --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+  ghcr.io/daemonless/radarr:pkg
+```
+
+aarch64, with the daemonless key:
+
+```bash
+cosign verify --key https://daemonless.io/cosign.pub \
+  ghcr.io/daemonless/base:15.1-aarch64
+```
+
 ## CVE coverage
 
 The application-layer components carry standard purls (`pkg:npm/…`,
