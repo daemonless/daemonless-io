@@ -1562,6 +1562,9 @@ placeholders:
   NTFY_CONFIG_PATH:
     default: ntfy
     description: ntfy /config Path
+  WEAVESTREAM_DATA_PATH:
+    default: weavestream
+    description: Weavestream /var/lib/postgresql/data Path
 validators:
   port_number:
     name: Port Number
