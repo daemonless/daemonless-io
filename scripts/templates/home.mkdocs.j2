@@ -26,7 +26,7 @@ hide:
 <div class="what-is">
   <h2>What is Daemonless?</h2>
   <p>
-    Daemonless is a collection of <strong>FreeBSD-native OCI images</strong> that run directly on the FreeBSD kernel. It combines the power and security of Jails with the modern container ecosystem—compatible with <strong>Podman</strong>, <strong>AppJail</strong>, or any OCI-compliant runtime. No Linux virtual machines or overhead required.
+    Daemonless is a collection of <strong>FreeBSD-native OCI images</strong> that run directly on the FreeBSD kernel. It combines the power and security of Jails with the modern container ecosystem—compatible with <strong>Podman</strong>, <strong>AppJail</strong>, <a href="https://fjord.daemonless.io"><strong>fjord</strong></a>, <a href="https://sylve.io"><strong>Sylve</strong></a>, <a href="https://freecore.org"><strong>FreeCORE</strong></a>, or any OCI-compliant runtime. No Linux virtual machines or overhead required.
   </p>
 </div>
 
@@ -184,6 +184,46 @@ podman run -d --name plex \
 </div>
 
 `PUID`/`PGID` make Plex run as your own user, so its files on the host are yours. The host needs a few lines of `pf` first: see the [Quick Start](guides/quick-start.md).
+
+## Ecosystem & Platforms
+
+Run Daemonless images from the command line or through a FreeBSD management platform:
+
+<div class="grid cards" markdown>
+
+-   :material-console: **Podman & AppJail**
+
+    ---
+
+    Deploy directly with `podman-compose` or `appjail-director` on any FreeBSD 15 host.
+
+    [:octicons-arrow-right-24: Quick Start](guides/quick-start.md)
+
+-   :material-store: **fjord**
+
+    ---
+
+    Lightweight web app store and Compose stack manager for FreeBSD (Podman & AppJail).
+
+    [:octicons-arrow-right-24: fjord.daemonless.io](https://fjord.daemonless.io)
+
+-   :material-server: **Sylve**
+
+    ---
+
+    Modern FreeBSD virtualization and system management platform for Bhyve VMs, Jails, ZFS, and Daemonless OCI containers.
+
+    [:octicons-arrow-right-24: sylve.io](https://sylve.io)
+
+-   :material-nas: **FreeCORE**
+
+    ---
+
+    Community-driven FreeBSD and OpenZFS storage appliance carrying TrueNAS CORE forward, with native Daemonless container support.
+
+    [:octicons-arrow-right-24: freecore.org](https://freecore.org)
+
+</div>
 
 ## Guides & How-Tos
 
