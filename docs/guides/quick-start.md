@@ -26,7 +26,8 @@ Daemonless images are standard OCI images—the same format used by Docker and P
 The project officially supports two primary runtimes. Choose the one that matches your background and requirements:
 
 !!! tip "Rather click than type?"
-    [fjord](https://fjord.daemonless.io) is a web UI for both: it checks and sets up the host (pf, networks, storage), installs these images from a catalog, and updates and rolls them back.
+    * **[fjord](https://fjord.daemonless.io)** is a web UI for both Podman and AppJail: it checks and sets up the host (`pf`, networks, storage), installs these images from a catalog, and updates and rolls them back.
+    * **[Sylve](https://sylve.io)** (Bhyve VMs, Jails, and ZFS management platform) and **[FreeCORE](https://freecore.org)** (FreeBSD + OpenZFS NAS appliance) also support running Daemonless OCI containers natively.
 
 | Feature | **Podman** | **AppJail** |
 | :--- | :--- | :--- |
