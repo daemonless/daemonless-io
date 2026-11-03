@@ -37,9 +37,6 @@ PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
 DEFAULT_CONFIG_ROOT = "/containers"
 
-# Skip these repos (not container images)
-SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild", ".github", "ci-daemonless-io", "arr-base", "nginx-base", "base", "base-core"}
-
 # Local templates override dbuild templates
 env = jinja2.Environment(loader=jinja2.ChoiceLoader([
     jinja2.FileSystemLoader(str(LOCAL_TEMPLATE_DIR)),
