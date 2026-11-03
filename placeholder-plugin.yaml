@@ -1553,6 +1553,17 @@ placeholders:
   WEAVESTREAM_DATA_PATH:
     default: weavestream
     description: Weavestream /var/lib/postgresql/data Path
+  ZOT_PORT:
+    default: '5000'
+    description: zot Host Port
+    validators:
+    - port_number
+  ZOT_CONFIG_PATH:
+    default: zot
+    description: zot /config Path
+  ZOT_DATA_PATH:
+    default: zot/data
+    description: zot /data Path
 validators:
   port_number:
     name: Port Number
