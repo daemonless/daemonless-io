@@ -1564,6 +1564,14 @@ placeholders:
   ZOT_DATA_PATH:
     default: zot/data
     description: zot /data Path
+  PROSODY_PORT:
+    default: '5222'
+    description: Prosody Host Port
+    validators:
+    - port_number
+  PROSODY_CONFIG_PATH:
+    default: prosody
+    description: Prosody /config Path
 validators:
   port_number:
     name: Port Number
