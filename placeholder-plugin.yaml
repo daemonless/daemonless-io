@@ -1572,6 +1572,16 @@ placeholders:
   PROSODY_CONFIG_PATH:
     default: prosody
     description: Prosody /config Path
+  MATERIALCRAFT_PORT:
+    default: '8096'
+    description: MaterialCraft Host Port
+    validators:
+    - port_number
+  TEXTURECRAFT_PORT:
+    default: '8095'
+    description: TextureCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
