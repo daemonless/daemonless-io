@@ -66,10 +66,10 @@ Both are first-class citizens in the Daemonless ecosystem. Pick whichever fits y
 
     On top of that, the container boundary is a real FreeBSD **jail** — the same kernel-level isolation primitive Bastille and hand-rolled `jail.conf` setups have used for two decades, not a namespace approximation of one. Needing root to manage jails on the host is unrelated to how privileged the workload is once it's running inside one — and daemonless images are unprivileged on that second axis by default.
 
-Install Podman and container networking:
+Install Podman, Compose, and container DNS:
 
 ```bash
-pkg install podman-suite sysutils/podman-compose
+pkg install podman-suite sysutils/podman-compose cni-dnsname
 ```
 
 !!! info "ocijail 0.6.0 or newer"
@@ -81,9 +81,9 @@ pkg install podman-suite sysutils/podman-compose
 Configure the kernel to allow packet filtering for local traffic and ensure `fdescfs` is mounted.
 
 ```bash
-# Load pf (required before setting pf sysctls)
+# Load pf now, and from the loader on every boot
 kldload pf
-sysrc kld_list+=pf
+echo 'pf_load="YES"' >> /boot/loader.conf
 
 # Enable pf filtering for jails
 sysctl net.pf.filter_local=1
@@ -93,6 +93,9 @@ echo 'net.pf.filter_local=1' >> /etc/sysctl.conf
 mount -t fdescfs fdesc /dev/fd
 echo 'fdesc /dev/fd fdescfs rw 0 0' >> /etc/fstab
 ```
+
+!!! warning "Load pf from the loader, not `kld_list`"
+    pf only reads `net.pf.filter_local` when it is enabled. At boot, `/etc/sysctl.conf` is applied before `kld_list` modules are loaded, so the setting fails silently and pf comes up without it. The symptom is that the host cannot reach its own containers on `localhost:<port>` after a reboot until `service pf restart`, while other machines on the network can. Loading pf from `/boot/loader.conf` makes the sysctl exist when `sysctl.conf` is read.
 
 #### 2. Configure Firewall (`pf.conf`)
 Add the following to `/etc/pf.conf`. Replace `@INTERFACE@` if your external interface is different.
@@ -109,9 +112,10 @@ nat on $ext_if inet from <cni-nat> to any -> ($ext_if)
 nat on $ext_if inet from 10.88.0.0/16 to any -> ($ext_if)
 ```
 
-Reload the configuration:
+Enable pf and load the rules (`restart` ensures `pf` picks up `net.pf.filter_local=1` if it was already running):
 ```bash
-pfctl -f /etc/pf.conf
+sysrc pf_enable=YES
+service pf restart
 ```
 
 #### 3. Start Podman
@@ -161,7 +165,7 @@ Check the status:
 podman ps
 podman logs -f tautulli
 ```
-Open `http://<server>:8181` from another machine. A published port is a `pf` redirect, and `pf` does not redirect the server's own connections, so `localhost` will not answer. From the server itself, use the container's address: `podman inspect -f '{{.NetworkSettings.IPAddress}}' tautulli`.
+Open `http://<server>:8181` (or `http://localhost:8181` on the host itself; if `localhost` times out, verify `sysctl net.pf.filter_local` is `1` and run `service pf restart`).
 
 ### .NET Applications
 Applications like **Radarr** and **Sonarr** require the `allow.mlock` jail annotation to function correctly on FreeBSD.
