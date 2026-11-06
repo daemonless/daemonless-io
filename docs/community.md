@@ -35,6 +35,46 @@ Daemonless isn't just a collection of images; it's a project built by and for th
 
 </div>
 
+## Ecosystem & Platforms
+
+Daemonless images are standard FreeBSD OCI containers and work seamlessly across the FreeBSD ecosystem:
+
+<div class="grid cards" markdown>
+
+-   :material-store: **fjord**
+
+    ---
+
+    An app store and stack manager for FreeBSD containers on Podman and AppJail.
+
+    [:octicons-arrow-right-24: fjord.daemonless.io](https://fjord.daemonless.io)
+
+-   :material-server: **Sylve**
+
+    ---
+
+    Modern FreeBSD management platform for Bhyve VMs, Jails, ZFS, and OCI containers.
+
+    [:octicons-arrow-right-24: sylve.io](https://sylve.io)
+
+-   :material-nas: **FreeCORE**
+
+    ---
+
+    Community-driven FreeBSD and OpenZFS storage OS carrying TrueNAS CORE forward, with Daemonless container support.
+
+    [:octicons-arrow-right-24: freecore.org](https://freecore.org)
+
+-   :material-cube-outline: **AppJail**
+
+    ---
+
+    Feature-rich, FreeBSD-native jail automation and orchestration framework with OCI image support.
+
+    [:octicons-arrow-right-24: AppJail Handbook](https://appjail.readthedocs.io)
+
+</div>
+
 ## How to Get Involved
 
 We want this project to grow, and we need your help to do it. Here are a few ways to jump in:

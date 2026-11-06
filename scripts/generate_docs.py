@@ -37,9 +37,6 @@ PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
 DEFAULT_CONFIG_ROOT = "/containers"
 
-# Skip these repos (not container images)
-SKIP_REPOS = {"daemonless", "daemonless-io", "cit", "freebsd-ports", "dbuild", ".github", "ci-daemonless-io", "arr-base", "nginx-base", "base", "base-core"}
-
 # Local templates override dbuild templates
 env = jinja2.Environment(loader=jinja2.ChoiceLoader([
     jinja2.FileSystemLoader(str(LOCAL_TEMPLATE_DIR)),
@@ -181,10 +178,10 @@ def update_placeholders(configs):
                 "description": f"{config['title']} {v['path']} Path"
             }
 
-    # Clean up old SET_ keys and invalid names (dots or leading slash = literal path, not a variable)
+    # Clean up old SET_ keys and invalid names (dots or slashes = literal path, not a variable)
     plugin_data["placeholders"] = {
         k: v for k, v in plugin_data["placeholders"].items()
-        if not k.startswith("SET_") and "." not in k and not k.startswith("/")
+        if not k.startswith("SET_") and "." not in k and "/" not in k
     }
 
     with open(PLACEHOLDER_PLUGIN, 'w', encoding='utf-8') as f:

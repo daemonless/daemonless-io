@@ -67,6 +67,11 @@ jobs:
           cd daemonless-io
           make generate
 
+      - name: Build site
+        run: |
+          cd daemonless-io
+          make build
+
       - name: Commit generated changes
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -74,7 +79,7 @@ jobs:
           # Commit to daemonless-io (Nav, Status, and Placeholder config)
           cd daemonless-io
           git config user.name "daemonless-bot[bot]"
-          git config user.email "3247603+daemonless-bot[bot]@users.noreply.github.com"
+          git config user.email "272955332+daemonless-bot[bot]@users.noreply.github.com"
           # Generated files (zensical.toml, docs/index.md, docs/images/index.md,
           # docs/status.md, docs/daemonless-versions.json) are NOT committed —
           # `make generate` rebuilds them and `make build` deploys them, so
@@ -83,20 +88,19 @@ jobs:
           git add -f placeholder-plugin.yaml
           git rm --ignore-unmatch mkdocs.yaml
           git diff --staged --quiet || git commit -m "Update generated docs and status [skip ci]"
+          # A run queued behind another checks out the dispatch's commit, not
+          # what the earlier run pushed.
+          git pull --rebase origin main
           git push
 
           # Commit to daemonless/daemonless (Org README)
           cd ../daemonless
           git config user.name "daemonless-bot[bot]"
-          git config user.email "3247603+daemonless-bot[bot]@users.noreply.github.com"
+          git config user.email "272955332+daemonless-bot[bot]@users.noreply.github.com"
           git add README.md
           git diff --staged --quiet || git commit -m "Update Org README from daemonless-io [skip ci]"
+          git pull --rebase origin main
           git push
-
-      - name: Build site
-        run: |
-          cd daemonless-io
-          make build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
@@ -159,7 +163,11 @@ jobs:
           key: version-check-${{ steps.check.outputs.sig }}
 
       - name: Notify Discord on outdated images
+        id: notify
         if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        # A rejected ping must not fail the deploy, but it must not be marked
+        # announced either: the next deploy tries again.
+        continue-on-error: true
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_VERSION_WEBHOOK }}
         run: |
@@ -191,10 +199,20 @@ jobs:
                   end
                 end
               ) | join(", "))
-            ] | join("\n")
+            ] as $lines |
+            # Discord rejects an embed description over 4096 characters (the
+            # whole message, silently to curl -s). Keep whole lines that fit,
+            # then point at the status page for the rest.
+            (reduce $lines[] as $l ({out: [], len: 0, full: false};
+              if .full or .len + ($l | length) + 1 > 3900 then .full = true
+              else .out += [$l] | .len += ($l | length) + 1 end)) as $fit |
+            ($fit.out | join("\n")) +
+            (if ($lines | length) > ($fit.out | length) then
+              "\n…and \(($lines | length) - ($fit.out | length)) more on the [status page](https://daemonless.io/status/)"
+            else "" end)
           ' /tmp/versions.json)
 
-          curl -s -X POST "$DISCORD_WEBHOOK" \
+          curl -sS --fail-with-body -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg desc "$DESCRIPTION" \
@@ -202,7 +220,7 @@ jobs:
               '{embeds: [{title: "🔄 \($count) outdated image(s)", description: $desc, color: 16744272}]}')"
 
       - name: Mark outdated set as announced
-        if: steps.check.outputs.should_notify == 'true' && steps.dedup.outputs.cache-hit != 'true'
+        if: steps.notify.outcome == 'success'
         uses: actions/cache/save@v6
         with:
           path: .vc-state

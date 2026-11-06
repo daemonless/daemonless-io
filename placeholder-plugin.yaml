@@ -913,7 +913,7 @@ placeholders:
     description: Sonarr /config Path
   SPARKYFITNESS_UPLOADS_PATH:
     default: sparkyfitness/uploads
-    description: SparkyFitness /uploads Path
+    description: SparkyFitness /app/server/uploads Path
   SPARKYFITNESS_BACKUPS_PATH:
     default: sparkyfitness/backups
     description: SparkyFitness /backups Path
@@ -1301,6 +1301,287 @@ placeholders:
   VIKUNJA_CONFIG_PATH:
     default: vikunja
     description: Vikunja /config Path
+  ACTUAL_DATA_PATH:
+    default: actual/data
+    description: Actual Budget /data Path
+  BACKREST_PORT:
+    default: '9898'
+    description: Backrest Host Port
+    validators:
+    - port_number
+  BACKREST_CONFIG_PATH:
+    default: backrest
+    description: Backrest /config Path
+  BACKREST_DATA_PATH:
+    default: backrest/data
+    description: Backrest /data Path
+  LANGUAGETOOL_PORT:
+    default: '8010'
+    description: LanguageTool Host Port
+    validators:
+    - port_number
+  LANGUAGETOOL_CONFIG_PATH:
+    default: languagetool
+    description: LanguageTool /config Path
+  CRAFTING_APPS_PORT:
+    default: '8080'
+    description: Crafting Apps Host Port
+    validators:
+    - port_number
+  DESIGNCRAFT_PORT:
+    default: '8086'
+    description: DesignCraft Host Port
+    validators:
+    - port_number
+  EFFECTCRAFT_PORT:
+    default: '8085'
+    description: EffectCraft Host Port
+    validators:
+    - port_number
+  FILMCRAFT_PORT:
+    default: '8082'
+    description: FilmCraft Host Port
+    validators:
+    - port_number
+  LIGHTCRAFT_PORT:
+    default: '8083'
+    description: LightCraft Host Port
+    validators:
+    - port_number
+  PDFCRAFT_PORT:
+    default: '8084'
+    description: PdfCraft Host Port
+    validators:
+    - port_number
+  PHOTOCRAFT_PORT:
+    default: '8080'
+    description: PhotoCraft Host Port
+    validators:
+    - port_number
+  VECTORCRAFT_PORT:
+    default: '8081'
+    description: VectorCraft Host Port
+    validators:
+    - port_number
+  RADICALE_PORT:
+    default: '5232'
+    description: Radicale Host Port
+    validators:
+    - port_number
+  RADICALE_CONFIG_PATH:
+    default: radicale
+    description: Radicale /config Path
+  SPARKYFITNESS_BACKUP_PATH:
+    default: sparkyfitness/backup
+    description: SparkyFitness /app/server/backup Path
+  DECKCRAFT_PORT:
+    default: '8089'
+    description: DeckCraft Host Port
+    validators:
+    - port_number
+  GRIDCRAFT_PORT:
+    default: '8088'
+    description: GridCraft Host Port
+    validators:
+    - port_number
+  WORDCRAFT_PORT:
+    default: '8087'
+    description: WordCraft Host Port
+    validators:
+    - port_number
+  CLICKHOUSE_PORT:
+    default: '8123'
+    description: ClickHouse Host Port
+    validators:
+    - port_number
+  CLICKHOUSE_CLICKHOUSE_PATH:
+    default: clickhouse/clickhouse
+    description: ClickHouse /var/db/clickhouse Path
+  NGINX_PHP_FPM_PORT:
+    default: '80'
+    description: Nginx + PHP-FPM Host Port
+    validators:
+    - port_number
+  NGINX_PHP_FPM_CONFIG_PATH:
+    default: nginx-php-fpm
+    description: Nginx + PHP-FPM /config Path
+  THELOUNGE_PORT:
+    default: '9000'
+    description: Thelounge Host Port
+    validators:
+    - port_number
+  THELOUNGE_THELOUNGE_PATH:
+    default: thelounge/thelounge
+    description: Thelounge /var/opt/thelounge Path
+  VERSITYGW_PORT:
+    default: '7070'
+    description: Versitygw Host Port
+    validators:
+    - port_number
+  VERSITYGW_CONFIG_PATH:
+    default: versitygw
+    description: Versitygw /config Path
+  NODE_RED_PORT:
+    default: '1880'
+    description: Node-RED Host Port
+    validators:
+    - port_number
+  NODE_RED_CONFIG_PATH:
+    default: node-red
+    description: Node-RED /config Path
+  CADCRAFT_PORT:
+    default: '8092'
+    description: CADCraft Host Port
+    validators:
+    - port_number
+  FIGCRAFT_PORT:
+    default: '8090'
+    description: FigCraft Host Port
+    validators:
+    - port_number
+  SOUNDCRAFT_PORT:
+    default: '8091'
+    description: SoundCraft Host Port
+    validators:
+    - port_number
+  CALIBRE_WEB_PORT:
+    default: '8083'
+    description: Calibre-Web Host Port
+    validators:
+    - port_number
+  CALIBRE_WEB_CONFIG_PATH:
+    default: calibre-web
+    description: Calibre-Web /config Path
+  NGINX_PORT:
+    default: '80'
+    description: Nginx Host Port
+    validators:
+    - port_number
+  NGINX_HTML_PATH:
+    default: nginx/html
+    description: Nginx /usr/local/www/html Path
+  OPENSSH_SERVER_PORT:
+    default: '2222'
+    description: OpenSSH Server Host Port
+    validators:
+    - port_number
+  OPENSSH_SERVER_CONFIG_PATH:
+    default: openssh-server
+    description: OpenSSH Server /config Path
+  PLAUSIBLE_CONFIG_PATH:
+    default: plausible
+    description: Plausible Analytics /config Path
+  REVERSE_PROXY_PORT:
+    default: '80'
+    description: Daemonless Reverse Proxy Host Port
+    validators:
+    - port_number
+  REVERSE_PROXY_CONFIG_PATH:
+    default: reverse-proxy
+    description: Daemonless Reverse Proxy /config Path
+  REVERSE_PROXY_DATA_PATH:
+    default: reverse-proxy/data
+    description: Daemonless Reverse Proxy /data Path
+  BLOCKY_PORT:
+    default: '4000'
+    description: Blocky Host Port
+    validators:
+    - port_number
+  BLOCKY_CONFIG_PATH:
+    default: blocky
+    description: Blocky /config Path
+  SOLIDCRAFT_PORT:
+    default: '8093'
+    description: SolidCraft Host Port
+    validators:
+    - port_number
+  BABYBUDDY_PORT:
+    default: '8000'
+    description: Baby Buddy Host Port
+    validators:
+    - port_number
+  BABYBUDDY_CONFIG_PATH:
+    default: babybuddy
+    description: Baby Buddy /config Path
+  K9S_KUBECONFIG_PATH:
+    default: k9s/kubeconfig
+    description: k9s /kubeconfig Path
+  K9S_CONFIG_PATH:
+    default: k9s
+    description: k9s /config Path
+  CRAFT_ANYTHING_PORT:
+    default: '8094'
+    description: Craft Anything Host Port
+    validators:
+    - port_number
+  WEAVESTREAM_POSTGRES_PATH:
+    default: weavestream/postgres
+    description: Weavestream -./data}/postgres Path
+  WEAVESTREAM_API_PORT:
+    default: '4000'
+    description: Weavestream API Host Port
+    validators:
+    - port_number
+  WEAVESTREAM_WEB_PORT:
+    default: '3000'
+    description: Weavestream Web Host Port
+    validators:
+    - port_number
+  WEAVESTREAM_DATA16_PATH:
+    default: weavestream/data16
+    description: Weavestream /var/db/postgres/data16 Path
+  WEAVESTREAM_API_FILES_PATH:
+    default: weavestream-api/files
+    description: Weavestream API /var/lib/weavestream/files Path
+  WEAVESTREAM_API_BACKUP_PATH:
+    default: weavestream-api/backup
+    description: Weavestream API /var/lib/weavestream/backup Path
+  WEAVESTREAM_WORKER_FILES_PATH:
+    default: weavestream-worker/files
+    description: Weavestream Worker /var/lib/weavestream/files Path
+  WEAVESTREAM_WORKER_BACKUP_PATH:
+    default: weavestream-worker/backup
+    description: Weavestream Worker /var/lib/weavestream/backup Path
+  NTFY_PORT:
+    default: '8080'
+    description: ntfy Host Port
+    validators:
+    - port_number
+  NTFY_CONFIG_PATH:
+    default: ntfy
+    description: ntfy /config Path
+  WEAVESTREAM_DATA_PATH:
+    default: weavestream
+    description: Weavestream /var/lib/postgresql/data Path
+  ZOT_PORT:
+    default: '5000'
+    description: zot Host Port
+    validators:
+    - port_number
+  ZOT_CONFIG_PATH:
+    default: zot
+    description: zot /config Path
+  ZOT_DATA_PATH:
+    default: zot/data
+    description: zot /data Path
+  PROSODY_PORT:
+    default: '5222'
+    description: Prosody Host Port
+    validators:
+    - port_number
+  PROSODY_CONFIG_PATH:
+    default: prosody
+    description: Prosody /config Path
+  MATERIALCRAFT_PORT:
+    default: '8096'
+    description: MaterialCraft Host Port
+    validators:
+    - port_number
+  TEXTURECRAFT_PORT:
+    default: '8095'
+    description: TextureCraft Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number

@@ -7,6 +7,7 @@ Uses GitHub API to discover repos dynamically.
 import json
 import os
 import subprocess
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -21,15 +22,19 @@ def get_org_repos(org: str = "daemonless") -> list[str]:
     """Get list of public repos from GitHub org using the REST API."""
     repos = []
     page = 1
+    headers = {"Accept": "application/vnd.github+json"}
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     while True:
         url = f"https://api.github.com/orgs/{org}/repos?type=public&per_page=100&page={page}"
-        req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
+        req = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.loads(resp.read())
         except Exception as e:
-            print(f"Failed to list repos: {e}")
-            return []
+            print(f"Failed to list repos: {e}", file=sys.stderr)
+            sys.exit(1)
         if not data:
             break
         repos.extend(r["name"] for r in data)

@@ -24,7 +24,7 @@ The workflow should be boring. `podman run` should just work. You shouldn't need
 A project is only as strong as its contributors. Daemonless isn't a finished product; it's an evolving ecosystem. Whether it's adding a new image to the fleet or refining our build tool, `dbuild`, every contribution helps build the foundation for others.
 
 ### 3. Native & Minimal
-We don't do "garbage hacks." Our images are minimal, our process supervision (s6) is robust, and our integration with FreeBSD features like ZFS and PF is seamless. We build on the shoulders of giants.
+We don't do "garbage hacks." Our images are minimal, each app is the container's process, so your runtime supervises it, and our integration with FreeBSD features like ZFS and PF is seamless. We build on the shoulders of giants.
 
 ## The Journey So Far
 

@@ -22,7 +22,7 @@ Images include a `bsd` user. At startup, an init script reads `PUID` and `PGID` 
 When you set `PUID=1000` and `PGID=1000`:
 
 1. The container configures the `bsd` user with UID 1000 and GID 1000
-2. The application runs as this user via `s6-setuidgid`
+2. The application runs as this user (the init drops root with `dsu`)
 3. Files are created with matching ownership
 
 ## Finding Your UID/GID
@@ -83,6 +83,7 @@ For NFS, ensure the UID/GID matches across systems. All daemonless containers de
 
 ## Technical Details
 
-- **Internal User:** Application runs via `s6-setuidgid bsd`
+- **Internal User:** Application runs as `bsd`, dropped to with `dsu bsd`
 - **Default:** If no variables provided, defaults to `PUID=1000` and `PGID=1000`
-- **Implementation:** Handled by `/etc/cont-init.d/10-usermod` before app starts
+- **Implementation:** Handled by `/daemonless/init.d/10-usermod` before the app starts
+- **Running as another user:** with `podman run --user UID:GID` (or Kubernetes `runAsUser`) there is no remap; the app runs as that user, and `/config` must already be writable by it
