@@ -52,7 +52,12 @@ sysrc pf_enable=YES
 service pf restart
 ```
 
-pf only reads `net.pf.filter_local` when it is enabled, and `/etc/sysctl.conf` is applied before `kld_list` loads modules. Load pf from `/boot/loader.conf` so the setting takes effect at boot; otherwise the host cannot reach its own containers on `localhost` until `service pf restart`.
+pf only reads `net.pf.filter_local` when it is enabled, and `/etc/sysctl.conf` is applied before `kld_list` loads modules. Load pf from `/boot/loader.conf` so the setting takes effect at boot; otherwise the host cannot reach its own containers on `localhost` after a reboot.
+
+`sysctl net.pf.filter_local` can read `1` while pf is still ignoring it. It is active when `pfilctl heads` lists `pf:default-out` under `inet-local`.
+
+!!! warning "Containers already running"
+    `service pf restart` empties the `<cni-nat>` table, so containers on Compose networks lose outbound access until they are restarted. To apply `net.pf.filter_local=1` without that, run `pfctl -d; pfctl -e`.
 
 ## Host Networking
 

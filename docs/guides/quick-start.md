@@ -95,7 +95,7 @@ echo 'fdesc /dev/fd fdescfs rw 0 0' >> /etc/fstab
 ```
 
 !!! warning "Load pf from the loader, not `kld_list`"
-    pf only reads `net.pf.filter_local` when it is enabled. At boot, `/etc/sysctl.conf` is applied before `kld_list` modules are loaded, so the setting fails silently and pf comes up without it. The symptom is that the host cannot reach its own containers on `localhost:<port>` after a reboot until `service pf restart`, while other machines on the network can. Loading pf from `/boot/loader.conf` makes the sysctl exist when `sysctl.conf` is read.
+    pf only reads `net.pf.filter_local` when it is enabled. At boot, `/etc/sysctl.conf` is applied before `kld_list` modules are loaded, so the setting fails silently and pf comes up without it. The symptom is that the host cannot reach its own containers on `localhost:<port>` after a reboot, while other machines on the network can. Loading pf from `/boot/loader.conf` makes the sysctl exist when `sysctl.conf` is read.
 
 #### 2. Configure Firewall (`pf.conf`)
 Add the following to `/etc/pf.conf`. Replace `@INTERFACE@` if your external interface is different.
@@ -165,7 +165,7 @@ Check the status:
 podman ps
 podman logs -f tautulli
 ```
-Open `http://<server>:8181` (or `http://localhost:8181` on the host itself; if `localhost` times out, verify `sysctl net.pf.filter_local` is `1` and run `service pf restart`).
+Open `http://<server>:8181` (or `http://localhost:8181` on the host itself). If `localhost` times out, see [pf.conf Setup](networking.md#pfconf-setup).
 
 ### .NET Applications
 Applications like **Radarr** and **Sonarr** require the `allow.mlock` jail annotation to function correctly on FreeBSD.
