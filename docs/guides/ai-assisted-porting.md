@@ -5,12 +5,11 @@ description: "How to use a coding agent on a daemonless image port: what the LLM
 
 # AI-Assisted Porting
 
-Porting an upstream app to FreeBSD is repetitive, well-documented work with a
-small number of recurring traps, which makes it a reasonable fit for a coding
-agent.
+Adding new containers to the Daemonless fleet is a reasonably good fit for a coding agent, as scaffolding is well-structured, it can rely on dbuild for building & testing, and built-in functions take care of required files like README and container files.
 
-This guide covers what the project requires of an AI-assisted contribution, and
-the toolkit available to help meet it.
+The goal of this toolkit is to pull in the right context and checkpoints, avoid common mistakes, and includes a record of previous patches that the agent can refer to. 
+
+This guide also covers what the project requires of an AI-assisted contribution, so you can port the apps over that you want, while doing so in a way that make it easy for everyone.
 
 !!! warning "Read the policy first"
     The [LLM / AI Contribution Policy](llm-policy.md) applies to every
