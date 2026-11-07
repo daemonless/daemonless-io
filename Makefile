@@ -11,7 +11,7 @@ ZEN_CONFIG = zensical.toml
 # 200000 exceeds the hard limit and errors). Never fail the recipe over it.
 ZEN_ULIMIT = ulimit -n $$(ulimit -Hn) 2>/dev/null || true;
 
-.PHONY: all fetch generate generate-images generate-guides generate-architecture build clean serve status help
+.PHONY: all fetch generate generate-images generate-guides generate-architecture generate-policy build clean serve status help
 
 # Default target: Generate everything and build the site
 all: generate build
@@ -34,7 +34,7 @@ fetch:
 	$(PYTHON) $(SCRIPTS_DIR)/fetch_repos.py
 
 # Generate all dynamic documentation
-generate: generate-guides generate-images generate-architecture
+generate: generate-guides generate-images generate-architecture generate-policy
 
 # Generate image documentation from compose.yaml in sub-repos
 generate-images:
@@ -52,6 +52,11 @@ generate-guides:
 generate-architecture:
 	@echo "==> Generating architecture documentation..."
 	$(PYTHON) $(SCRIPTS_DIR)/generate-architecture.py
+
+# Generate the LLM policy page from LLM_POLICY.md in daemonless/daemonless
+generate-policy:
+	@echo "==> Generating LLM policy page..."
+	$(PYTHON) $(SCRIPTS_DIR)/fetch_policy.py
 
 # Build the static site with Zensical
 build:
