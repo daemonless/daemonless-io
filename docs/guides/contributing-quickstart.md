@@ -10,8 +10,8 @@ Welcome to Daemonless! Whether you're fixing a bug in an existing image or bring
 !!! warning "Using a coding agent?"
     Read the [LLM / AI Contribution Policy](llm-policy.md) **before** you
     generate anything: understand what you commit, test it locally, and write
-    your PR description in your own words. [AI-Assisted
-    Porting](ai-assisted-porting.md) covers the tooling that helps meet it.
+    your PR description in your own words. If you're porting an image, see
+    [AI-Assisted Porting](ai-assisted-porting.md).
 
 ---
 

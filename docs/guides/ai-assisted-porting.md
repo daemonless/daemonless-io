@@ -148,12 +148,10 @@ Useful artefacts to ask for on any port, agent-assisted or not:
   that each listed change exists in the diff, and each change in the diff is
   listed.
 - **`PROCESS-LOG.md`** — what broke and what fixed it, per phase.
-- **The Viva answers** — three specific sentences from someone who did the port.
+- **Answers to the three questions above**, in the submitter's own words.
 
 ---
 
 ## Need help?
 
-Join the [Discord](https://discord.gg/Kb9tkhecZT). Asking "my build dies with
-this signature, is there a known fix?" is usually faster than guessing, and the
-answer often becomes a cookbook entry.
+Join the [Discord](https://discord.gg/Kb9tkhecZT).
