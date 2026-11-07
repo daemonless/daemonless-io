@@ -9,7 +9,7 @@ Adding new containers to the Daemonless fleet is a reasonably good fit for a cod
 
 The goal of this toolkit is to pull in the right context and checkpoints, avoid common mistakes, and includes a record of previous patches that the agent can refer to. 
 
-This guide also covers what the project requires of an AI-assisted contribution, so you can port the apps over that you want, while doing so in a way that make it easy for everyone.
+This guide also covers what the project requires of an AI-assisted contribution, so you can port the apps over that you want, while doing so in a way that makes it easy for everyone including reviewers.
 
 !!! warning "Read the policy first"
     The [LLM / AI Contribution Policy](llm-policy.md) applies to every
