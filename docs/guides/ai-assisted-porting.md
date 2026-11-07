@@ -20,11 +20,11 @@ This guide also covers what the project requires of an AI-assisted contribution,
 
 ## What the policy requires
 
-The full text is at [LLM / AI Contribution Policy](llm-policy.md). In short:
+In short:
 
 | Requirement | What it means for a port |
 |---|---|
-| **Understand what you commit** | You can explain why each non-obvious line exists — which error it fixes, or which upstream requirement it satisfies |
+| **Understand what you commit** | You can explain why each non-obvious line exists: which error it fixes, or which upstream requirement it satisfies |
 | **Test it first** | The image builds, CIT passes, and you have seen that happen. Untested output will have its PR closed |
 | **Keep it clean** | No leftover AI artifacts, odd naming, or verbose generated comments |
 | **Keep communication human** | PR descriptions, issues and review comments are in your own words |
@@ -35,9 +35,9 @@ The rest of this page is about tooling that helps with each of those.
 
 ## The porting toolkit
 
-The [porting toolkit](https://github.com/daemonless/porting-toolkit) collects the
-shared procedure and accumulated knowledge behind daemonless ports. It is
-optional — a hand-written port is perfectly welcome.
+The [porting toolkit](https://github.com/daemonless/porting-toolkit) holds the
+porting procedure, a cookbook of build-verified fixes, and the checks below. It
+is optional. Hand-written ports are welcome.
 
 The procedure, cookbook and checks are plain markdown and POSIX shell, so they
 are not tied to one assistant. Per-agent integration is an optional adapter.
@@ -65,7 +65,8 @@ That adds four things to the image repo:
 !!! tip "Name the directory after the image"
     `dbuild` derives the image name from the working directory and has no
     override, so a fork checked out as `<app>-daemonless` builds an image called
-    `<app>-daemonless` — in the README, the registry refs and the built tag.
+    `<app>-daemonless`, and that name ends up in the README, the registry refs
+    and the built tag.
     Rename the directory before you start. `install.sh` warns about it and
     `lint-compose.sh` fails on it.
 
@@ -77,16 +78,15 @@ the rationale. It covers things like FreeBSD's `node26` shipping without the
 TC39 `Temporal` global, `libsql` having no FreeBSD native build, and the
 podman-on-ZFS layer-commit stall that looks like a hang but isn't.
 
-The procedure makes a cookbook lookup the first action on any error, before
-hypothesising — a model that greps a verified cookbook gives a better answer
-than one reasoning from scratch about an unfamiliar platform.
+The procedure makes a cookbook lookup the first step on any error, before the
+agent starts guessing at causes.
 
 ### Contributing back to the cookbook
 
 When you solve something the cookbook doesn't cover, append an entry and open a
 PR against the toolkit. Each entry is signature, cause, fix, and why. Entries
-must be build-verified — one you haven't seen work belongs in the PR discussion
-instead. That loop is what keeps the next port fast.
+must be build-verified. One you haven't seen work belongs in the PR discussion
+instead.
 
 ---
 
@@ -94,13 +94,12 @@ instead. That loop is what keeps the next port fast.
 
 ### Automated checks
 
-These are ordinary programs, so they behave the same whichever agent — or
-human — drives the repo:
+These are ordinary scripts, so they behave the same whoever runs them:
 
 | Check | Fails on |
 |---|---|
 | `scripts/build.sh` | a stale `Containerfile`; a build log containing failure signatures despite `dbuild build` exiting 0 |
-| `scripts/cit-with-logs.sh` | marking the port green unless CIT **and** the smoke test both pass |
+| `scripts/cit-with-logs.sh` | CIT or the smoke test failing. It writes `.cit-passed` only when both pass |
 | `scripts/lint-compose.sh` | a directory name that doesn't match the image name, metadata mismatches, an unpinned upstream ref, an unguarded patch, a build toolchain in the runtime stage |
 | `.git/hooks/pre-push` | any push without a `.cit-passed` marker |
 
@@ -125,13 +124,12 @@ failure would be loud or silent.
 ### The human opens the PR
 
 The agent produces the branch, the build evidence, `BUILD-NOTES.md`, a
-`PROCESS-LOG.md` of what broke and what fixed it, and the audit verdict — then
-stops. It does **not** write the PR description: the policy does not allow
-AI-generated text there. You write it yourself from that evidence.
-`.porting/templates/PR-BODY.md` is an outline of what to cover, not prose to
-paste.
+`PROCESS-LOG.md` of what broke and what fixed it, and the audit verdict. Then it
+stops. It does **not** write the PR description, because the policy forbids
+AI-generated text there. You write it from that evidence.
+`.porting/templates/PR-BODY.md` lists what to cover. It is not prose to paste.
 
-It asks you to answer three questions in your own words:
+The template asks you to answer three questions in your own words:
 
 - Why this base and runtime, and not the obvious alternative?
 - What is the riskiest dependency or assumption in this image?
@@ -141,7 +139,7 @@ It asks you to answer three questions in your own words:
 
 ## For reviewers
 
-Useful artefacts to ask for on any port, agent-assisted or not:
+On a toolkit port, ask for:
 
 - **`BUILD-NOTES.md`** — every FreeBSD-specific change with its reason. Check
   that each listed change exists in the diff, and each change in the diff is
