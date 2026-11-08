@@ -29,7 +29,7 @@ Before you start building, you need to prepare your FreeBSD host.
 Install the required tools, the `dbuild` engine, and optionally the testing dependencies.
 
 ```bash { linenums="0" }
-pkg install dbuild podman-suite ocijail jq security/trivy devel/py-pyyaml devel/git
+pkg install sysutils/py-dbuild podman-suite ocijail jq security/trivy devel/py-pyyaml devel/git
 # Optional: for screenshot-based visual regression testing
 pkg install chromium www/py-selenium graphics/py-scikit-image # (1)!
 ```

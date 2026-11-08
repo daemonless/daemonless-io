@@ -21,8 +21,6 @@ In `ocijail` 0.5.0+, these are supported natively via OCI annotations.
 
 ## Installation
 
-### Standard Method (Recommended)
-
 Simply install or upgrade the official `ocijail` package from the FreeBSD repository.
 
 ```bash
@@ -37,15 +35,6 @@ Verify you have version **0.6.0** or higher. Ask pkg: `ocijail --version` lags r
 
 ```bash
 pkg query %v ocijail
-```
-
-### From Ports
-
-If you prefer building from source, use the standard `sysutils/ocijail` port. No custom patches are needed.
-
-```bash
-cd /usr/ports/sysutils/ocijail
-doas make reinstall clean
 ```
 
 ## Usage

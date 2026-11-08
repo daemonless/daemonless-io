@@ -137,13 +137,6 @@ The `cni-dnsname` plugin enables containers to resolve each other by name (e.g.,
 pkg install cni-dnsname
 ```
 
-!!! note "Package not found?"
-    The port landed in September 2026 — if your package repository doesn't have it yet, build from ports:
-    ```bash
-    cd /usr/ports/sysutils/cni-dnsname
-    make install clean
-    ```
-
 #### Verify Installation
 
 ```bash
@@ -156,7 +149,7 @@ With cni-dnsname installed, containers can resolve each other by name:
 ```bash
 # From inside one container, reach another by name
 ping immich_postgres
-curl http://immich_server:2283
+fetch -o - http://immich_server:2283
 ```
 
 ### Option 3: Static IPs

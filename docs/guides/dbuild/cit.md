@@ -130,7 +130,7 @@ cit:
 - Threshold: **SSIM >= 0.95** (95% structural similarity)
 - Catches UI regressions, broken CSS, missing assets
 - Uses scikit-image for SSIM comparison and Selenium + Chromium for capture
-- Requires `pip install ".[dev]"` on the dbuild installation
+- Install with `pkg install chromium www/py-selenium graphics/py-scikit-image`
 - If screenshot dependencies are missing, the mode automatically downgrades to `health`
 
 **Baseline search order:**

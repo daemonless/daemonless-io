@@ -26,7 +26,7 @@ else:
 try:
     from jinja2 import Environment, FileSystemLoader
 except ImportError:
-    print("Error: jinja2 is required to run this script. Run: pip install jinja2")
+    print("Error: jinja2 is required to run this script. Run: pkg install devel/py-Jinja2")
     sys.exit(1)
 
 def generate():

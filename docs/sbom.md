@@ -20,11 +20,10 @@ Each document lists both halves of the image:
 
 ## Tools you'll need
 
-- **Embedded copy:** nothing beyond `podman` or `docker` — the same tool you
-  already use to pull the image.
+- **Embedded copy:** nothing beyond `podman` — the same tool you already use to
+  pull the image.
 - **Registry attestation:** [`cosign`](https://docs.sigstore.dev/cosign/system_config/installation/)
-  (the Sigstore CLI). Install it with `brew install cosign`, or grab a binary
-  from the [releases page](https://github.com/sigstore/cosign/releases).
+  (the Sigstore CLI). Install it with `pkg install cosign`.
 
 ## Where to find it
 
@@ -53,8 +52,6 @@ cid=$(podman create ghcr.io/daemonless/radarr:pkg)
 podman cp "$cid":/usr/share/sbom/ ./sbom/
 podman rm "$cid"
 ```
-
-The same commands work with `docker` — it's just files in the image.
 
 ### 2. Signed attestation in the registry
 

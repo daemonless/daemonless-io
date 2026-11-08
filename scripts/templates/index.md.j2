@@ -38,13 +38,8 @@ dbuild manages the entire journey of a container image through three main phases
 
 ## Installation
 
-dbuild requires Python 3.11+ and Podman.
-
 ```bash
-# Install dbuild from source
-git clone https://github.com/daemonless/dbuild
-cd dbuild
-doas make install
+pkg install sysutils/py-dbuild podman-suite
 ```
 
 ## Quick Start

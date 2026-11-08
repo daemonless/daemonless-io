@@ -49,7 +49,7 @@ graph TD
     release: "15.0"
     usesh: true
     run: |
-      pip install dbuild
+      pkg install -y sysutils/py-dbuild
       dbuild ci-run --prepare
 ```
 
