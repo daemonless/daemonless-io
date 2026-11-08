@@ -1582,6 +1582,14 @@ placeholders:
     description: TextureCraft Host Port
     validators:
     - port_number
+  OPENOBSERVE_PORT:
+    default: '5080'
+    description: OpenObserve Host Port
+    validators:
+    - port_number
+  OPENOBSERVE_DATA_PATH:
+    default: openobserve
+    description: OpenObserve /data Path
 validators:
   port_number:
     name: Port Number
