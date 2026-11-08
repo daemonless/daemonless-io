@@ -99,3 +99,12 @@ If you're stuck, don't worry—we've got your back:
 1. **Ask on Discord:** It's the fastest way to get a human answer.
 2. **Open a Discussion:** For long-form questions or architectural ideas.
 3. **Check the Guides:** We've documented everything from [Permissions](guides/permissions.md) to [ZFS Storage](guides/zfs.md).
+
+---
+
+## Logo & Attribution
+
+Projects, platforms, dashboards, and documentation that consume or link to Daemonless images or the catalog are welcome to use the Daemonless name and logo alongside links or catalog badges—no additional permission required.
+
+*   **SVG:** [`https://daemonless.io/assets/daemonless-logo.svg`](https://daemonless.io/assets/daemonless-logo.svg)
+*   **PNG:** [`https://daemonless.io/assets/daemonless-logo.png`](https://daemonless.io/assets/daemonless-logo.png)
