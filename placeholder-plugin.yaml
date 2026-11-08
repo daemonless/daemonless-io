@@ -1590,6 +1590,14 @@ placeholders:
   OPENOBSERVE_DATA_PATH:
     default: openobserve
     description: OpenObserve /data Path
+  GLANCE_PORT:
+    default: '8080'
+    description: Glance Host Port
+    validators:
+    - port_number
+  GLANCE_CONFIG_PATH:
+    default: glance
+    description: Glance /config Path
 validators:
   port_number:
     name: Port Number
