@@ -6,6 +6,9 @@ Produces docs with interactive placeholder support.
 import json
 import subprocess
 import sys
+import urllib.error
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import yaml
 import jinja2
@@ -359,6 +362,49 @@ def _is_portrait(path: Path) -> bool:
         return False
 
 
+GHCR = "ghcr.io"
+
+
+def own_packages(config):
+    """The ghcr.io package names this repo publishes: its own image, or for a
+    stack the daemonless images its compose runs."""
+    registry = (config.get("registry") or "").rstrip("/")
+    if not registry.startswith(GHCR + "/"):
+        return []
+    prefix = registry + "/"
+    if config.get("type") == "stack":
+        images = [p.get("image", "") for p in config.get("stack_parts") or []]
+        return sorted({i[len(prefix):].split(":")[0].split("@")[0]
+                       for i in images if i.startswith(prefix)})
+    return [config["name"]]
+
+
+def pull_token_denied(package, org="daemonless"):
+    """True when ghcr.io refuses an anonymous pull token for the package, which
+    is what a pull sees when nothing has been pushed under that name yet. Any
+    other failure (timeout, 5xx, rate limit) is False: a registry blip must
+    never drop a live image from the site."""
+    url = (f"https://{GHCR}/token?scope=repository:{org}/{package}:pull"
+           f"&service={GHCR}")
+    try:
+        with urllib.request.urlopen(url, timeout=15):
+            return False
+    except urllib.error.HTTPError as e:
+        return e.code == 403
+    except (urllib.error.URLError, OSError, TimeoutError):
+        return False
+
+
+def unpublished(configs):
+    """Names of the images none of whose packages can be pulled yet, checked
+    on ghcr.io in parallel."""
+    todo = {c["name"]: own_packages(c) for c in configs}
+    packages = sorted({p for ps in todo.values() for p in ps})
+    with ThreadPoolExecutor(max_workers=12) as pool:
+        denied = dict(zip(packages, pool.map(pull_token_denied, packages)))
+    return {name for name, ps in todo.items() if ps and all(denied[p] for p in ps)}
+
+
 def get_last_commit_date(repo_path):
     """Get the last commit date for a repo in ISO format."""
     try:
@@ -492,6 +538,7 @@ def main():
     configs = []
 
     # Discover repos
+    loaded = []
     for repo in sorted(REPOS_DIR.iterdir()):
         if not repo.is_dir() or repo.name.startswith('.'):
             continue
@@ -505,7 +552,15 @@ def main():
 
         # Load using dbuild logic
         config = get_repo_config(repo)
-        if not config:
+        if config:
+            loaded.append((repo, config))
+
+    # An image nobody can pull yet (never built, or its package still private)
+    # gets no page: a visitor would only find an install that fails.
+    hidden = unpublished([c for _, c in loaded])
+    for repo, config in loaded:
+        if config["name"] in hidden:
+            print(f"Skipped {config['name']}: not published on {GHCR} yet")
             continue
 
         # Add last commit date
