@@ -1601,6 +1601,11 @@ placeholders:
   KANEO_CONFIG_PATH:
     default: kaneo
     description: Kaneo /config Path
+  KANEO_PORT:
+    default: '5173'
+    description: Kaneo Host Port
+    validators:
+    - port_number
 validators:
   port_number:
     name: Port Number
