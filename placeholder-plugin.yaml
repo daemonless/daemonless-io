@@ -1598,6 +1598,9 @@ placeholders:
   GLANCE_CONFIG_PATH:
     default: glance
     description: Glance /config Path
+  KANEO_CONFIG_PATH:
+    default: kaneo
+    description: Kaneo /config Path
 validators:
   port_number:
     name: Port Number
