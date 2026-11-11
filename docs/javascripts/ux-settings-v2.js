@@ -59,7 +59,29 @@
     window.addEventListener("load", moveTable);
 })();
 
-// Image Search & Status Filtering
+// Image Search, Category Tabs, View Toggle & Status Filtering
+const FLEET_VIEW_STORAGE_KEY = 'daemonless-fleet-view';
+
+function setFleetView(view) {
+    const cardsView = document.getElementById('fleet-cards-view');
+    const tableView = document.getElementById('fleet-table-view');
+    if (!cardsView || !tableView) return;
+
+    const isTable = view === 'table';
+    cardsView.hidden = isTable;
+    tableView.hidden = !isTable;
+
+    document.querySelectorAll('.fleet-view-btn').forEach(btn => {
+        const active = btn.dataset.view === (isTable ? 'table' : 'cards');
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+
+    try {
+        localStorage.setItem(FLEET_VIEW_STORAGE_KEY, isTable ? 'table' : 'cards');
+    } catch (_) {}
+}
+
 function updateTableFilters() {
     const input = document.getElementById('image-search');
     const query = input ? input.value.toLowerCase().trim() : '';
@@ -67,7 +89,39 @@ function updateTableFilters() {
     const statusFilter = statusChip ? statusChip.dataset.filter : 'all';
     const archChip = document.querySelector('.arch-chip.active');
     const archFilter = archChip ? archChip.dataset.arch : 'all';
+    const catTab = document.querySelector('.fleet-cat-tab.active');
+    const categoryFilter = catTab ? catTab.dataset.category : 'all';
 
+    // 1. Update Card View (if on /images/)
+    const activeGrid = document.getElementById('fleet-active-grid');
+    let activeCardMatches = 0;
+    if (activeGrid) {
+        activeGrid.querySelectorAll('.fleet-card').forEach(card => {
+            const catMatch = categoryFilter === 'all' || card.dataset.category === categoryFilter;
+            const textMatch = !query || card.textContent.toLowerCase().includes(query);
+            const show = catMatch && textMatch;
+            card.hidden = !show;
+            if (show) activeCardMatches++;
+        });
+    }
+
+    const depSection = document.getElementById('fleet-deprecated-cards-section');
+    const depGrid = document.getElementById('fleet-deprecated-grid');
+    let depCardMatches = 0;
+    if (depGrid) {
+        depGrid.querySelectorAll('.fleet-card').forEach(card => {
+            const catMatch = categoryFilter === 'all' || card.dataset.category === categoryFilter;
+            const textMatch = !query || card.textContent.toLowerCase().includes(query);
+            const show = catMatch && textMatch;
+            card.hidden = !show;
+            if (show) depCardMatches++;
+        });
+        if (depSection) {
+            depSection.hidden = depCardMatches === 0;
+        }
+    }
+
+    // 2. Update Table View (both /images/ and /status/)
     document.querySelectorAll('.md-content table').forEach(table => {
         let matchCount = 0;
         table.querySelectorAll('tbody tr').forEach(row => {
@@ -79,7 +133,7 @@ function updateTableFilters() {
             const outdatedAmd64 = hasMeta ? meta.classList.contains('outdated-amd64') : isOutdated;
             const outdatedArm64 = hasMeta ? meta.classList.contains('outdated-arm64') : isOutdated;
 
-            // Status filter logic
+            // Status filter logic (/status/ page)
             let statusMatch = true;
             if (statusFilter === 'outdated') {
                 if (archFilter === 'amd64') statusMatch = outdatedAmd64;
@@ -91,33 +145,79 @@ function updateTableFilters() {
                 else statusMatch = !isOutdated;
             }
 
-            // Architecture filter logic (when status is 'all')
+            // Architecture filter logic (/status/ page)
             let archMatch = true;
             if (statusFilter === 'all' && archFilter !== 'all') {
                 if (archFilter === 'amd64') archMatch = hasAmd64;
                 else if (archFilter === 'arm64') archMatch = hasArm64;
             }
 
+            // Category filter logic (/images/ page table: column 2 is Category)
+            let catMatch = true;
+            if (catTab && categoryFilter !== 'all') {
+                const catCell = row.cells && row.cells.length > 2 ? row.cells[2].textContent.trim() : '';
+                catMatch = catCell === categoryFilter;
+            }
+
             // Search query logic
             const textMatch = !query || row.textContent.toLowerCase().includes(query);
 
-            const show = statusMatch && archMatch && textMatch;
+            const show = statusMatch && archMatch && catMatch && textMatch;
             row.style.display = show ? '' : 'none';
             if (show) matchCount++;
         });
 
-        // Hide table and its header if no matches
+        // Hide table and its preceding heading/paragraph if no matches
         const header = table.previousElementSibling;
-        const isFiltering = query !== '' || statusFilter !== 'all' || archFilter !== 'all';
+        const isFiltering = query !== '' || statusFilter !== 'all' || archFilter !== 'all' || categoryFilter !== 'all';
         if (matchCount === 0 && isFiltering) {
             table.style.display = 'none';
-            if (header && header.tagName.startsWith('H')) header.style.display = 'none';
+            if (header && (header.tagName.startsWith('H') || header.tagName === 'P')) {
+                header.style.display = 'none';
+                const prev = header.previousElementSibling;
+                if (prev && prev.tagName.startsWith('H')) prev.style.display = 'none';
+            }
         } else {
             table.style.display = '';
-            if (header && header.tagName.startsWith('H')) header.style.display = '';
+            if (header && (header.tagName.startsWith('H') || header.tagName === 'P')) {
+                header.style.display = '';
+                const prev = header.previousElementSibling;
+                if (prev && prev.tagName.startsWith('H')) prev.style.display = '';
+            }
         }
     });
+
+    // 3. Update Fleet Toolbar Heading, Subtitle Count & Empty State (on /images/)
+    const headingEl = document.getElementById('fleet-heading');
+    const countEl = document.getElementById('fleet-count');
+    const emptyEl = document.getElementById('fleet-empty-state');
+    if (headingEl && countEl && activeGrid) {
+        const total = parseInt(countEl.dataset.total || '0', 10);
+        headingEl.textContent = categoryFilter === 'all' ? 'All Apps' : categoryFilter;
+        if (query || categoryFilter !== 'all') {
+            countEl.textContent = `Showing ${activeCardMatches} of ${total} native FreeBSD OCI images`;
+        } else {
+            countEl.textContent = `${total} native FreeBSD OCI images`;
+        }
+        if (emptyEl) {
+            emptyEl.hidden = (activeCardMatches + depCardMatches) > 0;
+        }
+    }
 }
+
+function initFleetCatalog() {
+    const cardsView = document.getElementById('fleet-cards-view');
+    if (!cardsView) return;
+
+    let savedView = 'cards';
+    try {
+        savedView = localStorage.getItem(FLEET_VIEW_STORAGE_KEY) || 'cards';
+    } catch (_) {}
+    setFleetView(savedView === 'table' ? 'table' : 'cards');
+    updateTableFilters();
+}
+
+window.addEventListener('DOMContentLoaded', initFleetCatalog);
 
 // Event Delegation for Search Input
 document.addEventListener('input', e => {
@@ -126,8 +226,38 @@ document.addEventListener('input', e => {
     }
 });
 
-// Event Delegation for Filter Chips (Status & Architecture)
+// Event Delegation for Filter Chips, Category Tabs, View Toggle & Reset
 document.addEventListener('click', e => {
+    const viewBtn = e.target.closest('.fleet-view-btn');
+    if (viewBtn) {
+        setFleetView(viewBtn.dataset.view);
+        return;
+    }
+
+    const catTab = e.target.closest('.fleet-cat-tab');
+    if (catTab) {
+        document.querySelectorAll('.fleet-cat-tab').forEach(tab => {
+            const active = tab === catTab;
+            tab.classList.toggle('active', active);
+            tab.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        updateTableFilters();
+        return;
+    }
+
+    const resetBtn = e.target.closest('#fleet-reset-filters');
+    if (resetBtn) {
+        const input = document.getElementById('image-search');
+        if (input) input.value = '';
+        document.querySelectorAll('.fleet-cat-tab').forEach(tab => {
+            const active = tab.dataset.category === 'all';
+            tab.classList.toggle('active', active);
+            tab.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        updateTableFilters();
+        return;
+    }
+
     const statusChip = e.target.closest('.status-chip');
     if (statusChip) {
         document.querySelectorAll('.status-chip').forEach(c =>

@@ -305,21 +305,15 @@ def generate_status_page(configs):
     """Generate docs/images/index.md (build overview) and docs/status.md (version status)."""
     try:
         overview_tmpl = env.get_template("status.mkdocs.j2")
-        categories_tmpl = env.get_template("status-categories.mkdocs.j2")
         version_tmpl = env.get_template("version-status.mkdocs.j2")
     except jinja2.TemplateNotFound as e:
         print(f"Warning: template not found ({e}), skipping status pages")
         return
 
-    # Fleet overview (flat alphabetical list)
+    # Fleet overview (cards + table with category filter tabs)
     content = overview_tmpl.render(configs=configs, categories=VALID_CATEGORIES + ["Uncategorized"])
     (REPO_ROOT / "docs" / "images" / "index.md").write_text(content, encoding='utf-8')
     print("Generated docs/images/index.md")
-
-    # Fleet overview grouped by category
-    content = categories_tmpl.render(configs=configs, categories=VALID_CATEGORIES + ["Uncategorized"])
-    (REPO_ROOT / "docs" / "images" / "categories.md").write_text(content, encoding='utf-8')
-    print("Generated docs/images/categories.md")
 
     # Version status
     versions_file = REPO_ROOT / "daemonless-versions.json"
