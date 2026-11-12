@@ -1606,6 +1606,9 @@ placeholders:
     description: Kaneo Host Port
     validators:
     - port_number
+  ONLYOFFICE_WORKSPACE_CONFIG_PATH:
+    default: onlyoffice-workspace
+    description: ONLYOFFICE Workspace /config Path
 validators:
   port_number:
     name: Port Number
