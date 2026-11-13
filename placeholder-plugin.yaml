@@ -1620,6 +1620,14 @@ placeholders:
   RUSTFS_DATA_PATH:
     default: rustfs/data
     description: RustFS /data Path
+  POCKET_ID_PORT:
+    default: '1411'
+    description: Pocket ID Host Port
+    validators:
+    - port_number
+  POCKET_ID_CONFIG_PATH:
+    default: pocket-id
+    description: Pocket ID /config Path
 validators:
   port_number:
     name: Port Number
