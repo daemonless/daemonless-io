@@ -1609,6 +1609,17 @@ placeholders:
   ONLYOFFICE_WORKSPACE_CONFIG_PATH:
     default: onlyoffice-workspace
     description: ONLYOFFICE Workspace /config Path
+  RUSTFS_PORT:
+    default: '9001'
+    description: RustFS Host Port
+    validators:
+    - port_number
+  RUSTFS_CONFIG_PATH:
+    default: rustfs
+    description: RustFS /config Path
+  RUSTFS_DATA_PATH:
+    default: rustfs/data
+    description: RustFS /data Path
 validators:
   port_number:
     name: Port Number
