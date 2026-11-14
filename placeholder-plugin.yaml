@@ -1628,6 +1628,12 @@ placeholders:
   POCKET_ID_CONFIG_PATH:
     default: pocket-id
     description: Pocket ID /config Path
+  FORGEJO_RUNNER_CONFIG_PATH:
+    default: forgejo-runner
+    description: Forgejo Runner /config Path
+  REVERSE_PROXY_PODMAN_PATH:
+    default: reverse-proxy/podman
+    description: Daemonless Reverse Proxy /var/run/podman Path
 validators:
   port_number:
     name: Port Number
