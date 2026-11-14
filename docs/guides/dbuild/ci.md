@@ -70,9 +70,15 @@ Control CI behavior by adding these tags to your commit messages:
 
 ## Linux Pre-Build Artifacts
 
-Some images require assets built with toolchains unavailable on FreeBSD (e.g. SWC for JavaScript frontends). These are built on a Linux runner first and passed into the FreeBSD build as a GitHub Actions artifact. 
+Some images require assets built with toolchains unavailable on FreeBSD (e.g. SWC for JavaScript frontends). These are built on a Linux runner first and passed into the FreeBSD build as a GitHub Actions artifact.
 
 See the [Linux Pre-Build guide](linux-pre-build.md) for the full implementation pattern.
+
+---
+
+## Debugging Failed Runs
+
+When a build fails in CI and the job log is not enough, re-running with debug logging keeps the FreeBSD VM open over VNC with a one-time password encrypted to your GitHub SSH keys. See [Debugging a Failed CI Build](debugging-ci.md).
 
 ---
 

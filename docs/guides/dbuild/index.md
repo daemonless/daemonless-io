@@ -69,3 +69,4 @@ dbuild test --variant pkg
 - Learn how to configure your project in the [Configuration Guide](config.md).
 - Deep dive into testing with the [Quality Gates (CIT) Guide](cit.md).
 - Understand the [CI/CD Pipeline](ci.md) and how to automate your builds.
+- Open a console in a failed CI VM with [Debugging a Failed CI Build](debugging-ci.md).
