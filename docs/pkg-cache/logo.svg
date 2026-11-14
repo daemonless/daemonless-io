@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Package Cache">
+  <defs>
+    <linearGradient id="pcCubeTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#3584e4"/>
+    </linearGradient>
+    <linearGradient id="pcCubeLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="pcCubeRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </linearGradient>
+  </defs>
+  <!-- Isometric 3D Package Cube -->
+  <polygon points="256,36 456,148 256,260 56,148" fill="url(#pcCubeTop)"/>
+  <polygon points="56,148 256,260 256,476 56,364" fill="url(#pcCubeLeft)"/>
+  <polygon points="456,148 256,260 256,476 456,364" fill="url(#pcCubeRight)"/>
+  <!-- Crisp Package Tape & Seam Highlights -->
+  <polyline points="156,92 356,204 356,282" fill="none" stroke="#ffffff" stroke-opacity="0.92" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="56,148 256,260 456,148" fill="none" stroke="#ffffff" stroke-opacity="0.38" stroke-width="10" stroke-linejoin="round"/>
+  <line x1="256" y1="260" x2="256" y2="476" stroke="#ffffff" stroke-opacity="0.38" stroke-width="10"/>
+  <!-- Cache Hit Badge (Bottom-Right Emerald Bolt) -->
+  <circle cx="384" cy="384" r="82" fill="#16a34a" stroke="#0f172a" stroke-opacity="0.22" stroke-width="10"/>
+  <polygon points="394,328 348,390 382,390 372,440 420,378 386,378" fill="#ffffff"/>
+</svg>

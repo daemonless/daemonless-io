@@ -34,6 +34,7 @@ extra_css = [
 extra_javascript = [
   "javascripts/ux-settings-v2.js",
   "javascripts/deploy-choices.js",
+  "javascripts/demo-video.js",
   "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js",
   "https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js",
   "javascripts/splide-init.js",
@@ -103,6 +104,19 @@ nav = [
     { "SBOMs" = "sbom.md" },
     { "Community" = "community.md" },
     { "LLM / AI Policy" = "guides/llm-policy.md" },
+  ] },
+  { "Reverse Proxy" = [
+    "reverse-proxy/index.md",
+    { "Host & First-Run Setup" = "reverse-proxy/setup.md" },
+    { "Certificates, DNS & Access" = "reverse-proxy/certificates-and-access.md" },
+    { "fjord, Container Labels & API" = "reverse-proxy/automation.md" },
+    { "Backups & Troubleshooting" = "reverse-proxy/operations.md" },
+  ] },
+  { "Package Cache" = [
+    "pkg-cache/index.md",
+    { "Host Setup, ZFS & Sizing" = "pkg-cache/setup.md" },
+    { "Hosts, Jails & Container Builds" = "pkg-cache/clients.md" },
+    { "Mirrors, Stats & Troubleshooting" = "pkg-cache/mirrors-and-operations.md" },
   ] },
   { "fjord" = "https://fjord.daemonless.io" },
 ]
