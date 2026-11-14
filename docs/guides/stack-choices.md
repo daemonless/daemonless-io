@@ -64,6 +64,31 @@ x-daemonless:
 - `drop` removes named services from the stack.
 - `ask` prompts for values in `.env` and on the site.
 
+## A choice for one runtime
+
+A choice that only means something on one runtime says so with `runtimes`.
+The reverse proxy reads podman's socket for container labels, which an
+AppJail install has none of:
+
+```yaml
+x-daemonless:
+  choices:
+    container_labels:
+      label: Names from container labels
+      runtimes: [podman]
+      default: "off"
+      options:
+        "off": { label: "Off" }
+        "on":
+          label: "On: the proxy reads podman's socket"
+          env: { RP_PODMAN_DIR: /var/run/podman }
+```
+
+- `runtimes` lists where the choice is offered: `podman`, `appjail`. Without
+  it, every runtime offers it.
+- On the other runtimes' tabs here and in the README, the choice is not shown
+  and stays at its default; only those files are listed.
+
 ## When it does not fit yet
 
 - The app takes a single database URL (vaultwarden).

@@ -168,7 +168,9 @@
     forms.forEach((f) => (byApp[f.dataset.app] = byApp[f.dataset.app] || []).push(f));
     Object.keys(byApp).forEach((app) => {
       const group = byApp[app];
-      let picks = picksFor(group[0], read(app));
+      // A choice for one runtime has a row in that form only (runtimes:).
+      const saved = read(app);
+      let picks = Object.assign({}, ...group.map((f) => picksFor(f, saved)));
       group.forEach((f) => apply(f, picks));
       group.forEach((f) => f.addEventListener("click", (e) => {
         const b = e.target.closest("button[data-option], button.toggle, button[data-toggle-all]");
