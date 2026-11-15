@@ -194,7 +194,9 @@ assets_include = [
 
 [project.plugins.redirects.redirect_maps]
 "fjord/index.md" = "https://fjord.daemonless.io/"
+{%- if "overseerr" not in (generated_names | default([])) %}
 "images/overseerr.md" = "images/seerr.md"
+{%- endif %}
 
 [project.plugins.llmstxt]
 full_output = "llms-full.txt"
