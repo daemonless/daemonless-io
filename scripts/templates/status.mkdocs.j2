@@ -165,7 +165,7 @@ FreeBSD-native OCI applications, multi-service stacks, and network appliances bu
           {%- elif c.logo %}
           <img src="/images/logos/{{ c.logo }}" alt="{{ c.title }}" loading="lazy" class="no-glb">
           {%- else %}
-          <svg class="fleet-card__fallback-icon" aria-hidden="true"><use href="#ico-cube"></use></svg>
+          <svg class="fleet-card__fallback-icon" aria-hidden="true"><use xlink:href="#ico-cube"></use></svg>
           {%- endif %}
         </div>
         <div class="fleet-card__headings">
@@ -198,11 +198,11 @@ FreeBSD-native OCI applications, multi-service stacks, and network appliances bu
       <div class="fleet-card__footer">
         <div class="fleet-card__links">
           <a href="{{ c.repo_url }}" target="_blank" rel="noopener" class="fleet-card__icon-link" title="GitHub Repository" aria-label="{{ c.title }} GitHub Repository">
-            <svg aria-hidden="true"><use href="#ico-github"></use></svg>
+            <svg aria-hidden="true"><use xlink:href="#ico-github"></use></svg>
           </a>
           {%- if c.upstream_url %}
           <a href="{{ c.upstream_url }}" target="_blank" rel="noopener" class="fleet-card__icon-link" title="Upstream Project" aria-label="{{ c.title }} Upstream Project">
-            <svg aria-hidden="true"><use href="#ico-ext"></use></svg>
+            <svg aria-hidden="true"><use xlink:href="#ico-ext"></use></svg>
           </a>
           {%- endif %}
           <a href="{{ c.repo_url }}/commits" target="_blank" rel="noopener" class="fleet-card__date" title="Last updated {{ c.last_update }}">{{ c.last_update }}</a>
@@ -214,7 +214,7 @@ FreeBSD-native OCI applications, multi-service stacks, and network appliances bu
         </div>
         <span class="fleet-card__details" aria-hidden="true">
           Details
-          <svg aria-hidden="true"><use href="#ico-arrow"></use></svg>
+          <svg aria-hidden="true"><use xlink:href="#ico-arrow"></use></svg>
         </span>
       </div>
     </article>
@@ -240,7 +240,7 @@ FreeBSD-native OCI applications, multi-service stacks, and network appliances bu
             {%- elif c.logo %}
             <img src="/images/logos/{{ c.logo }}" alt="{{ c.title }}" loading="lazy" class="no-glb">
             {%- else %}
-            <svg class="fleet-card__fallback-icon" aria-hidden="true"><use href="#ico-cube"></use></svg>
+            <svg class="fleet-card__fallback-icon" aria-hidden="true"><use xlink:href="#ico-cube"></use></svg>
             {%- endif %}
           </div>
           <div class="fleet-card__headings">
@@ -257,13 +257,13 @@ FreeBSD-native OCI applications, multi-service stacks, and network appliances bu
         <div class="fleet-card__footer">
           <div class="fleet-card__links">
             <a href="{{ c.repo_url }}" target="_blank" rel="noopener" class="fleet-card__icon-link" title="GitHub Repository" aria-label="{{ c.title }} GitHub Repository">
-              <svg aria-hidden="true"><use href="#ico-github"></use></svg>
+              <svg aria-hidden="true"><use xlink:href="#ico-github"></use></svg>
             </a>
             <a href="{{ c.repo_url }}/commits" target="_blank" rel="noopener" class="fleet-card__date" title="Last updated {{ c.last_update }}">{{ c.last_update }}</a>
           </div>
           <span class="fleet-card__details" aria-hidden="true">
             Details
-            <svg aria-hidden="true"><use href="#ico-arrow"></use></svg>
+            <svg aria-hidden="true"><use xlink:href="#ico-arrow"></use></svg>
           </span>
         </div>
       </article>
