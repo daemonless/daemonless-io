@@ -1,0 +1,58 @@
+name: Check Docs
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: daemonless-io
+
+      - uses: actions/checkout@v7
+        with:
+          repository: daemonless/daemonless
+          path: daemonless
+
+      - uses: actions/checkout@v7
+        with:
+          repository: daemonless/dbuild
+          path: dbuild
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          cd daemonless-io
+          pip install -r requirements.txt
+
+      - name: Fetch repositories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd daemonless-io
+          make fetch
+
+      - name: Generate documentation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd daemonless-io
+          make generate
+
+      - name: Build and check rendered site
+        run: |
+          cd daemonless-io
+          make build
