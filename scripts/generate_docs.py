@@ -413,7 +413,10 @@ def render_zensical_config(configs):
             "entries": items,
         })
 
-    content = tmpl.render(image_nav_groups=image_nav_groups)
+    content = tmpl.render(
+        image_nav_groups=image_nav_groups,
+        generated_names={c["name"] for c in configs},
+    )
     if not content.endswith("\n"):
         content += "\n"
     (REPO_ROOT / "zensical.toml").write_text(content, encoding="utf-8")
