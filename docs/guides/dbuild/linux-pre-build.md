@@ -88,7 +88,7 @@ jobs:
 ```yaml
   build:
     needs: build-web
-    uses: daemonless/dbuild/.github/workflows/daemonless-build.yaml@main
+    uses: daemonless/workflows/.github/workflows/daemonless-build.yaml@v1
     with:
       image_name: myapp
       pre_artifact_name: web-dist

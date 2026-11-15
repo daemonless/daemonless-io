@@ -236,15 +236,25 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'Tag to rebuild (blank = all)'
+        required: false
+        type: string
 
 jobs:
   build:
     # This delegates EVERYTHING to the shared daemonless engine
-    uses: daemonless/dbuild/.github/workflows/daemonless-build.yaml@main
+    uses: daemonless/workflows/.github/workflows/daemonless-build.yaml@v1
     with:
       image_name: traefik
+      variant: ${{ inputs.variant }}
     secrets: inherit
 ```
+
+To rebuild one tag instead of all of them, run the workflow with a variant:
+`gh workflow run build.yaml -f variant=pkg`.
 
 ### Why use the Reusable Workflow?
 1.  **Managed FreeBSD Runners:** It automatically handles spinning up FreeBSD VMs on GitHub Actions.
