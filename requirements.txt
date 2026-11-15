@@ -1,6 +1,6 @@
-mkdocs-placeholder-plugin>=0.7.0  # provides the markdown-placeholder-standalone CLI
 jinja2
 pyyaml
 pytz
 beautifulsoup4
-zensical
+Pillow>=10.0
+zensical>=0.1.1,<0.2

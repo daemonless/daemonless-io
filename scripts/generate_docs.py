@@ -1,251 +1,161 @@
 #!/usr/bin/env python3
 """
-Generate MkDocs documentation from compose.yaml files in daemonless repos.
-Produces docs with interactive placeholder support.
+Generate Zensical documentation from compose.yaml files in daemonless repos.
 """
+import datetime
 import json
+import os
+import re
+import shutil
 import subprocess
 import sys
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-import yaml
+
 import jinja2
 
-# Paths - relative to daemonless-io repo
+# Paths - relative to daemonless-io repo (overridable for isolated worktrees)
 SCRIPT_DIR = Path(__file__).parent.resolve()
-REPO_ROOT = SCRIPT_DIR.parent
-REPOS_DIR = REPO_ROOT.parent
+REPO_ROOT = SCRIPT_DIR.parent.resolve()
+REPOS_DIR = Path(os.environ.get("REPOS_DIR", REPO_ROOT.parent)).expanduser().resolve()
+DBUILD_REPO = Path(os.environ.get("DBUILD_REPO", REPOS_DIR / "dbuild")).expanduser().resolve()
 
-# Add dbuild repo root to sys.path so we can import 'dbuild' package
-DBUILD_REPO = (REPOS_DIR / "dbuild").resolve()
 if DBUILD_REPO.exists():
     sys.path.insert(0, str(DBUILD_REPO))
 else:
     print(f"Error: dbuild repository not found at {DBUILD_REPO}")
-    print(f"  Run 'make fetch' from the daemonless-io root to clone all required repositories.")
+    print("  Run 'make fetch' from the daemonless-io root to clone all required repositories.")
     sys.exit(1)
 
 # pylint: disable=wrong-import-position
-from dbuild.config import load as load_dbuild_config, VALID_CATEGORIES
-from dbuild.docs import _enrich_metadata, SHARED_PATHS
+from dbuild.config import VALID_CATEGORIES, load as load_dbuild_config
+from dbuild.docs import _enrich_metadata
 
 TEMPLATE_DIR = DBUILD_REPO / "dbuild" / "templates"
 LOCAL_TEMPLATE_DIR = SCRIPT_DIR / "templates"
 DOCS_DIR = REPO_ROOT / "docs" / "images"
-PLACEHOLDER_PLUGIN = REPO_ROOT / "placeholder-plugin.yaml"
 
-# Constants
-CONFIG_ROOT_VAR = "@CONTAINER_CONFIG_ROOT@"
-DEFAULT_CONFIG_ROOT = "/containers"
+EXCLUDED_IMAGES = {"base-manifest-test"}
+FEATURED_SLUGS = [
+    "immich",
+    "jellyfin",
+    "plex",
+    "nextcloud",
+    "radarr",
+    "sonarr",
+    "grafana",
+    "adguardhome",
+    "tautulli",
+    "uptime-kuma",
+]
+
+# Optional category / metadata preview overlay JSON for staging before repo rollout
+_OVERLAY_PATH = os.environ.get("DAEMONLESS_CATEGORY_OVERLAY", "")
+CATEGORY_OVERLAY = (
+    json.loads(Path(_OVERLAY_PATH).expanduser().read_text(encoding="utf-8"))
+    if _OVERLAY_PATH and Path(_OVERLAY_PATH).expanduser().is_file()
+    else {}
+)
 
 # Local templates override dbuild templates
-env = jinja2.Environment(loader=jinja2.ChoiceLoader([
-    jinja2.FileSystemLoader(str(LOCAL_TEMPLATE_DIR)),
-    jinja2.FileSystemLoader(str(TEMPLATE_DIR)),
-]))
+env = jinja2.Environment(
+    loader=jinja2.ChoiceLoader([
+        jinja2.FileSystemLoader(str(LOCAL_TEMPLATE_DIR)),
+        jinja2.FileSystemLoader(str(TEMPLATE_DIR)),
+    ])
+)
 template = env.get_template("README.mkdocs.j2")
 
-def get_repo_config(repo_path):
-    """Load configuration using dbuild's native parser."""
+
+def _apply_overlay(cfg, repo_name: str) -> None:
+    """Apply optional preview metadata overrides in-memory without touching repos."""
+    ov = CATEGORY_OVERLAY.get(repo_name)
+    if not ov:
+        return
+    if "category" in ov:
+        cfg.metadata.category = ov["category"]
+    if "part_of" in ov:
+        cfg.metadata.part_of = ov["part_of"]
+    if "tags" in ov:
+        cfg.metadata.tags = list(ov["tags"])
+    if "type" in ov:
+        cfg.type = ov["type"]
+    if "image_class" in ov:
+        cfg.metadata.image_class = ov["image_class"]
+    if "notes" in ov:
+        cfg.metadata.notes = ov["notes"]
+    if "icon" in ov:
+        cfg.metadata.icon = ov["icon"]
+
+
+def _clean_manual_readme(text: str, config: dict) -> str:
+    """Resolve legacy @PLACEHOLDER@ tokens in hand-maintained docs: manual READMEs."""
+    app = config["name"]
+    prefix = app.upper().replace("-", "_") + "_"
+    replacements = {
+        "@CONTAINER_CONFIG_ROOT@": "/containers",
+        "@REGISTRY@": config.get("registry") or "ghcr.io/daemonless",
+        "@PUID@": "1000",
+        "@PGID@": "1000",
+        "@TZ@": "UTC",
+        "@INTERFACE@": "em0",
+    }
+    if config.get("default_port"):
+        replacements[f"@{prefix}PORT@"] = str(config["default_port"])
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+
+    def _sub_path(m: re.Match) -> str:
+        tok = m.group(1)
+        if tok.startswith(prefix) and tok.endswith("_PATH"):
+            sub = tok[len(prefix):-5].lower().replace("_", "-")
+            return app if sub == "config" else f"{app}/{sub}"
+        if tok.endswith("_PATH"):
+            return f"/path/to/{tok[:-5].lower().replace('_', '/')}"
+        return m.group(0)
+
+    text = re.sub(r"@([A-Z][A-Z0-9_]+)@", _sub_path, text)
+    text = re.sub(
+        r"\n### Interactive Configuration\n.*?(?=\n## |\Z)",
+        "\n",
+        text,
+        flags=re.S,
+    )
+    return text
+
+
+def get_repo_config(repo_path: Path):
+    """Load configuration using dbuild's native parser with explicit repo_dir."""
     try:
         cfg = load_dbuild_config(repo_path)
         if not cfg:
             return None
 
-        # Use dbuild's internal enricher to get the same context used for README.md
-        context = _enrich_metadata(cfg)
+        _apply_overlay(cfg, repo_path.name)
 
-        # Add registry if not present (dbuild uses cfg.registry)
-        if 'registry' not in context:
-            context['registry'] = cfg.registry or "ghcr.io/daemonless"
+        # Pass repo_dir explicitly so AppJail sidecars, service names, and base
+        # versions resolve from the image repo instead of daemonless-io's cwd.
+        context = _enrich_metadata(cfg, repo_dir=repo_path)
 
-        # cfg.type lives on Config, not Metadata, so _enrich_metadata doesn't carry it
-        context['type'] = cfg.type
+        if "registry" not in context:
+            context["registry"] = cfg.registry or "ghcr.io/daemonless"
 
-        # Convert newlines to <br> so multiline descriptions display cleanly inside markdown table cells
-        if context.get('description'):
-            context['description'] = context['description'].strip().replace('\n', '<br>')
+        context["type"] = cfg.type
+        context["default_port"] = (
+            str(context["ports"][0]["port"]) if context.get("ports") else ""
+        )
+
+        # Convert newlines to <br> so multiline descriptions display cleanly inside tables
+        if context.get("description"):
+            context["description"] = context["description"].strip().replace("\n", "<br>")
 
         return context
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"Error loading {repo_path.name}: {e}")
         return None
 
-def update_placeholders(configs):
-    """Update placeholder-plugin.yaml with all placeholder definitions."""
-    try:
-        with open(PLACEHOLDER_PLUGIN, 'r', encoding='utf-8') as f:
-            plugin_data = yaml.safe_load(f) or {}
-    except FileNotFoundError:
-        plugin_data = {}
-
-    # Settings for @ syntax
-    plugin_data["settings"] = {
-        "normal_prefix": "@",
-        "normal_suffix": "@"
-    }
-
-    if "placeholders" not in plugin_data:
-        plugin_data["placeholders"] = {}
-
-    # Validators
-    plugin_data["validators"] = {
-        "port_number": {
-            "name": "Port Number",
-            "rules": [{
-                "regex": "^[0-9]+$",
-                "should_match": True,
-                "error_message": "Must be a positive integer."
-            }]
-        }
-    }
-
-    def strip_syntax(s):
-        return s.strip("@")
-
-    # Global placeholders
-    plugin_data["placeholders"]["REGISTRY"] = {
-        "default": "GitHub Container Registry",
-        "description": "Container Registry",
-        "values": {
-            "GitHub Container Registry": "ghcr.io/daemonless",
-            "Docker Hub": "docker.io/daemonless",
-        },
-    }
-
-    plugin_data["placeholders"][strip_syntax(CONFIG_ROOT_VAR)] = {
-        "default": DEFAULT_CONFIG_ROOT,
-        "description": "Container Configuration Root Path",
-    }
-
-    plugin_data["placeholders"]["INTERFACE"] = {
-        "default": "em0",
-        "description": "Host Network Interface",
-    }
-
-    for path in SHARED_PATHS:
-        name = path.strip('/').replace('/', '_').upper()
-        plugin_data["placeholders"][f"{name}_PATH"] = {
-            "default": f"/path/to{path}",
-            "description": f"Global {path} Path"
-        }
-
-    # Common env placeholders
-    tz_map = {
-        "UTC": "UTC",
-        "America/New_York": "America/New_York",
-        "America/Los_Angeles": "America/Los_Angeles"
-    }
-    try:
-        import pytz # pylint: disable=import-outside-toplevel
-        tz_map = {tz: tz for tz in pytz.common_timezones}
-    except ImportError:
-        pass
-
-    plugin_data["placeholders"]["TZ"] = {
-        "default": "UTC",
-        "description": "Timezone",
-        "values": tz_map
-    }
-    plugin_data["placeholders"]["PUID"] = {
-        "default": "1000",
-        "description": "User ID",
-        "validators": ["port_number"]
-    }
-    plugin_data["placeholders"]["PGID"] = {
-        "default": "1000",
-        "description": "Group ID",
-        "validators": ["port_number"]
-    }
-
-    # Per-image placeholders
-    for config in configs:
-        if config.get("ports"):
-            main_port = config["ports"][0]["port"]
-            var_name = f"{config['name'].upper().replace('-', '_')}_PORT"
-            plugin_data["placeholders"][var_name] = {
-                "default": str(main_port),
-                "description": f"{config['title']} Host Port",
-                "validators": ["port_number"]
-            }
-
-        for v in config.get("volumes", []):
-            ph = v.get("placeholder", "")
-            if not ph or v['path'] in SHARED_PATHS or not ph.startswith("@"):
-                continue
-            src_val = v.get("source", f"{config['name']}{v['path']}")
-            plugin_data["placeholders"][strip_syntax(ph)] = {
-                "default": src_val.lstrip("/"),
-                "description": f"{config['title']} {v['path']} Path"
-            }
-
-    # Clean up old SET_ keys and invalid names (dots or slashes = literal path, not a variable)
-    plugin_data["placeholders"] = {
-        k: v for k, v in plugin_data["placeholders"].items()
-        if not k.startswith("SET_") and "." not in k and "/" not in k
-    }
-
-    with open(PLACEHOLDER_PLUGIN, 'w', encoding='utf-8') as f:
-        yaml.dump(plugin_data, f, sort_keys=False, default_flow_style=False)
-    print("Updated placeholder-plugin.yaml")
-
-def generate_index_page(configs):
-    """Generate the Fleet index page."""
-    description = (
-        "Browse all daemonless OCI images. Media servers, downloaders, "
-        "databases, and utilities — all running natively on FreeBSD."
-    )
-    lines = [
-        "---",
-        'title: "OCI Image Fleet: 30+ Native FreeBSD Images"',
-        f'description: "{description}"',
-        "---",
-        "",
-        "# Image Fleet",
-        "",
-        "Explore our collection of high-performance, FreeBSD-native OCI images.",
-        ""
-    ]
-
-    # Use VALID_CATEGORIES from dbuild + Uncategorized for index grouping
-    categories = VALID_CATEGORIES + ["Uncategorized"]
-
-    by_category = {}
-    for config in configs:
-        by_category.setdefault(config.get("category", "Uncategorized"), []).append(config)
-
-    for cat in categories:
-        img_list = by_category.get(cat)
-        if not img_list:
-            continue
-        lines.extend([
-            f"## {cat}", "",
-            "| Image | Port | Description |",
-            "|-------|------|-------------|"
-        ])
-        for config in sorted(img_list, key=lambda x: x['title']):
-            port_info = config["ports"][0]["port"] if config.get("ports") else "-"
-            icon = config.get("icon") or ":material-docker:"
-            row = f"| [{icon} {config['title']}]({config['name']}.md) | " \
-                  f"{port_info} | {config.get('description', '')} |"
-            lines.append(row)
-        lines.append("")
-
-    lines.extend([
-        "## Image Tags", "",
-        "| Tag | Source | Description |",
-        "|-----|--------|-------------|",
-        "| `:latest` | Upstream releases | Newest version from project |",
-        "| `:pkg` | FreeBSD quarterly | Stable, tested in ports |",
-        "| `:pkg-latest` | FreeBSD latest | Rolling package updates |",
-        ""
-    ])
-
-    DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    (DOCS_DIR / "index.md").write_text("\n".join(lines), encoding='utf-8')
-    print("Generated docs/images/index.md")
 
 def generate_appliances_page(configs):
     """Generate docs/guides/appliances.md, filtered to type: appliance images."""
@@ -263,46 +173,12 @@ def generate_appliances_page(configs):
 
     out_path = REPO_ROOT / "docs" / "guides" / "appliances.md"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(content, encoding='utf-8')
+    out_path.write_text(content, encoding="utf-8")
     print(f"Generated {out_path} ({len(appliances)} appliance(s))")
 
-def update_mkdocs_yaml(configs):
-    """Update mkdocs.yaml navigation with all images."""
-    mkdocs_path = REPO_ROOT / "mkdocs.yaml"
-    if not mkdocs_path.exists():
-        return
-
-    lines = mkdocs_path.read_text(encoding='utf-8').splitlines()
-    new_lines = []
-    in_fleet = False
-    processed = False
-
-    by_cat = {}
-    for config in configs:
-        cat = config.get("category", "Uncategorized")
-        by_cat.setdefault(cat, []).append(config)
-
-    for line in lines:
-        if line.strip() in ("- Fleet:", "- Image Fleet:"):
-            in_fleet = True
-            if not processed:
-                new_lines.append("  - Image Fleet:")
-                new_lines.append("    - Overview: images/index.md")
-                new_lines.append("    - Version Status: status.md")
-                processed = True
-            continue
-        if in_fleet:
-            if line.startswith("  - ") and not line.strip().startswith("- Overview"):
-                in_fleet = False
-                new_lines.append(line)
-            continue
-        new_lines.append(line)
-
-    mkdocs_path.write_text("\n".join(new_lines) + "\n", encoding='utf-8')
-    print("Updated mkdocs.yaml")
 
 def generate_status_page(configs):
-    """Generate docs/images/index.md (build overview) and docs/status.md (version status)."""
+    """Generate docs/images/index.md (catalog) and docs/status.md (version status)."""
     try:
         overview_tmpl = env.get_template("status.mkdocs.j2")
         version_tmpl = env.get_template("version-status.mkdocs.j2")
@@ -310,38 +186,63 @@ def generate_status_page(configs):
         print(f"Warning: template not found ({e}), skipping status pages")
         return
 
-    # Fleet overview (cards + table with category filter tabs)
-    content = overview_tmpl.render(configs=configs, categories=VALID_CATEGORIES + ["Uncategorized"])
-    (REPO_ROOT / "docs" / "images" / "index.md").write_text(content, encoding='utf-8')
+    folded_children = {}
+    for c in configs:
+        if c.get("deprecated"):
+            continue
+        parent = c.get("part_of") or ""
+        if parent:
+            entry = folded_children.setdefault(
+                parent,
+                {"count": 0, "noun": "apps" if parent == "crafting-apps" else "parts", "names": []},
+            )
+            entry["count"] += 1
+            entry["names"].append(c["title"])
+
+    content = overview_tmpl.render(
+        configs=configs,
+        categories=[c for c in VALID_CATEGORIES if c != "Base"],
+        folded_children=folded_children,
+    )
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    (DOCS_DIR / "index.md").write_text(content, encoding="utf-8")
     print("Generated docs/images/index.md")
 
     # Version status
     versions_file = REPO_ROOT / "daemonless-versions.json"
     last_check = "unknown"
     if versions_file.exists():
-        last_check = json.loads(versions_file.read_text()).get("last_check", "unknown")
+        last_check = json.loads(versions_file.read_text(encoding="utf-8")).get("last_check", "unknown")
 
     compare = SCRIPT_DIR / "compare-versions.py"
+    cache_path = os.environ.get("COMPARE_VERSIONS_CACHE", "")
     version_data = {}
-    if compare.exists():
-        result = subprocess.run([sys.executable, str(compare)],
-                                capture_output=True, text=True)
+    if cache_path and Path(cache_path).is_file():
+        version_data = json.loads(Path(cache_path).read_text(encoding="utf-8"))
+    elif compare.exists() and versions_file.exists():
+        result = subprocess.run([sys.executable, str(compare)], capture_output=True, text=True, check=False)
         if result.stderr:
             print(result.stderr, file=sys.stderr, end="")
         if result.stdout.strip():
             version_data = json.loads(result.stdout)
+            if cache_path:
+                Path(cache_path).write_text(result.stdout, encoding="utf-8")
 
-    # Add last_updates map for the status page
     last_updates = {c["name"]: c["last_update"] for c in configs}
 
-    content = version_tmpl.render(last_check=last_check, last_updates=last_updates, configs=configs, **version_data)
-    (REPO_ROOT / "docs" / "status.md").write_text(content, encoding='utf-8')
+    content = version_tmpl.render(
+        last_check=last_check,
+        last_updates=last_updates,
+        configs=configs,
+        **version_data,
+    )
+    (REPO_ROOT / "docs" / "status.md").write_text(content, encoding="utf-8")
     print("Generated docs/status.md")
 
-    # Publish the fleet data alongside the page for machine consumption
     if versions_file.exists():
         (REPO_ROOT / "docs" / "daemonless-versions.json").write_text(
-            versions_file.read_text(), encoding='utf-8')
+            versions_file.read_text(encoding="utf-8"), encoding="utf-8"
+        )
         print("Published docs/daemonless-versions.json")
 
 
@@ -356,30 +257,51 @@ def _is_portrait(path: Path) -> bool:
         return False
 
 
+def _copy_or_compress_screenshot(src: Path, dst_dir: Path) -> str:
+    """Copy screenshot, converting >1 MB raster PNG/JPEGs to crisp WebP."""
+    if src.suffix.lower() in {".png", ".jpg", ".jpeg"} and src.stat().st_size > 1_000_000:
+        try:
+            from PIL import Image
+            out_name = f"{src.stem}.webp"
+            out_path = dst_dir / out_name
+            with Image.open(src) as im:
+                if im.mode == "P" and "transparency" in im.info:
+                    im = im.convert("RGBA")
+                elif im.mode not in ("RGB", "RGBA"):
+                    im = im.convert("RGBA" if "A" in im.getbands() else "RGB")
+                if im.width > 1920:
+                    ratio = 1920 / im.width
+                    im = im.resize((1920, int(im.height * ratio)), Image.Resampling.LANCZOS)
+                im.save(out_path, format="WEBP", quality=82, method=6)
+            return out_name
+        except Exception as exc:
+            print(f"  warn: WebP conversion failed for {src.name} ({exc}), copying original")
+    shutil.copy2(src, dst_dir / src.name)
+    return src.name
+
+
 GHCR = "ghcr.io"
 
 
 def own_packages(config):
-    """The ghcr.io package names this repo publishes: its own image, or for a
-    stack the daemonless images its compose runs."""
+    """The ghcr.io package names this repo publishes."""
     registry = (config.get("registry") or "").rstrip("/")
     if not registry.startswith(GHCR + "/"):
         return []
     prefix = registry + "/"
     if config.get("type") == "stack":
         images = [p.get("image", "") for p in config.get("stack_parts") or []]
-        return sorted({i[len(prefix):].split(":")[0].split("@")[0]
-                       for i in images if i.startswith(prefix)})
+        return sorted({
+            i[len(prefix):].split(":")[0].split("@")[0]
+            for i in images
+            if i.startswith(prefix)
+        })
     return [config["name"]]
 
 
 def pull_token_denied(package, org="daemonless"):
-    """True when ghcr.io refuses an anonymous pull token for the package, which
-    is what a pull sees when nothing has been pushed under that name yet. Any
-    other failure (timeout, 5xx, rate limit) is False: a registry blip must
-    never drop a live image from the site."""
-    url = (f"https://{GHCR}/token?scope=repository:{org}/{package}:pull"
-           f"&service={GHCR}")
+    """True when ghcr.io refuses an anonymous pull token for the package."""
+    url = f"https://{GHCR}/token?scope=repository:{org}/{package}:pull&service={GHCR}"
     try:
         with urllib.request.urlopen(url, timeout=15):
             return False
@@ -390,8 +312,7 @@ def pull_token_denied(package, org="daemonless"):
 
 
 def unpublished(configs):
-    """Names of the images none of whose packages can be pulled yet, checked
-    on ghcr.io in parallel."""
+    """Names of images none of whose packages can be pulled yet."""
     todo = {c["name"]: own_packages(c) for c in configs}
     packages = sorted({p for ps in todo.values() for p in ps})
     with ThreadPoolExecutor(max_workers=12) as pool:
@@ -399,192 +320,193 @@ def unpublished(configs):
     return {name for name, ps in todo.items() if ps and all(denied[p] for p in ps)}
 
 
-def get_last_commit_date(repo_path):
-    """Get the last commit date for a repo in ISO format."""
+def get_last_commit_date(repo_path: Path) -> str:
+    """Get the last commit date for a repo in YYYY-MM-DD format."""
     try:
-        # 1. Try git log
-        result = subprocess.run(
+        for cmd in (
             ["git", "log", "-1", "--format=%cI"],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            # Return YYYY-MM-DD
-            return result.stdout.strip().split('T')[0]
-
-        # 2. Try git log on the directory specifically
-        result = subprocess.run(
             ["git", "log", "-1", "--format=%cI", "."],
-            cwd=repo_path,
-            capture_output=True,
-            text=True,
-            check=False
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            return result.stdout.strip().split('T')[0]
+        ):
+            result = subprocess.run(
+                cmd, cwd=repo_path, capture_output=True, text=True, check=False
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.strip().split("T")[0]
     except Exception as e:
         print(f"Error getting git date for {repo_path.name}: {e}")
 
-    # 3. Fallback to filesystem mtime of compose.yaml or README.md
     try:
-        for fname in ["compose.yaml", "README.md", "."]:
+        for fname in ("compose.yaml", "README.md", "."):
             fpath = repo_path / fname
             if fpath.exists():
-                import datetime
                 mtime = fpath.stat().st_mtime
-                return datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+                return datetime.datetime.fromtimestamp(mtime).strftime("%Y-%m-%d")
     except Exception:
         pass
 
     return "Unknown"
 
+
 def generate_org_readme(configs):
     """Generate the GitHub Organization README (daemonless/README.md)."""
+    if REPOS_DIR != REPO_ROOT.parent.resolve() and os.environ.get("WRITE_ORG_README") != "1":
+        print("Skipping external Org README write (isolated REPOS_DIR mode)")
+        return
+
     try:
         org_tmpl = env.get_template("ORGANIZATION_README.j2")
     except jinja2.TemplateNotFound:
         print("Warning: ORGANIZATION_README.j2 not found, skipping Org README")
         return
 
-    # Group by category
     by_category = {}
     for config in configs:
         cat = config.get("category", "Uncategorized")
         by_category.setdefault(cat, []).append(config)
 
-    # Sort categories: valid dbuild categories first, then others
     categories = [c for c in VALID_CATEGORIES if c in by_category]
     for cat in sorted(by_category.keys()):
         if cat not in categories:
             categories.append(cat)
 
-    # Sort images within categories
     for cat in categories:
         by_category[cat].sort(key=lambda x: x["title"])
 
-    content = org_tmpl.render(
-        categories=categories,
-        by_category=by_category
-    )
-
+    content = org_tmpl.render(categories=categories, by_category=by_category)
     org_readme_path = REPOS_DIR / "daemonless" / "README.md"
-    org_readme_path.write_text(content, encoding='utf-8')
+    org_readme_path.write_text(content, encoding="utf-8")
     print(f"Updated {org_readme_path}")
 
-def render_zensical_config(configs):
-    """Render zensical.toml from its template (gitignored output).
 
-    The image nav list is generated from the active (non-deprecated) configs,
-    sorted by title; everything else is hand-edited in
-    scripts/templates/zensical.toml.j2 (the source of truth).
-    """
+def render_zensical_config(configs):
+    """Render zensical.toml from scripts/templates/zensical.toml.j2."""
     try:
         tmpl = env.get_template("zensical.toml.j2")
     except jinja2.TemplateNotFound:
         print("Warning: zensical.toml.j2 not found, skipping config")
         return
-    active = sorted((c for c in configs if not c.get("deprecated")),
-                    key=lambda c: c["title"].lower())
-    image_nav = [
-        {
-            "title": c["title"].replace("\\", "\\\\").replace('"', '\\"'),
-            "name": c["name"],
-        }
-        for c in active
-    ]
-    content = tmpl.render(image_nav=image_nav)
+
+    active = [c for c in configs if not c.get("deprecated")]
+    by_cat = {}
+    for c in active:
+        cat = c.get("category") or "Uncategorized"
+        by_cat.setdefault(cat, []).append(c)
+
+    ordered_cats = [c for c in VALID_CATEGORIES if c in by_cat]
+    for cat in sorted(by_cat):
+        if cat not in ordered_cats:
+            ordered_cats.append(cat)
+
+    image_nav_groups = []
+    total_entries = 0
+    for cat in ordered_cats:
+        items = [
+            {
+                "title": c["title"].replace("\\", "\\\\").replace('"', '\\"'),
+                "name": c["name"],
+            }
+            for c in sorted(by_cat[cat], key=lambda x: x["title"].lower())
+        ]
+        total_entries += len(items)
+        image_nav_groups.append({
+            "category": cat.replace("\\", "\\\\").replace('"', '\\"'),
+            "entries": items,
+        })
+
+    content = tmpl.render(image_nav_groups=image_nav_groups)
     if not content.endswith("\n"):
         content += "\n"
     (REPO_ROOT / "zensical.toml").write_text(content, encoding="utf-8")
-    print(f"Generated zensical.toml ({len(image_nav)} image nav entries)")
+    print(
+        f"Generated zensical.toml ({total_entries} image nav entries across "
+        f"{len(image_nav_groups)} categories)"
+    )
 
 
 def generate_homepage(configs):
-    """Render the homepage template to docs/index.md (gitignored output).
-
-    The hand-authored homepage lives in scripts/templates/home.mkdocs.j2; the
-    only dynamic value is the active (non-deprecated) image count in the hero.
-    Output is gitignored so the committed source is the template, not the page.
-    """
+    """Render the homepage template to docs/index.md."""
     try:
         tmpl = env.get_template("home.mkdocs.j2")
     except jinja2.TemplateNotFound:
         print("Warning: home.mkdocs.j2 not found, skipping homepage")
         return
-    active_count = len([c for c in configs if not c.get("deprecated")])
-    content = tmpl.render(active_count=active_count)
+
+    active = [c for c in configs if not c.get("deprecated")]
+    by_name = {c["name"]: c for c in active}
+    featured_apps = []
+    for slug in FEATURED_SLUGS:
+        c = by_name.get(slug)
+        if c and c.get("screenshots"):
+            featured_apps.append({
+                "name": c["name"],
+                "title": c["title"],
+                "category": c.get("category", ""),
+                "screenshot": c["screenshots"][0].lstrip("/"),
+            })
+
+    content = tmpl.render(active_count=len(active), featured_apps=featured_apps)
     (REPO_ROOT / "docs" / "index.md").write_text(content, encoding="utf-8")
-    print(f"Generated docs/index.md (homepage, {active_count} images)")
+    print(f"Generated docs/index.md (homepage, {len(active)} images)")
 
 
 def main():
     """Main entry point for the documentation generator."""
-    import shutil
-
-    # Purge/recreate logos directory to clean up deleted/stale logos
-    logos_dst = REPO_ROOT / "docs" / "images" / "logos"
+    logos_dst = DOCS_DIR / "logos"
     if logos_dst.exists():
         shutil.rmtree(logos_dst)
     logos_dst.mkdir(parents=True, exist_ok=True)
 
-    configs = []
+    # Purge stale generated image markdown files before regenerating
+    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    for stale_md in DOCS_DIR.glob("*.md"):
+        if stale_md.name != "index.md":
+            stale_md.unlink()
 
-    # Discover repos
+    configs = []
     loaded = []
     for repo in sorted(REPOS_DIR.iterdir()):
-        if not repo.is_dir() or repo.name.startswith('.'):
+        if not repo.is_dir() or repo.name.startswith(".") or repo.name in EXCLUDED_IMAGES:
             continue
 
-        # A valid image repo MUST have a compose.yaml or a .daemonless config
-        is_image_repo = (repo / "compose.yaml").exists() or \
-                        (repo / ".daemonless" / "config.yaml").exists()
-
+        is_image_repo = (
+            (repo / "compose.yaml").exists()
+            or (repo / ".daemonless" / "config.yaml").exists()
+        )
         if not is_image_repo:
             continue
 
-        # Load using dbuild logic
         config = get_repo_config(repo)
-        if config:
+        if config and config.get("name") not in EXCLUDED_IMAGES:
             loaded.append((repo, config))
 
-    # An image nobody can pull yet (never built, or its package still private)
-    # gets no page: a visitor would only find an install that fails.
     hidden = unpublished([c for _, c in loaded])
     for repo, config in loaded:
         if config["name"] in hidden:
             print(f"Skipped {config['name']}: not published on {GHCR} yet")
             continue
 
-        # Add last commit date
         config["last_update"] = get_last_commit_date(repo)
 
-        # Copy screenshots from .daemonless/screenshots/ to docs/images/screenshots/<name>/
-        screenshot_exts = {'.png', '.jpg', '.jpeg', '.gif', '.webp'}
+        screenshot_exts = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
         screenshots_src = repo / ".daemonless" / "screenshots"
-        screenshots_dst = DOCS_DIR / "screenshots" / config['name']
+        screenshots_dst = DOCS_DIR / "screenshots" / config["name"]
         screenshots = []
         if screenshots_src.exists():
-            import shutil
             if screenshots_dst.exists():
                 shutil.rmtree(screenshots_dst)
             screenshots_dst.mkdir(parents=True, exist_ok=True)
             for f in sorted(screenshots_src.iterdir()):
                 if f.suffix.lower() not in screenshot_exts:
                     continue
-                # A phone-portrait or full-page capture turns the carousel
-                # into a tall strip; the page is for the desktop view.
                 if _is_portrait(f):
                     print(f"  skip screenshot {config['name']}/{f.name}: taller than wide")
                     continue
-                shutil.copy2(f, screenshots_dst / f.name)
-                screenshots.append(f"/images/screenshots/{config['name']}/{f.name}")
+                out_name = _copy_or_compress_screenshot(f, screenshots_dst)
+                screenshots.append(f"/images/screenshots/{config['name']}/{out_name}")
         config["screenshots"] = screenshots
 
-        # Copy logo from .daemonless/logo.* to docs/images/logos/<name>.<ext>
         logo_src = None
-        for ext in ['.svg', '.png']:
+        for ext in (".svg", ".png"):
             candidate = repo / ".daemonless" / f"logo{ext}"
             if candidate.exists():
                 logo_src = candidate
@@ -597,9 +519,8 @@ def main():
         else:
             config["logo"] = config.get("logo", "")
 
-        # Copy dark logo from .daemonless/logo-dark.* to docs/images/logos/<name>-dark.<ext>
         logo_dark_src = None
-        for ext in ['.svg', '.png']:
+        for ext in (".svg", ".png"):
             candidate = repo / ".daemonless" / f"logo-dark{ext}"
             if candidate.exists():
                 logo_dark_src = candidate
@@ -614,38 +535,32 @@ def main():
 
         configs.append(config)
 
-        # Generate MkDocs page
         try:
             out_path = DOCS_DIR / f"{config['name']}.md"
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-
-            # Check for manual docs: supports both docs: manual and docs: { manual: true }
-            docs_val = config.get('docs')
-            is_manual = (docs_val == 'manual' or
-                         (isinstance(docs_val, dict) and docs_val.get('manual', False)))
+            docs_val = config.get("docs")
+            is_manual = (
+                docs_val == "manual"
+                or (isinstance(docs_val, dict) and docs_val.get("manual", False))
+            )
             if is_manual:
-                # Copy README.md from repo for manual docs
                 readme_path = repo / "README.md"
                 if readme_path.exists():
-                    out_path.write_text(readme_path.read_text(encoding='utf-8'), encoding='utf-8')
+                    raw_md = readme_path.read_text(encoding="utf-8")
+                    out_path.write_text(_clean_manual_readme(raw_md, config), encoding="utf-8")
                     print(f"Copied docs/images/{config['name']}.md (manual)")
                 else:
                     print(f"Warning: {repo.name} has docs: manual but no README.md")
             else:
-                # Generate from consolidated dbuild template
                 mkdocs_content = template.render(config, render_mode="mkdocs")
-                out_path.write_text(mkdocs_content, encoding='utf-8')
+                out_path.write_text(mkdocs_content, encoding="utf-8")
                 print(f"Generated docs/images/{config['name']}.md")
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Error generating {config['name']}: {e}")
 
     if not configs:
         print("No configs found")
         return
 
-    # Update supporting files
-    update_placeholders(configs)
-    update_mkdocs_yaml(configs)
     render_zensical_config(configs)
     generate_homepage(configs)
     generate_status_page(configs)
@@ -653,6 +568,7 @@ def main():
     generate_appliances_page(configs)
 
     print(f"\nGenerated {len(configs)} image docs")
+
 
 if __name__ == "__main__":
     main()

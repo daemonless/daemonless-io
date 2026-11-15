@@ -23,7 +23,7 @@ help:
 	@echo "  fetch          Clone/update all image repositories (requires 'gh' CLI)"
 	@echo "  generate       Run all documentation generators"
 	@echo "  build          Build the static site using Zensical"
-	@echo "  serve          Preview the build at :8001 (post-processed)"
+	@echo "  serve          Preview the build at :8001"
 	@echo "  clean          Remove all build artifacts"
 	@echo "  status         Show git status of the docs repo"
 
@@ -58,19 +58,15 @@ generate-policy:
 	@echo "==> Generating LLM policy page..."
 	$(PYTHON) $(SCRIPTS_DIR)/fetch_policy.py
 
-# Build the static site with Zensical
+# Build the static site with Zensical and validate rendered HTML
 build:
 	@echo "==> Building site with Zensical..."
 	$(ZEN_ULIMIT) $(ZENSICAL) build -f $(ZEN_CONFIG)
-	@echo "==> Injecting interactive placeholders (Zensical doesn't run the MkDocs plugin)..."
-	@# --phase both: mark @VAR@ -> convert in ONE process (shared unique id).
-	markdown-placeholder-standalone site/ --phase both --placeholder-config placeholder-plugin.yaml
+	@$(PYTHON) $(SCRIPTS_DIR)/check-rendered.py site
 
-# Preview the Zensical build. Serves the post-processed static output so
-# placeholders work. NOTE: not `zensical serve` — that rebuilds without the
-# placeholder post-process (leaving raw @VAR@) and there's no live reload here.
+# Preview the Zensical build at :8001
 serve: build
-	@echo "==> Serving post-processed site/ at http://0.0.0.0:8001 (placeholders work; no live-reload)"
+	@echo "==> Serving site/ at http://0.0.0.0:8001"
 	python3 -m http.server -d site --bind 0.0.0.0 8001
 
 # Cleanup

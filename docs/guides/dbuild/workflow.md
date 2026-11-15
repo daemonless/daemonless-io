@@ -74,8 +74,8 @@ name: traefik
 x-daemonless:
   title: "Traefik"
   icon: ":material-server-network:"        # Browse icons at pictogrammers.com
-  category: "Infrastructure"               # See config reference for categories
-  description: "Modern HTTP reverse proxy and load balancer for FreeBSD."
+  category: "Networking"                   # See config reference for categories
+  description: "Modern HTTP reverse proxy and load balancer."
   upstream_url: "https://github.com/traefik/traefik" # Must be the SOURCE repo
   web_url: "https://traefik.io/"
   freshports_url: "https://www.freshports.org/net/traefik/"

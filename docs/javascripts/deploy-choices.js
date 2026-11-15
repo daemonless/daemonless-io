@@ -2,15 +2,6 @@
 // and the files under it. Podman and AppJail carry the same form, so a pick in
 // one is a pick in the other, and the picks are remembered per app in
 // localStorage.
-//
-// The files come one of two ways (dbuild's README.mkdocs.j2):
-// - a block per combination (.deploy-combo[data-key]): the one whose key
-//   matches every row's pick is shown;
-// - one merged block (.deploy-merged) whose varying lines carry the picks that
-//   keep them (data-when, from dbuild/choice_merge.py): the lines the picks
-//   keep are shown, in the code blocks too, so copy and the zip download take
-//   exactly those. A combination the merge cannot express follows it as a
-//   .deploy-combo and is shown in its place.
 (function () {
   const store = (app) => "deploy-choices:" + app;
   const read = (app) => { try { return JSON.parse(localStorage.getItem(store(app)) || "{}"); } catch (e) { return {}; } };
@@ -36,7 +27,6 @@
   const choiceIds = (form) => Array.from(form.querySelectorAll(".opts, button.toggle")).map((el) => el.dataset.choice);
 
   // Which superset lines the picks show: choice_merge.visible, line for line.
-  // lines[k] = [cond id or "", separator?, blank?].
   function visible(data, picks) {
     const L = data.lines;
     const kept = (c) => !c || Object.entries(data.conds[c]).every(([ch, opts]) => opts.includes(picks[ch]));
@@ -64,8 +54,7 @@
 
   // A highlighted block's lines, as Pygments writes them: each starts at its
   // <a id="__codelineno-…"> anchor. Lines a pick drops wait in a hidden holder
-  // inside the block, still in the page, so the placeholder settings keep
-  // reaching them.
+  // inside the block so customizer settings keep reaching them.
   function lineGroups(hl) {
     if (hl._groups) return hl._groups;
     const code = hl.querySelector("code");
@@ -107,7 +96,6 @@
     return true;
   }
 
-  // "a · b — data in x, y": the separators follow what is shown.
   function separators(p) {
     const shown = (sel) => Array.from(p.querySelectorAll(sel)).filter((el) => !el.closest("[hidden]"));
     shown(".yg").forEach((el, i) => el.classList.toggle("sep", i > 0));
@@ -117,7 +105,6 @@
   function applyMerged(box, picks) {
     if (!box._when) {
       box._when = JSON.parse(box.dataset.when);
-      // Between the items, only the separators the script puts there.
       box.querySelectorAll(".you-get").forEach((p) => {
         Array.from(p.childNodes).forEach((n) => { if (n.nodeType === 3 && !n.textContent.trim()) n.remove(); });
       });
@@ -130,9 +117,6 @@
       hl.hidden = !vis[+hl.dataset.l];
       const idx = data.blocks[hl.dataset.wb] || [];
       const mask = idx.map((k) => vis[k]);
-      // A file starts and ends at text, as the highlighter renders one: a
-      // blank line left first or last by what the picks hide goes too
-      // (choice_merge._norm proves it so).
       const blank = (i) => data.lines[idx[i]][2];
       for (let i = 0; i < mask.length && (!mask[i] || blank(i)); i++) mask[i] = false;
       for (let i = mask.length - 1; i >= 0 && (!mask[i] || blank(i)); i--) mask[i] = false;
@@ -159,6 +143,7 @@
       merged.hidden = !!whole;
       if (!whole) applyMerged(merged, picks);
     }
+    document.dispatchEvent(new CustomEvent("daemonless:choices-updated"));
   }
 
   function init() {
@@ -168,21 +153,31 @@
     forms.forEach((f) => (byApp[f.dataset.app] = byApp[f.dataset.app] || []).push(f));
     Object.keys(byApp).forEach((app) => {
       const group = byApp[app];
-      // A choice for one runtime has a row in that form only (runtimes:).
       const saved = read(app);
       let picks = Object.assign({}, ...group.map((f) => picksFor(f, saved)));
       group.forEach((f) => apply(f, picks));
-      group.forEach((f) => f.addEventListener("click", (e) => {
-        const b = e.target.closest("button[data-option], button.toggle, button[data-toggle-all]");
-        if (!b || !f.contains(b)) return;
-        picks = Object.assign({}, picks);
-        if (b.dataset.option) picks[b.closest(".opts").dataset.choice] = b.dataset.option;
-        else if (b.classList.contains("toggle")) picks[b.dataset.choice] = picks[b.dataset.choice] === b.dataset.on ? b.dataset.off : b.dataset.on;
-        else f.querySelectorAll("button.toggle").forEach((t) => { picks[t.dataset.choice] = t.dataset[b.dataset.toggleAll]; });
-        write(app, picks);
-        group.forEach((g) => apply(g, picks));
-      }));
+      group.forEach((f) => {
+        if (f._bound) return;
+        f._bound = true;
+        f.addEventListener("click", (e) => {
+          const b = e.target.closest("button[data-option], button.toggle, button[data-toggle-all]");
+          if (!b || !f.contains(b)) return;
+          picks = Object.assign({}, picks);
+          if (b.dataset.option) picks[b.closest(".opts").dataset.choice] = b.dataset.option;
+          else if (b.classList.contains("toggle")) picks[b.dataset.choice] = picks[b.dataset.choice] === b.dataset.on ? b.dataset.off : b.dataset.on;
+          else f.querySelectorAll("button.toggle").forEach((t) => { picks[t.dataset.choice] = t.dataset[b.dataset.toggleAll]; });
+          write(app, picks);
+          group.forEach((g) => apply(g, picks));
+        });
+      });
     });
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+
+  if (typeof document$ !== "undefined") {
+    document$.subscribe(init);
+  } else if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

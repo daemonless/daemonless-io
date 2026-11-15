@@ -162,9 +162,11 @@ podman inspect -f '{{.NetworkSettings.IPAddress}}' radarr
 
 Or create a network with static IPs in your compose file. More complex but avoids both host networking and dnsname.
 
-## An Address on Your LAN
+## LAN & VLAN Networking (`cni-epair`)
 
-For apps that need to be seen on the LAN directly (UniFi adopting devices, Home Assistant discovery, mDNS), a container can get its own address on your network, by DHCP or a fixed one, through the [cni-epair](https://github.com/daemonless/cni-epair) plugin (`pkg install cni-epair`). The image must include `dhclient` for DHCP. [fjord's networking guide](https://fjord.daemonless.io/networking/#2-lan-networks) walks through it, and fjord sets it up for you.
+For services that require a direct Layer 2 address on a physical LAN or 802.1Q VLAN subnet (UniFi controller adoption, Home Assistant mDNS discovery, or dedicated service VLANs), attach the container through the [`cni-epair`](https://github.com/daemonless/cni-epair) plugin (`pkg install cni-epair`) using DHCP or a static CIDR on a host interface or VLAN parent (such as `igb0` or `vlan20`). Note that DHCP mode requires `dhclient` inside the image.
+
+For friendly `.local` hostnames and automatic HTTPS across bridge or LAN containers without exposing raw port numbers, pair with the [Daemonless Reverse Proxy](../reverse-proxy/index.md) appliance. See [fjord's networking guide](https://fjord.daemonless.io/networking/) for automated bridge, LAN/VLAN, and reverse-proxy setup.
 
 ## Comparison Summary
 

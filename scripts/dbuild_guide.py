@@ -2,6 +2,7 @@
 """
 Generate static dbuild guide pages from source code using Jinja2 templates.
 """
+import os
 import sys
 import argparse
 import shutil
@@ -11,8 +12,8 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent.resolve()
 TEMPLATES_DIR = SCRIPT_DIR / "templates"
 REPO_ROOT = SCRIPT_DIR.parent
-REPOS_DIR = REPO_ROOT.parent
-DBUILD_REPO = (REPOS_DIR / "dbuild").resolve()
+REPOS_DIR = Path(os.environ.get("REPOS_DIR", REPO_ROOT.parent)).expanduser().resolve()
+DBUILD_REPO = Path(os.environ.get("DBUILD_REPO", REPOS_DIR / "dbuild")).expanduser().resolve()
 GUIDES_DIR = REPO_ROOT / "docs" / "guides"
 DBUILD_GUIDES_DIR = GUIDES_DIR / "dbuild"
 
