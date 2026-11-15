@@ -4,10 +4,6 @@
 # scripts/generate_docs.py (make generate) and is gitignored. Edit THIS file.
 #
 # Build with:  make build
-# NOTE: Zensical can't run the MkDocs placeholder plugin, so 'make build'
-# post-processes the output with `markdown-placeholder-standalone --phase both`
-# to wire up the interactive @PLACEHOLDER@ widgets. Running `zensical build`
-# on its own (or `make serve`) leaves placeholders as literal @VAR@ text.
 
 [project]
 site_name = "daemonless"
@@ -23,70 +19,81 @@ copyright = 'Icons: <a href="https://selfh.st/icons/">selfh.st</a> (CC BY 4.0)'
 extra_css = [
   "stylesheets/extra.css",
   "stylesheets/ux-overrides.css",
-  "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css",
-  "https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css",
   # zip-bundle (Zensical: load assets directly, no plugin)
   "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.3.0/mkdocs_zip_bundle/assets/zip-bundle.css",
-  # placeholder plugin (generated post-build by markdown-placeholder-standalone)
-  "assets/stylesheets/placeholders.css",
 ]
 
 extra_javascript = [
   "javascripts/ux-settings-v2.js",
   "javascripts/deploy-choices.js",
   "javascripts/demo-video.js",
-  "https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js",
-  "https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js",
-  "javascripts/splide-init.js",
   "https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js",
   "javascripts/tablesort.js",
   # zip-bundle (Zensical: load assets directly, no plugin)
   "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
   "https://cdn.jsdelivr.net/gh/daemonless/mkdocs-zip-bundle-plugin@v0.3.0/mkdocs_zip_bundle/assets/zip-bundle.js",
-  # placeholder plugin (generated post-build by markdown-placeholder-standalone)
-  "assets/javascripts/placeholder-combined.js",
 ]
 
-# Curated navigation (ported from mkdocs.yaml). Without this, Zensical
-# auto-derives nav from the docs tree and flattens every image page into the
-# sidebar using its long SEO title.
+# 7-tab operator-first information architecture.
 nav = [
   { "Home" = "index.md" },
-  { "Image Fleet" = [
-    # images/index.md first + navigation.indexes: the section's own page, so
-    # the "Image Fleet" and "All Images" breadcrumbs on an image page go to
-    # the list, not to the first image (AdGuard Home).
-    { "All Images" = [
-      "images/index.md",
-      # Image list generated from the active (non-deprecated) compose configs,
-      # sorted by title. Re-run `make generate` after adding/removing an image.
-{%- for c in image_nav %}
+  { "Catalog" = [
+    "images/index.md",
+{%- for grp in image_nav_groups %}
+    { "{{ grp.category }}" = [
+{%- for c in grp.entries %}
       { "{{ c.title }}" = "images/{{ c.name }}.md" },
 {%- endfor %}
     ] },
-    { "Version Status" = "status.md" },
+{%- endfor %}
+  ] },
+  { "Appliances" = [
+    { "Daemonless Appliances" = "guides/appliances.md" },
+    { "Reverse Proxy" = [
+      "reverse-proxy/index.md",
+      { "Host & First-Run Setup" = "reverse-proxy/setup.md" },
+      { "Certificates, DNS & Access" = "reverse-proxy/certificates-and-access.md" },
+      { "fjord, Container Labels & API" = "reverse-proxy/automation.md" },
+      { "Backups & Troubleshooting" = "reverse-proxy/operations.md" },
+    ] },
+    { "Package Cache" = [
+      "pkg-cache/index.md",
+      { "Host Setup, ZFS & Sizing" = "pkg-cache/setup.md" },
+      { "Hosts, Jails & Container Builds" = "pkg-cache/clients.md" },
+      { "Mirrors, Stats & Troubleshooting" = "pkg-cache/mirrors-and-operations.md" },
+    ] },
   ] },
   { "Documentation" = [
-    { "Getting Started" = "guides/quick-start.md" },
-    { "Permissions (PUID/PGID)" = "guides/permissions.md" },
-    { "ZFS Storage" = "guides/zfs.md" },
-    { "Networking" = "guides/networking.md" },
-    { "Hardware Transcoding" = "guides/hardware-transcoding.md" },
-    { "Jail Permissions (allow.*)" = "guides/ocijail-patch.md" },
-    { "Operations & Maintenance" = "guides/operations.md" },
+    { "Getting Started" = [
+      { "Quick Start" = "guides/quick-start.md" },
+      { "Permissions (PUID/PGID)" = "guides/permissions.md" },
+      { "Jail Permissions (allow.*)" = "guides/ocijail-patch.md" },
+    ] },
+    { "Operations" = [
+      { "Networking & VLANs" = "guides/networking.md" },
+      { "ZFS Storage" = "guides/zfs.md" },
+      { "Hardware Transcoding" = "guides/hardware-transcoding.md" },
+      { "Updates & Maintenance" = "guides/operations.md" },
+    ] },
+    { "Architecture & Security" = [
+      { "Image Architecture" = "architecture.md" },
+      { "SBOMs & Provenance" = "sbom.md" },
+      { "Philosophy" = "philosophy.md" },
+    ] },
     { "Troubleshooting" = [
       { "Stalwart & ClamAV Integration" = "guides/stalwart-clamav.md" },
     ] },
+    { "Community" = "community.md" },
+    { "LLM / AI Policy" = "guides/llm-policy.md" },
   ] },
-  { "Development" = [
+  { "Porting & dbuild" = [
     { "Contributor Quickstart" = "guides/contributing-quickstart.md" },
     { "Development Guide" = "guides/development.md" },
     { "Service Anatomy" = "guides/service-anatomy.md" },
-    { "AI-Assisted Porting" = "guides/ai-assisted-porting.md" },
     { "Stack Choices" = "guides/stack-choices.md" },
     { "Image Tagging" = "guides/tagging.md" },
     { "OCI Compliance" = "guides/oci-compliance.md" },
-    { "Appliances" = "guides/appliances.md" },
+    { "AI-Assisted Porting" = "guides/ai-assisted-porting.md" },
     { "dbuild Toolchain" = [
       { "Overview" = "guides/dbuild/index.md" },
       { "Building Your First Image" = "guides/dbuild/workflow.md" },
@@ -98,55 +105,39 @@ nav = [
       { "Quality Gates (CIT)" = "guides/dbuild/cit.md" },
     ] },
   ] },
-  { "About" = [
-    { "Philosophy" = "philosophy.md" },
-    { "Architecture" = "architecture.md" },
-    { "SBOMs" = "sbom.md" },
-    { "Community" = "community.md" },
-    { "LLM / AI Policy" = "guides/llm-policy.md" },
-  ] },
-  { "Reverse Proxy" = [
-    "reverse-proxy/index.md",
-    { "Host & First-Run Setup" = "reverse-proxy/setup.md" },
-    { "Certificates, DNS & Access" = "reverse-proxy/certificates-and-access.md" },
-    { "fjord, Container Labels & API" = "reverse-proxy/automation.md" },
-    { "Backups & Troubleshooting" = "reverse-proxy/operations.md" },
-  ] },
-  { "Package Cache" = [
-    "pkg-cache/index.md",
-    { "Host Setup, ZFS & Sizing" = "pkg-cache/setup.md" },
-    { "Hosts, Jails & Container Builds" = "pkg-cache/clients.md" },
-    { "Mirrors, Stats & Troubleshooting" = "pkg-cache/mirrors-and-operations.md" },
-  ] },
+  { "Status" = "status.md" },
   { "fjord" = "https://fjord.daemonless.io" },
 ]
 
 [project.theme]
-variant = "modern"          # modern design language
+variant = "modern"
 custom_dir = "overrides"
 logo = "assets/daemonless-logo.svg"
 favicon = "assets/favicon.ico"
 features = [
   "navigation.tabs",
-  "navigation.tabs.sticky", # sticky header tabs
-  # navigation.instant intentionally OFF: the post-build placeholder plugin
-  # (markdown-placeholder-standalone) builds its settings panel against the DOM
-  # on load; with SPA instant nav it races the content swap and the panel lands
-  # at the top of the page until a manual "Reset all placeholders". Full page
-  # loads keep the @PLACEHOLDER@ panel in its correct spot.
-  "navigation.top",          # back to top button
-  "navigation.tracking",     # highlight nav as you scroll
+  "navigation.tabs.sticky",
+  "navigation.top",
+  "navigation.tracking",
+  "navigation.path",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.instant.progress",
+  "navigation.instant.preview",
+  "navigation.instant.prefetch",
   "search.highlight",
-  "search.suggest",          # instant search suggestions
-  "toc.follow",              # scroll sync
+  "search.suggest",
+  "search.share",
+  "toc.follow",
   "content.code.copy",
-  "content.code.annotate",   # interactive code annotations
-  "content.tabs.link",       # sync tab selection across pages
-  "search.share",            # shareable search links
-  "navigation.path",         # breadcrumbs
-  "navigation.indexes",      # a section's index.md is its own page
-  "navigation.footer",       # previous/next buttons at the bottom of pages
-  "announce.dismiss",        # the announcement bar (overrides/main.html) can be closed
+  "content.code.select",
+  "content.code.annotate",
+  "content.action.copy",
+  "content.action.view",
+  "content.tabs.link",
+  "content.tooltips",
+  "content.footnote.tooltips",
+  "navigation.footer",
 ]
 
 [[project.theme.palette]]
@@ -168,7 +159,6 @@ toggle.name = "Switch to dark mode"
 [project.extra]
 generator = false
 
-# Google Analytics — restored after the mkdocs→zensical migration dropped it.
 [project.extra.analytics]
 provider = "google"
 property = "G-Z0TYZ35R6G"
@@ -180,8 +170,8 @@ name = "GitHub"
 
 [[project.extra.social]]
 icon = "material/check-circle"
-link = "https://ci.daemonless.io"
-name = "CI Status"
+link = "/status/"
+name = "Build & Version Status"
 
 [[project.extra.social]]
 icon = "fontawesome/brands/discord"
@@ -191,6 +181,30 @@ name = "Discord Community"
 [project.plugins]
 search = {}
 social = { cards_layout_options = { background_color = "#1e1e24" } }
+glightbox = { auto = true, auto_themed = true, auto_caption = true, skip_classes = ["no-glb", "app-icon", "app-logo-col"] }
+gh-admonitions = {}
+
+[project.plugins.privacy]
+assets_include = [
+  "fonts.googleapis.com/*",
+  "fonts.gstatic.com/*",
+  "unpkg.com/*",
+  "cdn.jsdelivr.net/*",
+]
+
+[project.plugins.redirects.redirect_maps]
+"fjord/index.md" = "https://fjord.daemonless.io/"
+"images/overseerr.md" = "images/seerr.md"
+
+[project.plugins.llmstxt]
+full_output = "llms-full.txt"
+markdown_description = "FreeBSD-native OCI containers, multi-service stacks, and network appliances built on ocijail, Podman, AppJail, and fjord."
+
+[project.plugins.llmstxt.sections]
+"Getting Started & Operations" = ["guides/quick-start.md", "guides/permissions.md", "guides/zfs.md", "guides/networking.md", "guides/hardware-transcoding.md", "guides/ocijail-patch.md", "guides/operations.md"]
+"Appliances & Architecture" = ["guides/appliances.md", "reverse-proxy/*.md", "pkg-cache/*.md", "architecture.md", "sbom.md", "philosophy.md"]
+"Porting & dbuild" = ["guides/contributing-quickstart.md", "guides/development.md", "guides/service-anatomy.md", "guides/stack-choices.md", "guides/tagging.md", "guides/oci-compliance.md", "guides/ai-assisted-porting.md", "guides/dbuild/*.md"]
+"Image Catalog" = ["images/*.md"]
 
 # Markdown extensions — attr_list is REQUIRED for zip-bundle to read the
 # data-zip-* attributes on code blocks.
@@ -220,10 +234,10 @@ repo = "daemonless"
 [project.markdown_extensions.pymdownx.tabbed]
 alternate_style = true
 
-# Material icons / emoji shortcodes (e.g. :simple-adguard:). Zensical uses the
-# `zensical.extensions.emoji.*` namespace (string), not the MkDocs
-# `!!python/name:material.extensions.emoji.*` hooks.
 [project.markdown_extensions.pymdownx.emoji]
 emoji_index = "zensical.extensions.emoji.twemoji"
 emoji_generator = "zensical.extensions.emoji.to_svg"
 options.custom_icons = ["overrides/.icons"]
+
+[project.markdown_extensions.zensical.extensions.preview]
+targets = { include = ["*.md", "guides/*.md", "guides/dbuild/*.md", "reverse-proxy/*.md", "pkg-cache/*.md"], exclude = ["index.md", "images/index.md", "status.md"] }

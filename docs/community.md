@@ -61,7 +61,7 @@ Daemonless images are standard FreeBSD OCI containers and work seamlessly across
 
     ---
 
-    Community-driven FreeBSD and OpenZFS storage OS carrying TrueNAS CORE forward, with Daemonless container support.
+    Community-driven FreeBSD and OpenZFS storage OS with Daemonless container support.
 
     [:octicons-arrow-right-24: freecore.org](https://freecore.org)
 
@@ -85,7 +85,7 @@ Is there an app you love that isn't in our [Fleet](images/index.md)?
 *   **Build it:** Check out the [dbuild guide](guides/dbuild/index.md) and submit your first image!
 
 ### 2. Share Your Setup
-We love seeing how people use Daemonless. Join the Discord and share a screenshot of your `podman ps` or your dashboard. Your setup might inspire someone else's homelab.
+We love seeing how operators run Daemonless in practice. Join the Discord and share your `fjord status`, `podman ps`, or architecture notes with fellow FreeBSD administrators.
 
 ### 3. Improve the Docs
 Found a typo? Is a step in the [Quick Start](guides/quick-start.md) confusing? Every documentation PR makes the project better for the next person.

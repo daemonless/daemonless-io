@@ -495,7 +495,7 @@ services:
           - 8443:8443
     ```
 
-    Start it with `podman-compose up -d`, then read the one-time setup link from `podman logs reverse-proxy`. For interactive path placeholders and the container-label socket toggle, open the [Reverse Proxy image page](../images/reverse-proxy.md).
+    Start it with `podman-compose up -d`, then read the one-time setup link from `podman logs reverse-proxy`. For path customization and the container-label socket toggle, open the [Reverse Proxy image page](../images/reverse-proxy.md).
 
 === "Podman CLI"
 

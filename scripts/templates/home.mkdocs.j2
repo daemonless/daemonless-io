@@ -1,6 +1,6 @@
 ---
-title: "Daemonless: Native FreeBSD OCI Containers with Podman"
-description: "Run Docker-like containers natively on FreeBSD using Podman and ocijail. Pre-built images for Radarr, Sonarr, Plex, Immich and more. No Linux VM required."
+title: "Daemonless: Native FreeBSD OCI Containers with Podman, AppJail & fjord"
+description: "Run OCI containers natively on FreeBSD using Podman, AppJail, and fjord. Pre-built images for Immich, Jellyfin, Plex, Nextcloud, Radarr, PostgreSQL, and more. Zero Linux VM overhead."
 hide:
   - navigation
   - toc
@@ -11,14 +11,14 @@ hide:
 <div class="hero">
   <div class="hero-content">
     <div class="hero-logo">
-      <img src="assets/daemonless-logo.svg" alt="Daemonless">
+      <img src="assets/daemonless-logo.svg" alt="Daemonless" class="no-glb">
     </div>
     <h1>daemonless</h1>
-    <p class="hero-subtitle">The native container platform for FreeBSD. Run {{ active_count }}+ modern apps with standard OCI tooling.</p>
-    <p class="hero-tagline">Production-grade images, automated builds, native performance.</p>
+    <p class="hero-subtitle">The native container platform for FreeBSD. Run {{ active_count }}+ modern services and appliances with standard OCI tooling.</p>
+    <p class="hero-tagline">Production-grade images, automated builds, native jail isolation.</p>
     <div class="hero-buttons">
-       <a href="guides/quick-start/" class="md-button md-button--primary">Get Started</a>
-       <a href="images/" class="md-button">Explore Fleet</a>
+       <a href="images/" class="md-button md-button--primary">Browse Catalog</a>
+       <a href="guides/quick-start/" class="md-button">Quick Start</a>
     </div>
   </div>
 </div>
@@ -26,27 +26,25 @@ hide:
 <div class="what-is">
   <h2>What is Daemonless?</h2>
   <p>
-    Daemonless is a collection of <strong>FreeBSD-native OCI images</strong> that run directly on the FreeBSD kernel. It combines the power and security of Jails with the modern container ecosystem—compatible with <strong>Podman</strong>, <strong>AppJail</strong>, <a href="https://fjord.daemonless.io"><strong>fjord</strong></a>, <a href="https://sylve.io"><strong>Sylve</strong></a>, <a href="https://freecore.org"><strong>FreeCORE</strong></a>, or any OCI-compliant runtime. No Linux virtual machines or overhead required.
+    Daemonless is a fleet of <strong>FreeBSD-native OCI images, stacks, and network appliances</strong> that execute directly on the FreeBSD kernel. It pairs the isolation of Jails with standard container workflows across <a href="https://fjord.daemonless.io"><strong>fjord</strong></a>, <strong>Podman</strong>, <strong>AppJail</strong>, <a href="https://sylve.io"><strong>Sylve</strong></a>, <a href="https://freecore.org"><strong>FreeCORE</strong></a>, and any OCI-compliant runtime—with zero Linux virtual machine overhead.
   </p>
 </div>
 
-## Featured Apps
+{% if featured_apps %}
+## Featured Applications
 
-<section class="splide screenshot-carousel featured-carousel" aria-label="Featured apps" data-autoplay="true">
-  <div class="splide__track">
-    <ul class="splide__list">
-      <li class="splide__slide"><a href="images/plex/"><img src="images/screenshots/plex/screenshot_1.jpg" alt="Plex Media Server" loading="lazy"><span class="slide-label">Plex Media Server</span></a></li>
-      <li class="splide__slide"><a href="images/jellyfin/"><img src="images/screenshots/jellyfin/screenshot_1.png" alt="Jellyfin" loading="lazy"><span class="slide-label">Jellyfin</span></a></li>
-      <li class="splide__slide"><a href="images/sonarr/"><img src="images/screenshots/sonarr/screenshot1.png" alt="Sonarr" loading="lazy"><span class="slide-label">Sonarr</span></a></li>
-      <li class="splide__slide"><a href="images/radarr/"><img src="images/screenshots/radarr/blacklist_1.png" alt="Radarr" loading="lazy"><span class="slide-label">Radarr</span></a></li>
-      <li class="splide__slide"><a href="images/immich/"><img src="images/screenshots/immich/screenshot_hu_27e3b673de9529e2_1.webp" alt="Immich" loading="lazy"><span class="slide-label">Immich</span></a></li>
-      <li class="splide__slide"><a href="images/nextcloud/"><img src="images/screenshots/nextcloud/nextcloud-hub-25-files_1.png" alt="Nextcloud" loading="lazy"><span class="slide-label">Nextcloud</span></a></li>
-      <li class="splide__slide"><a href="images/tautulli/"><img src="images/screenshots/tautulli/activity_1.png" alt="Tautulli" loading="lazy"><span class="slide-label">Tautulli</span></a></li>
-      <li class="splide__slide"><a href="images/adguardhome/"><img src="images/screenshots/adguardhome/1.gif" alt="AdGuard Home" loading="lazy"><span class="slide-label">AdGuard Home</span></a></li>
-      <li class="splide__slide"><a href="images/uptime-kuma/"><img src="images/screenshots/uptime-kuma/212262296-e6205815-ad62-488c-83ec-a5b0d0689f7c_1.jpg" alt="Uptime Kuma" loading="lazy"><span class="slide-label">Uptime Kuma</span></a></li>
-    </ul>
-  </div>
-</section>
+<div class="featured-strip" aria-label="Featured applications">
+{%- for app in featured_apps %}
+  <a class="featured-card" href="images/{{ app.name }}/">
+    <img src="{{ app.screenshot }}" alt="{{ app.title }}" loading="lazy" class="no-glb">
+    <span class="featured-card__meta">
+      <span class="featured-card__title">{{ app.title }}</span>
+      <span class="featured-card__cat">{{ app.category }}</span>
+    </span>
+  </a>
+{%- endfor %}
+</div>
+{% endif %}
 
 <div class="comparison-section">
   <h2>Positioning & Comparison</h2>
@@ -78,7 +76,7 @@ hide:
           <td><strong>App-Store Deploy (Compose)</strong></td>
           <td>Yes (Docker Compose)</td>
           <td>No (Custom shell/jails)</td>
-          <td class="highlight">Yes (Podman/AppJail Compose)</td>
+          <td class="highlight">Yes (fjord / Podman / AppJail)</td>
         </tr>
         <tr>
           <td><strong>VM Required</strong></td>
@@ -110,10 +108,10 @@ hide:
   <div class="mermaid-container">
 ```mermaid
 flowchart TD
-    host["FreeBSD Host Kernel"] --> runtime["Podman / ocijail / runj"]
+    host["FreeBSD Host Kernel"] --> runtime["Podman / ocijail / AppJail"]
     subgraph isolation["Native Jail Isolation (Zero VM Overhead)"]
         runtime --> base["Base Image (/init, rcd for appliances)"]
-        base --> apps["Image Fleet (Plex, Radarr, Nextcloud...)"]
+        base --> apps["Image Catalog (Immich, Radarr, Nextcloud...)"]
     end
 
     style host fill:#ab2b28,stroke:#333,stroke-width:2px,color:#fff
@@ -130,7 +128,7 @@ flowchart TD
 
     ---
 
-    Built on **FreeBSD** and native jails. The app is the container's process, so Podman, AppJail or Kubernetes restart, stop and log it like any other container. Appliances that bundle several services run them under `rcd(8)`.
+    Built on **FreeBSD** and native jails. The app is the container's process, so fjord, Podman, AppJail, or Kubernetes restart, stop, and log it like any other container. Multi-process appliances run under `rcd(8)`.
 
 -   :material-feather: **Minimal Footprint**
 
@@ -142,35 +140,39 @@ flowchart TD
 
     ---
 
-    Run as any user with **PUID/PGID** support. True isolation with Jails.
+    Run as any user with **PUID/PGID** support. True isolation with Jails, signed images, and per-package SBOMs.
 
 -   :material-lan-connect: **Networking**
 
     ---
 
-    Full port forwarding support and seamless integration with `pf` firewall.
+    Bridge port forwarding with `pf`, direct LAN/VLAN addresses via `cni-epair`, and turnkey HTTPS via `reverse-proxy`.
 
 -   :material-update: **Automated Updates**
 
     ---
 
-    Automated CI/CD pipelines ensure images are built against the latest upstream releases and FreeBSD packages.
+    Automated CI/CD pipelines build and integration-test images against upstream releases and FreeBSD package sets.
 
 -   :material-github: **Transparent & Open**
 
     ---
 
-    100% open source. Every image is built from a visible `Containerfile`.
+    100% open source. Every image is built from an auditable `Containerfile` and `compose.yaml`.
 
 </div>
 
 ## Quick Example
 
-Launch your first container in seconds with a familiar syntax.
+Install with `fjord` in one command, or run directly with `podman`:
 
 <div class="termy">
 
 ```bash { linenums="0" }
+# Option 1: Install and manage via fjord
+fjord install plex
+
+# Option 2: Run directly with Podman
 pkg install podman-suite
 podman run -d --name plex \
   -p 32400:32400 \
@@ -183,13 +185,21 @@ podman run -d --name plex \
 
 </div>
 
-`PUID`/`PGID` make Plex run as your own user, so its files on the host are yours. The host needs a few lines of `pf` first: see the [Quick Start](guides/quick-start.md).
+`PUID`/`PGID` make the service run as your host UID so mounted datasets keep clean ownership. See the [Quick Start](guides/quick-start.md) for initial host setup.
 
 ## Ecosystem & Platforms
 
 Run Daemonless images from the command line or through a FreeBSD management platform:
 
 <div class="grid cards" markdown>
+
+-   :fjord-fjord: **fjord**
+
+    ---
+
+    App store, Compose stack manager, and CLI for FreeBSD (Podman & AppJail) and Linux (Podman).
+
+    [:octicons-arrow-right-24: fjord.daemonless.io](https://fjord.daemonless.io)
 
 -   :material-console: **Podman & AppJail**
 
@@ -198,14 +208,6 @@ Run Daemonless images from the command line or through a FreeBSD management plat
     Deploy directly with `podman-compose` or `appjail-director` on any FreeBSD 15 host.
 
     [:octicons-arrow-right-24: Quick Start](guides/quick-start.md)
-
--   :material-store: **fjord**
-
-    ---
-
-    Lightweight web app store and Compose stack manager for FreeBSD (Podman & AppJail).
-
-    [:octicons-arrow-right-24: fjord.daemonless.io](https://fjord.daemonless.io)
 
 -   :material-server: **Sylve**
 
@@ -219,7 +221,7 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     ---
 
-    Community-driven FreeBSD and OpenZFS storage appliance carrying TrueNAS CORE forward, with native Daemonless container support.
+    Community-driven FreeBSD and OpenZFS storage appliance with native Daemonless container support.
 
     [:octicons-arrow-right-24: freecore.org](https://freecore.org)
 
@@ -233,7 +235,7 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     ---
 
-    Host setup, `pf` firewall, and your first container — with Podman or AppJail.
+    Host setup, `pf` firewall, and your first container — with fjord, Podman, or AppJail.
 
     [:octicons-arrow-right-24: Get deployed](guides/quick-start.md)
 
@@ -245,11 +247,11 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     [:octicons-arrow-right-24: Storage guide](guides/zfs.md)
 
--   :material-lan-connect: **Networking**
+-   :material-lan-connect: **Networking & VLANs**
 
     ---
 
-    Port forwarding, bridges, and routing traffic behind a reverse proxy.
+    Port forwarding, bridges, `cni-epair` LAN/VLAN addresses, and `reverse-proxy`.
 
     [:octicons-arrow-right-24: Networking guide](guides/networking.md)
 
@@ -257,7 +259,7 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     ---
 
-    Keep services current with `podman pull` and CI-rebuilt images — no manual jails.
+    Keep services current with `fjord update`, `podman pull`, and CI-verified images.
 
     [:octicons-arrow-right-24: Operations guide](guides/operations.md)
 
@@ -271,7 +273,7 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     ---
 
-    We believe in the power of FreeBSD Jails and the convenience of OCI containers. Daemonless is about bridging that gap for the community.
+    Combining the proven security boundary of FreeBSD Jails with standard OCI distribution and declarative Compose stacks.
 
     [:octicons-arrow-right-24: Our Mission](philosophy.md)
 
@@ -279,16 +281,16 @@ Run Daemonless images from the command line or through a FreeBSD management plat
 
     ---
 
-    Deep dive into how Podman, ocijail, and the FreeBSD kernel work together to provide native performance.
+    Deep dive into `base-exec`, `base-rcd`, `ocijail`, and how the image inheritance tree is built and tested.
 
     [:octicons-arrow-right-24: How it Works](architecture.md)
 
--   **Join the Lab**
+-   **Community**
 
     ---
 
-    Daemonless is more than a tool—it's a community of FreeBSD enthusiasts. Help us build the next generation of images.
+    Connect with FreeBSD operators and contributors, request new ports, or ship an image with `dbuild`.
 
-    [:octicons-mark-github-24: Start Contributing](community.md)
+    [:octicons-mark-github-24: Get Involved](community.md)
 
 </div>

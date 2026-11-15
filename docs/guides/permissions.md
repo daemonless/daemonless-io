@@ -29,7 +29,7 @@ When you set `PUID=1000` and `PGID=1000`:
 
 ```bash
 id $USER
-# uid=1000(ahze) gid=1000(ahze) groups=1000(ahze),0(wheel)
+# uid=1000(admin) gid=1000(admin) groups=1000(admin),0(wheel)
 ```
 
 ## Usage
