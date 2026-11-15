@@ -22,9 +22,6 @@ hide:
       Linux
       <span class="rp-os-arch">amd64 · arm64</span>
     </span>
-    <span class="rp-os-pill">
-      Podman · fjord
-    </span>
   </div>
 
   <h1>Reverse Proxy</h1>
