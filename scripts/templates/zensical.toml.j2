@@ -123,7 +123,6 @@ features = [
   "navigation.indexes",
   "navigation.instant",
   "navigation.instant.progress",
-  "navigation.instant.preview",
   "navigation.instant.prefetch",
   "search.highlight",
   "search.suggest",
@@ -240,6 +239,3 @@ alternate_style = true
 emoji_index = "zensical.extensions.emoji.twemoji"
 emoji_generator = "zensical.extensions.emoji.to_svg"
 options.custom_icons = ["overrides/.icons"]
-
-[project.markdown_extensions.zensical.extensions.preview]
-targets = { include = ["*.md", "guides/*.md", "guides/dbuild/*.md", "reverse-proxy/*.md", "pkg-cache/*.md"], exclude = ["index.md", "images/index.md", "status.md"] }

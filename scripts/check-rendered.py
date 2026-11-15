@@ -8,7 +8,6 @@ Checks across all generated HTML pages:
 4. Broken YAML frontmatter rendered into visible <p>title: ... body text.
 5. Raw @[A-Z][A-Z0-9_]+@ placeholder tokens leaked into rendered HTML.
 6. External img.shields.io badge requests on /status/.
-7. Instant-preview attributes (data-preview) emitted on internal doc links.
 """
 import pathlib
 import re
@@ -25,11 +24,9 @@ raw_placeholder = re.compile(r"@[A-Z][A-Z0-9_]{2,}@")
 raw_md_link = re.compile(r"\[[^\]\n<]{2,80}\]\((?:https?://|\.\.?/|/[a-z])[^)\s]+\)")
 
 problems = []
-preview_links = 0
 
 for page in sorted(site.rglob("*.html")):
     html = page.read_text(errors="replace")
-    preview_links += html.count("data-preview")
     # Strip <script>, <pre>, and <code> before prose-only checks.
     prose = re.sub(r"<script[^>]*>.*?</script>", "", html, flags=re.S)
     prose = re.sub(r"<pre[^>]*>.*?</pre>", "", prose, flags=re.S)
@@ -68,14 +65,8 @@ status_html = site / "status" / "index.html"
 if status_html.exists() and "img.shields.io" in status_html.read_text(errors="replace"):
     problems.append(f"{status_html}: external img.shields.io badge URL found on /status/")
 
-if preview_links == 0:
-    problems.append(f"{site}: zero data-preview links generated (is zensical.extensions.preview configured?)")
-
 for p in problems:
     print(p)
 if not problems:
-    print(
-        f"Rendered: no raw icon codes, admonitions, placeholders, or frontmatter leaks; "
-        f"{preview_links} preview links active."
-    )
+    print("Rendered: no raw icon codes, admonitions, placeholders, or frontmatter leaks.")
 sys.exit(1 if problems else 0)
