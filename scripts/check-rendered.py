@@ -8,10 +8,34 @@ Checks across all generated HTML pages:
 4. Broken YAML frontmatter rendered into visible <p>title: ... body text.
 5. Raw @[A-Z][A-Z0-9_]+@ placeholder tokens leaked into rendered HTML.
 6. External img.shields.io badge requests on /status/.
+7. Nested <a> tags (e.g. double-wrapped GLightbox anchors).
 """
+from html.parser import HTMLParser
 import pathlib
 import re
 import sys
+
+
+class _NestedAnchorFinder(HTMLParser):
+    """Collect hrefs of <a> elements opened while already inside an <a>."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.depth = 0
+        self.nested: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag != "a":
+            return
+        if self.depth > 0:
+            href = dict(attrs).get("href") or ""
+            self.nested.append(href)
+        self.depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a" and self.depth > 0:
+            self.depth -= 1
+
 
 site = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "site")
 icon = re.compile(
@@ -44,6 +68,12 @@ for page in sorted(site.rglob("*.html")):
     for m in raw_md_link.finditer(prose):
         problems.append(f"{page}: unrendered markdown link in prose: {m.group(0)}")
 
+    anchor_finder = _NestedAnchorFinder()
+    anchor_finder.feed(prose)
+    anchor_finder.close()
+    for href in anchor_finder.nested:
+        problems.append(f"{page}: nested <a> tag (href={href!r})")
+
     # Check code blocks on generated image pages for leaked @PLACEHOLDER@ tokens too.
     if "/images/" in page.as_posix():
         for block in re.finditer(r"<pre[^>]*>.*?</pre>", html, re.S):
@@ -68,5 +98,5 @@ if status_html.exists() and "img.shields.io" in status_html.read_text(errors="re
 for p in problems:
     print(p)
 if not problems:
-    print("Rendered: no raw icon codes, admonitions, placeholders, or frontmatter leaks.")
+    print("Rendered: no raw icon codes, admonitions, placeholders, frontmatter leaks, or nested anchors.")
 sys.exit(1 if problems else 0)

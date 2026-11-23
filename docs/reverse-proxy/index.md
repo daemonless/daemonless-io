@@ -172,9 +172,7 @@ hide:
         </span>
         <span class="rp-window-badge">Click to zoom</span>
       </div>
-      <a href="01-names.png" class="glightbox" data-gallery="rp-tour">
-        <img src="01-names.png" alt="Your names, each with its HTTPS link, access scope, status, and 24-hour uptime" loading="lazy">
-      </a>
+      <img src="01-names.png" alt="Your names, each with its HTTPS link, access scope, status, and 24-hour uptime" loading="lazy">
     </div>
 
     <div class="rp-feature-strip">
@@ -214,9 +212,7 @@ hide:
         </span>
         <span class="rp-window-badge">Click to zoom</span>
       </div>
-      <a href="02-add-a-name.png" class="glightbox" data-gallery="rp-tour">
-        <img src="02-add-a-name.png" alt="Add a name by pasting the IP and port you open today" loading="lazy">
-      </a>
+      <img src="02-add-a-name.png" alt="Add a name by pasting the IP and port you open today" loading="lazy">
     </div>
 
     <div class="rp-feature-strip">
@@ -254,9 +250,7 @@ hide:
           <span class="rp-window-title">Step 1: How names look</span>
           <span class="rp-window-badge">Click to zoom</span>
         </div>
-        <a href="03-how-names-look.png" class="glightbox" data-gallery="rp-tour">
-          <img src="03-how-names-look.png" alt="Choosing between Just for home, DuckDNS, or your own domain during setup" loading="lazy">
-        </a>
+        <img src="03-how-names-look.png" alt="Choosing between Just for home, DuckDNS, or your own domain during setup" loading="lazy">
       </div>
       <div class="rp-window-frame">
         <div class="rp-window-header">
@@ -266,9 +260,7 @@ hide:
           <span class="rp-window-title">Step 2: Point names at this proxy</span>
           <span class="rp-window-badge">Click to zoom</span>
         </div>
-        <a href="04-point-names.png" class="glightbox" data-gallery="rp-tour">
-          <img src="04-point-names.png" alt="Step-by-step router DNS instructions for OPNsense, pfSense, UniFi, AdGuard Home, and Pi-hole" loading="lazy">
-        </a>
+        <img src="04-point-names.png" alt="Step-by-step router DNS instructions for OPNsense, pfSense, UniFi, AdGuard Home, and Pi-hole" loading="lazy">
       </div>
     </div>
 
@@ -309,9 +301,7 @@ hide:
         </span>
         <span class="rp-window-badge">Click to zoom</span>
       </div>
-      <a href="05-trust.png" class="glightbox" data-gallery="rp-tour">
-        <img src="05-trust.png" alt="Device trust guide with QR code for phones and instructions for Windows, macOS, Linux, FreeBSD, iOS, and Android" loading="lazy">
-      </a>
+      <img src="05-trust.png" alt="Device trust guide with QR code for phones and instructions for Windows, macOS, Linux, FreeBSD, iOS, and Android" loading="lazy">
     </div>
 
     <div class="rp-feature-strip">
@@ -351,9 +341,7 @@ hide:
         </span>
         <span class="rp-window-badge">Click to zoom</span>
       </div>
-      <a href="06-settings.png" class="glightbox" data-gallery="rp-tour">
-        <img src="06-settings.png" alt="Settings page showing ending and certificates, home networks, connected apps, uptime and alerts, and encrypted backups" loading="lazy">
-      </a>
+      <img src="06-settings.png" alt="Settings page showing ending and certificates, home networks, connected apps, uptime and alerts, and encrypted backups" loading="lazy">
     </div>
 
     <div class="rp-feature-strip">
